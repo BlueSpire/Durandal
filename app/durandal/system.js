@@ -94,22 +94,15 @@
                 return v.toString(16);
             });
         },
-        require: function(modules) {
+        require: function() {
+            var modules = Array.prototype.slice.call(arguments, 0);
             return this.defer(function(dfd) {
-                if (typeof modules === 'string') {
-                    require([modules], function(result) {
-                        setTimeout(function() {
-                            dfd.resolve(result);
-                        }, 1);
-                    });
-                } else {
-                    require(modules, function() {
-                        var args = arguments;
-                        setTimeout(function() {
-                            dfd.resolve(args);
-                        }, 1);
-                    });
-                }
+                require(modules, function() {
+                    var args = arguments;
+                    setTimeout(function() {
+                        dfd.resolve.apply(dfd, args);
+                    }, 1);
+                });
             }).promise();
         }
     };
