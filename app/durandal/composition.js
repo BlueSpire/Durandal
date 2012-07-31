@@ -64,7 +64,7 @@
             }
 
             if (typeof settings.strategy == 'string') {
-                system.require(settings.strategy).then(function(strategy) {
+                system.acquire(settings.strategy).then(function(strategy) {
                     settings.strategy = strategy;
                     that.executeStrategy(element, settings);
                 });
@@ -103,7 +103,7 @@
                     });
                 }
             } else if (typeof settings.model == 'string') {
-                system.require(settings.model).then(function(module) {
+                system.acquire(settings.model).then(function(module) {
                     //TODO: is it an object or function?
                     //if function, call as ctor
 

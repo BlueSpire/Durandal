@@ -94,7 +94,7 @@
                 return v.toString(16);
             });
         },
-        require: function() {
+        acquire: function() {
             var modules = Array.prototype.slice.call(arguments, 0);
             return this.defer(function(dfd) {
                 require(modules, function() {

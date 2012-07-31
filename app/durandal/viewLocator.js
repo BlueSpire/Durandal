@@ -39,7 +39,7 @@
 
                     var requireExpression = viewEngine.pluginPath + '!' + view + viewEngine.viewExtension;
 
-                    system.require(requireExpression).then(function(result) {
+                    system.acquire(requireExpression).then(function(result) {
                         dfd.resolve(viewEngine.createView(view, result));
                     });
                 } else {
