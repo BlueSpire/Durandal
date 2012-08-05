@@ -1,10 +1,17 @@
-﻿({
+﻿// To run this build  file, install node.js and run
+// node r.js -o app.build.js from the same directory as this file
+// To test the build, change data-main="app/main" in index.html to data-main="app-built/main" 
+({
     appDir: ".",
     baseUrl: ".",
-    dir: "../your_build_output_file_name_goes_here",
+    dir: "../app-built",
     keepBuildDir: false,
     inlineText: true,
-    stubModules: ["lib/text"],
+    paths: {
+        "text": "lib/text"
+    },
+    stubModules: ["text"],
+    optimize: "uglify",
     modules: [
         {
             name: "main",
@@ -12,11 +19,11 @@
                 //list all modules that should be included in the optimized build
                 'main',
                 'samples/navigation/shell',
-                'samples/navigation/text!shell.html',
+                'text!samples/navigation/shell.html',
                 'samples/navigation/first',
-                'samples/navigation/text!first.html',
+                'text!samples/navigation/first.html',
                 'samples/navigation/second',
-                'samples/navigation/text!second.html',
+                'text!samples/navigation/second.html',
                 //be sure to include all durandal modules too
             ]
         }
