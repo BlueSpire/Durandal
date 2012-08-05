@@ -1,0 +1,37 @@
+﻿body {
+}
+
+.fade {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: black;
+    opacity: 0.8;
+    filter:alpha(opacity=80); 
+}
+
+.popup {
+    position: absolute;
+}
+
+.message-box {
+    background-color: whitesmoke;
+    color: black;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.message-box > h3 {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    color: darkblue;
+              
+}
+
+.button-bar {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    text-align: center;
+}
