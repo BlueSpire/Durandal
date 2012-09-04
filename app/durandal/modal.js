@@ -33,21 +33,18 @@
             })
             .appendTo(body);
 
-        this.$view
-            .addClass("popup")
-            .css({
-                'left':(($(document).width() / 2) - (this.$view.width() / 2)) + 'px',
-                'z-index':getNextZIndex()
-            });
-
         var scrollTop = $(window).scrollTop();
         this.$view
+            .addClass("popup")
             .addClass("fadable")
             .appendTo(body);
 
-        this.$view.css({
-            'top':((($(window).height() / 2) - (this.$view.height() / 2)) + scrollTop) + 'px',
-            'opacity':1
+        this.$view
+            .css({
+                'top': ((($(window).height() / 2) - (this.$view.height() / 2)) + scrollTop) + 'px',
+                'left': (($(document).width() / 2) - (this.$view.width() / 2)) + 'px',
+                'z-index': getNextZIndex(),
+                'opacity':1
         });
 
         if (this.settings.viewModel && this.settings.viewModel.viewAttached) {
