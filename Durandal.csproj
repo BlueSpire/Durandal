@@ -95,7 +95,6 @@
     <Content Include="test\jasmine-1.2.0.js" />
     <Content Include="test\phantomjs.exe" />
     <Content Include="test\spec.html" />
-    <Content Include="test\spec2.js" />
     <Content Include="test\specs\system.spec.js" />
   </ItemGroup>
   <ItemGroup>
