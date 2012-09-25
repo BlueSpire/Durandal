@@ -90,6 +90,13 @@
     <Content Include="app\samples\navigation\shell.html" />
     <Content Include="app\samples\navigation\shell.js" />
     <Content Include="index.html" />
+    <Content Include="test\spec.js" />
+    <Content Include="test\jasmine.console_reporter.js" />
+    <Content Include="test\jasmine-1.2.0.js" />
+    <Content Include="test\phantomjs.exe" />
+    <Content Include="test\spec.html" />
+    <Content Include="test\spec2.js" />
+    <Content Include="test\specs\system.spec.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\content\css\" />
