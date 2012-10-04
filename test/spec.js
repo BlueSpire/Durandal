@@ -1,10 +1,11 @@
 var page = require('webpage').create();
 
-page.onConsoleMessage = function (msg) {
+page.onConsoleMessage = function(msg) {
     console.log(msg);
 
-    if (msg == "ConsoleReporter finished")
+    if (msg == "ConsoleReporter finished") {
         phantom.exit();
+    }
 };
 
 page.onLoadFinished = function () {
