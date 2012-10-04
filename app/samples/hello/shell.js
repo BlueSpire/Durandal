@@ -2,7 +2,6 @@
     var app = require('durandal/app');
 
     var name = ko.observable();
-
     var canSayHello = ko.computed(function () {
         return name() ? true : false;
     });

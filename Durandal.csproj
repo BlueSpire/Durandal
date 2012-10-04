@@ -84,6 +84,7 @@
     <Content Include="app\lib\text.js" />
     <Content Include="app\main.js" />
     <Content Include="app\r.js" />
+    <Content Include="app\samples\gameLibrary\final\readme.txt" />
     <Content Include="app\samples\hello\shell.html" />
     <Content Include="app\samples\hello\shell.js" />
     <Content Include="app\samples\navigation\first.html" />
@@ -93,12 +94,16 @@
     <Content Include="app\samples\navigation\shell.html" />
     <Content Include="app\samples\navigation\shell.js" />
     <Content Include="index.html" />
+    <Content Include="License.txt" />
     <Content Include="test\spec.js" />
     <Content Include="test\jasmine.console_reporter.js" />
     <Content Include="test\jasmine-1.2.0.js" />
     <Content Include="test\phantomjs.exe" />
     <Content Include="test\spec.html" />
     <Content Include="test\specs\system.spec.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
