@@ -10,6 +10,7 @@ Features:
 * A simple app model provides you with an app start lifecycle, modal dialogs, message boxes and an event aggregator.
 
 Samples:
+
 To run each sample, open main.js and change the call to app.setRoot() so that it points to shell of the sample you wish to run.
 
 * hello - Demonstrates a basic hello world applicatoin which uses view/view-model location conventions and message box functionality.
