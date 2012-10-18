@@ -84,7 +84,6 @@
     <Content Include="app\lib\text.js" />
     <Content Include="app\main.js" />
     <Content Include="app\r.js" />
-    <Content Include="app\samples\gameLibrary\final\readme.txt" />
     <Content Include="app\samples\hello\shell.html" />
     <Content Include="app\samples\hello\shell.js" />
     <Content Include="app\samples\navigation\first.html" />

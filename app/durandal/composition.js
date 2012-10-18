@@ -25,6 +25,10 @@
 
             if (typeof value == 'string') {
                 settings = value;
+            } else if (value && value.__moduleId__) {
+                settings = {
+                    model: value
+                };
             } else {
                 for (var attrName in value) {
                     if (typeof attrName == 'string') {
