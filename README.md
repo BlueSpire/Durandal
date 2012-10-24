@@ -11,7 +11,7 @@ A cross-device, cross-platform application framework written in JavaScript, Dura
 
 ## Documentation
 
-We're just getting started here, so there's not a ton of documenation yet. But, we are working on it with a vengence. It's all located in the Wiki, so have a look there.
+We're just getting started here, so there's not a ton of documenation yet. But, we are working on it with a vengence. It's all located in the (wiki)[https://github.com/EisenbergEffect/Durandal/wiki], so have a look there.
 
 ##Samples
 
