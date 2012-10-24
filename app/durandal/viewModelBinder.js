@@ -2,12 +2,12 @@
     var system = require('durandal/system');
 
     return {
-        bind: function(model, view) {
-            system.log("Binding", model, view);
+        bind: function(obj, view) {
+            system.log("Binding", obj, view);
             
-            ko.applyBindings(model, view);
-            if (model.setView) {
-                model.setView(view);
+            ko.applyBindings(obj, view);
+            if (obj.setView) {
+                obj.setView(view);
             }
         }
     };

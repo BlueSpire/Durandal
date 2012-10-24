@@ -32,9 +32,9 @@
                 });
             }).promise();
         },
-        setRoot: function(shell, applicationHost) {
+        setRoot: function(root, applicationHost) {
             var hostElement = dom.getElementById(applicationHost || 'applicationHost');
-            composition.compose(hostElement, shell);
+            composition.compose(hostElement, root);
         },
         makeFit: function() {
             if (document.body.ontouchmove) {
