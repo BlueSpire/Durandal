@@ -10,7 +10,7 @@
     var app = {
         showModal: function(viewModel) {
             return system.defer(function(dfd) {
-                viewLocator.locateViewForModel(viewModel)
+                viewLocator.locateViewForObject(viewModel)
                     .then(function(view) {
                         new Modal({
                             view: view,

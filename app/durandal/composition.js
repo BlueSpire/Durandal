@@ -17,7 +17,7 @@
             }
         },
         defaultStrategy: function(settings) {
-            return viewLocator.locateViewForModel(settings.model);
+            return viewLocator.locateViewForObject(settings.model);
         },
         getSettings: function(valueAccessor) {
             var settings = {},
