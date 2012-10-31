@@ -74,6 +74,7 @@
     <Content Include="app\content\images\ios-startup-image-portrait.png" />
     <Content Include="app\durandal\app.js" />
     <Content Include="app\durandal\composition.js" />
+    <Content Include="app\durandal\viewModel.js" />
     <Content Include="app\durandal\dom.js" />
     <Content Include="app\durandal\events.js" />
     <Content Include="app\durandal\http.js" />
@@ -109,6 +110,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <Content Include="web.config" />
+    <Content Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </Content>
+    <Content Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
