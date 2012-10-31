@@ -108,11 +108,12 @@
                 }
             } else if (typeof settings.model == 'string') {
                 system.acquire(settings.model).then(function(module) {
-                    //TODO: is it an object or function?
-                    //if function, call as ctor
-                    //should the ctor call happen inside of inject?
+                    if (typeof(module) == "function") {
+                        settings.model = new module();
+                    } else {
+                        settings.model = module;
+                    }
 
-                    settings.model = module;
                     that.inject(element, settings);
                 });
             } else {
