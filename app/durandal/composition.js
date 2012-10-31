@@ -5,11 +5,11 @@
         system = require('durandal/system');
 
     var binding = {
-        switchContent: function(parent, newChild, settings) {
+        switchContent: function (parent, newChild, settings) {
             if (!newChild) {
-                $(parent).empty();
+                ko.virtualElements.emptyNode(parent);
             } else {
-                $(parent).empty().append(newChild);
+                ko.virtualElements.setDomNodeChildren(parent, [newChild]);
 
                 if (settings.model && settings.model.viewAttached) {
                     settings.model.viewAttached(newChild);
@@ -127,6 +127,8 @@
             binding.compose(element, settings, viewModel);
         }
     };
+    
+    ko.virtualElements.allowedBindings.compose = true;
 
     return binding;
 });
