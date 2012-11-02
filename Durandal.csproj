@@ -93,6 +93,10 @@
     <Content Include="app\r.js" />
     <Content Include="app\samples\hello\shell.html" />
     <Content Include="app\samples\hello\shell.js" />
+    <Content Include="app\samples\masterDetail\detail.html" />
+    <Content Include="app\samples\masterDetail\detail.js" />
+    <Content Include="app\samples\masterDetail\shell.html" />
+    <Content Include="app\samples\masterDetail\shell.js" />
     <Content Include="app\samples\navigation\first.html" />
     <Content Include="app\samples\navigation\first.js" />
     <Content Include="app\samples\navigation\second.html" />

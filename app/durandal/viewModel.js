@@ -196,7 +196,7 @@
 
     return {
         activator: createActivator,
-        collectionOneActive: function(items) {
+        oneActive: function(items) {
             return function(computed, settings) {
                 if (!items && settings.parent && !settings.parent.items) {
                     items = settings.parent.items = ko.observableArray([]);

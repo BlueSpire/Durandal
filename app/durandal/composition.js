@@ -11,8 +11,14 @@
             } else {
                 ko.virtualElements.setDomNodeChildren(parent, [newChild]);
 
-                if (settings.model && settings.model.viewAttached) {
-                    settings.model.viewAttached(newChild);
+                if (settings.model) {
+                    if (settings.model.activate && settings.activate) {
+                        settings.model.activate();
+                    }
+
+                    if (settings.model.viewAttached) {
+                        settings.model.viewAttached(newChild);
+                    }
                 }
             }
         },

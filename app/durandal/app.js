@@ -34,7 +34,7 @@
         },
         setRoot: function(root, applicationHost) {
             var hostElement = dom.getElementById(applicationHost || 'applicationHost');
-            composition.compose(hostElement, root);
+            composition.compose(hostElement, { model:root, activate:true });
         },
         makeFit: function() {
             if (document.body.ontouchmove) {
