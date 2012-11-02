@@ -246,7 +246,30 @@
                 var originalCanDeactivate = computed.canDeactivate;
                 computed.canDeactivate = function(close) {
                     if (close) {
-                        //TODO: check all items only in case of close
+                        return system.defer(function(dfd) {
+                            var list = items();
+                            var results = [];
+
+                            function finish() {
+                                for (var j = 0; j < results.length; j++) {
+                                    if (!results[j]) {
+                                        dfd.resolve(false);
+                                        return;
+                                    }
+                                }
+
+                                dfd.resolve(true);
+                            }
+
+                            for (var i = 0; i < list.length; i++) {
+                                computed.canDeactivateItem(list[i], close).then(function(result) {
+                                    results.push(result);
+                                    if (results.length == list.length) {
+                                        finish();
+                                    }
+                                });
+                            }
+                        }).promise();
                     } else {
                         return originalCanDeactivate;
                     }
@@ -255,7 +278,25 @@
                 var originalDeactivate = computed.deactivate;
                 computed.deactivate = function(close) {
                     if (close) {
-                        //TODO: close all items only if closing
+                        return system.defer(function(dfd) {
+                            var list = items();
+                            var results = 0;
+                            var listLength = list.length;
+
+                            function doDeactivate(item) {
+                                computed.deactivateItem(item, close).then(function() {
+                                    results++;
+                                    items.remove(item);
+                                    if (results == listLength) {
+                                        dfd.resolve();
+                                    }
+                                });
+                            }
+
+                            for (var i = 0; i < listLength; i++) {
+                                doDeactivate(list[i]);
+                            }
+                        }).promise();
                     } else {
                         return originalDeactivate;
                     }
