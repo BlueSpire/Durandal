@@ -92,6 +92,7 @@
                     if (canDeactivate) {
                         doDeactivation();
                     } else {
+                        computed.notifySubscribers();
                         dfd.resolve(false);
                     }
                 });
@@ -147,6 +148,7 @@
                             if (canActivate) {
                                 doActivation();
                             } else {
+                                computed.notifySubscribers();
                                 dfd.resolve(false);
                             }
                         });
