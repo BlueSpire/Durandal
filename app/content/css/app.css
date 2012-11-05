@@ -17,8 +17,8 @@
 .message-box {
     background-color: whitesmoke;
     color: black;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
     padding: 10px;
 }
 
@@ -26,7 +26,6 @@
     margin-top: 0px;
     margin-bottom: 10px;
     color: darkblue;
-              
 }
 
 .button-bar {

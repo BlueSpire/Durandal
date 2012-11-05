@@ -17,6 +17,16 @@
         if (!settings.afterDeactivate) {
             settings.afterDeactivate = function() { };
         }
+        
+        if (!settings.interpretGuard) {
+            settings.interpretGuard = function (value) {
+                if (typeof value == 'string') {
+                    return value == 'Yes' || value == 'Ok';
+                }
+
+                return value;
+            };
+        }
 
         return settings;
     }
@@ -29,7 +39,7 @@
             read: function() {
                 return activeItem();
             },
-            write: function(newValue) {
+            write: function (newValue) {
                 computed.activateItem(newValue);
             }
         });
@@ -37,7 +47,15 @@
         computed.canDeactivateItem = function(item, close) {
             return system.defer(function(dfd) {
                 if (item && item.canDeactivate) {
-                    item.canDeactivate(close).then(dfd.resolve);
+                    var resultOrPromise = item.canDeactivate(close);
+
+                    if (resultOrPromise.then) {
+                        resultOrPromise.then(function(result) {
+                            dfd.resolve(settings.interpretGuard(result));
+                        });
+                    } else {
+                        dfd.resolve(settings.interpretGuard(resultOrPromise));
+                    }
                 } else {
                     dfd.resolve(true);
                 }
@@ -83,14 +101,21 @@
         computed.canActivateItem = function(item) {
             return system.defer(function(dfd) {
                 if (item && item.canActivate) {
-                    item.canActivate().then(dfd.resolve);
+                    var resultOrPromise = item.canActivate();
+                    if (resultOrPromise.then) {
+                        resultOrPromise.then(function (result) {
+                            dfd.resolve(settings.interpretGuard(result));
+                        });
+                    } else {
+                        dfd.resolve(settings.interpretGuard(resultOrPromise));
+                    }
                 } else {
                     dfd.resolve(true);
                 }
             }).promise();
         };
 
-        computed.activateItem = function(item) {
+        computed.activateItem = function (item) {
             return system.defer(function(dfd) {
                 var currentItem = activeItem();
 
@@ -107,7 +132,7 @@
                                 var promise = item.activate();
 
                                 if (promise && promise.then) {
-                                    promise.then(function() {
+                                    promise.then(function () {
                                         dfd.resolve(true);
                                     });
                                 } else {
@@ -166,142 +191,137 @@
             return computed.deactivateItem(computed(), close);
         };
 
-        computed.configure = function(configurator) {
-            configurator(computed, settings);
-            return computed;
-        };
-
-        if (settings.parent) {
-            settings.parent.canActivate = function() {
+        computed.includeIn = function (parent) {
+            parent.canActivate = function () {
                 return computed.canActivate();
             };
 
-            settings.parent.activate = function() {
+            parent.activate = function () {
                 return computed.activate();
             };
 
-            settings.parent.canDeactivate = function(close) {
+            parent.canDeactivate = function (close) {
                 return computed.canDeactivate(close);
             };
 
-            settings.parent.deactivate = function(close) {
+            parent.deactivate = function (close) {
                 return computed.deactivate(close);
             };
+        };
+
+        if (settings.parent) {
+            computed.includeIn(settings.parent);
         } else {
             computed.activate();
         }
+
+        computed.for = function (items) {
+            settings.closeOnDeactivate = false;
+
+            settings.determineNextItemToActivate = function(list, lastIndex) {
+                var toRemoveAt = lastIndex - 1;
+
+                if (toRemoveAt == -1 && list.length > 1) {
+                    return list[1];
+                }
+
+                if (toRemoveAt > -1 && toRemoveAt < list.length - 1) {
+                    return list[toRemoveAt];
+                }
+
+                return null;
+            };
+
+            settings.beforeActivate = function (newItem) {
+                var currentItem = computed();
+
+                if (!newItem) {
+                    newItem = settings.determineNextItemToActivate(items, currentItem ? items.indexOf(currentItem) : 0);
+                } else {
+                    var index = items.indexOf(newItem);
+
+                    if (index == -1) {
+                        items.push(newItem);
+                    } else {
+                        newItem = items()[index];
+                    }
+                }
+                
+                return newItem;
+            };
+
+            settings.afterDeactivate = function(oldItem, close) {
+                if (close) {
+                    items.remove(oldItem);
+                }
+            };
+
+            var originalCanDeactivate = computed.canDeactivate;
+            computed.canDeactivate = function(close) {
+                if (close) {
+                    return system.defer(function(dfd) {
+                        var list = items();
+                        var results = [];
+
+                        function finish() {
+                            for (var j = 0; j < results.length; j++) {
+                                if (!results[j]) {
+                                    dfd.resolve(false);
+                                    return;
+                                }
+                            }
+
+                            dfd.resolve(true);
+                        }
+
+                        for (var i = 0; i < list.length; i++) {
+                            computed.canDeactivateItem(list[i], close).then(function(result) {
+                                results.push(result);
+                                if (results.length == list.length) {
+                                    finish();
+                                }
+                            });
+                        }
+                    }).promise();
+                } else {
+                    return originalCanDeactivate;
+                }
+            };
+
+            var originalDeactivate = computed.deactivate;
+            computed.deactivate = function(close) {
+                if (close) {
+                    return system.defer(function(dfd) {
+                        var list = items();
+                        var results = 0;
+                        var listLength = list.length;
+
+                        function doDeactivate(item) {
+                            computed.deactivateItem(item, close).then(function() {
+                                results++;
+                                items.remove(item);
+                                if (results == listLength) {
+                                    dfd.resolve();
+                                }
+                            });
+                        }
+
+                        for (var i = 0; i < listLength; i++) {
+                            doDeactivate(list[i]);
+                        }
+                    }).promise();
+                } else {
+                    return originalDeactivate;
+                }
+            };
+
+            return computed;
+        };
 
         return computed;
     }
 
     return {
-        activator: createActivator,
-        oneActive: function(items) {
-            return function(computed, settings) {
-                if (!items && settings.parent && !settings.parent.items) {
-                    items = settings.parent.items = ko.observableArray([]);
-                }
-
-                settings.closeOnDeactivate = false;
-
-                settings.determineNextItemToActivate = function(list, lastIndex) {
-                    var toRemoveAt = lastIndex - 1;
-
-                    if (toRemoveAt == -1 && list.length > 1) {
-                        return list[1];
-                    }
-
-                    if (toRemoveAt > -1 && toRemoveAt < list.length - 1) {
-                        return list[toRemoveAt];
-                    }
-
-                    return null;
-                };
-
-                settings.beforeActivate = function(newItem) {
-                    var activeItem = computed();
-
-                    if (!newItem) {
-                        newItem = settings.determineNextItemToActivate(items, activeItem ? items.indexOf(activeItem) : 0);
-                    }
-                    else {
-                        var index = items.indexOf(newItem);
-
-                        if (index == -1) {
-                            items.push(newItem);
-                        } else {
-                            newItem = items[index];
-                        }
-                    }
-
-                    return newItem;
-                };
-
-                settings.afterDeactivate = function(oldItem, close) {
-                    if (close) {
-                        items.remove(oldItem);
-                    }
-                };
-
-                var originalCanDeactivate = computed.canDeactivate;
-                computed.canDeactivate = function(close) {
-                    if (close) {
-                        return system.defer(function(dfd) {
-                            var list = items();
-                            var results = [];
-
-                            function finish() {
-                                for (var j = 0; j < results.length; j++) {
-                                    if (!results[j]) {
-                                        dfd.resolve(false);
-                                        return;
-                                    }
-                                }
-
-                                dfd.resolve(true);
-                            }
-
-                            for (var i = 0; i < list.length; i++) {
-                                computed.canDeactivateItem(list[i], close).then(function(result) {
-                                    results.push(result);
-                                    if (results.length == list.length) {
-                                        finish();
-                                    }
-                                });
-                            }
-                        }).promise();
-                    } else {
-                        return originalCanDeactivate;
-                    }
-                };
-
-                var originalDeactivate = computed.deactivate;
-                computed.deactivate = function(close) {
-                    if (close) {
-                        return system.defer(function(dfd) {
-                            var list = items();
-                            var results = 0;
-                            var listLength = list.length;
-
-                            function doDeactivate(item) {
-                                computed.deactivateItem(item, close).then(function() {
-                                    results++;
-                                    items.remove(item);
-                                    if (results == listLength) {
-                                        dfd.resolve();
-                                    }
-                                });
-                            }
-
-                            for (var i = 0; i < listLength; i++) {
-                                doDeactivate(list[i]);
-                            }
-                        }).promise();
-                    } else {
-                        return originalDeactivate;
-                    }
-                };
-            };
-        }
+        activator: createActivator
     };
 });

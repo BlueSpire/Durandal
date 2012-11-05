@@ -21,6 +21,10 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -86,7 +90,7 @@
     <Content Include="app\durandal\viewLocator.js" />
     <Content Include="app\durandal\viewModelBinder.js" />
     <Content Include="app\lib\jquery-1.7.min.js" />
-    <Content Include="app\lib\knockout-2.1.0.js" />
+    <Content Include="app\lib\knockout-2.2.0.js" />
     <Content Include="app\lib\require.js" />
     <Content Include="app\lib\text.js" />
     <Content Include="app\main.js" />
