@@ -8,13 +8,11 @@
             new Detail("UnityDatabinding", "A general databinding framework for Unity3D. Includes bindings for UI composition and samples for the NGUI library.")
         ]);
 
-    var activeItem = viewModel.activator().for(items);
-
     return {
-        activeItem: activeItem,
+        activeItem: viewModel.activator().for(items),
         items: items,
         activate: function() {
-            activeItem(items()[0]);
+            this.activeItem(items()[0]);
         }
     };
 });

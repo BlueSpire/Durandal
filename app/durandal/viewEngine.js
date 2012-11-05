@@ -1,5 +1,6 @@
-﻿define(['text', 'durandal/dom'], function() {
-    var dom = require('durandal/dom');
+﻿define(function(require) {
+    var dom = require('durandal/dom'),
+        text = require('text');
 
     return {
         viewExtension:'.html',

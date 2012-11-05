@@ -1,6 +1,7 @@
-﻿define(['durandal/composition', 'durandal/modal', 'durandal/messageBox', 'durandal/events'], function() {
+﻿define(function(require) {
     var system = require('durandal/system'),
         viewLocator = require('durandal/viewLocator'),
+        viewEngine = require('durandal/viewEngine'),
         composition = require('durandal/composition'),
         dom = require('durandal/dom'),
         Modal = require('durandal/modal'),
@@ -34,7 +35,19 @@
         },
         setRoot: function(root, applicationHost) {
             var hostElement = dom.getElementById(applicationHost || 'applicationHost');
-            composition.compose(hostElement, { model:root, activate:true });
+            var settings = { activate: true };
+            
+            if (typeof root === 'string') {
+                if (root.indexOf(viewEngine.viewExtension) != -1) {
+                    settings.view = root;
+                } else {
+                    settings.model = root;
+                }
+            } else {
+                settings.model = root;
+            }
+            
+            composition.compose(hostElement, settings);
         },
         makeFit: function() {
             if (document.body.ontouchmove) {
