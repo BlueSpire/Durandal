@@ -12,7 +12,8 @@
                 ko.virtualElements.setDomNodeChildren(parent, [newChild]);
 
                 if (settings.model) {
-                    if (settings.model.activate && settings.activate) {
+                    if (settings.activate && settings.model.activate) {
+                        system.log("Composition Activating", settings.model);
                         settings.model.activate();
                     }
 

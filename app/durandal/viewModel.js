@@ -2,7 +2,13 @@
     var system = require('durandal/system');
 
     function ensureSettings(settings) {
-        settings = settings || {};
+        if (settings == undefined) {
+            settings = { };
+        } else if (typeof settings == "boolean") {
+            settings = {
+                activate: settings
+            };
+        }
 
         if (!settings.closeOnDeactivate) {
             settings.closeOnDeactivate = true;
@@ -61,36 +67,36 @@
                 }
             }).promise();
         };
+        
+        function doDeactivation(item, close, dfd) {
+            if (item && item.deactivate) {
+                system.log("Deactivating", item);
+
+                var promise = item.deactivate(close);
+
+                if (promise && promise.then) {
+                    promise.then(function () {
+                        settings.afterDeactivate(item, close);
+                        dfd.resolve(true);
+                    });
+                } else {
+                    settings.afterDeactivate(item, close);
+                    dfd.resolve(true);
+                }
+            } else {
+                if (item) {
+                    settings.afterDeactivate(item, close);
+                }
+
+                dfd.resolve(true);
+            }
+        }
 
         computed.deactivateItem = function(item, close) {
             return system.defer(function(dfd) {
-                function doDeactivation() {
-                    if (item && item.deactivate) {
-                        system.log("Deactivating", item);
-
-                        var promise = item.deactivate(close);
-
-                        if (promise && promise.then) {
-                            promise.then(function() {
-                                settings.afterDeactivate(item, close);
-                                dfd.resolve(true);
-                            });
-                        } else {
-                            settings.afterDeactivate(item, close);
-                            dfd.resolve(true);
-                        }
-                    } else {
-                        if (item) {
-                            settings.afterDeactivate(item, close);
-                        }
-
-                        dfd.resolve(true);
-                    }
-                }
-
                 computed.canDeactivateItem(item, close).then(function(canDeactivate) {
                     if (canDeactivate) {
-                        doDeactivation();
+                        doDeactivation(item, close, dfd);
                     } else {
                         computed.notifySubscribers();
                         dfd.resolve(false);
@@ -99,8 +105,13 @@
             });
         };
 
-        computed.canActivateItem = function(item) {
-            return system.defer(function(dfd) {
+        computed.canActivateItem = function (item) {
+            return system.defer(function (dfd) {
+                if (item == activeItem()) {
+                    dfd.resolve(true);
+                    return;
+                }
+
                 if (item && item.canActivate) {
                     var resultOrPromise = item.canActivate();
                     if (resultOrPromise.then) {
@@ -116,43 +127,51 @@
             }).promise();
         };
 
-        computed.activateItem = function (item) {
+        function doActivation(item, dfd) {
+            activeItem(item);
+
+            if (item && item.activate) {
+                system.log("Activating", item);
+
+                var promise = item.activate();
+
+                if (promise && promise.then) {
+                    promise.then(function () {
+                        dfd.resolve(true);
+                    });
+                } else {
+                    dfd.resolve(true);
+                }
+            } else {
+                dfd.resolve(true);
+            }
+        }
+
+        computed.activateItem = function (newItem) {
             return system.defer(function(dfd) {
                 var currentItem = activeItem();
+                if (currentItem == newItem) {
+                    dfd.resolve(true);
+                    return;
+                }
 
-                computed.deactivateItem(currentItem, settings.closeOnDeactivate).then(function(deactivateSucceeded) {
-                    if (deactivateSucceeded) {
-                        item = settings.beforeActivate(item);
-
-                        function doActivation() {
-                            activeItem(item);
-
-                            if (item && item.activate) {
-                                system.log("Activating", item);
-
-                                var promise = item.activate();
-
-                                if (promise && promise.then) {
-                                    promise.then(function () {
-                                        dfd.resolve(true);
-                                    });
-                                } else {
-                                    dfd.resolve(true);
-                                }
-                            } else {
-                                dfd.resolve(true);
-                            }
-                        }
-
-                        computed.canActivateItem(item).then(function(canActivate) {
+                computed.canDeactivateItem(currentItem, settings.closeOnDeactivate).then(function(canDeactivate) {
+                    if (canDeactivate) {
+                        computed.canActivateItem(newItem).then(function(canActivate) {
                             if (canActivate) {
-                                doActivation();
+                                system.defer(function(dfd2) {
+                                    doDeactivation(currentItem, settings.closeOnDeactivate, dfd2);
+                                }).promise().then(function() {
+                                    newItem = settings.beforeActivate(newItem);
+                                    doActivation(newItem, dfd);
+                                });
                             } else {
                                 computed.notifySubscribers();
                                 dfd.resolve(false);
                             }
                         });
                     } else {
+                        computed.notifySubscribers();
                         dfd.resolve(false);
                     }
                 });
@@ -213,7 +232,7 @@
 
         if (settings.parent) {
             computed.includeIn(settings.parent);
-        } else {
+        } else if (settings.activate) {
             computed.activate();
         }
 

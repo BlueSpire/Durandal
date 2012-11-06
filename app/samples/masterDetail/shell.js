@@ -10,9 +10,6 @@
 
     return {
         activeItem: viewModel.activator().for(items),
-        items: items,
-        activate: function() {
-            this.activeItem(items()[0]);
-        }
+        items: items
     };
 });
