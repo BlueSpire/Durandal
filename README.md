@@ -8,6 +8,7 @@ A cross-device, cross-platform application framework written in JavaScript, Dura
 * Leverage promises everywhere as the API uses no callbacks, but has CommonJS promises plumbed throughout
 * Experience the first html/js framework where Composition is embraced at the very core. The view/view-model composition features of Durandal are even more powerful than any "native" client framework I know of.
 * A simple app model provides you with an app start lifecycle, modal dialogs, message boxes and an event aggregator.
+* Optional components for screen and sub-screen activation and de-activation enabling elegant handling of complex screen states.
 
 ## Documentation
 
