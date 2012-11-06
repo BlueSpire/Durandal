@@ -36,9 +36,95 @@
 
         return settings;
     }
+    
+    function deactivate(item, close, settings, dfd) {
+        if (item && item.deactivate) {
+            system.log("Deactivating", item);
+
+            var promise = item.deactivate(close);
+
+            if (promise && promise.then) {
+                promise.then(function () {
+                    settings.afterDeactivate(item, close);
+                    dfd.resolve(true);
+                });
+            } else {
+                settings.afterDeactivate(item, close);
+                dfd.resolve(true);
+            }
+        } else {
+            if (item) {
+                settings.afterDeactivate(item, close);
+            }
+
+            dfd.resolve(true);
+        }
+    }
+    
+    function activate(newItem, activeItem, callback) {
+        activeItem(newItem);
+
+        if (newItem && newItem.activate) {
+            system.log("Activating", newItem);
+
+            var promise = newItem.activate();
+
+            if (promise && promise.then) {
+                promise.then(function () {
+                    callback(true);
+                });
+            } else {
+                callback(true);
+            }
+        } else {
+            callback(true);
+        }
+    }
+    
+    function canDeactivateItem(item, close, settings) {
+        return system.defer(function (dfd) {
+            if (item && item.canDeactivate) {
+                var resultOrPromise = item.canDeactivate(close);
+
+                if (resultOrPromise.then) {
+                    resultOrPromise.then(function (result) {
+                        dfd.resolve(settings.interpretGuard(result));
+                    });
+                } else {
+                    dfd.resolve(settings.interpretGuard(resultOrPromise));
+                }
+            } else {
+                dfd.resolve(true);
+            }
+        }).promise();
+    };
+    
+    function canActivateItem(newItem, activeItem, settings) {
+        return system.defer(function (dfd) {
+            if (newItem == activeItem()) {
+                dfd.resolve(true);
+                return;
+            }
+
+            if (newItem && newItem.canActivate) {
+                var resultOrPromise = newItem.canActivate();
+                if (resultOrPromise.then) {
+                    resultOrPromise.then(function (result) {
+                        dfd.resolve(settings.interpretGuard(result));
+                    });
+                } else {
+                    dfd.resolve(settings.interpretGuard(resultOrPromise));
+                }
+            } else {
+                dfd.resolve(true);
+            }
+        }).promise();
+    };
 
     function createActivator(initialActiveItem, settings) {
         var activeItem = ko.observable(null);
+        var isWriting = false;
+        
         settings = ensureSettings(settings);
 
         var computed = ko.computed({
@@ -51,52 +137,14 @@
         });
 
         computed.canDeactivateItem = function(item, close) {
-            return system.defer(function(dfd) {
-                if (item && item.canDeactivate) {
-                    var resultOrPromise = item.canDeactivate(close);
-
-                    if (resultOrPromise.then) {
-                        resultOrPromise.then(function(result) {
-                            dfd.resolve(settings.interpretGuard(result));
-                        });
-                    } else {
-                        dfd.resolve(settings.interpretGuard(resultOrPromise));
-                    }
-                } else {
-                    dfd.resolve(true);
-                }
-            }).promise();
+            return canDeactivateItem(item, close, settings);
         };
-        
-        function doDeactivation(item, close, dfd) {
-            if (item && item.deactivate) {
-                system.log("Deactivating", item);
-
-                var promise = item.deactivate(close);
-
-                if (promise && promise.then) {
-                    promise.then(function () {
-                        settings.afterDeactivate(item, close);
-                        dfd.resolve(true);
-                    });
-                } else {
-                    settings.afterDeactivate(item, close);
-                    dfd.resolve(true);
-                }
-            } else {
-                if (item) {
-                    settings.afterDeactivate(item, close);
-                }
-
-                dfd.resolve(true);
-            }
-        }
 
         computed.deactivateItem = function(item, close) {
             return system.defer(function(dfd) {
                 computed.canDeactivateItem(item, close).then(function(canDeactivate) {
                     if (canDeactivate) {
-                        doDeactivation(item, close, dfd);
+                        deactivate(item, close, settings, dfd);
                     } else {
                         computed.notifySubscribers();
                         dfd.resolve(false);
@@ -105,52 +153,22 @@
             });
         };
 
-        computed.canActivateItem = function (item) {
+        computed.canActivateItem = function (newItem) {
+            return canActivateItem(newItem, activeItem, settings);
+        };
+
+        computed.activateItem = function (newItem) {
             return system.defer(function (dfd) {
-                if (item == activeItem()) {
-                    dfd.resolve(true);
+                if (isWriting) {
+                    dfd.resolve(false);
                     return;
                 }
 
-                if (item && item.canActivate) {
-                    var resultOrPromise = item.canActivate();
-                    if (resultOrPromise.then) {
-                        resultOrPromise.then(function (result) {
-                            dfd.resolve(settings.interpretGuard(result));
-                        });
-                    } else {
-                        dfd.resolve(settings.interpretGuard(resultOrPromise));
-                    }
-                } else {
-                    dfd.resolve(true);
-                }
-            }).promise();
-        };
+                isWriting = true;
 
-        function doActivation(item, dfd) {
-            activeItem(item);
-
-            if (item && item.activate) {
-                system.log("Activating", item);
-
-                var promise = item.activate();
-
-                if (promise && promise.then) {
-                    promise.then(function () {
-                        dfd.resolve(true);
-                    });
-                } else {
-                    dfd.resolve(true);
-                }
-            } else {
-                dfd.resolve(true);
-            }
-        }
-
-        computed.activateItem = function (newItem) {
-            return system.defer(function(dfd) {
                 var currentItem = activeItem();
                 if (currentItem == newItem) {
+                    isWriting = false;
                     dfd.resolve(true);
                     return;
                 }
@@ -160,18 +178,23 @@
                         computed.canActivateItem(newItem).then(function(canActivate) {
                             if (canActivate) {
                                 system.defer(function(dfd2) {
-                                    doDeactivation(currentItem, settings.closeOnDeactivate, dfd2);
+                                    deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2);
                                 }).promise().then(function() {
                                     newItem = settings.beforeActivate(newItem);
-                                    doActivation(newItem, dfd);
+                                    activate(newItem, activeItem, function(result) {
+                                        isWriting = false;
+                                        dfd.resolve(result);
+                                    });
                                 });
                             } else {
                                 computed.notifySubscribers();
+                                isWriting = false;
                                 dfd.resolve(false);
                             }
                         });
                     } else {
                         computed.notifySubscribers();
+                        isWriting = false;
                         dfd.resolve(false);
                     }
                 });
@@ -212,26 +235,26 @@
             return computed.deactivateItem(computed(), close);
         };
 
-        computed.includeIn = function (parent) {
-            parent.canActivate = function () {
+        computed.includeIn = function (includeIn) {
+            includeIn.canActivate = function () {
                 return computed.canActivate();
             };
 
-            parent.activate = function () {
+            includeIn.activate = function () {
                 return computed.activate();
             };
 
-            parent.canDeactivate = function (close) {
+            includeIn.canDeactivate = function (close) {
                 return computed.canDeactivate(close);
             };
 
-            parent.deactivate = function (close) {
+            includeIn.deactivate = function (close) {
                 return computed.deactivate(close);
             };
         };
 
-        if (settings.parent) {
-            computed.includeIn(settings.parent);
+        if (settings.includeIn) {
+            computed.includeIn(settings.includeIn);
         } else if (settings.activate) {
             computed.activate();
         }

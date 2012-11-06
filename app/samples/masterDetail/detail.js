@@ -8,7 +8,7 @@
     };
     
     ctor.prototype.canActivate = function () {
-        return app.showMessage("Are you sure you want to enter " + this.name + "?", "Sample", ['Yes', 'No']);
+        return app.showMessage("Do you want to view " + this.name + "?", "Sample", ['Yes', 'No']);
     };
 
     ctor.prototype.activate = function() {
@@ -16,7 +16,7 @@
     };
 
     ctor.prototype.canDeactivate = function () {
-        return app.showMessage("Are you sure you want to leave " + this.name + "?", "Sample", ['Yes', 'No']);
+        return app.showMessage("Do you want to leave " + this.name + "?", "Sample", ['Yes', 'No']);
     };
 
     ctor.prototype.deactivate = function () {
