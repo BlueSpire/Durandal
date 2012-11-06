@@ -89,6 +89,7 @@
     <Content Include="app\durandal\viewEngine.js" />
     <Content Include="app\durandal\viewLocator.js" />
     <Content Include="app\durandal\viewModelBinder.js" />
+    <Content Include="app\durandal\widget.js" />
     <Content Include="app\lib\jquery-1.7.min.js" />
     <Content Include="app\lib\knockout-2.2.0.js" />
     <Content Include="app\lib\require.js" />

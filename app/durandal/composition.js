@@ -4,7 +4,7 @@
         viewEngine = require('durandal/viewEngine'),
         system = require('durandal/system');
 
-    var binding = {
+    var composition = {
         switchContent: function (parent, newChild, settings) {
             if (!newChild) {
                 ko.virtualElements.emptyNode(parent);
@@ -131,12 +131,12 @@
 
     ko.bindingHandlers.compose = {
         update: function(element, valueAccessor, allBindingsAccessor, viewModel) {
-            var settings = binding.getSettings(valueAccessor);
-            binding.compose(element, settings, viewModel);
+            var settings = composition.getSettings(valueAccessor);
+            composition.compose(element, settings, viewModel);
         }
     };
     
     ko.virtualElements.allowedBindings.compose = true;
 
-    return binding;
+    return composition;
 });
