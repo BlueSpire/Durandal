@@ -19,3 +19,4 @@ To run each sample, open main.js and change the call to app.setRoot() so that it
 
 * hello - Demonstrates a basic hello world application which uses view/view-model location conventions and message box functionality.
 * navigation - Demonstrates basic navigation and view/view-model composition via the compose binding.
+* masterDetail - Demonstrates some activation features as well as containerless composition.
