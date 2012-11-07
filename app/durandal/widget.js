@@ -23,6 +23,9 @@
 
             return settings;
         },
+        registerKind: function (kind) {
+            //TODO: hook up a ko binding handler that serves as an alias to the widget module's functionality
+        },
         convertKindIdToWidgetUrl: function (kind) {
             //todo: map to global widget re-defines for kinds
             return "widgets/" + kind + "/widget";
