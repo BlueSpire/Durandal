@@ -1,5 +1,8 @@
 ﻿define(function (require) {
-    var viewEngine = require('durandal/viewEngine');
+    var system = require('durandal/system'),
+        viewEngine = require('durandal/viewEngine'),
+        composition = require('durandal/composition'),
+        viewLocator = require('durandal/viewLocator');
     
     var widget = {
         getSettings: function(valueAccessor) {
@@ -23,9 +26,10 @@
             return "widgets/" + kind + "/widget";
         },
         convertKindIdToViewUrl: function (kind) {
+            //todo: map to global view re-defines for kinds
             return "widgets/" + kind + "/widget" + viewEngine.viewExtension;
         },
-        create: function (element, settings, fallbackModel) {
+        create: function (element, settings) {
             var that = this;
 
             if (typeof settings == 'string') {
@@ -38,26 +42,31 @@
                 settings.kindUrl = this.convertKindIdToWidgetUrl(settings.kind);
             }
             
-            if (!settings.templateUrl) {
-                settings.templateUrl = this.convertKindIdToViewUrl(settings.kind);
+            if (!settings.viewUrl) {
+                settings.viewUrl = this.convertKindIdToViewUrl(settings.kind);
             }
 
-            //acquire widget code
-            //acquire widget template
-            
-            //allow widget to fix up settings
+            system.acquire(settings.kindUrl).then(function(widgetFactory) {
+                var widgetInstance = new widgetFactory(element, settings);
+                
+                if (settings.viewUrl) {
+                    viewLocator.locateView(settings.viewUrl).then(function(view) {
+                        //any local overrides for templated parts ? create new view and merge in parts
 
-            var widgetViewModel = {
-                widget: null,
-                settings: null
-            };
+                        composition.switchContent(element, view, {
+                            model: widgetInstance,
+                            activate: true
+                        });
+                    });
+                }
+            });
         }
     };
 
     ko.bindingHandlers.widget = {
-        update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        update: function (element, valueAccessor) {
             var settings = widget.getSettings(valueAccessor);
-            widget.create(element, settings, viewModel);
+            widget.create(element, settings);
         }
     };
 
