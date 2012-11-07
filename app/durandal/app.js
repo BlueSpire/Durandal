@@ -3,6 +3,7 @@
         viewLocator = require('durandal/viewLocator'),
         viewEngine = require('durandal/viewEngine'),
         composition = require('durandal/composition'),
+        widget = require('durandal/widget'),
         dom = require('durandal/dom'),
         Modal = require('durandal/modal'),
         MessageBox = require('durandal/messageBox'),

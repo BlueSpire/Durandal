@@ -108,6 +108,10 @@
     <Content Include="app\samples\navigation\second.js" />
     <Content Include="app\samples\navigation\shell.html" />
     <Content Include="app\samples\navigation\shell.js" />
+    <Content Include="app\samples\widgets\shell.html" />
+    <Content Include="app\samples\widgets\shell.js" />
+    <Content Include="app\widgets\accordion\widget.html" />
+    <Content Include="app\widgets\accordion\widget.js" />
     <Content Include="index.html" />
     <Content Include="License.txt" />
     <Content Include="test\spec.js" />

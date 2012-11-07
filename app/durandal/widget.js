@@ -2,7 +2,8 @@
     var system = require('durandal/system'),
         viewEngine = require('durandal/viewEngine'),
         composition = require('durandal/composition'),
-        viewLocator = require('durandal/viewLocator');
+        viewLocator = require('durandal/viewLocator'),
+        viewModelBinder = require('durandal/viewModelBinder');
     
     var widget = {
         getSettings: function(valueAccessor) {
@@ -23,6 +24,7 @@
             return settings;
         },
         convertKindIdToWidgetUrl: function (kind) {
+            //todo: map to global widget re-defines for kinds
             return "widgets/" + kind + "/widget";
         },
         convertKindIdToViewUrl: function (kind) {
@@ -53,10 +55,8 @@
                     viewLocator.locateView(settings.viewUrl).then(function(view) {
                         //any local overrides for templated parts ? create new view and merge in parts
 
-                        composition.switchContent(element, view, {
-                            model: widgetInstance,
-                            activate: true
-                        });
+                        viewModelBinder.bind(widgetInstance, view);
+                        composition.switchContent(element, view, { model: widgetInstance });
                     });
                 }
             });
