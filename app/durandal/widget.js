@@ -24,7 +24,15 @@
             return settings;
         },
         registerKind: function (kind) {
-            //TODO: hook up a ko binding handler that serves as an alias to the widget module's functionality
+            ko.bindingHandlers[kind] = {
+                update: function (element, valueAccessor) {
+                    var settings = widget.getSettings(valueAccessor);
+                    settings.kind = kind;
+                    widget.create(element, settings);
+                }
+            };
+
+            ko.virtualElements.allowedBindings[kind] = true;
         },
         convertKindIdToWidgetUrl: function (kind) {
             //todo: map to global widget re-defines for kinds

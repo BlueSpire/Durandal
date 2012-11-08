@@ -98,8 +98,8 @@
     <Content Include="app\r.js" />
     <Content Include="app\samples\hello\shell.html" />
     <Content Include="app\samples\hello\shell.js" />
-    <Content Include="app\samples\masterDetail\detail.html" />
-    <Content Include="app\samples\masterDetail\detail.js" />
+    <Content Include="app\samples\masterDetail\project.html" />
+    <Content Include="app\samples\masterDetail\project.js" />
     <Content Include="app\samples\masterDetail\shell.html" />
     <Content Include="app\samples\masterDetail\shell.js" />
     <Content Include="app\samples\navigation\first.html" />
@@ -108,6 +108,7 @@
     <Content Include="app\samples\navigation\second.js" />
     <Content Include="app\samples\navigation\shell.html" />
     <Content Include="app\samples\navigation\shell.js" />
+    <Content Include="app\samples\widgets\project.js" />
     <Content Include="app\samples\widgets\shell.html" />
     <Content Include="app\samples\widgets\shell.js" />
     <Content Include="app\widgets\accordion\widget.html" />
