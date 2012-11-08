@@ -64,7 +64,8 @@
                 
                 if (settings.viewUrl) {
                     viewLocator.locateView(settings.viewUrl).then(function(view) {
-                        //any local overrides for templated parts ? create new view and merge in parts
+                        //get view parts from element
+                        //replace view parts in view
 
                         viewModelBinder.bind(widgetInstance, view);
                         composition.switchContent(element, view, { model: widgetInstance });
