@@ -12,7 +12,39 @@
             }, Function.prototype.bind);
     }
 
+    var oldLoad = window.require.load;
+    var defined;
+
+    window.require.load = function(context, moduleName, url) {
+        defined = context.defined;
+        window.require.load = oldLoad;
+        oldLoad(context, moduleName, url);
+    };
+
     var system = {
+        getModuleId: function (obj) {
+            if (!obj.__moduleId__) {
+                for (var key in defined) {
+                    var registered = defined[key];
+                    if (system.isFunction(registered)) {
+                        if (obj.prototype == registered.prototype) {
+                            obj.prototype.__moduleId__ = key;
+                            return key;
+                        }
+                    } else {
+                        if (registered == obj) {
+                            obj.__moduleId__ = key;
+                            return key;
+                        }
+                    }
+                }
+            }
+
+            return obj.__moduleId__;
+        },
+        isFunction:function(thing) {
+            return typeof(thing) == "function";
+        },
         debug: function(enable) {
             if (arguments.length == 1) {
                 isDebugging = enable;

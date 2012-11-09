@@ -1011,13 +1011,13 @@ var requirejs, require, define;
                             defined[id] = exports;
                             
                             //The following block was added to enable Durandal to access the module id for conventional view location.
-                            if(exports) {
-                                if(isFunction(exports)) {
-                                    exports.prototype.__moduleId__ = id;
-                                }else {
-                                    exports.__moduleId__ = id;
-                                }
-                            }
+                            //if(exports) {
+                                //if(isFunction(exports)) {
+                                 //   exports.prototype.__moduleId__ = id;
+                                //}else {
+                                //    exports.__moduleId__ = id;
+                                //}
+                            //}
                             //End Durandal addition.
 
                             if (req.onResourceLoad) {

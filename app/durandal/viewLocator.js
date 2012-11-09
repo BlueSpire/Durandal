@@ -17,8 +17,9 @@
                 return this.locateView(obj.viewUrl);
             }
 
-            if (obj.__moduleId__) {
-                return this.locateView(this.convertModuleIdToViewUrl(obj.__moduleId__));
+            var id = system.getModuleId(obj);
+            if (id) {
+                return this.locateView(this.convertModuleIdToViewUrl(id));
             }
 
             return this.locateView(this.determineFallbackViewUrl(obj));
