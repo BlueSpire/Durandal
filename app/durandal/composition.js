@@ -5,7 +5,7 @@
         system = require('durandal/system');
 
     var composition = {
-        switchContent: function (parent, newChild, settings) {
+        switchContent: function(parent, newChild, settings) {
             if (!newChild) {
                 ko.virtualElements.emptyNode(parent);
             } else {
@@ -31,17 +31,20 @@
                 value = ko.utils.unwrapObservable(valueAccessor()) || {};
 
             if (typeof value == 'string') {
-                settings = value;
-            } else if (value && value.__moduleId__) {
-                settings = {
-                    model: value
+                return value;
+            }
+
+            var moduleId = system.getModuleId(value);
+            if (moduleId) {
+                return {
+                    model:value
                 };
-            } else {
-                for (var attrName in value) {
-                    if (typeof attrName == 'string') {
-                        var attrValue = ko.utils.unwrapObservable(value[attrName]);
-                        settings[attrName] = attrValue;
-                    }
+            }
+
+            for (var attrName in value) {
+                if (typeof attrName == 'string') {
+                    var attrValue = ko.utils.unwrapObservable(value[attrName]);
+                    settings[attrName] = attrValue;
                 }
             }
 
@@ -98,9 +101,10 @@
                 }
             }
 
-            if (settings && settings.__moduleId__) {
+            var moduleId = system.getModuleId(settings);
+            if (moduleId) {
                 settings = {
-                    model:settings
+                    model: settings
                 };
             }
 
@@ -115,7 +119,7 @@
                 }
             } else if (typeof settings.model == 'string') {
                 system.acquire(settings.model).then(function(module) {
-                    if (typeof(module) == "function") {
+                    if (typeof (module) == "function") {
                         settings.model = new module();
                     } else {
                         settings.model = module;
@@ -135,7 +139,7 @@
             composition.compose(element, settings, viewModel);
         }
     };
-    
+
     ko.virtualElements.allowedBindings.compose = true;
 
     return composition;

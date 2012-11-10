@@ -10,7 +10,7 @@
             .forEach(function(method) {
                 console[method] = this.call(console[method], console);
             }, Function.prototype.bind);
-        }
+    }
 
     var oldLoad = window.require.load;
     var defined;
@@ -22,11 +22,15 @@
     };
 
     var system = {
-        getModuleId: function (obj) {
+        getModuleId: function(obj) {
+            if (!obj) {
+                return null;
+            }
+
             if (!obj.__moduleId__) {
                 for (var key in defined) {
                     var registered = defined[key];
-                    
+
                     if (system.isFunction(registered)) {
                         if (obj.constructor == registered) {
                             registered.prototype.__moduleId__ = key;
@@ -43,8 +47,8 @@
 
             return obj.__moduleId__;
         },
-        isFunction:function(thing) {
-            return typeof(thing) == "function";
+        isFunction: function(thing) {
+            return typeof (thing) == "function";
         },
         debug: function(enable) {
             if (arguments.length == 1) {
