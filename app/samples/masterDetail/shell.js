@@ -9,7 +9,7 @@
     ]);
 
     return {
-        activeProject: viewModel.activator().for(projects),
-        projects: projects
+        projects: projects,
+        activeProject: viewModel.activator().for(projects)        
     };
 });

@@ -10,7 +10,7 @@
             .forEach(function(method) {
                 console[method] = this.call(console[method], console);
             }, Function.prototype.bind);
-    }
+        }
 
     var oldLoad = window.require.load;
     var defined;
@@ -26,9 +26,10 @@
             if (!obj.__moduleId__) {
                 for (var key in defined) {
                     var registered = defined[key];
+                    
                     if (system.isFunction(registered)) {
-                        if (obj.prototype == registered.prototype) {
-                            obj.prototype.__moduleId__ = key;
+                        if (obj.constructor == registered) {
+                            registered.prototype.__moduleId__ = key;
                             return key;
                         }
                     } else {
