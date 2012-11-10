@@ -37,7 +37,7 @@
         setRoot: function(root, applicationHost) {
             var hostElement = dom.getElementById(applicationHost || 'applicationHost');
             var settings = { activate: true };
-            
+
             if (typeof root === 'string') {
                 if (root.indexOf(viewEngine.viewExtension) != -1) {
                     settings.view = root;
@@ -47,7 +47,7 @@
             } else {
                 settings.model = root;
             }
-            
+
             composition.compose(hostElement, settings);
         },
         makeFit: function() {

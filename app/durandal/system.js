@@ -12,37 +12,28 @@
             }, Function.prototype.bind);
     }
 
-    var oldLoad = window.require.load;
-    var defined;
+    requirejs.onResourceLoad = function(context, map, depArray) {
+        var module = context.defined[map.id];
+        if(!module) {
+            return;
+        }
 
-    window.require.load = function(context, moduleName, url) {
-        defined = context.defined;
-        window.require.load = oldLoad;
-        oldLoad(context, moduleName, url);
+        if(system.isFunction(module)) {
+            module.prototype.__moduleId__ = map.id;
+            return;
+        }
+
+        if(typeof module == "string") {
+            return;
+        }
+
+        module.__moduleId__ = map.id;
     };
 
     var system = {
         getModuleId: function(obj) {
             if (!obj) {
                 return null;
-            }
-
-            if (!obj.__moduleId__) {
-                for (var key in defined) {
-                    var registered = defined[key];
-
-                    if (system.isFunction(registered)) {
-                        if (obj.constructor == registered) {
-                            registered.prototype.__moduleId__ = key;
-                            return key;
-                        }
-                    } else {
-                        if (registered == obj) {
-                            obj.__moduleId__ = key;
-                            return key;
-                        }
-                    }
-                }
             }
 
             return obj.__moduleId__;
