@@ -1,8 +1,14 @@
 ﻿<div>
     <h1>Widgets Sample</h1>
     <div data-bind="widget: {kind:'accordion',items:projects}">
-        <!--part headerTemplate-->
+        <script type="part/headerTemplate">
             <h2>Project: <span data-bind="text: name"></span></h2>
-        <!--/part -->
+        </script>
+        <script type="part/itemTemplate">
+            <div>
+                <h3>Description</h3>
+                <div data-bind="compose: $data"></div>
+            </div>
+        </script>
     </div>
 </div>

@@ -3,102 +3,59 @@
         viewEngine = require('durandal/viewEngine'),
         composition = require('durandal/composition'),
         viewLocator = require('durandal/viewLocator'),
-        viewModelBinder = require('durandal/viewModelBinder');
+        viewModelBinder = require('durandal/viewModelBinder'),
+        dom = require('durandal/dom');
 
-    //some magic regex based on knockout virtual elements
-    var commentNodesHaveTextProperty = document.createComment("test").text === "<!--test-->";
-    var startCommentRegex = commentNodesHaveTextProperty ? /^<!--\s*part\s([A-Za-z]*)\s*-->$/ : /^\s*part\s([A-Za-z]*)\s*$/;
-    var endCommentRegex = commentNodesHaveTextProperty ? /^<!--\s*\/part\s*-->$/ : /^\s*\/part\s*$/;
-
-    function isPartStart(node) {
-        return (node.nodeType == 8) && (commentNodesHaveTextProperty ? node.text : node.nodeValue).match(startCommentRegex);
+    function isPart(node) {
+        return node.nodeName == 'SCRIPT' || node.nodeName == 'script';
     }
 
-    function isPartEnd(node) {
-        return (node.nodeType == 8) && (commentNodesHaveTextProperty ? node.text : node.nodeValue).match(endCommentRegex);
-    }
-
-    function searchDom(element, matcher) {
-        if (matcher(element)) {
-            return element;
-        }
-
+    function findAllParts(element, parts) {
         if (element.hasChildNodes()) {
             var child = element.firstChild;
             while (child) {
-                if (matcher(child)) {
-                    return child;
-                }
-
-                if (child.nodeType === 1) {
-                    return searchDom(child);
+                if (isPart(child)) {
+                    parts.push({
+                        name: child.type.split('/')[1],
+                        node: child
+                    });
+                } else if (child.nodeType === 1) {
+                    findAllParts(child, parts);
                 }
 
                 child = child.nextSibling;
             }
         }
-
-        return null;
     }
 
-    function gatherViewParts(element) {
+    function findReplacementParts(element) {
         var children = element.childNodes;
-        var parts = [];
+        var parts = {};
 
         for (var i = 0; i < children.length; i++) {
             var node = children[i];
-            var match = isPartStart(node);
 
-            if (match) {
-                var part = {
-                    name: match[1],
-                    nodes: []
-                };
-
-                parts.push(part);
-                part.nodes.push(node);
-
-                i++;
-
-                for (; i < children.length; i++) {
-                    node = children[i];
-                    part.nodes.push(node);
-
-                    if (isPartEnd(node)) {
-                        break;
-                    }
-                }
+            if (isPart(node)) {
+                parts[node.type.split('/')[1]] = node.innerHTML;
             }
         }
 
         return parts;
     }
 
-    function replaceViewParts(view, parts) {
+    function finalizeWidgetView(view, replacementParts) {
+        var parts = [];
+
+        findAllParts(view, parts);
+
         for (var i = 0; i < parts.length; i++) {
-            var part = parts[i];
-            var partName = part.name;
+            var current = parts[i];
+            var html = replacementParts[current.name] || current.node.innerHTML;
 
-            var replaceStart = searchDom(view, function(node) {
-                var match = isPartStart(node);
-                return match && match[1] == partName;
-            });
+            var partView = dom.parseHTML(html);
+            current.node.parentNode.replaceChild(partView, current.node);
 
-            if (replaceStart) {
-                var newNodes = part.nodes;
-                for (var j = 0; j < newNodes.length; j++) {
-                    view.insertBefore(newNodes[j], replaceStart);
-                }
-
-                var toRemove = replaceStart;
-                while (!isPartEnd(toRemove)) {
-                    var sibling = toRemove.nextSibling;
-                    toRemove.parentNode.removeChild(toRemove);
-                    toRemove = sibling;
-                }
-
-                toRemove.parentNode.removeChild(toRemove);
-            }
+            finalizeWidgetView(partView, replacementParts);
         }
     }
 
@@ -161,8 +118,7 @@
 
                 if (settings.viewUrl) {
                     viewLocator.locateView(settings.viewUrl).then(function(view) {
-                        var parts = gatherViewParts(element);
-                        replaceViewParts(view, parts);
+                        finalizeWidgetView(view, findReplacementParts(element));
                         viewModelBinder.bind(widgetInstance, view);
                         composition.switchContent(element, view, { model: widgetInstance });
                     });
