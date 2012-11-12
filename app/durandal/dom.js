@@ -1,6 +1,5 @@
 ﻿define(function(require) {
     var system = require('durandal/system');
-
     return {
         ready: function() {
             return system.defer(function(dfd) {

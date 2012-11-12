@@ -1,8 +1,14 @@
-﻿define(function (require) {
-    var ctor = function (element, settings) {
+﻿define(function(require) {
+    var ctor = function(element, settings) {
         this.context = settings;
+    };
 
-        console.log(this.context);
+    ctor.prototype.getHeaderText = function(item) {
+        if (this.context.headerProperty) {
+            return item[this.context.headerProperty];
+        }
+
+        return item.toString();
     };
 
     return ctor;

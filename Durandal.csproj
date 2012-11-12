@@ -108,6 +108,7 @@
     <Content Include="app\samples\navigation\second.js" />
     <Content Include="app\samples\navigation\shell.html" />
     <Content Include="app\samples\navigation\shell.js" />
+    <Content Include="app\samples\widgets\project.html" />
     <Content Include="app\samples\widgets\project.js" />
     <Content Include="app\samples\widgets\shell.html" />
     <Content Include="app\samples\widgets\shell.js" />
