@@ -2,7 +2,11 @@
     <script type="part/headerTemplate">
         <div data-bind="html: $root.getHeaderText($data)"></div>
     </script>
-    <script type="part/itemTemplate">
-        <div data-bind="compose: $data"></div>
+    <script type="part/itemContainer">
+        <div>
+            <script type="part/itemTemplate">
+                <div data-bind="compose: $data"></div>
+            </script>
+        </div>
     </script>
 </div>

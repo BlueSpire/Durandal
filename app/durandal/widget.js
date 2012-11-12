@@ -11,6 +11,14 @@
     }
 
     function findAllParts(element, parts) {
+        if (isPart(element)) {
+            parts.push({
+                name: element.type.split('/')[1],
+                node: element
+            });
+            return;
+        }
+
         if (element.hasChildNodes()) {
             var child = element.firstChild;
             while (child) {
