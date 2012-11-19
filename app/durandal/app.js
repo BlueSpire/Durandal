@@ -3,7 +3,7 @@
         viewLocator = require('durandal/viewLocator'),
         viewEngine = require('durandal/viewEngine'),
         composition = require('durandal/composition'),
-        widget = require('durandal/widget'),
+        widget = require('durandal/widget'), //loads the widget handler
         dom = require('durandal/dom'),
         Modal = require('durandal/modal'),
         MessageBox = require('durandal/messageBox'),
@@ -54,12 +54,6 @@
             if (document.body.ontouchmove) {
                 document.body.ontouchmove = function(event) {
                     event.preventDefault();
-                };
-            }
-
-            if (document.body.onorientationchange) {
-                document.body.onorientationchange = function(event) {
-
                 };
             }
         }
