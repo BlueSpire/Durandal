@@ -105,8 +105,6 @@
             return "widgets/" + kind + "/widget" + viewEngine.viewExtension;
         },
         create: function(element, settings) {
-            var that = this;
-
             if (typeof settings == 'string') {
                 settings = {
                     kind: settings
