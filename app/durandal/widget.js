@@ -7,13 +7,13 @@
         dom = require('durandal/dom');
 
     function isPart(node) {
-        return node.nodeName == 'SCRIPT' || node.nodeName == 'script';
+        return node.nodeName == 'PART' || node.nodeName == 'part';
     }
 
     function findAllParts(element, parts) {
         if (isPart(element)) {
             parts.push({
-                name: element.type.split('/')[1],
+                name: element.getAttribute('name'),
                 node: element
             });
             return;
@@ -24,7 +24,7 @@
             while (child) {
                 if (isPart(child)) {
                     parts.push({
-                        name: child.type.split('/')[1],
+                        name: child.getAttribute('name'),
                         node: child
                     });
                 } else if (child.nodeType === 1) {
@@ -44,7 +44,7 @@
             var node = children[i];
 
             if (isPart(node)) {
-                parts[node.type.split('/')[1]] = node.innerHTML;
+                parts[node.getAttribute('name')] = node.innerHTML;
             }
         }
 
@@ -134,7 +134,10 @@
     };
 
     ko.bindingHandlers.widget = {
-        update: function(element, valueAccessor) {
+        init:function() {
+            return { controlsDescendantBindings:true };
+        },
+        update:function(element, valueAccessor) {
             var settings = widget.getSettings(valueAccessor);
             widget.create(element, settings);
         }

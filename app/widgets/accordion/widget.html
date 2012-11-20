@@ -1,12 +1,12 @@
 ﻿<div data-bind="foreach: context.items">
-    <script type="part/headerTemplate">
+    <part name="header">
         <div data-bind="html: $root.getHeaderText($data)"></div>
-    </script>
-    <script type="part/itemContainerTemplate">
+    </part>
+    <part name="itemContainer">
         <div>
-            <script type="part/itemTemplate">
+            <part name="item">
                 <div data-bind="compose: $data"></div>
-            </script>
+            </part>
         </div>
-    </script>
+    </part>
 </div>
