@@ -1,8 +1,15 @@
 ﻿<div>
     <h1>Widgets Sample</h1>
-    <div data-bind="widget: {kind:'accordion',items:projects}">
+    <div data-bind="accordion:{items:projects}">
         <part id="header">
             <h2>Project: <span data-bind="text: name"></span></h2>
         </part>
     </div>
+
+<!-- This following syntax can be used without needing to register the widget kind in main.-->
+<!--<div data-bind="widget: {kind:'accordion',items:projects}">
+        <part id="header">
+            <h2>Project: <span data-bind="text: name"></span></h2>
+        </part>
+    </div>-->
 </div>
