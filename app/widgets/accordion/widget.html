@@ -1,10 +1,10 @@
 ﻿<div data-bind="foreach: context.items">
-    <part name="header">
+    <part id="header">
         <div data-bind="html: $root.getHeaderText($data)"></div>
     </part>
-    <part name="itemContainer">
+    <part id="itemContainer">
         <div>
-            <part name="item">
+            <part id="item">
                 <div data-bind="compose: $data"></div>
             </part>
         </div>

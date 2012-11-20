@@ -13,7 +13,7 @@
     function findAllParts(element, parts) {
         if (isPart(element)) {
             parts.push({
-                name: element.getAttribute('name'),
+                name: element.getAttribute('id'),
                 node: element
             });
             return;
@@ -24,7 +24,7 @@
             while (child) {
                 if (isPart(child)) {
                     parts.push({
-                        name: child.getAttribute('name'),
+                        name: child.getAttribute('id'),
                         node: child
                     });
                 } else if (child.nodeType === 1) {
@@ -44,7 +44,7 @@
             var node = children[i];
 
             if (isPart(node)) {
-                parts[node.getAttribute('name')] = node.innerHTML;
+                parts[node.getAttribute('id')] = node.innerHTML;
             }
         }
 
