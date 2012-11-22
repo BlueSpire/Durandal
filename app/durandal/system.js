@@ -18,7 +18,7 @@
             return;
         }
 
-        if(system.isFunction(module)) {
+        if (typeof module == "function") {
             module.prototype.__moduleId__ = map.id;
             return;
         }
@@ -37,9 +37,6 @@
             }
 
             return obj.__moduleId__;
-        },
-        isFunction: function(thing) {
-            return typeof (thing) == "function";
         },
         debug: function(enable) {
             if (arguments.length == 1) {
