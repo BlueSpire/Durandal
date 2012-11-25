@@ -4,7 +4,12 @@
         viewEngine = require('durandal/viewEngine'),
         system = require('durandal/system');
 
+    function shouldPerformActivation(settings) {
+        return (composition.activateDuringComposition && settings.activate == undefined) || settings.activate;
+    }
+
     var composition = {
+        activateDuringComposition: false,
         switchContent: function(parent, newChild, settings) {
             if (!newChild) {
                 ko.virtualElements.emptyNode(parent);
@@ -12,7 +17,7 @@
                 ko.virtualElements.setDomNodeChildren(parent, [newChild]);
 
                 if (settings.model) {
-                    if (settings.activate && settings.model.activate) {
+                    if (settings.model.activate && shouldPerformActivation(settings)) {
                         system.log("Composition Activating", settings.model);
                         settings.model.activate();
                     }
@@ -37,7 +42,7 @@
             var moduleId = system.getModuleId(value);
             if (moduleId) {
                 return {
-                    model:value
+                    model: value
                 };
             }
 
