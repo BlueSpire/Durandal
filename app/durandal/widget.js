@@ -6,6 +6,8 @@
         viewModelBinder = require('durandal/viewModelBinder'),
         dom = require('durandal/dom');
 
+    var widgetPartAttribute = 'data-widget-part';
+
     function isPart(node) {
         return node.nodeName == 'PART' || node.nodeName == 'part';
     }
@@ -61,6 +63,7 @@
             var html = replacementParts[current.name] || current.node.innerHTML;
 
             var partView = dom.parseHTML(html);
+            partView.setAttribute(widgetPartAttribute, current.name);
             current.node.parentNode.replaceChild(partView, current.node);
 
             finalizeWidgetView(partView, replacementParts);
@@ -134,10 +137,10 @@
     };
 
     ko.bindingHandlers.widget = {
-        init:function() {
-            return { controlsDescendantBindings:true };
+        init: function() {
+            return { controlsDescendantBindings: true };
         },
-        update:function(element, valueAccessor) {
+        update: function(element, valueAccessor) {
             var settings = widget.getSettings(valueAccessor);
             widget.create(element, settings);
         }
