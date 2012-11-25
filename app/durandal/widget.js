@@ -15,7 +15,7 @@
     function findAllParts(element, parts) {
         if (isPart(element)) {
             parts.push({
-                name: element.getAttribute('id'),
+                id: element.getAttribute('id'),
                 node: element
             });
             return;
@@ -26,7 +26,7 @@
             while (child) {
                 if (isPart(child)) {
                     parts.push({
-                        name: child.getAttribute('id'),
+                        id: child.getAttribute('id'),
                         node: child
                     });
                 } else if (child.nodeType === 1) {
@@ -60,10 +60,10 @@
 
         for (var i = 0; i < parts.length; i++) {
             var current = parts[i];
-            var html = replacementParts[current.name] || current.node.innerHTML;
+            var html = replacementParts[current.id] || current.node.innerHTML;
 
             var partView = dom.parseHTML(html);
-            partView.setAttribute(widgetPartAttribute, current.name);
+            partView.setAttribute(widgetPartAttribute, current.id);
             current.node.parentNode.replaceChild(partView, current.node);
 
             finalizeWidgetView(partView, replacementParts);
