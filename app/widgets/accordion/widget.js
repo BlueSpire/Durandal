@@ -11,5 +11,9 @@
         return item.toString();
     };
 
+    ctor.prototype.afterRenderItem = function(elements, item) {
+        
+    };
+
     return ctor;
 });

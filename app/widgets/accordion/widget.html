@@ -1,4 +1,4 @@
-﻿<div data-bind="foreach: context.items">
+﻿<div data-bind="foreach: { data:context.items, afterRender:afterRenderItem }">
     <part id="header">
         <div data-bind="html: $root.getHeaderText($data)"></div>
     </part>
