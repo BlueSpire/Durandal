@@ -117,7 +117,8 @@
                 if (!settings.view) {
                     this.switchContent(element, null, settings);
                 } else {
-                    viewLocator.locateView(settings.view).then(function(view) {
+                    var isPartial = settings.partialView == undefined || settings.partialView;
+                    viewLocator.locateView(settings.view, isPartial).then(function(view) {
                         viewModelBinder.bindContext(bindingContext, view);
                         that.switchContent(element, view, settings);
                     });

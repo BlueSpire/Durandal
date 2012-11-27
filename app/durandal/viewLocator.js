@@ -34,16 +34,24 @@
 
             return 'views/' + typeName;
         },
-        locateView: function(viewOrUrl) {
+        convertViewUrlToPartialUrl: function(viewUrl) {
+            return viewUrl;
+        },
+        locateView: function(viewOrUrl, isPartial) {
+            var that = this;
             return system.defer(function(dfd) {
                 if (typeof viewOrUrl === 'string') {
                     if (viewOrUrl.indexOf(viewEngine.viewExtension) != -1) {
                         viewOrUrl = viewOrUrl.substring(0, viewOrUrl.length - viewEngine.viewExtension.length);
                     }
 
-                    var requireExpression = viewEngine.pluginPath + '!' + viewOrUrl + viewEngine.viewExtension;
+                    if (isPartial) {
+                        viewOrUrl = that.convertViewUrlToPartialUrl(viewOrUrl);
+                    }
 
-                    system.acquire(requireExpression).then(function(result) {
+                    var requirePath = viewEngine.pluginPath + '!' + viewOrUrl + viewEngine.viewExtension;
+
+                    system.acquire(requirePath).then(function(result) {
                         dfd.resolve(viewEngine.createView(viewOrUrl, result));
                     });
                 } else {
