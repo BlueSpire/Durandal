@@ -91,7 +91,7 @@
                 this.executeStrategy(element, settings);
             }
         },
-        compose: function(element, settings, fallbackModel) {
+        compose: function(element, settings, bindingContext) {
             var that = this;
 
             if (typeof settings == 'string') {
@@ -118,7 +118,7 @@
                     this.switchContent(element, null, settings);
                 } else {
                     viewLocator.locateView(settings.view).then(function(view) {
-                        viewModelBinder.bind(fallbackModel || {}, view);
+                        viewModelBinder.bindContext(bindingContext, view);
                         that.switchContent(element, view, settings);
                     });
                 }
@@ -139,9 +139,9 @@
     };
 
     ko.bindingHandlers.compose = {
-        update: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+        update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var settings = composition.getSettings(valueAccessor);
-            composition.compose(element, settings, viewModel);
+            composition.compose(element, settings, bindingContext);
         }
     };
 

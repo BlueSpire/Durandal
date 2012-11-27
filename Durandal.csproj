@@ -108,6 +108,10 @@
     <Content Include="app\samples\navigation\second.js" />
     <Content Include="app\samples\navigation\shell.html" />
     <Content Include="app\samples\navigation\shell.js" />
+    <Content Include="app\samples\viewComposition\childView1.html" />
+    <Content Include="app\samples\viewComposition\childView2.html" />
+    <Content Include="app\samples\viewComposition\shell.html" />
+    <Content Include="app\samples\viewComposition\shell.js" />
     <Content Include="app\samples\widgets\project.html" />
     <Content Include="app\samples\widgets\project.js" />
     <Content Include="app\samples\widgets\shell.html" />
