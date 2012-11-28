@@ -42,16 +42,8 @@
             if (arguments.length == 1) {
                 isDebugging = enable;
                 if (isDebugging) {
-                    window.require.config({
-                        urlArgs: 'bust=' + (new Date()).getTime()
-                    });
-
                     this.log('Debug mode enabled.');
                 } else {
-                    window.require.config({
-                        urlArgs: ''
-                    });
-
                     this.log('Debug mode disabled.');
                 }
             } else {
