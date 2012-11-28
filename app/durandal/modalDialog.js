@@ -10,13 +10,15 @@
         modals: modals,
         activator: modalActivator,
         currentZIndex: 1000,
+        removeDelay: 200,
+        blockoutOpacity: .2,
         getNextZIndex: function() {
             return ++this.currentZIndex;
         },
         addHost: function(modalWindow) {
             var body = $('body');
             var blockout = $('<div class="modalBlockout"></div>')
-                .css({ 'z-index': this.getNextZIndex() })
+                .css({ 'z-index': this.getNextZIndex(), 'opacity': this.blockoutOpacity })
                 .appendTo(body);
 
             var host = $('<div class="modalHost"></div>')
@@ -27,8 +29,13 @@
             modalWindow.blockout = blockout.get(0);
         },
         removeHost: function(modalWindow) {
-            $(modalWindow.host).remove();
-            $(modalWindow.blockout).remove();
+            $(modalWindow.host).css('opacity', 0);
+            $(modalWindow.blockout).css('opacity', 0);
+
+            setTimeout(function() {
+                $(modalWindow.host).remove();
+                $(modalWindow.blockout).remove();
+            }, this.removeDelay);
         },
         onComposed: function(parent, newChild, settings) {
             var $child = $(newChild);
@@ -39,6 +46,8 @@
                 'margin-top': (-height / 2).toString() + 'px',
                 'margin-left': (-width / 2).toString() + 'px'
             });
+
+            $(settings.model.window.host).css('opacity', 1);
         },
         createCompositionSettings: function(obj) {
             var settings = obj;
@@ -61,9 +70,9 @@
                 modalActivator.activateItem(obj).then(function(success) {
                     if (success) {
                         var modalWindow = obj.window = {
-                            close:function(result) {
+                            close: function(result) {
                                 modalActivator.deactivateItem(obj, true).then(function(closeSuccess) {
-                                    if(closeSuccess) {
+                                    if (closeSuccess) {
                                         that.removeHost(modalWindow);
                                         dfd.resolve(result);
                                     }
