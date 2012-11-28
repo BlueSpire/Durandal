@@ -61,13 +61,9 @@
                 modalActivator.activateItem(obj).then(function(success) {
                     if (success) {
                         var modalWindow = obj.window = {
-                            open: function() {
-                                that.addHost(modalWindow);
-                                composition.compose(modalWindow.host, that.createCompositionSettings(obj));
-                            },
-                            close: function(result) {
+                            close:function(result) {
                                 modalActivator.deactivateItem(obj, true).then(function(closeSuccess) {
-                                    if (closeSuccess) {
+                                    if(closeSuccess) {
                                         that.removeHost(modalWindow);
                                         dfd.resolve(result);
                                     }
@@ -75,7 +71,8 @@
                             }
                         };
 
-                        modalWindow.open();
+                        that.addHost(modalWindow);
+                        composition.compose(modalWindow.host, that.createCompositionSettings(obj));
                     } else {
                         dfd.resolve(false);
                     }
