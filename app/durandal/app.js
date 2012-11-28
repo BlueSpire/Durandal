@@ -1,28 +1,19 @@
 ﻿define(function(require) {
     var system = require('durandal/system'),
-        viewLocator = require('durandal/viewLocator'),
         viewEngine = require('durandal/viewEngine'),
         composition = require('durandal/composition'),
         widget = require('durandal/widget'), //loads the widget handler
         dom = require('durandal/dom'),
-        Modal = require('durandal/modal'),
+        modalDialog = require('durandal/modalDialog'),
         MessageBox = require('durandal/messageBox'),
         Events = require('durandal/events');
 
     var app = {
         showModal: function(viewModel) {
-            return system.defer(function(dfd) {
-                viewLocator.locateViewForObject(viewModel)
-                    .then(function(view) {
-                        new Modal({
-                            view: view,
-                            viewModel: viewModel
-                        }).open().then(dfd.resolve);
-                    });
-            }).promise();
+            return modalDialog.show(viewModel);
         },
         showMessage: function(message, title, options) {
-            return this.showModal(new MessageBox(message, title, options));
+            return modalDialog.show(new MessageBox(message, title, options));
         },
         start: function() {
             return system.defer(function(dfd) {

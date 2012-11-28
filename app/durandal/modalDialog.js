@@ -1,30 +1,59 @@
 ﻿define(function(require) {
     var composition = require('durandal/composition'),
         system = require('durandal/system'),
-        dom = require('durandal/dom'),
         viewModel = require('durandal/viewModel');
 
     var modals = ko.observableArray([]);
     var modalActivator = viewModel.activator().forItems(modals);
 
     return {
-        addHost: function() {
-
+        modals: modals,
+        activator: modalActivator,
+        currentZIndex: 1000,
+        getNextZIndex: function() {
+            return ++this.currentZIndex;
         },
-        removeHost: function() {
+        addHost: function(modalWindow) {
+            var body = $('body');
+            var blockout = $('<div class="modalBlockout"></div>')
+                .css({ 'z-index': this.getNextZIndex() })
+                .appendTo(body);
 
+            var host = $('<div class="modalHost"></div>')
+                .css({ 'z-index': this.getNextZIndex() })
+                .appendTo(body);
+
+            modalWindow.host = host.get(0);
+            modalWindow.blockout = blockout.get(0);
+        },
+        removeHost: function(modalWindow) {
+            $(modalWindow.host).remove();
+            $(modalWindow.blockout).remove();
+        },
+        onComposed: function(parent, newChild, settings) {
+            var $child = $(newChild);
+            var width = $child.width();
+            var height = $child.height();
+
+            $child.css({
+                'margin-top': (-height / 2).toString() + 'px',
+                'margin-left': (-width / 2).toString() + 'px'
+            });
         },
         createCompositionSettings: function(obj) {
+            var settings = obj;
             var moduleId = system.getModuleId(obj);
+
             if (moduleId) {
-                return {
-                    model: obj,
-                    activate: false
+                settings = {
+                    model: obj
                 };
             }
 
-            obj.activate = false;
-            return obj;
+            settings.activate = false;
+            settings.onComposed = this.onComposed;
+
+            return settings;
         },
         show: function(obj) {
             var that = this;
@@ -33,15 +62,14 @@
                     if (success) {
                         var modalWindow = obj.window = {
                             open: function() {
-                                this.host = that.addHost();
-                                this.settings = that.createCompositionSettings(obj);
-                                composition.compose(this.host, this.settings);
+                                that.addHost(modalWindow);
+                                composition.compose(modalWindow.host, that.createCompositionSettings(obj));
                             },
                             close: function(result) {
                                 modalActivator.deactivateItem(obj, true).then(function(closeSuccess) {
                                     if (closeSuccess) {
+                                        that.removeHost(modalWindow);
                                         dfd.resolve(result);
-                                        that.removeHost(modalWindow.host);
                                     }
                                 });
                             }

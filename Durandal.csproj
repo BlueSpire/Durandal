@@ -85,7 +85,6 @@
     <Content Include="app\durandal\http.js" />
     <Content Include="app\durandal\messageBox.html" />
     <Content Include="app\durandal\messageBox.js" />
-    <Content Include="app\durandal\modal.js" />
     <Content Include="app\durandal\system.js" />
     <Content Include="app\durandal\viewEngine.js" />
     <Content Include="app\durandal\viewLocator.js" />

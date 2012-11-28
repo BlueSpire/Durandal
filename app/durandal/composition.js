@@ -27,6 +27,10 @@
                     }
                 }
             }
+
+            if (settings.onComposed) {
+                settings.onComposed(parent, newChild, settings);
+            }
         },
         defaultStrategy: function(settings) {
             return viewLocator.locateViewForObject(settings.model);
