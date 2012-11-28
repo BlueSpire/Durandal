@@ -1,14 +1,11 @@
-﻿body {
-}
-
-.modalBlockout {
+﻿.modalBlockout {
     position: fixed;
     top: 0px;
     left: 0px;
     width: 100%;
     height: 100%;
     background-color: black;
-    opacity: 0.5;
+    opacity: 0.25;
 }
 
 .modalHost {
@@ -17,21 +14,28 @@
     position: fixed;
 }
 
-.message-box {
-    background-color: whitesmoke;
+.messageBox {
+    background: white;
     color: black;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-    padding: 10px;
+    border: 1px solid black;
+    box-shadow: rgba(0,0,0,.5) 0px 0px 10px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
 }
 
-.message-box > h3 {
-    margin-top: 0px;
-    margin-bottom: 10px;
-    color: darkblue;
+.messageBox .title {
+    background: black;
+    color: white;
+    padding: 3px 0 3px 6px;
+    font-weight: bold;
+    font-size: .8em;
 }
 
-.button-bar {
+.messageBox .content {
+    padding: 12px;
+}
+
+.messageBox .content .buttons {
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
