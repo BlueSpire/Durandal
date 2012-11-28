@@ -259,7 +259,7 @@
             computed.activate();
         }
 
-        computed.for = function (items) {
+        computed.forItems = function(items) {
             settings.closeOnDeactivate = false;
 
             settings.determineNextItemToActivate = function(list, lastIndex) {

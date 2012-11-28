@@ -10,6 +10,6 @@
 
     return {
         projects: projects,
-        activeProject: viewModel.activator().for(projects)        
+        activeProject: viewModel.activator().forItems(projects)        
     };
 });
