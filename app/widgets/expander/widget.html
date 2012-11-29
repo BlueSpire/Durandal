@@ -1,0 +1,16 @@
+﻿<div data-bind="foreach: { data:settings.items, afterRender:afterRenderItem }">
+    <part id="headerContainer">
+        <a href="#">
+            <part id="header">
+                <div data-bind="html: $parent.getHeaderText($data)"></div>
+            </part>
+        </a>
+    </part>
+    <part id="itemContainer">
+        <div>
+            <part id="item">
+                <div data-bind="compose: $data"></div>
+            </part>
+        </div>
+    </part>
+</div>

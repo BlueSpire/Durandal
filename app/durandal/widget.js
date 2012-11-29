@@ -6,7 +6,8 @@
         viewModelBinder = require('durandal/viewModelBinder'),
         dom = require('durandal/dom');
 
-    var widgetPartAttribute = 'data-widget-part';
+    var widgetPartAttribute = 'data-widget-part',
+        widgetPartSelector = "[" + widgetPartAttribute + "]";
 
     function isPart(node) {
         return node.nodeName == 'PART' || node.nodeName == 'part';
@@ -71,6 +72,29 @@
     }
 
     var widget = {
+        getParts: function(elements) {
+            var parts = {};
+
+            for (var i = 0; i < elements.length; i++) {
+                var element = elements[i];
+
+                if(element.getAttribute) {
+                    var id = element.getAttribute(widgetPartAttribute);
+                    if(id) {
+                        parts[id] = element;
+                    }
+
+                    var childParts = $(widgetPartSelector, element);
+
+                    for (var j = 0; j < childParts.length; j++) {
+                        var part = childParts.get(j);
+                        parts[part.getAttribute(widgetPartAttribute)] = part;
+                    }
+                }
+            }
+
+            return parts;
+        },
         getSettings: function(valueAccessor) {
             var settings = {},
                 value = ko.utils.unwrapObservable(valueAccessor()) || {};
@@ -137,7 +161,7 @@
                         } else {
                             viewModelBinder.bind(widgetInstance, view);
                         }
-                        
+
                         composition.switchContent(element, view, { model: widgetInstance });
                     });
                 }
