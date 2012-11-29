@@ -15,11 +15,11 @@
 
     ctor.prototype.afterRenderItem = function(elements, item) {
         var parts = widget.getParts(elements);
-        var $itemContainer = $(parts['itemContainer']);
+        var $itemContainer = $(parts.itemContainer);
 
         $itemContainer.hide();
 
-        $(parts['headerContainer']).bind('click', function() {
+        $(parts.headerContainer).bind('click', function() {
             $itemContainer.toggle('fast');
         });
     };

@@ -75,12 +75,16 @@
         getParts: function(elements) {
             var parts = {};
 
+            if (!system.isArray(elements)) {
+                elements = [elements];
+            }
+
             for (var i = 0; i < elements.length; i++) {
                 var element = elements[i];
 
-                if(element.getAttribute) {
+                if (element.getAttribute) {
                     var id = element.getAttribute(widgetPartAttribute);
-                    if(id) {
+                    if (id) {
                         parts[id] = element;
                     }
 

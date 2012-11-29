@@ -2,6 +2,7 @@
     var isDebugging = true;
     var nativeKeys = Object.keys;
     var hasOwnProperty = Object.prototype.hasOwnProperty;
+    var toString = Object.prototype.toString;
 
     //see http://patik.com/blog/complete-cross-browser-console-log/
     // Tell IE9 to use its built-in console
@@ -14,7 +15,7 @@
 
     requirejs.onResourceLoad = function(context, map, depArray) {
         var module = context.defined[map.id];
-        if(!module) {
+        if (!module) {
             return;
         }
 
@@ -23,7 +24,7 @@
             return;
         }
 
-        if(typeof module == "string") {
+        if (typeof module == "string") {
             return;
         }
 
@@ -49,6 +50,9 @@
             } else {
                 return isDebugging;
             }
+        },
+        isArray: function(obj) {
+            return toString.call(obj) === '[object Array]';
         },
         log: function() {
             if (!isDebugging) {
@@ -124,19 +128,15 @@
         }
     };
 
-    system.has = function(obj, key) {
-        return hasOwnProperty.call(obj, key);
-    };
-
     system.keys = nativeKeys || function(obj) {
-        if (obj !== Object(obj)) {
+        if(obj !== Object(obj)) {
             throw new TypeError('Invalid object');
         }
 
         var keys = [];
 
-        for (var key in obj) {
-            if (system.has(obj, key)) {
+        for(var key in obj) {
+            if(hasOwnProperty.call(obj, key)) {
                 keys[keys.length] = key;
             }
         }
