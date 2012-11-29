@@ -28,8 +28,8 @@
                 }
             }
 
-            if (settings.onComposed) {
-                settings.onComposed(parent, newChild, settings);
+            if (settings.afterCompose) {
+                settings.afterCompose(parent, newChild, settings);
             }
         },
         defaultStrategy: function(settings) {

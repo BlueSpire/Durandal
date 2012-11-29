@@ -37,7 +37,7 @@
                 $(modalWindow.blockout).remove();
             }, this.removeDelay);
         },
-        onComposed: function(parent, newChild, settings) {
+        afterCompose: function(parent, newChild, settings) {
             var $child = $(newChild);
             var width = $child.width();
             var height = $child.height();
@@ -60,7 +60,7 @@
             }
 
             settings.activate = false;
-            settings.onComposed = this.onComposed;
+            settings.afterCompose = this.afterCompose;
 
             return settings;
         },
