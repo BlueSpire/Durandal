@@ -12,7 +12,7 @@
     };
 
     ctor.prototype.afterRenderItem = function(elements, item) {
-        
+
     };
 
     return ctor;

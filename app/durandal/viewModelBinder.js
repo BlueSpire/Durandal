@@ -22,10 +22,17 @@
     }
 
     return {
-        bindContext: function(bindingContext, view) {
-            doBind(bindingContext, view, function() {
-                ko.applyBindingsToDescendants(bindingContext, view);
-            });
+        bindContext: function(bindingContext, view, obj) {
+            if (obj) {
+                var childContext = bindingContext.createChildContext(obj);
+                doBind(childContext, view, function() {
+                    ko.applyBindingsToNode(view, null, childContext);
+                });
+            } else {
+                doBind(bindingContext, view, function() {
+                    ko.applyBindingsToNode(view, null, bindingContext);
+                });
+            }
         },
         bind: function(obj, view) {
             doBind(obj, view, function() {

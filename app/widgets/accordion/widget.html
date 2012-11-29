@@ -1,6 +1,6 @@
 ﻿<div data-bind="foreach: { data:context.items, afterRender:afterRenderItem }">
     <part id="header">
-        <div data-bind="html: $root.getHeaderText($data)"></div>
+        <div data-bind="html: $parent.getHeaderText($data)"></div>
     </part>
     <part id="itemContainer">
         <div>

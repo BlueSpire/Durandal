@@ -90,10 +90,13 @@
         },
         registerKind: function(kind) {
             ko.bindingHandlers[kind] = {
-                update: function(element, valueAccessor) {
+                init: function() {
+                    return { controlsDescendantBindings: true };
+                },
+                update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                     var settings = widget.getSettings(valueAccessor);
                     settings.kind = kind;
-                    widget.create(element, settings);
+                    widget.create(element, settings, bindingContext);
                 }
             };
 
@@ -107,7 +110,7 @@
             //todo: map to global view re-defines for kinds
             return "widgets/" + kind + "/widget" + viewEngine.viewExtension;
         },
-        create: function(element, settings) {
+        create: function(element, settings, bindingContext) {
             if (typeof settings == 'string') {
                 settings = {
                     kind: settings
@@ -128,7 +131,13 @@
                 if (settings.viewUrl) {
                     viewLocator.locateView(settings.viewUrl).then(function(view) {
                         finalizeWidgetView(view, findReplacementParts(element));
-                        viewModelBinder.bind(widgetInstance, view);
+
+                        if (bindingContext) {
+                            viewModelBinder.bindContext(bindingContext, view, widgetInstance);
+                        } else {
+                            viewModelBinder.bind(widgetInstance, view);
+                        }
+                        
                         composition.switchContent(element, view, { model: widgetInstance });
                     });
                 }
@@ -140,9 +149,9 @@
         init: function() {
             return { controlsDescendantBindings: true };
         },
-        update: function(element, valueAccessor) {
+        update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var settings = widget.getSettings(valueAccessor);
-            widget.create(element, settings);
+            widget.create(element, settings, bindingContext);
         }
     };
 
