@@ -76,6 +76,8 @@
     <Content Include="app\content\images\icon.png" />
     <Content Include="app\content\images\ios-startup-image-landscape.png" />
     <Content Include="app\content\images\ios-startup-image-portrait.png" />
+    <Content Include="app\dts\knockout-2.2.d.ts" />
+    <Content Include="app\dts\require-2.1.d.ts" />
     <Content Include="app\durandal\app.js" />
     <Content Include="app\durandal\composition.js" />
     <Content Include="app\durandal\modalDialog.js" />
@@ -96,6 +98,11 @@
     <Content Include="app\lib\text.js" />
     <Content Include="app\main.js" />
     <Content Include="app\r.js" />
+    <Content Include="app\samples\hellots\shell.html" />
+    <TypeScriptCompile Include="app\samples\hellots\shell.ts" />
+    <Content Include="app\samples\hellots\shell.js">
+      <DependentUpon>shell.ts</DependentUpon>
+    </Content>
     <Content Include="app\samples\hello\shell.html" />
     <Content Include="app\samples\hello\shell.js" />
     <Content Include="app\samples\masterDetail\project.html" />
@@ -137,7 +144,9 @@
       <DependentUpon>web.config</DependentUpon>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="app\views\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -145,12 +154,17 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptSourceMap> --sourcemap</TypeScriptSourceMap>
+  </PropertyGroup>
   <Target Name="BeforeBuild">
+      <Message Text="Compiling TypeScript files" />
+    <Message Text="Executing tsc$(TypeScriptSourceMap) @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" />
+    <Exec Command="tsc --module amd $(TypeScriptSourceMap) @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" />
   </Target>
   <Target Name="AfterBuild">
-  </Target> -->
+  </Target>
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
     <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
   </Target>
