@@ -4,10 +4,6 @@
     function ensureSettings(settings) {
         if (settings == undefined) {
             settings = { };
-        } else if (typeof settings == "boolean") {
-            settings = {
-                activate: settings
-            };
         }
 
         if (!settings.closeOnDeactivate) {
@@ -255,7 +251,7 @@
 
         if (settings.includeIn) {
             computed.includeIn(settings.includeIn);
-        } else if (settings.activate) {
+        } else if (initialActiveItem) {
             computed.activate();
         }
 

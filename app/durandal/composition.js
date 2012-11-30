@@ -5,7 +5,8 @@
         system = require('durandal/system');
 
     function shouldPerformActivation(settings) {
-        return (composition.activateDuringComposition && settings.activate == undefined) || settings.activate;
+        return settings.model.activate
+            && ((composition.activateDuringComposition && settings.activate == undefined) || settings.activate);
     }
 
     var composition = {
@@ -17,7 +18,7 @@
                 ko.virtualElements.setDomNodeChildren(parent, [newChild]);
 
                 if (settings.model) {
-                    if (settings.model.activate && shouldPerformActivation(settings)) {
+                    if (shouldPerformActivation(settings)) {
                         system.log("Composition Activating", settings.model);
                         settings.model.activate();
                     }
@@ -31,6 +32,19 @@
             if (settings.afterCompose) {
                 settings.afterCompose(parent, newChild, settings);
             }
+        },
+        bindAndShow: function(element, view, settings) {
+            if (settings.beforeBind) {
+                settings.beforeBind(element, view, settings);
+            }
+
+            if (settings.preserveContext && settings.bindingContext) {
+                viewModelBinder.bindContext(settings.bindingContext, view, settings.model);
+            } else if (settings.model) {
+                viewModelBinder.bind(settings.model, view);
+            }
+
+            this.switchContent(element, view, settings);
         },
         defaultStrategy: function(settings) {
             return viewLocator.locateViewForObject(settings.model);
@@ -60,24 +74,19 @@
             return settings;
         },
         executeStrategy: function(element, settings) {
-            var that = this;
             settings.strategy(settings).then(function(view) {
-                viewModelBinder.bind(settings.model, view);
-                that.switchContent(element, view, settings);
+                composition.bindAndShow(element, view, settings);
             });
         },
         inject: function(element, settings) {
-            var that = this;
-
             if (!settings.model) {
-                this.switchContent(element, null, settings);
+                this.bindAndShow(element, null, settings);
                 return;
             }
 
             if (settings.view) {
                 viewLocator.locateView(settings.view).then(function(view) {
-                    viewModelBinder.bind(settings.model, view);
-                    that.switchContent(element, view, settings);
+                    composition.bindAndShow(element, view, settings);
                 });
                 return;
             }
@@ -89,15 +98,13 @@
             if (typeof settings.strategy == 'string') {
                 system.acquire(settings.strategy).then(function(strategy) {
                     settings.strategy = strategy;
-                    that.executeStrategy(element, settings);
+                    composition.executeStrategy(element, settings);
                 });
             } else {
                 this.executeStrategy(element, settings);
             }
         },
         compose: function(element, settings, bindingContext) {
-            var that = this;
-
             if (typeof settings == 'string') {
                 if (settings.indexOf(viewEngine.viewExtension, settings.length - viewEngine.viewExtension.length) !== -1) {
                     settings = {
@@ -117,14 +124,16 @@
                 };
             }
 
+            settings.bindingContext = bindingContext;
+
             if (!settings.model) {
                 if (!settings.view) {
-                    this.switchContent(element, null, settings);
+                    this.bindAndShow(element, null, settings);
                 } else {
                     var isPartial = settings.partialView == undefined || settings.partialView;
                     viewLocator.locateView(settings.view, isPartial).then(function(view) {
-                        viewModelBinder.bindContext(bindingContext, view);
-                        that.switchContent(element, view, settings);
+                        settings.preserveContext = true;
+                        composition.bindAndShow(element, view, settings);
                     });
                 }
             } else if (typeof settings.model == 'string') {
@@ -135,10 +144,10 @@
                         settings.model = module;
                     }
 
-                    that.inject(element, settings);
+                    composition.inject(element, settings);
                 });
             } else {
-                this.inject(element, settings);
+                composition.inject(element, settings);
             }
         }
     };
