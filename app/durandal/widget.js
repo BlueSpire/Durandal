@@ -67,6 +67,15 @@
 
             ko.virtualElements.allowedBindings[kind] = true;
         },
+        mapKind: function(kind, view, moduleId) {
+            if (view) {
+                kindViewMaps[kind] = view;
+            }
+
+            if (moduleId) {
+                kindModuleMaps[kind] = moduleId;
+            }
+        },
         convertKindToModuleId: function(kind) {
             return kindModuleMaps[kind] || "widgets/" + kind + "/controller";
         },
@@ -77,11 +86,8 @@
             var replacementParts = widget.getParts(element);
             var standardParts = widget.getParts(view);
 
-            for (var partId in standardParts) {
-                var replacement = replacementParts[partId];
-                if (replacement) {
-                    $(standardParts[partId]).replaceWith(replacement);
-                }
+            for (var partId in replacementParts) {
+                $(standardParts[partId]).replaceWith(replacementParts[partId]);
             }
         },
         createCompositionSettings: function(settings) {
