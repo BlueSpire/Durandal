@@ -1,6 +1,5 @@
 ﻿define(function(require) {
     var system = require('durandal/system'),
-        viewEngine = require('durandal/viewEngine'),
         composition = require('durandal/composition'),
         dom = require('durandal/dom');
 
@@ -135,7 +134,7 @@
             return kindModuleMaps[kind] || "widgets/" + kind + "/widget";
         },
         convertKindToView: function(kind) {
-            return kindViewMaps[kind] || "widgets/" + kind + "/widget" + viewEngine.viewExtension;
+            return kindViewMaps[kind] || "widgets/" + kind + "/widget";
         },
         beforeBind: function(element, view, settings) {
             finalizeWidgetView(view, findReplacementParts(element));
