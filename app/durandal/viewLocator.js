@@ -34,10 +34,10 @@
 
             return 'views/' + typeName;
         },
-        convertViewUrlToPartialUrl: function(viewUrl) {
+        convertViewUrlToAreaUrl: function(area, viewUrl) {
             return viewUrl;
         },
-        locateView: function(viewOrUrl, isPartial) {
+        locateView: function(viewOrUrl, area) {
             var that = this;
             return system.defer(function(dfd) {
                 if (typeof viewOrUrl === 'string') {
@@ -45,8 +45,8 @@
                         viewOrUrl = viewOrUrl.substring(0, viewOrUrl.length - viewEngine.viewExtension.length);
                     }
 
-                    if (isPartial) {
-                        viewOrUrl = that.convertViewUrlToPartialUrl(viewOrUrl);
+                    if (area) {
+                        viewOrUrl = that.convertViewUrlToAreaUrl(viewOrUrl);
                     }
 
                     var requirePath = viewEngine.pluginPath + '!' + viewOrUrl + viewEngine.viewExtension;

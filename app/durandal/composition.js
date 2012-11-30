@@ -85,7 +85,7 @@
             }
 
             if (settings.view) {
-                viewLocator.locateView(settings.view).then(function(view) {
+                viewLocator.locateView(settings.view, settings.area).then(function(view) {
                     composition.bindAndShow(element, view, settings);
                 });
                 return;
@@ -134,9 +134,9 @@
                 if (!settings.view) {
                     this.bindAndShow(element, null, settings);
                 } else {
-                    var isPartial = settings.partialView == undefined || settings.partialView;
-                    viewLocator.locateView(settings.view, isPartial).then(function(view) {
-                        settings.preserveContext = true;
+                    settings.area = settings.area || 'partial';
+                    settings.preserveContext = true;
+                    viewLocator.locateView(settings.view, settings.area).then(function(view) {
                         composition.bindAndShow(element, view, settings);
                     });
                 }

@@ -7,6 +7,9 @@
     var widgetPartAttribute = 'data-widget-part',
         widgetPartSelector = "[" + widgetPartAttribute + "]";
 
+    var kindModuleMaps = { },
+        kindViewMaps = { };
+
     function isPart(node) {
         return node.nodeName == 'PART' || node.nodeName == 'part';
     }
@@ -129,12 +132,10 @@
             ko.virtualElements.allowedBindings[kind] = true;
         },
         convertKindToModuleId: function(kind) {
-            //todo: map to global widget re-defines for kinds
-            return "widgets/" + kind + "/widget";
+            return kindModuleMaps[kind] || "widgets/" + kind + "/widget";
         },
         convertKindToView: function(kind) {
-            //todo: map to global view re-defines for kinds
-            return "widgets/" + kind + "/widget" + viewEngine.viewExtension;
+            return kindViewMaps[kind] || "widgets/" + kind + "/widget" + viewEngine.viewExtension;
         },
         beforeBind: function(element, view, settings) {
             finalizeWidgetView(view, findReplacementParts(element));
@@ -150,7 +151,7 @@
 
             settings.preserveContext = true;
             settings.beforeBind = this.beforeBind;
-            
+
             return settings;
         },
         create: function(element, settings, bindingContext) {
