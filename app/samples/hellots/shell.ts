@@ -1,11 +1,12 @@
 /// <reference path="..\..\dts\require-2.1.d.ts" />
 /// <reference path="..\..\dts\knockout-2.2.d.ts" />
 
-require(['durandal/app'], (app) =>
-{ 
-});
+define(['durandal/app'], (app) => {
+    
+    return new Shell(app) }
+)
 
-export class Shell {
+class Shell {
         displayName: KnockoutObservableString;
         name: KnockoutObservableString;
         canSayHello: KnockoutObservableBool;
