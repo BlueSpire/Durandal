@@ -91,6 +91,10 @@
                 return;
             }
 
+            if (settings.view !== undefined && !settings.view) {
+                return;
+            }
+
             if (!settings.strategy) {
                 settings.strategy = this.defaultStrategy;
             }
@@ -139,7 +143,7 @@
             } else if (typeof settings.model == 'string') {
                 system.acquire(settings.model).then(function(module) {
                     if (typeof (module) == "function") {
-                        settings.model = new module();
+                        settings.model = new module(element, settings);
                     } else {
                         settings.model = module;
                     }

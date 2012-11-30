@@ -2,8 +2,6 @@
     var system = require('durandal/system'),
         viewEngine = require('durandal/viewEngine'),
         composition = require('durandal/composition'),
-        viewLocator = require('durandal/viewLocator'),
-        viewModelBinder = require('durandal/viewModelBinder'),
         dom = require('durandal/dom');
 
     var widgetPartAttribute = 'data-widget-part',
@@ -130,13 +128,30 @@
 
             ko.virtualElements.allowedBindings[kind] = true;
         },
-        convertKindIdToWidgetUrl: function(kind) {
+        convertKindToModuleId: function(kind) {
             //todo: map to global widget re-defines for kinds
             return "widgets/" + kind + "/widget";
         },
-        convertKindIdToViewUrl: function(kind) {
+        convertKindToView: function(kind) {
             //todo: map to global view re-defines for kinds
             return "widgets/" + kind + "/widget" + viewEngine.viewExtension;
+        },
+        beforeBind: function(element, view, settings) {
+            finalizeWidgetView(view, findReplacementParts(element));
+        },
+        createCompositionSettings: function(settings) {
+            if (!settings.model) {
+                settings.model = this.convertKindToModuleId(settings.kind);
+            }
+
+            if (!settings.view) {
+                settings.view = this.convertKindToView(settings.kind);
+            }
+
+            settings.preserveContext = true;
+            settings.beforeBind = this.beforeBind;
+            
+            return settings;
         },
         create: function(element, settings, bindingContext) {
             if (typeof settings == 'string') {
@@ -145,31 +160,8 @@
                 };
             }
 
-            if (!settings.kindUrl) {
-                settings.kindUrl = this.convertKindIdToWidgetUrl(settings.kind);
-            }
-
-            if (!settings.viewUrl) {
-                settings.viewUrl = this.convertKindIdToViewUrl(settings.kind);
-            }
-
-            system.acquire(settings.kindUrl).then(function(widgetFactory) {
-                var widgetInstance = new widgetFactory(element, settings);
-
-                if (settings.viewUrl) {
-                    viewLocator.locateView(settings.viewUrl).then(function(view) {
-                        finalizeWidgetView(view, findReplacementParts(element));
-
-                        if (bindingContext) {
-                            viewModelBinder.bindContext(bindingContext, view, widgetInstance);
-                        } else {
-                            viewModelBinder.bind(widgetInstance, view);
-                        }
-
-                        composition.switchContent(element, view, { model: widgetInstance });
-                    });
-                }
-            });
+            var compositionSettings = widget.createCompositionSettings(settings);
+            composition.compose(element, compositionSettings, bindingContext);
         }
     };
 
