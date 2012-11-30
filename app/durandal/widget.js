@@ -1,75 +1,12 @@
 ﻿define(function(require) {
     var system = require('durandal/system'),
-        composition = require('durandal/composition'),
-        dom = require('durandal/dom');
+        composition = require('durandal/composition');
 
-    var widgetPartAttribute = 'data-widget-part',
+    var widgetPartAttribute = 'data-part',
         widgetPartSelector = "[" + widgetPartAttribute + "]";
 
-    var kindModuleMaps = { },
-        kindViewMaps = { };
-
-    function isPart(node) {
-        return node.nodeName == 'PART' || node.nodeName == 'part';
-    }
-
-    function findAllParts(element, parts) {
-        if (isPart(element)) {
-            parts.push({
-                id: element.getAttribute('id'),
-                node: element
-            });
-            return;
-        }
-
-        if (element.hasChildNodes()) {
-            var child = element.firstChild;
-            while (child) {
-                if (isPart(child)) {
-                    parts.push({
-                        id: child.getAttribute('id'),
-                        node: child
-                    });
-                } else if (child.nodeType === 1) {
-                    findAllParts(child, parts);
-                }
-
-                child = child.nextSibling;
-            }
-        }
-    }
-
-    function findReplacementParts(element) {
-        var children = element.childNodes;
-        var parts = {};
-
-        for (var i = 0; i < children.length; i++) {
-            var node = children[i];
-
-            if (isPart(node)) {
-                parts[node.getAttribute('id')] = node.innerHTML;
-            }
-        }
-
-        return parts;
-    }
-
-    function finalizeWidgetView(view, replacementParts) {
-        var parts = [];
-
-        findAllParts(view, parts);
-
-        for (var i = 0; i < parts.length; i++) {
-            var current = parts[i];
-            var html = replacementParts[current.id] || current.node.innerHTML;
-
-            var partView = dom.parseHTML(html);
-            partView.setAttribute(widgetPartAttribute, current.id);
-            current.node.parentNode.replaceChild(partView, current.node);
-
-            finalizeWidgetView(partView, replacementParts);
-        }
-    }
+    var kindModuleMaps = {},
+        kindViewMaps = {};
 
     var widget = {
         getParts: function(elements) {
@@ -137,7 +74,16 @@
             return kindViewMaps[kind] || "widgets/" + kind + "/widget";
         },
         beforeBind: function(element, view, settings) {
-            finalizeWidgetView(view, findReplacementParts(element));
+            var replacementParts = widget.getParts(element);
+            var standardParts = widget.getParts(view);
+
+            for (var partId in standardParts) {
+                var replacement = replacementParts[partId];
+                if (replacement) {
+                    $(standardParts[partId]).replaceWith(replacement);
+                    standardParts[partId] = replacement;
+                }
+            }
         },
         createCompositionSettings: function(settings) {
             if (!settings.model) {
