@@ -68,10 +68,10 @@
             ko.virtualElements.allowedBindings[kind] = true;
         },
         convertKindToModuleId: function(kind) {
-            return kindModuleMaps[kind] || "widgets/" + kind + "/widget";
+            return kindModuleMaps[kind] || "widgets/" + kind + "/controller";
         },
         convertKindToView: function(kind) {
-            return kindViewMaps[kind] || "widgets/" + kind + "/widget";
+            return kindViewMaps[kind] || "widgets/" + kind + "/view";
         },
         beforeBind: function(element, view, settings) {
             var replacementParts = widget.getParts(element);
@@ -81,7 +81,6 @@
                 var replacement = replacementParts[partId];
                 if (replacement) {
                     $(standardParts[partId]).replaceWith(replacement);
-                    standardParts[partId] = replacement;
                 }
             }
         },

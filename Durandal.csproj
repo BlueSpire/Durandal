@@ -116,8 +116,8 @@
     <Content Include="app\samples\widgets\project.js" />
     <Content Include="app\samples\widgets\shell.html" />
     <Content Include="app\samples\widgets\shell.js" />
-    <Content Include="app\widgets\expander\widget.html" />
-    <Content Include="app\widgets\expander\widget.js" />
+    <Content Include="app\widgets\expander\view.html" />
+    <Content Include="app\widgets\expander\controller.js" />
     <Content Include="index.html" />
     <Content Include="License.txt" />
     <Content Include="test\spec.js" />
