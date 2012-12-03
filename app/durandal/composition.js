@@ -131,7 +131,12 @@
                 system.acquire(settings.model).then(function(module) {
                     if (typeof (module) == "function") {
                         settings.model = new module();
-                    } else {
+                    }
+                    else if (typeof (module.getViewModel) == "function") {
+                        settings.model = module.getViewModel();
+                        settings.model.__moduleId__ = module.__moduleId__;
+                    }
+                    else {
                         settings.model = module;
                     }
 
