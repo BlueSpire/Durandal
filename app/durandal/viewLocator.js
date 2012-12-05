@@ -46,7 +46,7 @@
                     }
 
                     if (area) {
-                        viewOrUrl = that.convertViewUrlToAreaUrl(viewOrUrl);
+                        viewOrUrl = that.convertViewUrlToAreaUrl(area, viewOrUrl);
                     }
 
                     var requirePath = viewEngine.pluginPath + '!' + viewOrUrl + viewEngine.viewExtension;
