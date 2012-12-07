@@ -6,7 +6,7 @@
     };
 
     MessageBox.prototype.selectOption = function(dialogResult) {
-        this.window.close(dialogResult);
+        this.modal.close(dialogResult);
     };
 
     MessageBox.defaultTitle = "Application";

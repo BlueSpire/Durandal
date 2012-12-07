@@ -6,16 +6,14 @@
     var modals = ko.observableArray([]);
     var modalActivator = viewModel.activator().forItems(modals);
 
-    return {
-        modals: modals,
-        activator: modalActivator,
+    var defaultModalContext = {
         currentZIndex: 1000,
-        removeDelay: 200,
         blockoutOpacity: .2,
+        removeDelay: 200,
         getNextZIndex: function() {
             return ++this.currentZIndex;
         },
-        addHost: function(modalWindow) {
+        addHost: function (modal) {
             var body = $('body');
             var blockout = $('<div class="modalBlockout"></div>')
                 .css({ 'z-index': this.getNextZIndex(), 'opacity': this.blockoutOpacity })
@@ -25,19 +23,19 @@
                 .css({ 'z-index': this.getNextZIndex() })
                 .appendTo(body);
 
-            modalWindow.host = host.get(0);
-            modalWindow.blockout = blockout.get(0);
+            modal.host = host.get(0);
+            modal.blockout = blockout.get(0);
         },
-        removeHost: function(modalWindow) {
-            $(modalWindow.host).css('opacity', 0);
-            $(modalWindow.blockout).css('opacity', 0);
+        removeHost: function (modal) {
+            $(modal.host).css('opacity', 0);
+            $(modal.blockout).css('opacity', 0);
 
-            setTimeout(function() {
-                $(modalWindow.host).remove();
-                $(modalWindow.blockout).remove();
+            setTimeout(function () {
+                $(modal.host).remove();
+                $(modal.blockout).remove();
             }, this.removeDelay);
         },
-        afterCompose: function(parent, newChild, settings) {
+        afterCompose: function (parent, newChild, settings) {
             var $child = $(newChild);
             var width = $child.width();
             var height = $child.height();
@@ -47,9 +45,24 @@
                 'margin-left': (-width / 2).toString() + 'px'
             });
 
-            $(settings.model.window.host).css('opacity', 1);
+            $(settings.model.modal.host).css('opacity', 1);
+        }
+    };
+
+    return {
+        modals: modals,
+        activator: modalActivator,
+        contexts: {
+            'default': defaultModalContext
         },
-        createCompositionSettings: function(obj) {
+        addContext: function (name, modalContext) {
+            var helperName = 'show' + text.substr(0, 1).toUpperCase() + text.substr(1)
+            this.contexts[name] = modalContext;
+            this[helperName] = function (obj) {
+                return this.show(obj, name);
+            }
+        },
+        createCompositionSettings: function (obj, modalContext) {
             var settings = obj;
             var moduleId = system.getModuleId(obj);
 
@@ -60,28 +73,32 @@
             }
 
             settings.activate = false;
-            settings.afterCompose = this.afterCompose;
+
+            if (modalContext.afterCompose) {
+                settings.afterCompose = modalContext.afterCompose;
+            }
 
             return settings;
         },
-        show: function(obj) {
+        show: function (obj, context) {
             var that = this;
+            var modalContext = this.contexts[context || 'default'];
             return system.defer(function(dfd) {
                 modalActivator.activateItem(obj).then(function(success) {
                     if (success) {
-                        var modalWindow = obj.window = {
+                        var modal = obj.modal = {
                             close: function(result) {
                                 modalActivator.deactivateItem(obj, true).then(function(closeSuccess) {
                                     if (closeSuccess) {
-                                        that.removeHost(modalWindow);
+                                        modalContext.removeHost(modal);
                                         dfd.resolve(result);
                                     }
                                 });
                             }
                         };
 
-                        that.addHost(modalWindow);
-                        composition.compose(modalWindow.host, that.createCompositionSettings(obj));
+                        modalContext.addHost(modal);
+                        composition.compose(modal.host, that.createCompositionSettings(obj, modalContext));
                     } else {
                         dfd.resolve(false);
                     }
