@@ -87,6 +87,7 @@
                 modalActivator.activateItem(obj).then(function(success) {
                     if (success) {
                         var modal = obj.modal = {
+                            owner: obj,
                             close: function(result) {
                                 modalActivator.deactivateItem(obj, true).then(function(closeSuccess) {
                                     if (closeSuccess) {
