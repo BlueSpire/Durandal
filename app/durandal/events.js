@@ -1,6 +1,6 @@
 ﻿//heavily borrowed from backbone events, augmented by signals.js, added a little of my own code, cleaned up for better readability
 define(function(require) {
-    var system = require('durandal/system');
+    var system = require('./system');
     var eventSplitter = /\s+/;
     var Events = function() { };
 

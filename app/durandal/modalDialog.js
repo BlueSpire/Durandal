@@ -1,7 +1,7 @@
 ﻿define(function(require) {
-    var composition = require('durandal/composition'),
-        system = require('durandal/system'),
-        viewModel = require('durandal/viewModel');
+    var composition = require('./composition'),
+        system = require('./system'),
+        viewModel = require('./viewModel');
 
     var contexts = {};
 

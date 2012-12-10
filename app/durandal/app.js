@@ -1,12 +1,12 @@
 ﻿define(function(require) {
-    var system = require('durandal/system'),
-        viewEngine = require('durandal/viewEngine'),
-        composition = require('durandal/composition'),
-        widget = require('durandal/widget'), //loads the widget handler
-        dom = require('durandal/dom'),
-        modalDialog = require('durandal/modalDialog'),
-        MessageBox = require('durandal/messageBox'),
-        Events = require('durandal/events');
+    var system = require('./system'),
+        viewEngine = require('./viewEngine'),
+        composition = require('./composition'),
+        widget = require('./widget'), //loads the widget handler
+        dom = require('./dom'),
+        modalDialog = require('./modalDialog'),
+        MessageBox = require('./messageBox'),
+        Events = require('./events');
 
     var app = {
         showModal: function(viewModel) {

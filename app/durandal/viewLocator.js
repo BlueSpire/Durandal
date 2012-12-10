@@ -1,6 +1,6 @@
 ﻿define(function(require) {
-    var system = require('durandal/system'),
-        viewEngine = require('durandal/viewEngine');
+    var system = require('./system'),
+        viewEngine = require('./viewEngine');
 
     return {
         locateViewForObject: function(obj) {

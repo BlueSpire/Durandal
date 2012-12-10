@@ -1,5 +1,5 @@
 ﻿define(function(require) {
-    var system = require('durandal/system');
+    var system = require('./system');
 
     function doBind(obj, view, action) {
         if (!view || !obj) {
