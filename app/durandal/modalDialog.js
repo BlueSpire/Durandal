@@ -3,9 +3,13 @@
         system = require('./system'),
         viewModel = require('./viewModel');
 
-    var contexts = {};
+    var contexts = {},
+        modalCount = 0;
 
     var modalDialog = {
+        isModalOpen: function() {
+            return modalCount > 0;
+        },
         getContext: function(name) {
             return contexts[name || 'default'];
         },
@@ -51,6 +55,7 @@
                             close: function(result) {
                                 modalContext.activator.deactivateItem(obj, true).then(function(closeSuccess) {
                                     if (closeSuccess) {
+                                        modalCount--;
                                         modalContext.removeHost(modal);
                                         dfd.resolve(result);
                                     }
@@ -61,6 +66,7 @@
                         modal.settings = that.createCompositionSettings(obj, modalContext);
                         modalContext.addHost(modal);
 
+                        modalCount++;
                         composition.compose(modal.host, modal.settings);
                     } else {
                         dfd.resolve(false);
