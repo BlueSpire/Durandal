@@ -42,6 +42,8 @@
                 viewModelBinder.bindContext(settings.bindingContext, view, settings.model);
             } else if (settings.model) {
                 viewModelBinder.bind(settings.model, view);
+            } else if (view) {
+                viewModelBinder.bind({}, view);
             }
 
             this.switchContent(element, view, settings);

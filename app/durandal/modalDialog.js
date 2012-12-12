@@ -26,16 +26,10 @@
             };
         },
         createCompositionSettings: function(obj, modalContext) {
-            var settings = obj;
-            var moduleId = system.getModuleId(obj);
-
-            if (moduleId) {
-                settings = {
-                    model: obj
-                };
-            }
-
-            settings.activate = false;
+            var settings = {
+                model:obj,
+                activate:false
+            };
 
             if (modalContext.afterCompose) {
                 settings.afterCompose = modalContext.afterCompose;
