@@ -123,11 +123,15 @@
     <Content Include="app\samples\masterDetail\project.js" />
     <Content Include="app\samples\masterDetail\shell.html" />
     <Content Include="app\samples\masterDetail\shell.js" />
-    <Content Include="app\samples\navigation\first.html" />
+    <Content Include="app\samples\navigationTs\navigation_First.html" />
     <Content Include="app\samples\navigation\first.js" />
-    <Content Include="app\samples\navigation\second.html" />
+    <TypeScriptCompile Include="app\samples\navigationTs\navigation.ts" />
+    <Content Include="app\samples\navigationTs\navigation.js">
+      <DependentUpon>navigation.ts</DependentUpon>
+    </Content>
+    <Content Include="app\samples\navigationTs\navigation_Second.html" />
     <Content Include="app\samples\navigation\second.js" />
-    <Content Include="app\samples\navigation\shell.html" />
+    <Content Include="app\samples\navigationTs\navigation_Shell.html" />
     <Content Include="app\samples\navigation\shell.js" />
     <Content Include="app\samples\viewComposition\childView1.html" />
     <Content Include="app\samples\viewComposition\childView2.html" />

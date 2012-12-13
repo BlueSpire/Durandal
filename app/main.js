@@ -10,6 +10,6 @@ define(function(require) {
     app.start().then(function () {
         app.makeFit();
 
-        app.setRoot('samples/masterDetailTs/shell#Shell');
+        app.setRoot('samples/navigationTs/navigation#Shell');
     });
 }); 
