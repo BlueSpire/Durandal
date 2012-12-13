@@ -100,19 +100,19 @@
     <Content Include="app\main.js" />
     <Content Include="app\r.js" />
     <TypeScriptCompile Include="app\durandal\app.d.ts" />
-    <Content Include="app\samples\masterDetailTs\project.html" />
+    <Content Include="app\samples\masterDetailTs\project_Project.html" />
     <TypeScriptCompile Include="app\samples\masterDetailTs\project.ts" />
     <Content Include="app\samples\masterDetailTs\project.js">
       <DependentUpon>project.ts</DependentUpon>
     </Content>
     <Content Include="app\samples\masterDetailTs\project_.js" />
-    <Content Include="app\samples\masterDetailTs\shell.html" />
+    <Content Include="app\samples\masterDetailTs\shell_Shell.html" />
     <TypeScriptCompile Include="app\samples\masterDetailTs\shell.ts" />
     <Content Include="app\samples\masterDetailTs\shell.js">
       <DependentUpon>shell.ts</DependentUpon>
     </Content>
     <Content Include="app\samples\masterDetailTs\shell_.js" />
-    <Content Include="app\samples\helloTs\shell.html" />
+    <Content Include="app\samples\helloTs\shell_Shell.html" />
     <TypeScriptCompile Include="app\samples\helloTs\shell.ts" />
     <Content Include="app\samples\helloTs\shell.js">
       <DependentUpon>shell.ts</DependentUpon>

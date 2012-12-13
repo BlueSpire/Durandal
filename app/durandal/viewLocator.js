@@ -18,6 +18,10 @@
             }
 
             var id = system.getModuleId(obj);
+            var className = obj.__class__;
+            if (className) {
+                return this.locateView(this.convertModuleIdToViewUrl(id)+'_'+className);
+            }
             if (id) {
                 return this.locateView(this.convertModuleIdToViewUrl(id));
             }

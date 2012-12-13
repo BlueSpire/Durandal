@@ -34,6 +34,7 @@
             var x = module[prop];
             if (x.prototype != null) {
                 x.prototype.__moduleId__ = map.id;
+                x.prototype.__class__ = prop;
             }
         }
     };
