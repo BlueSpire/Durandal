@@ -141,15 +141,19 @@
                     });
                 }
             } else if (typeof settings.model == 'string') {
+                
+
+                var n = settings.model.indexOf("#");
+                if (n != -1) {
+                    settings.classToResolve = settings.model.substring(n + 1);
+                    settings.model = settings.model.substring(0, n);
+                }
                 system.acquire(settings.model).then(function(module) {
-                    if (typeof (module) == "function") {
+                    if (settings.classToResolve != null) {
+                        settings.model = new module[settings.classToResolve]();
+                    } else if (typeof (module) == "function") {
                         settings.model = new module(element, settings);
-                    }
-                    else if (typeof (module.getViewModel) == "function") {
-                        settings.model = module.getViewModel();
-                        settings.model.__moduleId__ = module.__moduleId__;
-                    }
-                    else {
+                    } else {
                         settings.model = module;
                     }
 

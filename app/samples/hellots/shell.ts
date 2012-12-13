@@ -1,22 +1,20 @@
 /// <reference path="..\..\dts\knockout-2.2.d.ts" />
-/// <reference path="..\..\durandal\app.d.ts"/>
 
+import durandalApp = module('durandal/app');
 
-import durandal = module('durandal/app');
-
-export function getViewModel() { 
-    return new Shell(durandal);
-}
-
+// hack to get around
+var app1: any;
+app1 = durandalApp;
+var app: durandalApp.DurandallApp;
+app = app1;
+     
 export class Shell 
 {
     displayName: KnockoutObservableString;
     name: KnockoutObservableString;
     canSayHello: KnockoutObservableBool;
-    app: any;
 
-    constructor (app) {
-        this.app = app;
+    constructor () {
         this.name = ko.observable();
         this.displayName = ko.observable();
         this.canSayHello = ko.computed(()=> this.name() ? true : false);
@@ -24,7 +22,7 @@ export class Shell
 
     public sayHello()
     { 
-        this.app.showMessage("Hello " + this.name(), "Greetings");
+        app.showMessage("Hello " + this.name(), "Greetings");
     }
 }
 

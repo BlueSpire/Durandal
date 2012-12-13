@@ -1,14 +1,13 @@
-define(["require", "exports", 'durandal/app'], function(require, exports, __durandal__) {
-    var durandal = __durandal__;
+define(["require", "exports", 'durandal/app'], function(require, exports, __durandalApp__) {
+    var durandalApp = __durandalApp__;
 
-    function getViewModel() {
-        return new Shell(durandal);
-    }
-    exports.getViewModel = getViewModel;
+    var app1;
+    app1 = durandalApp;
+    var app;
+    app = app1;
     var Shell = (function () {
-        function Shell(app) {
+        function Shell() {
             var _this = this;
-            this.app = app;
             this.name = ko.observable();
             this.displayName = ko.observable();
             this.canSayHello = ko.computed(function () {
@@ -16,7 +15,7 @@ define(["require", "exports", 'durandal/app'], function(require, exports, __dura
             });
         }
         Shell.prototype.sayHello = function () {
-            this.app.showMessage("Hello " + this.name(), "Greetings");
+            app.showMessage("Hello " + this.name(), "Greetings");
         };
         return Shell;
     })();

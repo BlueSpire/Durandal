@@ -81,6 +81,7 @@
     <Content Include="app\durandal\app.js" />
     <Content Include="app\durandal\composition.js" />
     <Content Include="app\durandal\modalDialog.js" />
+    <TypeScriptCompile Include="app\durandal\viewModel.d.ts" />
     <Content Include="app\durandal\viewModel.js" />
     <Content Include="app\durandal\dom.js" />
     <Content Include="app\durandal\events.js" />
@@ -99,12 +100,21 @@
     <Content Include="app\main.js" />
     <Content Include="app\r.js" />
     <TypeScriptCompile Include="app\durandal\app.d.ts" />
-    <Content Include="app\durandal\app.d.js">
-      <DependentUpon>app.d.ts</DependentUpon>
+    <Content Include="app\samples\masterDetailTs\project.html" />
+    <TypeScriptCompile Include="app\samples\masterDetailTs\project.ts" />
+    <Content Include="app\samples\masterDetailTs\project.js">
+      <DependentUpon>project.ts</DependentUpon>
     </Content>
-    <Content Include="app\samples\hellots\shell.html" />
-    <TypeScriptCompile Include="app\samples\hellots\shell.ts" />
-    <Content Include="app\samples\hellots\shell.js">
+    <Content Include="app\samples\masterDetailTs\project_.js" />
+    <Content Include="app\samples\masterDetailTs\shell.html" />
+    <TypeScriptCompile Include="app\samples\masterDetailTs\shell.ts" />
+    <Content Include="app\samples\masterDetailTs\shell.js">
+      <DependentUpon>shell.ts</DependentUpon>
+    </Content>
+    <Content Include="app\samples\masterDetailTs\shell_.js" />
+    <Content Include="app\samples\helloTs\shell.html" />
+    <TypeScriptCompile Include="app\samples\helloTs\shell.ts" />
+    <Content Include="app\samples\helloTs\shell.js">
       <DependentUpon>shell.ts</DependentUpon>
     </Content>
     <Content Include="app\samples\hello\shell.html" />
