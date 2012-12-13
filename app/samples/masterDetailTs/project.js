@@ -1,4 +1,5 @@
 define(["require", "exports", 'durandal/app'], function(require, exports, __durandalApp__) {
+    /// <reference path="..\..\dts\knockout-2.2.d.ts" />
     var durandalApp = __durandalApp__;
 
     var app1;
@@ -30,4 +31,3 @@ define(["require", "exports", 'durandal/app'], function(require, exports, __dura
     })();
     exports.Project = Project;    
 })
-//@ sourceMappingURL=project.js.map
