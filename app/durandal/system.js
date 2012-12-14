@@ -29,6 +29,14 @@
         }
 
         module.__moduleId__ = map.id;
+        var prop;
+        for (prop in module) {
+            var x = module[prop];
+            if (x.prototype != null) {
+                x.prototype.__moduleId__ = map.id;
+                x.prototype.__class__ = prop;
+            }
+        }
     };
 
     var system = {

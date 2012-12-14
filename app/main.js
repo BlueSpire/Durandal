@@ -7,8 +7,9 @@
 define(function(require) {
     var app = require('durandal/app');
 
-    app.start().then(function() {
+    app.start().then(function () {
         app.makeFit();
-        app.setRoot('samples/masterDetail/shell');
+
+        app.setRoot('samples/navigationTs/navigation#Shell');
     });
-});
+}); 

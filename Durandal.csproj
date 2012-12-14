@@ -76,9 +76,12 @@
     <Content Include="app\content\images\icon.png" />
     <Content Include="app\content\images\ios-startup-image-landscape.png" />
     <Content Include="app\content\images\ios-startup-image-portrait.png" />
+    <Content Include="app\dts\knockout-2.2.d.ts" />
+    <Content Include="app\dts\require-2.1.d.ts" />
     <Content Include="app\durandal\app.js" />
     <Content Include="app\durandal\composition.js" />
     <Content Include="app\durandal\modalDialog.js" />
+    <TypeScriptCompile Include="app\durandal\viewModel.d.ts" />
     <Content Include="app\durandal\viewModel.js" />
     <Content Include="app\durandal\dom.js" />
     <Content Include="app\durandal\events.js" />
@@ -96,17 +99,39 @@
     <Content Include="app\lib\text.js" />
     <Content Include="app\main.js" />
     <Content Include="app\r.js" />
+    <TypeScriptCompile Include="app\durandal\app.d.ts" />
+    <Content Include="app\samples\masterDetailTs\project_Project.html" />
+    <TypeScriptCompile Include="app\samples\masterDetailTs\project.ts" />
+    <Content Include="app\samples\masterDetailTs\project.js">
+      <DependentUpon>project.ts</DependentUpon>
+    </Content>
+    <Content Include="app\samples\masterDetailTs\project_.js" />
+    <Content Include="app\samples\masterDetailTs\shell_Shell.html" />
+    <TypeScriptCompile Include="app\samples\masterDetailTs\shell.ts" />
+    <Content Include="app\samples\masterDetailTs\shell.js">
+      <DependentUpon>shell.ts</DependentUpon>
+    </Content>
+    <Content Include="app\samples\masterDetailTs\shell_.js" />
+    <Content Include="app\samples\helloTs\shell_Shell.html" />
+    <TypeScriptCompile Include="app\samples\helloTs\shell.ts" />
+    <Content Include="app\samples\helloTs\shell.js">
+      <DependentUpon>shell.ts</DependentUpon>
+    </Content>
     <Content Include="app\samples\hello\shell.html" />
     <Content Include="app\samples\hello\shell.js" />
     <Content Include="app\samples\masterDetail\project.html" />
     <Content Include="app\samples\masterDetail\project.js" />
     <Content Include="app\samples\masterDetail\shell.html" />
     <Content Include="app\samples\masterDetail\shell.js" />
-    <Content Include="app\samples\navigation\first.html" />
+    <Content Include="app\samples\navigationTs\navigation_First.html" />
     <Content Include="app\samples\navigation\first.js" />
-    <Content Include="app\samples\navigation\second.html" />
+    <TypeScriptCompile Include="app\samples\navigationTs\navigation.ts" />
+    <Content Include="app\samples\navigationTs\navigation.js">
+      <DependentUpon>navigation.ts</DependentUpon>
+    </Content>
+    <Content Include="app\samples\navigationTs\navigation_Second.html" />
     <Content Include="app\samples\navigation\second.js" />
-    <Content Include="app\samples\navigation\shell.html" />
+    <Content Include="app\samples\navigationTs\navigation_Shell.html" />
     <Content Include="app\samples\navigation\shell.js" />
     <Content Include="app\samples\viewComposition\childView1.html" />
     <Content Include="app\samples\viewComposition\childView2.html" />
@@ -145,12 +170,16 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptSourceMap> --sourcemap</TypeScriptSourceMap>
+  </PropertyGroup>
   <Target Name="BeforeBuild">
+    <Message Text="Compiling TypeScript files" />
+    <Message Text="Executing tsc$(TypeScriptSourceMap) @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" />
+    <Exec Command="tsc --module amd $(TypeScriptSourceMap) @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" />
   </Target>
   <Target Name="AfterBuild">
-  </Target> -->
+  </Target>
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
     <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
   </Target>
