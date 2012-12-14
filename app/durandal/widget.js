@@ -1,6 +1,6 @@
 ﻿define(function(require) {
-    var system = require('durandal/system'),
-        composition = require('durandal/composition');
+    var system = require('./system'),
+        composition = require('./composition');
 
     var widgetPartAttribute = 'data-part',
         widgetPartSelector = "[" + widgetPartAttribute + "]";

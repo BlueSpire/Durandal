@@ -1,8 +1,8 @@
 ﻿define(function(require) {
-    var viewLocator = require('durandal/viewLocator'),
-        viewModelBinder = require('durandal/viewModelBinder'),
-        viewEngine = require('durandal/viewEngine'),
-        system = require('durandal/system');
+    var viewLocator = require('./viewLocator'),
+        viewModelBinder = require('./viewModelBinder'),
+        viewEngine = require('./viewEngine'),
+        system = require('./system');
 
     function shouldPerformActivation(settings) {
         return settings.model.activate
@@ -42,6 +42,8 @@
                 viewModelBinder.bindContext(settings.bindingContext, view, settings.model);
             } else if (settings.model) {
                 viewModelBinder.bind(settings.model, view);
+            } else if (view) {
+                viewModelBinder.bind({}, view);
             }
 
             this.switchContent(element, view, settings);

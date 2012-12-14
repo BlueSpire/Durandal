@@ -1,5 +1,5 @@
 ﻿define(function(require) {
-    var dom = require('durandal/dom'),
+    var dom = require('./dom'),
         text = require('text');
 
     return {
