@@ -1,6 +1,6 @@
 ﻿require.config({
     paths: {
-        "text": "lib/text"
+        "text": "vendor/text"
     }
 });
 

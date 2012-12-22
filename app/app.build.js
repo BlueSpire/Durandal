@@ -9,7 +9,7 @@
     keepBuildDir: false,
     inlineText: true,
     paths: {
-        "text": "lib/text"
+        "text": "vendor/text"
     },
     stubModules: ["text"],
     optimize: "uglify",

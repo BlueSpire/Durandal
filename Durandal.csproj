@@ -90,10 +90,11 @@
     <Content Include="app\durandal\viewLocator.js" />
     <Content Include="app\durandal\viewModelBinder.js" />
     <Content Include="app\durandal\widget.js" />
-    <Content Include="app\lib\jquery-1.7.min.js" />
-    <Content Include="app\lib\knockout-2.2.0.js" />
-    <Content Include="app\lib\require.js" />
-    <Content Include="app\lib\text.js" />
+    <Content Include="app\vendor\jquery-1.7.min.js" />
+    <Content Include="app\vendor\knockout-2.2.0.js" />
+    <Content Include="app\vendor\require.js" />
+    <Content Include="app\vendor\sammy.js" />
+    <Content Include="app\vendor\text.js" />
     <Content Include="app\main.js" />
     <Content Include="app\r.js" />
     <Content Include="app\samples\hello\shell.html" />
