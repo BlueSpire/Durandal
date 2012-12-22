@@ -9,14 +9,9 @@
             && ((composition.activateDuringComposition && settings.activate == undefined) || settings.activate);
     }
 
-    var composition = {
-        activateDuringComposition: false,
-        switchContent: function(parent, newChild, settings) {
-            if (!newChild) {
-                ko.virtualElements.emptyNode(parent);
-            } else {
-                ko.virtualElements.setDomNodeChildren(parent, [newChild]);
-
+    function doTransition(parent, newChild, settings) {
+        settings.transition(parent, newChild, settings).then(function() {
+            if (newChild) {
                 if (settings.model) {
                     if (shouldPerformActivation(settings)) {
                         system.log("Composition Activating", settings.model);
@@ -31,6 +26,36 @@
 
             if (settings.afterCompose) {
                 settings.afterCompose(parent, newChild, settings);
+            }
+        });
+    }
+
+    var composition = {
+        activateDuringComposition: false,
+        convertTransitionToModuleId: function(name) {
+            return "transitions/" + name;
+        },
+        defaultTransition: function(parent, newChild, settings) {
+            return system.defer(function(dfd) {
+                if (!newChild) {
+                    ko.virtualElements.emptyNode(parent);
+                } else {
+                    ko.virtualElements.setDomNodeChildren(parent, [newChild]);
+                }
+                dfd.resolve();
+            }).promise();
+        },
+        switchContent: function(parent, newChild, settings) {
+            settings.transition = settings.transition || this.defaultTransition;
+
+            if (typeof settings.transition == 'string') {
+                var transitionModuleId = this.convertTransitionToModuleId(settings.transition);
+                system.acquire(transitionModuleId).then(function(transition) {
+                    settings.transition = transition;
+                    doTransition(parent, newChild, settings);
+                });
+            } else {
+                doTransition(parent, newChild, settings);
             }
         },
         bindAndShow: function(element, view, settings) {
