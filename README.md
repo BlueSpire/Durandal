@@ -21,7 +21,7 @@ We're just getting started here, so there's not a ton of documenation yet. But, 
 To run each sample, open main.js and change the call to app.setRoot() so that it points to the shell of the sample you wish to run.
 
 * hello - Demonstrates a basic hello world application which uses view/view-model location conventions and message box functionality.
-* navigation - Demonstrates basic navigation and view/view-model composition via the compose binding.
+* navigation - Demonstrates basic navigation by combining sammy.js with Durandal's view/view-model composition via the compose binding.
 * masterDetail - Demonstrates some activation features as well as containerless composition.
 * widgets - Demonstrates basic bindable and templatable widgets.
 * viewComposition - Demonstrates simple deconstruction of views bound against the same binding context.
