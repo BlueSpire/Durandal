@@ -1,11 +1,10 @@
 ﻿define(function(require) {
     var first = require('samples/navigation/first'),
-        second = require('samples/navigation/second'),
-        viewModel = require('durandal/viewModel');
+        second = require('samples/navigation/second');
 
     var shell = {
         displayName:"Navigation",
-        activeItem:viewModel.activator()
+        activeItem:ko.observable()
     };
 
     //NOTE: Sammy.js is not required by Durandal. This is just an example
