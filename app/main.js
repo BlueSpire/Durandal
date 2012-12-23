@@ -9,6 +9,6 @@ define(function(require) {
 
     app.start().then(function() {
         app.makeFit();
-        app.setRoot('samples/navigation/shell');
+        app.setRoot('samples/navigationAdvanced/shell');
     });
 });

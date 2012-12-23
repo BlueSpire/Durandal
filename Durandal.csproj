@@ -90,6 +90,13 @@
     <Content Include="app\durandal\viewLocator.js" />
     <Content Include="app\durandal\viewModelBinder.js" />
     <Content Include="app\durandal\widget.js" />
+    <Content Include="app\samples\navigationAdvanced\first.html" />
+    <Content Include="app\samples\navigationAdvanced\first.js" />
+    <Content Include="app\samples\navigationAdvanced\frontController.js" />
+    <Content Include="app\samples\navigationAdvanced\second.html" />
+    <Content Include="app\samples\navigationAdvanced\second.js" />
+    <Content Include="app\samples\navigationAdvanced\shell.html" />
+    <Content Include="app\samples\navigationAdvanced\shell.js" />
     <Content Include="app\vendor\jquery-1.7.min.js" />
     <Content Include="app\vendor\knockout-2.2.0.js" />
     <Content Include="app\vendor\require.js" />
