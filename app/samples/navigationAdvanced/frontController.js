@@ -1,5 +1,6 @@
 ﻿define(function(require) {
-    var system = require('durandal/system');
+    var system = require('durandal/system'),
+        viewLocator = require('durandal/viewLocator');
 
     //NOTE: Sammy.js is not required by Durandal. This is just an example
     //of how you can use them together for navigation.
@@ -12,6 +13,10 @@
         return new F();
     }
 
+    viewLocator.convertModuleIdToViewUrl = function(moduleId) {
+        return moduleId.replace('controllers', 'views');
+    };
+
     return {
         initialize: function(activator, defaultRoute) {
             function activateRoute(route) {
@@ -19,7 +24,7 @@
                 var controllerId = parts[0];
                 var params = parts.splice(1);
 
-                system.acquire('samples/navigationAdvanced/' + controllerId).then(function(Controller) {
+                system.acquire('samples/navigationAdvanced/controllers/' + controllerId).then(function(Controller) {
                     var instance = construct(Controller, params);
                     activator(instance);
                 });
