@@ -14,15 +14,4 @@ A cross-device, cross-platform application framework written in JavaScript, Dura
 
 ## Documentation
 
-We're just getting started here, so there's not a ton of documenation yet. But, we are working on it with a vengence. It's all located in the [wiki](https://github.com/EisenbergEffect/Durandal/wiki), so have a look there.
-
-##Samples
-
-To run each sample, open main.js and change the call to app.setRoot() so that it points to the shell of the sample you wish to run.
-
-* hello - Demonstrates a basic hello world application which uses view/view-model location conventions and message box functionality.
-* navigation - Demonstrates basic navigation by combining Sammy.js with Durandal's view/view-model composition via the compose binding.
-* navigationAdvanced - Demonstrates automatic routing and screen activiation through a more advanced integration of Durandal and Sammy.js.
-* masterDetail - Demonstrates some activation features as well as containerless composition.
-* widgets - Demonstrates basic bindable and templatable widgets.
-* viewComposition - Demonstrates simple deconstruction of views bound against the same binding context.
+All te documenttion is located in the [wiki](https://github.com/EisenbergEffect/Durandal/wiki), so have a look there for how to get setup, tutorials, sample descriptions and module reference docs.
