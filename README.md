@@ -14,4 +14,4 @@ A cross-device, cross-platform application framework written in JavaScript, Dura
 
 ## Documentation
 
-All the documenttion is located in the [wiki](https://github.com/EisenbergEffect/Durandal/wiki), so have a look there for help on how to get setup, tutorials, sample descriptions and module reference docs.
+All the documentation is located in the [wiki](https://github.com/EisenbergEffect/Durandal/wiki), so have a look there for help on how to get setup, tutorials, sample descriptions and module reference docs.
