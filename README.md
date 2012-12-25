@@ -1,6 +1,6 @@
 # Durandal
 
-A cross-device, cross-platform application framework written in JavaScript, Durandal is a very small amount of code built on top of three existing and established Javascript libraries: jQuery, Knockout and RequireJS. 
+A cross-device, cross-platform application framework written in JavaScript, Durandal is a very small amount of code built on top of three existing and established JavaScript libraries: [jQuery](http://jquery.com/), [Knockout](http://knockoutjs.com/) and [RequireJS](http://requirejs.org/). 
 
 ## Features
 
