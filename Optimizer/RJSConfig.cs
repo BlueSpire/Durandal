@@ -9,6 +9,8 @@
 
     class RJSConfig {
         readonly Options options;
+        readonly string[] extensionIncludes = new[] { ".js", ".html" };
+        readonly string[] fileExcludes = new[] { "app.build.js", "r.js", "optimizer.base.js" };
 
         public RJSConfig(Options options) {
             this.options = options;
@@ -16,35 +18,79 @@
 
         public void Generate() {
             var config = GetBaseConfiguration();
-            var includes = GetIncludes();
+            var applicationPath = DetermineApplicationPath();
+            var includes = GetIncludes(applicationPath);
+            var fixedIncludes = FixupIncludePaths(applicationPath, includes);
 
-            WriteConfig(config);
+            WriteConfig(config, applicationPath, fixedIncludes);
         }
 
-        static void WriteConfig(JObject config) {
-            Console.Write(config);
-            Console.ReadKey();
-        }
-
-        IEnumerable<string> GetIncludes() {
+        string DetermineApplicationPath() {
             var sourcePath = options.ApplicationSource;
 
             if(!string.IsNullOrEmpty(sourcePath)) {
                 if(!Path.IsPathRooted(sourcePath)) {
                     sourcePath = Path.Combine(Directory.GetCurrentDirectory(), sourcePath);
                 }
-            }else {
+            }
+            else {
                 sourcePath = Directory.GetCurrentDirectory();
             }
 
-            return from fileName in Directory.EnumerateFiles(sourcePath, "*", SearchOption.AllDirectories)
+            return sourcePath;
+        }
+
+        void WriteConfig(JObject config, string applicationPath, IEnumerable<string> includes) {
+            Console.Write(config);
+            Console.ReadKey();
+
+            //var buildFilePath = Path.Combine(options.ApplicationSource, "app.build.js");
+
+            //using(var file = File.Create(buildFilePath))
+            //using(var writer = new StreamWriter(file)) {
+            //    writer.Write(config.ToString());
+            //}
+        }
+
+        IEnumerable<string> GetIncludes(string applicationSource) {
+            return from fileName in Directory.EnumerateFiles(applicationSource, "*", SearchOption.AllDirectories)
                    let info = new FileInfo(fileName)
                    where IncludeFile(info)
                    select info.FullName;
         }
 
         bool IncludeFile(FileInfo info) {
-            return info.Name != "app.build.js" && info.Name != "r.js";
+            var extension = Path.GetExtension(info.FullName);
+
+            if(!extensionIncludes.Contains(extension)) {
+                return false;
+            }
+
+            return !fileExcludes.Contains(info.FullName);
+        }
+
+        IEnumerable<string> FixupIncludePaths(string applicationPath, IEnumerable<string> paths) {
+            var rootMarker = "\\" + applicationPath + "\\";
+            var rootMarkerLength = rootMarker.Length;
+
+            foreach (var path in paths) {
+                var relativePath = path;
+                var index = relativePath.LastIndexOf(rootMarker);
+
+                if (index != -1) {
+                    relativePath = relativePath.Substring(index + rootMarkerLength);
+                }
+
+                relativePath = relativePath.Replace("\\", "/");
+
+                if (relativePath.EndsWith(".html")) {
+                    yield return "'text!" + relativePath + "'";
+                }
+                else {
+                    relativePath = relativePath.Replace(".js", string.Empty);
+                    yield return "'" + relativePath + "'";
+                }
+            }
         }
 
         JObject GetBaseConfiguration() {
