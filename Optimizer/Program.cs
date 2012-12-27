@@ -10,10 +10,14 @@
 #endif
 
                 var config = new RJSConfig(options);
-                config.Generate();
+                var info = config.Generate();
+
+                if (options.Build || options.Generate) {
+                    IO.WriteConfiguration(info);
+                }
 
                 if(options.Build && !options.Generate) {
-                    //build the optimized file
+                    //call r.js
                 }
             }
         }
