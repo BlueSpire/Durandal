@@ -180,4 +180,9 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(SolutionDir)app\durandal" "$(SolutionDir)skeletons\nuget\content\app\durandal\" /s /i /y
+xcopy "$(SolutionDir)app\vendor" "$(SolutionDir)skeletons\nuget\content\app\vendor\" /s /i /y
+xcopy "$(SolutionDir)app\content" "$(SolutionDir)skeletons\nuget\content\app\content\" /s /i /y</PostBuildEvent>
+  </PropertyGroup>
 </Project>

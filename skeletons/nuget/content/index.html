@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>Durandal</title>
+
+        <link rel="apple-touch-startup-image" href="app/content/images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+        <link rel="apple-touch-startup-image" href="app/content/images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+        <link rel="apple-touch-icon" href="app/content/images/icon.png"/>
+        
+        <link rel="stylesheet" href="app/content/css/app.css" type="text/css"/>
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="format-detection" content="telephone=no"/>
+    
+        <meta name="viewport" content="width=device-width" />
+    
+        <!--Turns on debugging for Durandal -->
+        <meta name="debug" content="true" />
+        
+        <script type="text/javascript" src="app/vendor/jquery-1.7.min.js"></script>
+        <script type="text/javascript" src="app/vendor/knockout-2.2.0.js"></script>
+    </head>
+    <body>
+        <div id="applicationHost"></div>
+        <script type="text/javascript" src="app/vendor/require.js" data-main="app/main"></script>
+    </body>
+</html>
