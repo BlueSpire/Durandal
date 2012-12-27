@@ -23,7 +23,8 @@
             info.Includes = FixupPaths(info.BaseUrl, GetIncludes(info.BaseUrl)).Except(info.Excludes);
 
             info.OutputDirectory = Path.Combine(new DirectoryInfo(info.BaseUrl).Parent.FullName, "app-built");
-            info.BuildFilePath = Path.Combine(options.ApplicationSource, "app.build.js");
+            info.BuildFilePath = Path.Combine(options.ApplicationSource, "vendor/app.build.js");
+            info.OptimizerPath = Path.Combine(options.ApplicationSource, "vendor/r.js");
 
             BuildConfig(info);
 
@@ -52,13 +53,6 @@
                     include.Add(item);
                 }
             }
-
-            var exclude = JSON.EnsureArray(mainModule, "exclude");
-            if(exclude.Count < 1) {
-                foreach(var item in info.Excludes) {
-                    exclude.Add(item);
-                }
-            }
         }
 
         string DetermineApplicationPath() {
@@ -74,6 +68,7 @@
                 sourcePath = new DirectoryInfo(current).Parent.FullName;
             }
 
+            options.ApplicationSource = sourcePath;
             return sourcePath;
         }
 
@@ -93,8 +88,7 @@
 
             return from fileName in Directory.EnumerateFiles(vendor, "*", SearchOption.AllDirectories)
                    let info = new FileInfo(fileName)
-                   let extension = Path.GetExtension(info.FullName)
-                   where extensionIncludes.Contains(extension)
+                   where ShouldIncludeFile(info)
                    select info.FullName;
         }
 

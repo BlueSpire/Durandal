@@ -10,15 +10,16 @@
                 options.Verbose = true;
 #endif
 
-                var config = new RJSConfigBuilder(options);
-                var info = config.Build();
+                var configBuilder = new RJSConfigBuilder(options);
+                var config = configBuilder.Build();
 
                 if (options.Build || options.Generate) {
-                    IO.WriteConfiguration(info, options.Verbose);
+                    IO.WriteConfiguration(config, options.Verbose);
                 }
 
                 if(options.Build && !options.Generate) {
-                    //call r.js
+                    var runner = new RJSRunner(config);
+                    runner.Run();
                 }
 
                 Console.ReadKey();

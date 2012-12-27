@@ -58,6 +58,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RJSConfigBuilder.cs" />
+    <Compile Include="RJSRunner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
