@@ -1,4 +1,5 @@
 ﻿namespace Optimizer {
+    using System;
     using System.Diagnostics;
     using System.IO;
 
@@ -14,8 +15,25 @@
                           config.OptimizerPath + "\" -o \"" +
                           config.BuildFilePath + "\"";
 
-            var proc = Process.Start("cmd.exe", command);
-            proc.WaitForExit();
+            var process = new Process {
+                StartInfo = new ProcessStartInfo {
+                    FileName = "cmd.exe",
+                    Arguments = command,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true
+                },
+                EnableRaisingEvents = true
+            };
+
+            process.OutputDataReceived += (s, e) => {
+                Console.WriteLine(e.Data);
+            };
+
+            process.Start();
+            process.BeginOutputReadLine();
+            process.WaitForExit();
+            process.CancelOutputRead();
         }
     }
 }
