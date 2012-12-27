@@ -1,5 +1,4 @@
 ﻿namespace Optimizer {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -20,8 +19,8 @@
                 BaseUrl = DetermineApplicationPath()
             };
 
-            info.Includes = FixupPaths(info.BaseUrl, GetIncludes(info.BaseUrl));
             info.Excludes = FixupPaths(info.BaseUrl, GetExcludes(info.BaseUrl));
+            info.Includes = FixupPaths(info.BaseUrl, GetIncludes(info.BaseUrl)).Except(info.Excludes);
 
             info.OutputDirectory = Path.Combine(new DirectoryInfo(info.BaseUrl).Parent.FullName, "app-built");
             info.BuildFilePath = Path.Combine(options.ApplicationSource, "app.build.js");
