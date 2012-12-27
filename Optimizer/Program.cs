@@ -1,4 +1,5 @@
 ﻿namespace Optimizer {
+    using System;
     using CommandLine;
 
     class Program {
@@ -9,16 +10,18 @@
                 options.Verbose = true;
 #endif
 
-                var config = new RJSConfig(options);
-                var info = config.Generate();
+                var config = new RJSConfigBuilder(options);
+                var info = config.Build();
 
                 if (options.Build || options.Generate) {
-                    IO.WriteConfiguration(info);
+                    IO.WriteConfiguration(info, options.Verbose);
                 }
 
                 if(options.Build && !options.Generate) {
                     //call r.js
                 }
+
+                Console.ReadKey();
             }
         }
     }

@@ -48,14 +48,15 @@
             }
         }
 
-        public static void WriteConfiguration(GenerationInfo info) {
-            Console.Write(info.RJSConfig);
-            Console.ReadKey();
+        public static void WriteConfiguration(RJSConfig info, bool verbose) {
+            if(verbose) {
+                Console.Write(info.Config);
+            }
 
-            //using(var file = File.Create(buildFilePath))
-            //using(var writer = new StreamWriter(file)) {
-            //    writer.Write(config.ToString());
-            //}
+            using (var file = File.Create(info.BuildFilePath))
+            using (var writer = new StreamWriter(file)) {
+                writer.Write(info.Config.ToString());
+            }
         }
     }
 }
