@@ -1,5 +1,4 @@
 ﻿namespace Optimizer {
-    using System;
     using CommandLine;
 
     class Program {
@@ -21,8 +20,6 @@
                     var runner = new RJSRunner(config);
                     runner.Run();
                 }
-
-                Console.ReadKey();
             }
         }
     }

@@ -10,10 +10,6 @@
         }
 
         public void Run() {
-            if(!Directory.Exists(config.BaseUrl)) {
-                Directory.CreateDirectory(config.BaseUrl);
-            }
-
             var command = "/C node \"" +
                           config.OptimizerPath + "\" -o \"" +
                           config.BuildFilePath + "\"";
