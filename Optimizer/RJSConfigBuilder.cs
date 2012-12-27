@@ -1,4 +1,5 @@
 ﻿namespace Optimizer {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -84,16 +85,18 @@
                    select info.FullName;
         }
 
-        public static IEnumerable<string> GetExcludes(string applicationSource) {
+        public IEnumerable<string> GetExcludes(string applicationSource) {
             var vendor = Path.Combine(applicationSource, "vendor");
 
             if(!Directory.Exists(vendor)) {
-                yield break;
+                return new string[] { };
             }
 
-            foreach(var file in Directory.EnumerateFiles(vendor, "*", SearchOption.AllDirectories)) {
-                yield return file;
-            }
+            return from fileName in Directory.EnumerateFiles(vendor, "*", SearchOption.AllDirectories)
+                   let info = new FileInfo(fileName)
+                   let extension = Path.GetExtension(info.FullName)
+                   where extensionIncludes.Contains(extension)
+                   select info.FullName;
         }
 
         bool ShouldIncludeFile(FileInfo info) {
@@ -103,11 +106,11 @@
                 return false;
             }
 
-            return !fileExcludes.Contains(info.FullName);
+            return !fileExcludes.Contains(info.Name);
         }
 
         IEnumerable<string> FixupPaths(string applicationPath, IEnumerable<string> paths) {
-            var rootMarker = "\\" + applicationPath + "\\";
+            var rootMarker = applicationPath + "\\";
             var rootMarkerLength = rootMarker.Length;
 
             foreach(var path in paths) {
