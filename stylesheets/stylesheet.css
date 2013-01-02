@@ -163,6 +163,20 @@ aside a.button {
   font-size: 21px;
 }
 
+.quick-links {
+  list-style: none outside none;
+  margin: 20px 0;
+  overflow: hidden;
+  padding: 3px 20px 0 20px;
+  line-height: 23px;
+  height: 23px;
+  text-align: center;
+}
+
+.quick-links li {
+  display: inline;
+}
+
 code, pre {
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   color: #222;
