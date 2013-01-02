@@ -1,16 +1,16 @@
 ﻿define(function() {
-    var MessageBox = function(message, title, options) {
+    var ctor = function(message, title, options) {
         this.message = message;
-        this.title = title || MessageBox.defaultTitle;
-        this.options = options || MessageBox.defaultOptions;
+        this.title = title || ctor.defaultTitle;
+        this.options = options || ctor.defaultOptions;
     };
 
-    MessageBox.prototype.selectOption = function(dialogResult) {
+    ctor.prototype.selectOption = function (dialogResult) {
         this.modal.close(dialogResult);
     };
 
-    MessageBox.defaultTitle = "Application";
-    MessageBox.defaultOptions = ["Ok"];
+    ctor.defaultTitle = "Application";
+    ctor.defaultOptions = ["Ok"];
 
-    return MessageBox;
+    return ctor;
 });
