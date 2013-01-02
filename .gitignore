@@ -28,4 +28,5 @@ MSSCCPRJ.SCC
 *.debug.css
 Packages/
 app-built/
+*.db
 
