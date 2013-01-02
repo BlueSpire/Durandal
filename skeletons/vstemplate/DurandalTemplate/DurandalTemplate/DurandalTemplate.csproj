@@ -108,6 +108,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -117,6 +118,34 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Content\app.css" />
+    <Content Include="Images\icon.png" />
+    <Content Include="Images\ios-startup-image-landscape.png" />
+    <Content Include="Images\ios-startup-image-portrait.png" />
+    <Content Include="Scripts\app\durandal\app.js" />
+    <Content Include="Scripts\app\durandal\composition.js" />
+    <Content Include="Scripts\app\durandal\dom.js" />
+    <Content Include="Scripts\app\durandal\events.js" />
+    <Content Include="Scripts\app\durandal\http.js" />
+    <Content Include="Scripts\app\durandal\messageBox.html" />
+    <Content Include="Scripts\app\durandal\messageBox.js" />
+    <Content Include="Scripts\app\durandal\modalDialog.js" />
+    <Content Include="Scripts\app\durandal\system.js" />
+    <Content Include="Scripts\app\durandal\viewEngine.js" />
+    <Content Include="Scripts\app\durandal\viewLocator.js" />
+    <Content Include="Scripts\app\durandal\viewModel.js" />
+    <Content Include="Scripts\app\durandal\viewModelBinder.js" />
+    <Content Include="Scripts\app\durandal\widget.js" />
+    <Content Include="Scripts\app\main.js" />
+    <Content Include="Scripts\app\vendor\jquery-1.7.min.js" />
+    <Content Include="Scripts\app\vendor\knockout-2.2.0.js" />
+    <Content Include="Scripts\app\vendor\optimizer.exe" />
+    <Content Include="Scripts\app\vendor\r.js" />
+    <Content Include="Scripts\app\vendor\require.js" />
+    <Content Include="Scripts\app\vendor\sammy.js" />
+    <Content Include="Scripts\app\vendor\text.js" />
+    <Content Include="Scripts\app\viewModels\shell.js" />
+    <Content Include="Scripts\app\views\shell.html" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -129,11 +158,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
