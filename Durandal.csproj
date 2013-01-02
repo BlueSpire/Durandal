@@ -183,6 +183,11 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(SolutionDir)app\durandal" "$(SolutionDir)skeletons\nuget\content\app\durandal\" /s /i /y
 xcopy "$(SolutionDir)app\vendor" "$(SolutionDir)skeletons\nuget\content\app\vendor\" /s /i /y
-xcopy "$(SolutionDir)app\content" "$(SolutionDir)skeletons\nuget\content\app\content\" /s /i /y</PostBuildEvent>
+xcopy "$(SolutionDir)app\content" "$(SolutionDir)skeletons\nuget\content\app\content\" /s /i /y
+
+xcopy "$(SolutionDir)app\durandal" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Scripts\app\durandal\" /s /i /y
+xcopy "$(SolutionDir)app\vendor" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Scripts\app\vendor\" /s /i /y
+xcopy "$(SolutionDir)app\content\css" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\" /s /i /y
+xcopy "$(SolutionDir)app\content\images" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Images\" /s /i /y</PostBuildEvent>
   </PropertyGroup>
 </Project>
