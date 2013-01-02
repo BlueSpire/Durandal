@@ -65,6 +65,11 @@ a:hover {
 
 header {
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif; 
+  background: #EEE url(../images/square_bg.png) repeat;
+  margin-bottom: 20px;
+  -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
@@ -141,10 +146,13 @@ a.button small {
 header a.button {
   position: absolute;
   right: 0;
-  top: 20px;
   background: #F11C25 url(../images/github-button.png) 0 0 no-repeat;
   border-radius: 12px;
   box-shadow: gray 0px 0px 8px;
+  -webkit-transform: scale(.75);
+  -moz-transform: scale(.75);
+  -ms-transform: scale(.75);
+  transform: scale(.75);
 }
 aside a.button {
   width: 138px;
@@ -433,8 +441,8 @@ footer a:hover {
     text-align: center;
     font-size: 13px;
     line-height: 1;
-    background-color: #9ddcff;
-    color: #2879d0;
+    background-color: #F11C25;
+    color: white;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;                     
     border-radius: 5px;    
