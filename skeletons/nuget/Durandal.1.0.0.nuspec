@@ -27,33 +27,34 @@ All the documentation is located in the wiki, so have a look there for help on h
         <tags>MVVM JavaScript JS Durandal HTML CSS MVC MVP Web SPA RIA</tags>
     </metadata>
     <files>
-        <file src="content\app\content\css\app.css" target="content\app\content\css\app.css" />
-        <file src="content\app\content\images\icon.png" target="content\app\content\images\icon.png" />
-        <file src="content\app\content\images\ios-startup-image-landscape.png" target="content\app\content\images\ios-startup-image-landscape.png" />
-        <file src="content\app\content\images\ios-startup-image-portrait.png" target="content\app\content\images\ios-startup-image-portrait.png" />
-        <file src="content\app\durandal\app.js" target="content\app\durandal\app.js" />
-        <file src="content\app\durandal\composition.js" target="content\app\durandal\composition.js" />
-        <file src="content\app\durandal\dom.js" target="content\app\durandal\dom.js" />
-        <file src="content\app\durandal\events.js" target="content\app\durandal\events.js" />
-        <file src="content\app\durandal\http.js" target="content\app\durandal\http.js" />
-        <file src="content\app\durandal\messageBox.html" target="content\app\durandal\messageBox.html" />
-        <file src="content\app\durandal\messageBox.js" target="content\app\durandal\messageBox.js" />
-        <file src="content\app\durandal\modalDialog.js" target="content\app\durandal\modalDialog.js" />
-        <file src="content\app\durandal\system.js" target="content\app\durandal\system.js" />
-        <file src="content\app\durandal\viewEngine.js" target="content\app\durandal\viewEngine.js" />
-        <file src="content\app\durandal\viewLocator.js" target="content\app\durandal\viewLocator.js" />
-        <file src="content\app\durandal\viewModel.js" target="content\app\durandal\viewModel.js" />
-        <file src="content\app\durandal\viewModelBinder.js" target="content\app\durandal\viewModelBinder.js" />
-        <file src="content\app\durandal\widget.js" target="content\app\durandal\widget.js" />
-        <file src="content\app\vendor\jquery-1.7.min.js" target="content\app\vendor\jquery-1.7.min.js" />
-        <file src="content\app\vendor\knockout-2.2.0.js" target="content\app\vendor\knockout-2.2.0.js" />
-        <file src="content\app\vendor\optimizer.exe" target="content\app\vendor\optimizer.exe" />
-        <file src="content\app\vendor\r.js" target="content\app\vendor\r.js" />
-        <file src="content\app\vendor\require.js" target="content\app\vendor\require.js" />
-        <file src="content\app\vendor\text.js" target="content\app\vendor\text.js" />
-        <file src="content\app\viewModels\shell.js" target="content\app\viewModels\shell.js" />
-        <file src="content\app\views\shell.html" target="content\app\views\shell.html" />
-        <file src="content\app\main.js" target="content\app\main.js" />
+        <file src="content\Content\app.css" target="content\Content\app.css" />
+        <file src="content\Images\icon.png" target="content\Images\icon.png" />
+        <file src="content\Images\ios-startup-image-landscape.png" target="content\Images\ios-startup-image-landscape.png" />
+        <file src="content\Images\ios-startup-image-portrait.png" target="content\Images\ios-startup-image-portrait.png" />
+        <file src="content\Scripts\app\durandal\app.js" target="content\Scripts\app\durandal\app.js" />
+        <file src="content\Scripts\app\durandal\composition.js" target="content\Scripts\app\durandal\composition.js" />
+        <file src="content\Scripts\app\durandal\dom.js" target="content\Scripts\app\durandal\dom.js" />
+        <file src="content\Scripts\app\durandal\events.js" target="content\Scripts\app\durandal\events.js" />
+        <file src="content\Scripts\app\durandal\http.js" target="content\Scripts\app\durandal\http.js" />
+        <file src="content\Scripts\app\durandal\messageBox.html" target="content\Scripts\app\durandal\messageBox.html" />
+        <file src="content\Scripts\app\durandal\messageBox.js" target="content\Scripts\app\durandal\messageBox.js" />
+        <file src="content\Scripts\app\durandal\modalDialog.js" target="content\Scripts\app\durandal\modalDialog.js" />
+        <file src="content\Scripts\app\durandal\system.js" target="content\Scripts\app\durandal\system.js" />
+        <file src="content\Scripts\app\durandal\viewEngine.js" target="content\Scripts\app\durandal\viewEngine.js" />
+        <file src="content\Scripts\app\durandal\viewLocator.js" target="content\Scripts\app\durandal\viewLocator.js" />
+        <file src="content\Scripts\app\durandal\viewModel.js" target="content\Scripts\app\durandal\viewModel.js" />
+        <file src="content\Scripts\app\durandal\viewModelBinder.js" target="content\Scripts\app\durandal\viewModelBinder.js" />
+        <file src="content\Scripts\app\durandal\widget.js" target="content\Scripts\app\durandal\widget.js" />
+        <file src="content\Scripts\app\vendor\jquery-1.7.min.js" target="content\Scripts\app\vendor\jquery-1.7.min.js" />
+        <file src="content\Scripts\app\vendor\knockout-2.2.0.js" target="content\Scripts\app\vendor\knockout-2.2.0.js" />
+        <file src="content\Scripts\app\vendor\optimizer.exe" target="content\Scripts\app\vendor\optimizer.exe" />
+        <file src="content\Scripts\app\vendor\r.js" target="content\Scripts\app\vendor\r.js" />
+        <file src="content\Scripts\app\vendor\require.js" target="content\Scripts\app\vendor\require.js" />
+        <file src="content\Scripts\app\vendor\sammy.js" target="content\Scripts\app\vendor\sammy.js" />
+        <file src="content\Scripts\app\vendor\text.js" target="content\Scripts\app\vendor\text.js" />
+        <file src="content\Scripts\app\viewModels\shell.js" target="content\Scripts\app\viewModels\shell.js" />
+        <file src="content\Scripts\app\views\shell.html" target="content\Scripts\app\views\shell.html" />
+        <file src="content\Scripts\app\main.js" target="content\Scripts\app\main.js" />
         <file src="content\index.html" target="content\index.html" />
     </files>
 </package>
