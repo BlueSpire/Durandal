@@ -1,0 +1,21 @@
+﻿<div>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <span class="brand" data-bind='text: displayName'></span>
+            <ul class="nav">
+                <!--ko foreach: navigation.navRoutes-->
+                <li data-bind="css: { active: $parent.activeItem() && (moduleId == $parent.activeItem().__moduleId__) }">
+                    <a data-bind="attr: {href:'#/' + route}, html:navName"></a>
+                </li>
+                <!--/ko-->
+            </ul>
+            <form class="navbar-search pull-right">
+                <input type="text" class="search-query" placeholder="Search">
+            </form>
+        </div>
+    </div>
+    
+    <div class="container-fluid">
+        <div class="row-fluid" data-bind='compose: activeItem'></div>
+    </div>
+</div>

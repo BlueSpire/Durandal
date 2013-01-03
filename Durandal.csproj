@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3EA32849-C308-4046-BA8A-9C7D23F7D28D}</ProjectGuid>
+    <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Durandal</RootNamespace>
+    <AssemblyName>Durandal</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.WebPages" />
+    <Reference Include="System.Web.Helpers" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\content\css\app.css" />
+    <Content Include="app\content\images\icon.png" />
+    <Content Include="app\content\images\ios-startup-image-landscape.png" />
+    <Content Include="app\content\images\ios-startup-image-portrait.png" />
+    <Content Include="app\durandal\app.js" />
+    <Content Include="app\durandal\composition.js" />
+    <Content Include="app\durandal\modalDialog.js" />
+    <Content Include="app\durandal\viewModel.js" />
+    <Content Include="app\durandal\dom.js" />
+    <Content Include="app\durandal\events.js" />
+    <Content Include="app\durandal\http.js" />
+    <Content Include="app\durandal\messageBox.html" />
+    <Content Include="app\durandal\messageBox.js" />
+    <Content Include="app\durandal\system.js" />
+    <Content Include="app\durandal\viewEngine.js" />
+    <Content Include="app\durandal\viewLocator.js" />
+    <Content Include="app\durandal\viewModelBinder.js" />
+    <Content Include="app\durandal\widget.js" />
+    <Content Include="app\samples\navigationAdvanced\views\first.html" />
+    <Content Include="app\samples\navigationAdvanced\controllers\first.js" />
+    <Content Include="app\samples\navigationAdvanced\frontController.js" />
+    <Content Include="app\samples\navigationAdvanced\views\second.html" />
+    <Content Include="app\samples\navigationAdvanced\controllers\second.js" />
+    <Content Include="app\samples\navigationAdvanced\shell.html" />
+    <Content Include="app\samples\navigationAdvanced\shell.js" />
+    <Content Include="app\vendor\almond-custom.js" />
+    <Content Include="app\vendor\jquery-1.7.min.js" />
+    <Content Include="app\vendor\knockout-2.2.0.js" />
+    <Content Include="app\vendor\require.js" />
+    <Content Include="app\vendor\sammy.js" />
+    <Content Include="app\vendor\text.js" />
+    <Content Include="app\main.js" />
+    <Content Include="app\vendor\r.js" />
+    <Content Include="app\samples\hello\shell.html" />
+    <Content Include="app\samples\hello\shell.js" />
+    <Content Include="app\samples\masterDetail\project.html" />
+    <Content Include="app\samples\masterDetail\project.js" />
+    <Content Include="app\samples\masterDetail\shell.html" />
+    <Content Include="app\samples\masterDetail\shell.js" />
+    <Content Include="app\samples\navigation\first.html" />
+    <Content Include="app\samples\navigation\first.js" />
+    <Content Include="app\samples\navigation\second.html" />
+    <Content Include="app\samples\navigation\second.js" />
+    <Content Include="app\samples\navigation\shell.html" />
+    <Content Include="app\samples\navigation\shell.js" />
+    <Content Include="app\samples\viewComposition\childView1.html" />
+    <Content Include="app\samples\viewComposition\childView2.html" />
+    <Content Include="app\samples\viewComposition\shell.html" />
+    <Content Include="app\samples\viewComposition\shell.js" />
+    <Content Include="app\samples\widgets\project.html" />
+    <Content Include="app\samples\widgets\project.js" />
+    <Content Include="app\samples\widgets\shell.html" />
+    <Content Include="app\samples\widgets\shell.js" />
+    <Content Include="app\widgets\expander\view.html" />
+    <Content Include="app\widgets\expander\controller.js" />
+    <Content Include="index.html" />
+    <Content Include="License.txt" />
+    <Content Include="test\spec.js" />
+    <Content Include="test\jasmine.console_reporter.js" />
+    <Content Include="test\jasmine-1.2.0.js" />
+    <Content Include="test\phantomjs.exe" />
+    <Content Include="test\spec.html" />
+    <Content Include="test\specs\system.spec.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+    <Content Include="web.config" />
+    <Content Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </Content>
+    <Content Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>38920</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(SolutionDir)app\durandal" "$(SolutionDir)skeletons\nuget\content\Scripts\app\durandal\" /s /i /y
+xcopy "$(SolutionDir)app\vendor" "$(SolutionDir)skeletons\nuget\content\Scripts\app\vendor\" /s /i /y
+xcopy "$(SolutionDir)app\content\css" "$(SolutionDir)skeletons\nuget\content\Content\" /s /i /y
+xcopy "$(SolutionDir)app\content\images" "$(SolutionDir)skeletons\nuget\content\Images\" /s /i /y
+
+xcopy "$(SolutionDir)app\durandal" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\scripts\app\durandal\" /s /i /y
+xcopy "$(SolutionDir)app\vendor" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\scripts\app\vendor\" /s /i /y
+xcopy "$(SolutionDir)app\content\images" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\img\" /s /i /y</PostBuildEvent>
+  </PropertyGroup>
+</Project>

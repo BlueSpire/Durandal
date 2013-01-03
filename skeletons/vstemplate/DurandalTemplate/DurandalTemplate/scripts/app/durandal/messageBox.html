@@ -1,0 +1,9 @@
+﻿<div class="messageBox">
+    <div class="title" data-bind="html: title"></div>
+    <div class="content">
+        <div class="message" data-bind="html: message"></div>
+        <div class="buttons" data-bind="foreach: options">
+            <button data-bind="click: function(){ $parent.selectOption($data); }, html: $data"></button>
+        </div>
+    </div>
+</div>
