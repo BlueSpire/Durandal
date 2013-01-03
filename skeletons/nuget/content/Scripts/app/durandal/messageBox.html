@@ -1,9 +1,11 @@
 ﻿<div class="messageBox">
-    <div class="title" data-bind="html: title"></div>
-    <div class="content">
-        <div class="message" data-bind="html: message"></div>
-        <div class="buttons" data-bind="foreach: options">
-            <button data-bind="click: function(){ $parent.selectOption($data); }, html: $data"></button>
-        </div>
+    <div class="modal-header">
+        <h3 data-bind="html: title"></h3>
+    </div>
+    <div class="modal-body">
+        <p class="message" data-bind="html: message"></p>
+    </div>
+    <div class="modal-footer" data-bind="foreach: options">
+        <a class="btn" data-bind="click: function () { $parent.selectOption($data); }, html: $data, css: {'btn-primary':$index() == 0}"></a>
     </div>
 </div>

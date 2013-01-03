@@ -72,6 +72,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\content\css\app.css" />
+    <Content Include="app\content\css\bootstrap-responsive.min.css" />
+    <Content Include="app\content\css\bootstrap.min.css" />
     <Content Include="app\content\images\icon.png" />
     <Content Include="app\content\images\ios-startup-image-landscape.png" />
     <Content Include="app\content\images\ios-startup-image-portrait.png" />
@@ -97,6 +99,7 @@
     <Content Include="app\samples\navigationAdvanced\shell.html" />
     <Content Include="app\samples\navigationAdvanced\shell.js" />
     <Content Include="app\vendor\almond-custom.js" />
+    <Content Include="app\vendor\bootstrap.min.js" />
     <Content Include="app\vendor\jquery-1.7.min.js" />
     <Content Include="app\vendor\knockout-2.2.0.js" />
     <Content Include="app\vendor\require.js" />

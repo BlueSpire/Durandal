@@ -28,6 +28,8 @@ All the documentation is located in the wiki, so have a look there for help on h
     </metadata>
     <files>
         <file src="content\Content\app.css" target="content\Content\app.css" />
+        <file src="content\Content\bootstrap-responsive.min.css" target="content\Content\bootstrap-responsive.min.css" />
+        <file src="content\Content\bootstrap.min.css" target="content\Content\bootstrap.min.css" />
         <file src="content\Images\icon.png" target="content\Images\icon.png" />
         <file src="content\Images\ios-startup-image-landscape.png" target="content\Images\ios-startup-image-landscape.png" />
         <file src="content\Images\ios-startup-image-portrait.png" target="content\Images\ios-startup-image-portrait.png" />
@@ -46,6 +48,7 @@ All the documentation is located in the wiki, so have a look there for help on h
         <file src="content\Scripts\app\durandal\viewModelBinder.js" target="content\Scripts\app\durandal\viewModelBinder.js" />
         <file src="content\Scripts\app\durandal\widget.js" target="content\Scripts\app\durandal\widget.js" />
         <file src="content\Scripts\app\vendor\almond-custom.js" target="content\Scripts\app\vendor\almond-custom.js" />
+        <file src="content\Scripts\app\vendor\bootstrap.min.js" target="content\Scripts\app\vendor\bootstrap.min.js" />
         <file src="content\Scripts\app\vendor\jquery-1.7.min.js" target="content\Scripts\app\vendor\jquery-1.7.min.js" />
         <file src="content\Scripts\app\vendor\knockout-2.2.0.js" target="content\Scripts\app\vendor\knockout-2.2.0.js" />
         <file src="content\Scripts\app\vendor\optimizer.exe" target="content\Scripts\app\vendor\optimizer.exe" />

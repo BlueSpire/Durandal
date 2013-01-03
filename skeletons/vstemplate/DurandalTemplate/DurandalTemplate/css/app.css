@@ -37,35 +37,17 @@
 }
 
 .messageBox {
-    background: white;
-    color: black;
-    border: 1px solid black;
-
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
-    
-    -o-box-shadow: rgba(0,0,0,.5) 0px 0px 10px;
-    -webkit-box-shadow: rgba(0,0,0,.5) 0px 0px 10px;
-    -moz-box-shadow: rgba(0,0,0,.5) 0px 0px 10px;
-    box-shadow: rgba(0,0,0,.5) 0px 0px 10px;
-}
-
-.messageBox .title {
-    background: black;
-    color: white;
-    padding: 3px 0 3px 6px;
-    font-weight: bold;
-    font-size: .8em;
-}
-
-.messageBox .content {
-    padding: 12px;
-}
-
-.messageBox .content .buttons {
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 10px;
-    text-align: center;
+    background-color: white;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    outline: none;
+    -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
 }
