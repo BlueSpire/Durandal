@@ -10,7 +10,7 @@ define(function(require) {
 
     app.start().then(function() {
         viewLocator.convertModuleIdToViewUrl = function (moduleId) {
-            return moduleId.replace('viewModel', 'view');
+            return moduleId.replace('viewModel', 'view').replace('controller', 'view');
         };
 
         app.makeFit();

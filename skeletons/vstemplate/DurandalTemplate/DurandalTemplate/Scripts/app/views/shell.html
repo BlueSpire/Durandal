@@ -1,5 +1,8 @@
 ﻿<div>
     <h1 data-bind='html:displayName'></h1>
-    <input data-bind="value: name, valueUpdate: 'afterkeydown'"/>
-    <button data-bind='click: sayHello, enable: canSayHello'>Click Me</button>
+    <div data-bind='compose:activeItem'></div>
+    <div>
+        <a href="#/first">Goto First</a>
+        <a href="#/second">Goto Second</a>
+    </div>
 </div>

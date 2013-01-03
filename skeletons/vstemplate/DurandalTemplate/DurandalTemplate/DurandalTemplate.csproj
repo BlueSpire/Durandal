@@ -122,6 +122,8 @@
     <Content Include="Images\icon.png" />
     <Content Include="Images\ios-startup-image-landscape.png" />
     <Content Include="Images\ios-startup-image-portrait.png" />
+    <Content Include="Scripts\app\controllers\first.js" />
+    <Content Include="Scripts\app\controllers\second.js" />
     <Content Include="Scripts\app\durandal\app.js" />
     <Content Include="Scripts\app\durandal\composition.js" />
     <Content Include="Scripts\app\durandal\dom.js" />
@@ -136,6 +138,7 @@
     <Content Include="Scripts\app\durandal\viewModel.js" />
     <Content Include="Scripts\app\durandal\viewModelBinder.js" />
     <Content Include="Scripts\app\durandal\widget.js" />
+    <Content Include="Scripts\app\services\frontController.js" />
     <Content Include="Scripts\app\main.js" />
     <Content Include="Scripts\app\vendor\jquery-1.7.min.js" />
     <Content Include="Scripts\app\vendor\knockout-2.2.0.js" />
@@ -145,6 +148,8 @@
     <Content Include="Scripts\app\vendor\sammy.js" />
     <Content Include="Scripts\app\vendor\text.js" />
     <Content Include="Scripts\app\viewModels\shell.js" />
+    <Content Include="Scripts\app\views\first.html" />
+    <Content Include="Scripts\app\views\second.html" />
     <Content Include="Scripts\app\views\shell.html" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
