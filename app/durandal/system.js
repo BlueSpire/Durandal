@@ -6,7 +6,7 @@
 
     //see http://patik.com/blog/complete-cross-browser-console-log/
     // Tell IE9 to use its built-in console
-    if (Function.prototype.bind && (typeof console === 'object' || typeof console === 'function') && typeof console.log == "object") {
+    if (Array.prototype.forEach && Function.prototype.bind && (typeof console === 'object' || typeof console === 'function') && typeof console.log == "object") {
         ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"]
             .forEach(function(method) {
                 console[method] = this.call(console[method], console);
