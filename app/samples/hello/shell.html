@@ -1,5 +1,8 @@
-﻿<div>
-    <h1 data-bind='html:displayName'></h1>
-    <input data-bind="value: name, valueUpdate: 'afterkeydown'"/>
-    <button data-bind='click: sayHello, enable: canSayHello'>Click Me</button>
-</div>
+﻿<form class="form-inline">
+    <fieldset>
+        <legend data-bind='html: displayName'></legend>
+        <label>Name</label>
+        <input type="text" data-bind="value: name, valueUpdate: 'afterkeydown'"/>
+        <button type="submit" class="btn" data-bind='click: sayHello, enable: canSayHello'>Click Me</button>
+    </fieldset>
+</form>
