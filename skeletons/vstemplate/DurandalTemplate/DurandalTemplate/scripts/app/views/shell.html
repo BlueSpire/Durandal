@@ -3,12 +3,12 @@
         <div class="navbar-inner">
             <a class="brand" href="/">
                 <i class="icon-home" style="font-size: 18px"></i>
-                <span data-bind='text: displayName'></span>
+                <span>Durandal</span>
             </a>
             <ul class="nav">
-                <!--ko foreach: navigation.main-->
+                <!--ko foreach: router.navigation-->
                 <li data-bind="css: { active: $parent.activeItem() && (moduleId == $parent.activeItem().__moduleId__) }">
-                    <a data-bind="attr: { href: '#/' + route }, html: mainNavName"></a>
+                    <a data-bind="attr: { href: '#/' + url }, html: name"></a>
                 </li>
                 <!--/ko-->
             </ul>

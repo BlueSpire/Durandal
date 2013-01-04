@@ -25,7 +25,7 @@
     "durandal/viewModel",
     "durandal/viewModelBinder",
     "durandal/widget",
-    "infrastructure/navigation",
+    "infrastructure/router",
     "viewModels/first",
     "viewModels/second",
     "viewModels/shell",

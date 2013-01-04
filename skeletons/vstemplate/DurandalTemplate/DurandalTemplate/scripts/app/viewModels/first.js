@@ -1,7 +1,7 @@
 ﻿define(function(require) {
-    var ctor = function() {
+    var First = function() {
         this.displayName = 'First Page';
     };
 
-    return ctor;
+    return First;
 });

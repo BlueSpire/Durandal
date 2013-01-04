@@ -14,21 +14,21 @@
     }
 
     return {
-        main:[],
-        addRoute: function (route, moduleId, mainNavName) {
+        navigation:[],
+        mapRoute: function (url, moduleId, mainNavName) {
             var routeInfo = {
-                route:route,
+                url:url,
                 moduleId: moduleId,
-                mainNavName: mainNavName
+                name: mainNavName
             };
 
-            routes[route] = routeInfo;
+            routes[url] = routeInfo;
 
             if (mainNavName) {
-                this.main.push(routeInfo);
+                this.navigation.push(routeInfo);
             }
         },
-        start: function (activator, defaultRoute) {
+        enable: function (activator, defaultRoute) {
             function activateRoute(route) {
                 var parts = route.split('/');
                 var lookup = parts[0];

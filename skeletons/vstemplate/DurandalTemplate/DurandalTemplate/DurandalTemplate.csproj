@@ -156,7 +156,7 @@
     <Content Include="scripts\app\durandal\viewModel.js" />
     <Content Include="scripts\app\durandal\viewModelBinder.js" />
     <Content Include="scripts\app\durandal\widget.js" />
-    <Content Include="scripts\app\infrastructure\navigation.js" />
+    <Content Include="scripts\app\infrastructure\router.js" />
     <Content Include="scripts\app\main.js" />
     <Content Include="scripts\app\vendor\almond-custom.js" />
     <Content Include="scripts\app\vendor\bootstrap.min.js" />

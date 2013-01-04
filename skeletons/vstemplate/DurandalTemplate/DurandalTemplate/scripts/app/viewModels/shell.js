@@ -1,22 +1,19 @@
 ﻿define(function(require) {
-    var navigation = require('infrastructure/navigation'),
+    var router = require('infrastructure/router'),
         viewModel = require('durandal/viewModel'),
         app = require('durandal/app');
 
-    var activeItem = viewModel.activator();
-
-    navigation.addRoute('first', 'viewModels/first', 'First');
-    navigation.addRoute('second', 'viewModels/second', 'Second');
-    navigation.start(activeItem, 'first');
-
     var shell = {
-        displayName: "Durandal",
-        activeItem: activeItem,
-        navigation: navigation,
+        activeItem: viewModel.activator(),
+        router: router,
         search: function () {
             app.showMessage('Search not yet implemented...');
         }
     };
+    
+    router.mapRoute('first', 'viewModels/first', 'First');
+    router.mapRoute('second', 'viewModels/second', 'Second');
+    router.enable(shell.activeItem, 'first');
 
     return shell;
 });
