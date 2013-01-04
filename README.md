@@ -1,6 +1,6 @@
-# Durandal
+Welcome to the Durandal project!
 
-A cross-device, cross-platform application framework written in JavaScript, Durandal is a very small amount of code built on top of three existing and established JavaScript libraries: [jQuery](http://jquery.com/), [Knockout](http://knockoutjs.com/) and [RequireJS](http://requirejs.org/). 
+Durandal is a cross-device, cross-platform application framework designed to make building Single Page Applications (SPAs) easy to create and maintain. It's been used to build apps for PC, Mac, Linux, iOS and Android. Now it's your turn...
 
 ## Features
 
