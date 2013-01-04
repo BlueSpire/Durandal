@@ -124,7 +124,6 @@
 
     function createActivator(initialActiveItem, settings) {
         var activeItem = ko.observable(null);
-        var isWriting = false;
         
         settings = ensureSettings(settings);
 
@@ -136,6 +135,8 @@
                 computed.activateItem(newValue);
             }
         });
+
+        computed.isActivating = ko.observable(false);
 
         computed.canDeactivateItem = function(item, close) {
             return canDeactivateItem(item, close, settings);
@@ -160,16 +161,16 @@
 
         computed.activateItem = function (newItem) {
             return system.defer(function (dfd) {
-                if (isWriting) {
+                if (computed.isActivating()) {
                     dfd.resolve(false);
                     return;
                 }
 
-                isWriting = true;
+                computed.isActivating(true);
 
                 var currentItem = activeItem();
                 if (currentItem == newItem) {
-                    isWriting = false;
+                    computed.isActivating(false);
                     dfd.resolve(true);
                     return;
                 }
@@ -183,19 +184,19 @@
                                 }).promise().then(function() {
                                     newItem = settings.beforeActivate(newItem);
                                     activate(newItem, activeItem, function(result) {
-                                        isWriting = false;
+                                        computed.isActivating(false);
                                         dfd.resolve(result);
                                     });
                                 });
                             } else {
                                 computed.notifySubscribers();
-                                isWriting = false;
+                                computed.isActivating(false);
                                 dfd.resolve(false);
                             }
                         });
                     } else {
                         computed.notifySubscribers();
-                        isWriting = false;
+                        computed.isActivating(false);
                         dfd.resolve(false);
                     }
                 });
