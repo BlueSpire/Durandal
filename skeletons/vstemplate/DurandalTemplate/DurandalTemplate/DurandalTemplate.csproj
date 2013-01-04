@@ -140,8 +140,8 @@
     <Content Include="img\ios-startup-image-landscape.png" />
     <Content Include="img\ios-startup-image-portrait.png" />
     <Content Include="scripts\app-built\main.js" />
-    <Content Include="scripts\app\controllers\first.js" />
-    <Content Include="scripts\app\controllers\second.js" />
+    <Content Include="scripts\app\viewModels\first.js" />
+    <Content Include="scripts\app\viewModels\second.js" />
     <Content Include="scripts\app\durandal\app.js" />
     <Content Include="scripts\app\durandal\composition.js" />
     <Content Include="scripts\app\durandal\dom.js" />

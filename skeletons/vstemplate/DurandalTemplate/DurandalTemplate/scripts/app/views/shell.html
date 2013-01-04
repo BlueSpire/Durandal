@@ -6,13 +6,16 @@
                 <span data-bind='text: displayName'></span>
             </a>
             <ul class="nav">
-                <!--ko foreach: navigation.navRoutes-->
+                <!--ko foreach: navigation.main-->
                 <li data-bind="css: { active: $parent.activeItem() && (moduleId == $parent.activeItem().__moduleId__) }">
-                    <a data-bind="attr: {href:'#/' + route}, html:navName"></a>
+                    <a data-bind="attr: { href: '#/' + route }, html: mainNavName"></a>
                 </li>
                 <!--/ko-->
             </ul>
-            <form class="navbar-search pull-right">
+            <div class="loader pull-right" data-bind="css: { 'active': !activeItem() || activeItem.isActivating }">
+                <i class="icon-spinner icon-2x icon-spin"></i>
+            </div>
+            <form class="navbar-search pull-right" data-bind="submit:search">
                 <input type="text" class="search-query" placeholder="Search">
             </form>
         </div>

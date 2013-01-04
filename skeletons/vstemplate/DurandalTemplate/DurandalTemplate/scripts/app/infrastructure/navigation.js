@@ -1,6 +1,7 @@
 ﻿define(function (require) {
     var system = require('durandal/system');
     var routes = {};
+    
     //NOTE: Sammy.js is not required by Durandal. This is just an example
     //of how you can use them together for navigation.
 
@@ -13,18 +14,18 @@
     }
 
     return {
-        navRoutes:[],
-        addRoute: function (route, moduleId, navName) {
+        main:[],
+        addRoute: function (route, moduleId, mainNavName) {
             var routeInfo = {
                 route:route,
                 moduleId: moduleId,
-                navName: navName
+                mainNavName: mainNavName
             };
 
             routes[route] = routeInfo;
 
-            if (navName) {
-                this.navRoutes.push(routeInfo);
+            if (mainNavName) {
+                this.main.push(routeInfo);
             }
         },
         start: function (activator, defaultRoute) {

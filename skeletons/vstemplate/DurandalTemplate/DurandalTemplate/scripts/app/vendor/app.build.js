@@ -11,8 +11,6 @@
   "mainConfigFile": "C:\\Users\\Rob\\Documents\\GitHub\\Durandal\\skeletons\\vstemplate\\DurandalTemplate\\DurandalTemplate\\scripts\\app\\main.js",
   "include": [
     "main",
-    "controllers/first",
-    "controllers/second",
     "durandal/app",
     "durandal/composition",
     "durandal/dom",
@@ -28,6 +26,8 @@
     "durandal/viewModelBinder",
     "durandal/widget",
     "infrastructure/navigation",
+    "viewModels/first",
+    "viewModels/second",
     "viewModels/shell",
     "text!views/first.html",
     "text!views/second.html",
