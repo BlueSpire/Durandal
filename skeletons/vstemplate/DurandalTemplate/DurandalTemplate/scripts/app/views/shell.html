@@ -1,7 +1,10 @@
 ﻿<div>
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
-            <span class="brand" data-bind='text: displayName'></span>
+            <a class="brand" href="/">
+                <i class="icon-home" style="font-size: 18px"></i>
+                <span data-bind='text: displayName'></span>
+            </a>
             <ul class="nav">
                 <!--ko foreach: navigation.navRoutes-->
                 <li data-bind="css: { active: $parent.activeItem() && (moduleId == $parent.activeItem().__moduleId__) }">
