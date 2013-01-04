@@ -28,9 +28,9 @@
         <div id="applicationHost"></div>
         
         @if (HttpContext.Current.IsDebuggingEnabled) {
-            <script type="text/javascript" src="~/app/vendor/require.js" data-main="app/main"></script>
+            <script type="text/javascript" src="~/App/vendor/require.js" data-main="App/main"></script>
         } else {
-            <script type="text/javascript" src="~/app-built/main.js"></script>
+            <script type="text/javascript" src="~/App/main-built.js"></script>
         }
     </body>
 </html>

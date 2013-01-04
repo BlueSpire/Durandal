@@ -9,10 +9,10 @@ namespace DurandalTemplate {
 
       bundles.Add(
         new ScriptBundle("~/scripts/vendor")
-          .Include("~/app/vendor/jquery-1.7.min.js")
-          .Include("~/app/vendor/knockout-2.2.0.js")
-          .Include("~/app/vendor/sammy.js")
-          .Include("~/app/vendor/bootstrap.min.js")
+          .Include("~/App/vendor/jquery-1.7.min.js")
+          .Include("~/App/vendor/knockout-2.2.0.js")
+          .Include("~/App/vendor/sammy.js")
+          .Include("~/App/vendor/bootstrap.min.js")
         );
 
       bundles.Add(
