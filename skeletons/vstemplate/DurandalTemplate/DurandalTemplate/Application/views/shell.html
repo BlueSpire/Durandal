@@ -12,7 +12,7 @@
                 </li>
                 <!--/ko-->
             </ul>
-            <div class="loader pull-right" data-bind="css: { 'active': !activeItem() || activeItem.isActivating }">
+            <div class="loader pull-right" data-bind="css: { active: !activeItem() || activeItem.isActivating }">
                 <i class="icon-spinner icon-2x icon-spin"></i>
             </div>
             <form class="navbar-search pull-right" data-bind="submit:search">
@@ -22,6 +22,6 @@
     </div>
     
     <div class="container-fluid">
-        <div class="row-fluid" data-bind='compose: activeItem'></div>
+        <div class="row-fluid" data-bind="compose: activeItem"></div>
     </div>
 </div>
