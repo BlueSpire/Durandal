@@ -40,7 +40,7 @@
                 });
             }
 
-            Sammy(function(route) {
+            var app = Sammy(function (route) {
                 route.get('', function() {
                     var fragment = this.path.split('#/');
                     if (fragment.length == 2) {
@@ -49,7 +49,13 @@
                         activateRoute(defaultRoute);
                     }
                 });
-            }).run();
+            });
+
+            app._checkFormSubmission = function () {
+                return false;
+            };
+
+            app.run();
         }
     };
 });

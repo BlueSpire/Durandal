@@ -14,7 +14,7 @@
         activeItem: activeItem,
         navigation: navigation,
         search: function () {
-            app.showMessage('Not implemented...');
+            app.showMessage('Search not yet implemented...');
         }
     };
 
