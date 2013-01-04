@@ -10,7 +10,7 @@ A cross-device, cross-platform application framework written in JavaScript, Dura
 * A simple app model provides you with an app start lifecycle, modal dialogs, message boxes and an event aggregator.
 * Build reusable, databindable, skinnable and templatable widgets.
 * Leverage optional components for screen and sub-screen activation and de-activation enabling elegant handling of complex screen states.
-* Optimize all your HTML and JavaScript into a single file for relelase.
+* Optimize all your HTML and JavaScript into a single file for release.
 
 ## Documentation
 
