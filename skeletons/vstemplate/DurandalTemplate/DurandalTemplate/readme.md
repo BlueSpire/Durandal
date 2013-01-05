@@ -4,7 +4,7 @@ Welcome to the Durandal template project for Visual Studio!
 
 Durandal is a cross-device, cross-platform application framework 
 designed to make building Single Page Applications (SPAs) easy to create and maintain. 
-It's been used to build apps for PC, Mac, Linux, iOS and Android. Now it's your turn...
+It's been used to build apps for PC, Mac, Linux, iOS and Android.
 
 This sample template sets up a basic navigation-style architecture for you. Below are a few 
 "points of interest" for you to investigate along with some brief explanation. For further

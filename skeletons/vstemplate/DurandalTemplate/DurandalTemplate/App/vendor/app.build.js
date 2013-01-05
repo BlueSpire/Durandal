@@ -7,8 +7,8 @@
   "paths": {
     "text": "vendor/text"
   },
-  "baseUrl": "C:\\Users\\Rob\\Documents\\GitHub\\Durandal\\skeletons\\vstemplate\\DurandalTemplate\\DurandalTemplate\\scripts\\app",
-  "mainConfigFile": "C:\\Users\\Rob\\Documents\\GitHub\\Durandal\\skeletons\\vstemplate\\DurandalTemplate\\DurandalTemplate\\scripts\\app\\main.js",
+  "baseUrl": "C:\\Users\\Rob\\Documents\\GitHub\\Durandal\\skeletons\\vstemplate\\DurandalTemplate\\DurandalTemplate\\App",
+  "mainConfigFile": "C:\\Users\\Rob\\Documents\\GitHub\\Durandal\\skeletons\\vstemplate\\DurandalTemplate\\DurandalTemplate\\App\\main.js",
   "include": [
     "main",
     "durandal/app",
@@ -36,7 +36,7 @@
   "exclude": [],
   "keepBuildDir": true,
   "optimize": "uglify2",
-  "out": "C:\\Users\\Rob\\Documents\\GitHub\\Durandal\\skeletons\\vstemplate\\DurandalTemplate\\DurandalTemplate\\scripts\\app-built\\main.js",
+  "out": "C:\\Users\\Rob\\Documents\\GitHub\\Durandal\\skeletons\\vstemplate\\DurandalTemplate\\DurandalTemplate\\App\\main-built.js",
   "wrap": true,
   "insertRequire": [
     "main"
