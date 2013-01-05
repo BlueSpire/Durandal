@@ -1,5 +1,6 @@
 ﻿define(function(require) {
     var system = require('./system');
+    var viewModel;
 
     function ensureSettings(settings) {
         if (settings == undefined) {
@@ -21,13 +22,7 @@
         }
         
         if (!settings.interpretGuard) {
-            settings.interpretGuard = function (value) {
-                if (typeof value == 'string') {
-                    return value == 'Yes' || value == 'Ok';
-                }
-
-                return value;
-            };
+            settings.interpretGuard = viewModel.defaultInterpretGuard;
         }
 
         return settings;
@@ -367,7 +362,14 @@
         return computed;
     }
 
-    return {
+    return viewModel = {
+        defaultInterpretGuard: function(value) {
+            if (typeof value == 'string') {
+                return value == 'Yes' || value == 'Ok';
+            }
+
+            return value;
+        },
         activator: createActivator
     };
 });
