@@ -34,9 +34,12 @@
                 var lookup = parts[0];
                 var params = parts.splice(1);
 
-                system.acquire(routes[lookup].moduleId).then(function (controller) {
-                    var instance = construct(controller, params);
-                    activator(instance);
+                system.acquire(routes[lookup].moduleId).then(function(module) {
+                    if (typeof module == "function") {
+                        activator(construct(module, params));
+                    } else {
+                        activator(module);
+                    }
                 });
             }
 

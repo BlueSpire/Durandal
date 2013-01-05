@@ -3,6 +3,10 @@
     padding-top: 40px;
 }
 
+.navbar-fixed-top {
+    z-index: 100;
+}
+
 .loader {
     margin: 6px 8px 4px 8px;
     visibility: hidden;
