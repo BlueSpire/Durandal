@@ -55,7 +55,6 @@ We sincerely hope you enjoy working with Durandal and that it makes your SPA app
 join the community by participating in our google group, forking and submitting pull requests for bug fixes and new
 feature ideas.
 
-With Warm Wishes for Excellent Application Development,
- 
-Rob Eisenberg
+With Warm Wishes for Excellent Application Development, 
+Rob Eisenberg 
 (aka EisenbergEffect)
