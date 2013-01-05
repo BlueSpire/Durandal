@@ -9,5 +9,7 @@ namespace Optimizer {
     public IEnumerable<string> Excludes { get; set; }
     public string BuildFilePath { get; set; }
     public string OptimizerPath { get; set; }
+    public string OutputPath { get; set; }
+    public string MainPath { get; set; }
   }
 }

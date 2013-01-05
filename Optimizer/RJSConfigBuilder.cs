@@ -6,7 +6,7 @@ namespace Optimizer {
   class RJSConfigBuilder {
     readonly Options options;
     readonly string[] extensionIncludes;
-    readonly string[] fileExcludes = new[] {"app.build.js", "r.js", "optimizer.base.js"};
+    readonly string[] fileExcludes = new[] {"app.build.js", "r.js", "optimizer.base.js", "main-built.js"};
 
     public RJSConfigBuilder(Options options) {
       this.options = options;
@@ -24,6 +24,8 @@ namespace Optimizer {
 
       info.BuildFilePath = Path.Combine(options.ApplicationSource, "vendor/app.build.js");
       info.OptimizerPath = Path.Combine(options.ApplicationSource, "vendor/r.js");
+      info.OutputPath = Path.Combine(options.ApplicationSource, "main-built.js");
+      info.MainPath = Path.Combine(options.ApplicationSource, "main.js");
 
       BuildConfig(info);
 
@@ -36,10 +38,8 @@ namespace Optimizer {
       if(options.Almond) {
         options.Log("Configuring for deploy with almond (custom).");
 
-        var mainPath = Path.Combine(options.ApplicationSource, "main.js");
-
         JSON.EnsureProperty(config, "name", "vendor/almond-custom");
-        JSON.EnsureProperty(config, "mainConfigFile", mainPath);
+        JSON.EnsureProperty(config, "mainConfigFile", info.MainPath);
         JSON.EnsureProperty(config, "wrap", true);
 
         var insertRequire = JSON.EnsureArray(config, "insertRequire");
@@ -51,7 +51,7 @@ namespace Optimizer {
       }
 
       JSON.EnsureProperty(config, "baseUrl", info.BaseUrl);
-      JSON.EnsureProperty(config, "out", Path.Combine(options.ApplicationSource, "main-built.js"));
+      JSON.EnsureProperty(config, "out", info.OutputPath);
 
       var include = JSON.EnsureArray(config, "include");
       if(include.Count < 1) {
@@ -92,9 +92,7 @@ namespace Optimizer {
       }
 
       return from fileName in Directory.EnumerateFiles(vendor, "*", SearchOption.AllDirectories)
-             let info = new FileInfo(fileName)
-             where ShouldIncludeFile(info)
-             select info.FullName;
+             select fileName;
     }
 
     bool ShouldIncludeFile(FileInfo info) {
