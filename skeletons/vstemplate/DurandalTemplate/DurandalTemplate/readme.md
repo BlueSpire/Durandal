@@ -15,6 +15,8 @@ information please visit us at http://www.durandaljs.com
 * The main app code lives under *App*.
 * Css, fonts and images can be found in their own folders under *Content*.
 * Css and script library bundling has been configured in *App_Start/BundleConfig.cs*.
-* The Home view contains the basic page's starter html, links and script references.
+* The *Home/Index* view contains the launcher page's html, links and script references.
 
 ## Explanation of the SPA Architecture
+
+TODO
