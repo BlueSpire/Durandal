@@ -5,8 +5,9 @@
         widget = require('./widget'), //loads the widget handler
         dom = require('./dom'),
         modalDialog = require('./modalDialog'),
-        MessageBox = require('./messageBox'),
         Events = require('./events');
+
+    var MessageBox;
 
     var app = {
         showModal: function(viewModel) {
@@ -20,8 +21,11 @@
                 system.debug($('meta[name=debug]').attr('content') === 'true');
                 dom.ready().then(function() {
                     system.log('Starting Application');
-                    dfd.resolve();
-                    system.log('Started Application');
+                    system.acquire('./messageBox').then(function (mb) {
+                        MessageBox = mb;
+                        dfd.resolve();
+                        system.log('Started Application');
+                    });
                 });
             }).promise();
         },
