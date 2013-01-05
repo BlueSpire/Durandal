@@ -19,4 +19,42 @@ information please visit us at http://www.durandaljs.com
 
 ## Explanation of the SPA Architecture
 
-TODO
+The application starts when require.js loads and executes the applications's *main.js* module.
+This module starts up Durandal, does some configuration and then tells the framework to display
+the application's *shell*. You can think of this lossely as a "main window." In Durandal, a UI is
+constructed by building View Models (aka Presentation Models) or Controllers and Views. The framework
+binds them together and inserts them into the dom. Durandal's composition features allow you to break
+down very complex user interfaces into small modules which can be recursively composed together. This 
+technique makes even the most complex user interfaces relatively easy to build. In this starter kit the
+*viewModels/shell* module is bound to the "views/shell" html and inserted into the dom. The shell view
+then composes in "page" view models based on the navigation location. Navigation is handled by a router
+built for this starter kit. Under the covers it uses SammyJS, but ultimately urls get mapped to modules which
+then get composed into the page by the shell. This happens because the router changes the value of the 
+*activeItem* property which the shell provides it with. This same activator is bound via the *compose* binding
+in the shell's view. Each page view model is free to follow it's own architecure internally, depending on 
+what makes the most sense for the feature being developed. The shell is unconcerned with the inner details of the
+pages it is displaying, as you would hope. To build on top of this sample, begin by creating view models for
+the pages you wish to add to the navigation structure. In the shell, register the view models with the router.
+Create a view for each module following the naming convention you see presented here.
+
+## Going Further
+
+Durandal is built on jQuery, Knockout and RequireJS. So, you have all the power of those tools
+available to you to build your application. Additionally, this sample uses SammyJS for navigation. It also
+provides you with a powerful CSS framework to get started with: Bootstrap, which has been augmented
+with Font-Awesome to supply you with hundreds of font-based (vector) icons applicable with a simple 
+CSS class. Durandal builds on top of this by providng you with a consistent API specifically designed for
+SPA development. The API consistently uses promises for all asynchronous code, highly favors modularization and
+composition, and gives you a simple convention for organizing and easily optimizing your project. All of Durandal is
+provided as AMD modules, each of which has it's API documented on the project wiki. You can head over there for
+more in depth information. There are also other articles you may wish to read in order to learn how to create
+skinnable, bindable and templatable widgets as well as how to use the optimizer to create the main-built.js file you
+see here, which contains all the JS and HTML for your app in a single file.
+
+We sincerely hope you enjoy working with Durandal and that it makes your SPA application development a joy. Please 
+join the community by participating in our google group, forking and submitting pull requests for bug fixes and new
+feature ideas.
+
+With Warm Wishes for Excellent Application Development,
+Rob Eisenberg
+(aka EisenbergEffect)
