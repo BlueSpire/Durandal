@@ -10,15 +10,15 @@ define(function(require) {
 
     //Let's start up Durandal...
     app.start().then(function () {
-        //customizing the view location strategy for our app
+        //Customizing the view location strategy for our app is easy.
         viewLocator.convertModuleIdToViewUrl = function (moduleId) {
             return moduleId.replace('viewModel', 'view');
         };
 
-        //make the app fit to the screen on touch devices
+        //Here, we make the app fit to the screen for touch devices.
         app.makeFit();
         
-        //set the root view model for our application
+        //Show the app by setting the root view model for our application.
         app.setRoot('viewModels/shell');
     });
 });
