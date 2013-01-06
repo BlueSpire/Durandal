@@ -4,7 +4,7 @@ Durandal is a cross-device, cross-platform application framework designed to mak
 
 ## Features
 
-# Built on top of the industry leading and proven libraries jQuery, Knockout and RequireJS.
+* Built on top of the industry leading and proven libraries jQuery, Knockout and RequireJS.
 * Enables clean and simple MVC, MVVM and MVP patterned architecures through simple module conventions.
 * Promises are embraced everywhere in the API for a robust, consistent  approach to async programming.
 * The first html/js framework where *UI Composition* is embraced at the very core and flows outward to everything.
