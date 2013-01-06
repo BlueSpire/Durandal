@@ -4,7 +4,7 @@ Welcome to the Durandal template project for Visual Studio!
 
 Durandal is a cross-device, cross-platform application framework 
 designed to make building Single Page Applications (SPAs) easy to create and maintain. 
-It's been used to build apps for PC, Mac, Linux, iOS and Android.
+We've used it to build build apps for PC, Mac, Linux, iOS and Android...and now it's your turn...
 
 This sample template sets up a basic navigation-style architecture for you. Below are a few 
 "points of interest" for you to investigate along with some brief explanation. For further
@@ -12,7 +12,7 @@ information please visit us at http://www.durandaljs.com
 
 ## Points of Interest
 
-* The main app code lives under *App*.
+* The main app code lives under *App* and is organized into AMD modules and HTML views.
 * Css, fonts and images can be found in their own folders under *Content*.
 * Css and script library bundling has been configured in *App_Start/BundleConfig.cs*.
 * The *Home/Index* view contains the launcher page's html, links and script references.
@@ -21,7 +21,7 @@ information please visit us at http://www.durandaljs.com
 
 The application starts when require.js loads and executes the applications's *main.js* module.
 This module starts up Durandal, does some configuration and then tells the framework to display
-the application's *shell*. You can think of this lossely as a "main window." In Durandal, a UI is
+the application's *shell*. You can think of this loosely as a "main window." In Durandal, a UI is
 constructed by building View Models (aka Presentation Models) or Controllers and Views. The framework
 binds them together and inserts them into the dom. Durandal's composition features allow you to break
 down very complex user interfaces into small modules which can be recursively composed together. This 
@@ -44,7 +44,7 @@ available to you to build your application. Additionally, this sample uses Sammy
 provides you with a powerful CSS framework to get started with: Bootstrap, which has been augmented
 with Font-Awesome to supply you with hundreds of font-based (vector) icons applicable with a simple 
 CSS class. Durandal builds on top of this by providng you with a consistent API specifically designed for
-SPA development. The API consistently uses promises for all asynchronous code, highly favors modularization and
+SPA development. The API uses promises for all asynchronous code, highly favors modularization and
 composition, and gives you a simple convention for organizing and easily optimizing your project. All of Durandal is
 provided as AMD modules, each of which has it's API documented on the project wiki. You can head over there for
 more in depth information. There are also other articles you may wish to read in order to learn how to create
