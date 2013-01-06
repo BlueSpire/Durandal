@@ -46,10 +46,16 @@ namespace Optimizer {
       return ReadConfigFromResource(options);
     }
 
+    public static Stream ReadFromResource(string name) {
+      return Assembly
+        .GetExecutingAssembly()
+        .GetManifestResourceStream("Optimizer.Resources." + name);
+    }
+
     static JObject ReadConfigFromResource(Options options) {
       options.Log("Using default base configuration.");
 
-      using(var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Optimizer.optimizer.base.js")) {
+      using(var stream = ReadFromResource("optimizer.base.js")) {
         using(var streamReader = new StreamReader(stream)) {
           using(var jsonReader = new JsonTextReader(streamReader)) {
             return JObject.Load(jsonReader);

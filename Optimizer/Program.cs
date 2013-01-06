@@ -7,7 +7,7 @@ namespace Optimizer {
       try {
         var hasNode = IO.ExistsOnPath("node.exe");
         if (!hasNode) {
-          Console.WriteLine("Exiting: Node is not installed.");
+          Console.WriteLine("Exiting - Node is not installed.");
           Console.WriteLine("Please visit http://nodejs.org/ to install nodejs.");
           return;
         }

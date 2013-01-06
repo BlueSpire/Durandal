@@ -18,6 +18,22 @@ namespace Optimizer {
         File.Delete(config.OutputPath);
       }
 
+      if(!File.Exists(config.OptimizerPath)) {
+        using(var stream = IO.ReadFromResource("r.js"))
+        using(var file = File.OpenWrite(config.OptimizerPath)) {
+          stream.CopyTo(file);
+        }
+      }
+
+      if(options.Almond) {
+        if(!File.Exists(config.AlmondPath)) {
+          using(var stream = IO.ReadFromResource("almond-custom.js"))
+          using(var file = File.OpenWrite(config.AlmondPath)) {
+            stream.CopyTo(file);
+          }
+        }
+      }
+
       var command = "/C node \"" +
                     config.OptimizerPath + "\" -o \"" +
                     config.BuildFilePath + "\"";

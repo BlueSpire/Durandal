@@ -7,6 +7,7 @@ namespace Optimizer {
     readonly Options options;
     readonly string[] extensionIncludes;
     readonly string[] fileExcludes = new[] {"app.build.js", "r.js", "optimizer.base.js", "main-built.js"};
+    const string relativeAlmondPath = "vendor/almond-custom";
 
     public RJSConfigBuilder(Options options) {
       this.options = options;
@@ -24,6 +25,7 @@ namespace Optimizer {
 
       info.BuildFilePath = Path.Combine(options.ApplicationSource, "vendor/app.build.js");
       info.OptimizerPath = Path.Combine(options.ApplicationSource, "vendor/r.js");
+      info.AlmondPath = Path.Combine(options.ApplicationSource, relativeAlmondPath + ".js");
       info.OutputPath = Path.Combine(options.ApplicationSource, "main-built.js");
       info.MainPath = Path.Combine(options.ApplicationSource, "main.js");
 
@@ -38,7 +40,7 @@ namespace Optimizer {
       if(options.Almond) {
         options.Log("Configuring for deploy with almond (custom).");
 
-        JSON.EnsureProperty(config, "name", "vendor/almond-custom");
+        JSON.EnsureProperty(config, "name", relativeAlmondPath);
         JSON.EnsureProperty(config, "mainConfigFile", info.MainPath);
         JSON.EnsureProperty(config, "wrap", true);
 

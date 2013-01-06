@@ -11,5 +11,6 @@ namespace Optimizer {
     public string OptimizerPath { get; set; }
     public string OutputPath { get; set; }
     public string MainPath { get; set; }
+    public string AlmondPath { get; set; }
   }
 }
