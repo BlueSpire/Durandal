@@ -9,7 +9,7 @@ Durandal is a cross-device, cross-platform application framework designed to mak
 * Promises are embraced everywhere in the API for a robust, consistent  approach to async programming.
 * The first html/js framework where *UI Composition* is embraced at the very core and flows outward to everything.
 * A simple app model provides you with an app start lifecycle, modal dialogs, message boxes and an event aggregator.
-* Build reusable, databindable, skinnable and templatable widgets.
+* Elegant creation of reusable, databindable, skinnable and templatable widgets.
 * Leverage optional components for screen activation/deactivation, enabling elegant handling of complex screen states.
 * Optimize all your HTML and JavaScript into a single file for release.
 * Easily customize any part of the frameork.
