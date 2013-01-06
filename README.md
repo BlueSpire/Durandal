@@ -12,6 +12,8 @@ Durandal is a cross-device, cross-platform application framework designed to mak
 * Build reusable, databindable, skinnable and templatable widgets.
 * Leverage optional components for screen activation/deactivation, enabling elegant handling of complex screen states.
 * Optimize all your HTML and JavaScript into a single file for release.
+* Easily customize any part of the frameork.
+* Integrates beautifully with other libraries such as SammyJS and Bootstrap.
 * Works with any backend technology.
 
 ## Documentation
