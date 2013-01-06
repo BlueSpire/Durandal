@@ -1,6 +1,6 @@
 Welcome to the Durandal project!
 
-Durandal is a cross-device, cross-platform application framework designed to make building Single Page Applications (SPAs) easy to create and maintain. It's been used to build apps for PC, Mac, Linux, iOS and Android.
+Durandal is a cross-device, cross-platform application framework designed to make building Single Page Applications (SPAs) easy to create and maintain. We've used it to build build apps for PC, Mac, Linux, iOS and Android...and now it's your turn...
 
 ## Features
 
