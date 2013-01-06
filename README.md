@@ -16,7 +16,7 @@ Durandal is a cross-device, cross-platform application framework designed to mak
 
 ## Documentation
 
-All the documentation is located in the [wiki](https://github.com/EisenbergEffect/Durandal/wiki), so have a look there for help on how to get setup, tutorials, sample descriptions and module reference docs.
+All the documentation is located in the [wiki](https://github.com/EisenbergEffect/Durandal/wiki), so have a look there for help on how to get started, read tutorials, view sample descriptions and peruse the module reference docs.
 
 ## Community
 Need help with something that the docs aren't providing an answer to? 
