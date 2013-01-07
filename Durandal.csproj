@@ -71,12 +71,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\content\css\app.css" />
-    <Content Include="app\content\css\bootstrap-responsive.min.css" />
-    <Content Include="app\content\css\bootstrap.min.css" />
-    <Content Include="app\content\images\icon.png" />
-    <Content Include="app\content\images\ios-startup-image-landscape.png" />
-    <Content Include="app\content\images\ios-startup-image-portrait.png" />
+    <Content Include="Content\css\app.css" />
+    <Content Include="Content\css\bootstrap-responsive.min.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\img\icon.png" />
+    <Content Include="Content\img\ios-startup-image-landscape.png" />
+    <Content Include="Content\img\ios-startup-image-portrait.png" />
     <Content Include="app\durandal\app.js" />
     <Content Include="app\durandal\composition.js" />
     <Content Include="app\durandal\modalDialog.js" />
@@ -190,6 +190,6 @@ xcopy "$(SolutionDir)app\vendor" "$(SolutionDir)skeletons\nuget\content\App\vend
 
 xcopy "$(SolutionDir)app\durandal" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\durandal\" /s /i /y
 xcopy "$(SolutionDir)app\vendor" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\vendor\" /s /i /y
-xcopy "$(SolutionDir)app\content\images" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\img\" /s /i /y</PostBuildEvent>
+xcopy "$(SolutionDir)Content\img" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\img\" /s /i /y</PostBuildEvent>
   </PropertyGroup>
 </Project>
