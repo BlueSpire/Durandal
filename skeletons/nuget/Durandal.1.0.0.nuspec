@@ -27,38 +27,27 @@ All the documentation is located in the wiki, so have a look there for help on h
         <tags>MVVM JavaScript JS Durandal HTML CSS MVC MVP Web SPA RIA</tags>
     </metadata>
     <files>
-        <file src="content\Content\app.css" target="content\Content\app.css" />
-        <file src="content\Content\bootstrap-responsive.min.css" target="content\Content\bootstrap-responsive.min.css" />
-        <file src="content\Content\bootstrap.min.css" target="content\Content\bootstrap.min.css" />
-        <file src="content\Images\icon.png" target="content\Images\icon.png" />
-        <file src="content\Images\ios-startup-image-landscape.png" target="content\Images\ios-startup-image-landscape.png" />
-        <file src="content\Images\ios-startup-image-portrait.png" target="content\Images\ios-startup-image-portrait.png" />
-        <file src="content\Scripts\app\durandal\app.js" target="content\Scripts\app\durandal\app.js" />
-        <file src="content\Scripts\app\durandal\composition.js" target="content\Scripts\app\durandal\composition.js" />
-        <file src="content\Scripts\app\durandal\dom.js" target="content\Scripts\app\durandal\dom.js" />
-        <file src="content\Scripts\app\durandal\events.js" target="content\Scripts\app\durandal\events.js" />
-        <file src="content\Scripts\app\durandal\http.js" target="content\Scripts\app\durandal\http.js" />
-        <file src="content\Scripts\app\durandal\messageBox.html" target="content\Scripts\app\durandal\messageBox.html" />
-        <file src="content\Scripts\app\durandal\messageBox.js" target="content\Scripts\app\durandal\messageBox.js" />
-        <file src="content\Scripts\app\durandal\modalDialog.js" target="content\Scripts\app\durandal\modalDialog.js" />
-        <file src="content\Scripts\app\durandal\system.js" target="content\Scripts\app\durandal\system.js" />
-        <file src="content\Scripts\app\durandal\viewEngine.js" target="content\Scripts\app\durandal\viewEngine.js" />
-        <file src="content\Scripts\app\durandal\viewLocator.js" target="content\Scripts\app\durandal\viewLocator.js" />
-        <file src="content\Scripts\app\durandal\viewModel.js" target="content\Scripts\app\durandal\viewModel.js" />
-        <file src="content\Scripts\app\durandal\viewModelBinder.js" target="content\Scripts\app\durandal\viewModelBinder.js" />
-        <file src="content\Scripts\app\durandal\widget.js" target="content\Scripts\app\durandal\widget.js" />
-        <file src="content\Scripts\app\vendor\almond-custom.js" target="content\Scripts\app\vendor\almond-custom.js" />
-        <file src="content\Scripts\app\vendor\bootstrap.min.js" target="content\Scripts\app\vendor\bootstrap.min.js" />
-        <file src="content\Scripts\app\vendor\jquery-1.7.min.js" target="content\Scripts\app\vendor\jquery-1.7.min.js" />
-        <file src="content\Scripts\app\vendor\knockout-2.2.0.js" target="content\Scripts\app\vendor\knockout-2.2.0.js" />
-        <file src="content\Scripts\app\vendor\optimizer.exe" target="content\Scripts\app\vendor\optimizer.exe" />
-        <file src="content\Scripts\app\vendor\r.js" target="content\Scripts\app\vendor\r.js" />
-        <file src="content\Scripts\app\vendor\require.js" target="content\Scripts\app\vendor\require.js" />
-        <file src="content\Scripts\app\vendor\sammy.js" target="content\Scripts\app\vendor\sammy.js" />
-        <file src="content\Scripts\app\vendor\text.js" target="content\Scripts\app\vendor\text.js" />
-        <file src="content\Scripts\app\viewModels\shell.js" target="content\Scripts\app\viewModels\shell.js" />
-        <file src="content\Scripts\app\views\shell.html" target="content\Scripts\app\views\shell.html" />
-        <file src="content\Scripts\app\main.js" target="content\Scripts\app\main.js" />
-        <file src="content\index.html" target="content\index.html" />
+        <file src="content\App\durandal\app.js" target="content\App\durandal\app.js" />
+        <file src="content\App\durandal\composition.js" target="content\App\durandal\composition.js" />
+        <file src="content\App\durandal\dom.js" target="content\App\durandal\dom.js" />
+        <file src="content\App\durandal\events.js" target="content\App\durandal\events.js" />
+        <file src="content\App\durandal\http.js" target="content\App\durandal\http.js" />
+        <file src="content\App\durandal\messageBox.html" target="content\App\durandal\messageBox.html" />
+        <file src="content\App\durandal\messageBox.js" target="content\App\durandal\messageBox.js" />
+        <file src="content\App\durandal\modalDialog.js" target="content\App\durandal\modalDialog.js" />
+        <file src="content\App\durandal\system.js" target="content\App\durandal\system.js" />
+        <file src="content\App\durandal\viewEngine.js" target="content\App\durandal\viewEngine.js" />
+        <file src="content\App\durandal\viewLocator.js" target="content\App\durandal\viewLocator.js" />
+        <file src="content\App\durandal\viewModel.js" target="content\App\durandal\viewModel.js" />
+        <file src="content\App\durandal\viewModelBinder.js" target="content\App\durandal\viewModelBinder.js" />
+        <file src="content\App\durandal\widget.js" target="content\App\durandal\widget.js" />
+        <file src="content\App\vendor\almond-custom.js" target="content\App\vendor\almond-custom.js" />
+        <file src="content\App\vendor\jquery-1.7.min.js" target="content\App\vendor\jquery-1.7.min.js" />
+        <file src="content\App\vendor\knockout-2.2.0.js" target="content\App\vendor\knockout-2.2.0.js" />
+        <file src="content\App\vendor\optimizer.exe" target="content\App\vendor\optimizer.exe" />
+        <file src="content\App\vendor\optimizer.pdb" target="content\App\vendor\optimizer.pdb" />
+        <file src="content\App\vendor\r.js" target="content\App\vendor\r.js" />
+        <file src="content\App\vendor\require.js" target="content\App\vendor\require.js" />
+        <file src="content\App\vendor\text.js" target="content\App\vendor\text.js" />
     </files>
 </package>
