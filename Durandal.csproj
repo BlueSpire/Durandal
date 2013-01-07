@@ -77,58 +77,58 @@
     <Content Include="Content\img\icon.png" />
     <Content Include="Content\img\ios-startup-image-landscape.png" />
     <Content Include="Content\img\ios-startup-image-portrait.png" />
-    <Content Include="application\durandal\app.js" />
-    <Content Include="application\durandal\composition.js" />
-    <Content Include="application\durandal\modalDialog.js" />
-    <Content Include="application\durandal\viewModel.js" />
-    <Content Include="application\durandal\dom.js" />
-    <Content Include="application\durandal\events.js" />
-    <Content Include="application\durandal\http.js" />
-    <Content Include="application\durandal\messageBox.html" />
-    <Content Include="application\durandal\messageBox.js" />
-    <Content Include="application\durandal\system.js" />
-    <Content Include="application\durandal\viewEngine.js" />
-    <Content Include="application\durandal\viewLocator.js" />
-    <Content Include="application\durandal\viewModelBinder.js" />
-    <Content Include="application\durandal\widget.js" />
-    <Content Include="application\samples\navigationAdvanced\views\first.html" />
-    <Content Include="application\samples\navigationAdvanced\controllers\first.js" />
-    <Content Include="application\samples\navigationAdvanced\frontController.js" />
-    <Content Include="application\samples\navigationAdvanced\views\second.html" />
-    <Content Include="application\samples\navigationAdvanced\controllers\second.js" />
-    <Content Include="application\samples\navigationAdvanced\shell.html" />
-    <Content Include="application\samples\navigationAdvanced\shell.js" />
-    <Content Include="application\vendor\almond-custom.js" />
-    <Content Include="application\vendor\bootstrap.min.js" />
-    <Content Include="application\vendor\jquery-1.7.min.js" />
-    <Content Include="application\vendor\knockout-2.2.0.js" />
-    <Content Include="application\vendor\require.js" />
-    <Content Include="application\vendor\sammy.js" />
-    <Content Include="application\vendor\text.js" />
-    <Content Include="application\main.js" />
-    <Content Include="application\vendor\r.js" />
-    <Content Include="application\samples\hello\shell.html" />
-    <Content Include="application\samples\hello\shell.js" />
-    <Content Include="application\samples\masterDetail\project.html" />
-    <Content Include="application\samples\masterDetail\project.js" />
-    <Content Include="application\samples\masterDetail\shell.html" />
-    <Content Include="application\samples\masterDetail\shell.js" />
-    <Content Include="application\samples\navigation\first.html" />
-    <Content Include="application\samples\navigation\first.js" />
-    <Content Include="application\samples\navigation\second.html" />
-    <Content Include="application\samples\navigation\second.js" />
-    <Content Include="application\samples\navigation\shell.html" />
-    <Content Include="application\samples\navigation\shell.js" />
-    <Content Include="application\samples\viewComposition\childView1.html" />
-    <Content Include="application\samples\viewComposition\childView2.html" />
-    <Content Include="application\samples\viewComposition\shell.html" />
-    <Content Include="application\samples\viewComposition\shell.js" />
-    <Content Include="application\samples\widgets\project.html" />
-    <Content Include="application\samples\widgets\project.js" />
-    <Content Include="application\samples\widgets\shell.html" />
-    <Content Include="application\samples\widgets\shell.js" />
-    <Content Include="application\widgets\expander\view.html" />
-    <Content Include="application\widgets\expander\controller.js" />
+    <Content Include="App\durandal\app.js" />
+    <Content Include="App\durandal\composition.js" />
+    <Content Include="App\durandal\modalDialog.js" />
+    <Content Include="App\durandal\viewModel.js" />
+    <Content Include="App\durandal\dom.js" />
+    <Content Include="App\durandal\events.js" />
+    <Content Include="App\durandal\http.js" />
+    <Content Include="App\durandal\messageBox.html" />
+    <Content Include="App\durandal\messageBox.js" />
+    <Content Include="App\durandal\system.js" />
+    <Content Include="App\durandal\viewEngine.js" />
+    <Content Include="App\durandal\viewLocator.js" />
+    <Content Include="App\durandal\viewModelBinder.js" />
+    <Content Include="App\durandal\widget.js" />
+    <Content Include="App\samples\navigationAdvanced\views\first.html" />
+    <Content Include="App\samples\navigationAdvanced\controllers\first.js" />
+    <Content Include="App\samples\navigationAdvanced\frontController.js" />
+    <Content Include="App\samples\navigationAdvanced\views\second.html" />
+    <Content Include="App\samples\navigationAdvanced\controllers\second.js" />
+    <Content Include="App\samples\navigationAdvanced\shell.html" />
+    <Content Include="App\samples\navigationAdvanced\shell.js" />
+    <Content Include="App\vendor\almond-custom.js" />
+    <Content Include="App\vendor\bootstrap.min.js" />
+    <Content Include="App\vendor\jquery-1.7.min.js" />
+    <Content Include="App\vendor\knockout-2.2.0.js" />
+    <Content Include="App\vendor\require.js" />
+    <Content Include="App\vendor\sammy.js" />
+    <Content Include="App\vendor\text.js" />
+    <Content Include="App\main.js" />
+    <Content Include="App\vendor\r.js" />
+    <Content Include="App\samples\hello\shell.html" />
+    <Content Include="App\samples\hello\shell.js" />
+    <Content Include="App\samples\masterDetail\project.html" />
+    <Content Include="App\samples\masterDetail\project.js" />
+    <Content Include="App\samples\masterDetail\shell.html" />
+    <Content Include="App\samples\masterDetail\shell.js" />
+    <Content Include="App\samples\navigation\first.html" />
+    <Content Include="App\samples\navigation\first.js" />
+    <Content Include="App\samples\navigation\second.html" />
+    <Content Include="App\samples\navigation\second.js" />
+    <Content Include="App\samples\navigation\shell.html" />
+    <Content Include="App\samples\navigation\shell.js" />
+    <Content Include="App\samples\viewComposition\childView1.html" />
+    <Content Include="App\samples\viewComposition\childView2.html" />
+    <Content Include="App\samples\viewComposition\shell.html" />
+    <Content Include="App\samples\viewComposition\shell.js" />
+    <Content Include="App\samples\widgets\project.html" />
+    <Content Include="App\samples\widgets\project.js" />
+    <Content Include="App\samples\widgets\shell.html" />
+    <Content Include="App\samples\widgets\shell.js" />
+    <Content Include="App\widgets\expander\view.html" />
+    <Content Include="App\widgets\expander\controller.js" />
     <Content Include="index.html" />
     <Content Include="License.txt" />
     <Content Include="test\spec.js" />
@@ -185,11 +185,11 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(SolutionDir)app\durandal" "$(SolutionDir)skeletons\nuget\content\App\durandal\" /s /i /y
-xcopy "$(SolutionDir)app\vendor" "$(SolutionDir)skeletons\nuget\content\App\vendor\" /s /i /y
+    <PostBuildEvent>xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\nuget\content\App\durandal\" /s /i /y
+xcopy "$(SolutionDir)App\vendor" "$(SolutionDir)skeletons\nuget\content\App\vendor\" /s /i /y
 
-xcopy "$(SolutionDir)app\durandal" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\durandal\" /s /i /y
-xcopy "$(SolutionDir)app\vendor" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\vendor\" /s /i /y
+xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\durandal\" /s /i /y
+xcopy "$(SolutionDir)App\vendor" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\vendor\" /s /i /y
 xcopy "$(SolutionDir)Content\img" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\img\" /s /i /y</PostBuildEvent>
   </PropertyGroup>
 </Project>
