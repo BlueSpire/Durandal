@@ -26,12 +26,12 @@
     "durandal/viewModelBinder",
     "durandal/widget",
     "infrastructure/router",
-    "viewModels/first",
-    "viewModels/second",
+    "viewModels/flickr",
     "viewModels/shell",
-    "text!views/first.html",
-    "text!views/second.html",
-    "text!views/shell.html"
+    "viewModels/welcome",
+    "text!views/flickr.html",
+    "text!views/shell.html",
+    "text!views/welcome.html"
   ],
   "exclude": [],
   "keepBuildDir": true,

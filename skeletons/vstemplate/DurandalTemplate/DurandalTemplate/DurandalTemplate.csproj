@@ -138,8 +138,8 @@
     <Content Include="Content\img\icon.png" />
     <Content Include="Content\img\ios-startup-image-landscape.png" />
     <Content Include="Content\img\ios-startup-image-portrait.png" />
-    <Content Include="App\viewModels\first.js" />
-    <Content Include="App\viewModels\second.js" />
+    <Content Include="App\viewModels\welcome.js" />
+    <Content Include="App\viewModels\flickr.js" />
     <Content Include="App\durandal\app.js" />
     <Content Include="App\durandal\composition.js" />
     <Content Include="App\durandal\dom.js" />
@@ -166,8 +166,8 @@
     <Content Include="App\vendor\sammy.js" />
     <Content Include="App\vendor\text.js" />
     <Content Include="App\viewModels\shell.js" />
-    <Content Include="App\views\first.html" />
-    <Content Include="App\views\second.html" />
+    <Content Include="App\views\welcome.html" />
+    <Content Include="App\views\flickr.html" />
     <Content Include="App\views\shell.html" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />

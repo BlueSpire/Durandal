@@ -11,9 +11,9 @@
         }
     };
     
-    router.mapRoute('first', 'viewModels/first', 'First');
-    router.mapRoute('second', 'viewModels/second', 'Second');
-    router.enable(shell.activeItem, 'first');
+    router.mapRoute('welcome', 'viewModels/welcome', 'Welcome');
+    router.mapRoute('flickr', 'viewModels/flickr', 'Flickr');
+    router.enable(shell.activeItem, 'welcome');
 
     return shell;
 });
