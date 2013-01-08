@@ -1,5 +1,7 @@
 ﻿define(function (require) {
-    var http = require('durandal/http');
+    var http = require('durandal/http'),
+        app = require("durandal/app"),
+        Detail = require("./detail");
     
     var Flickr = function() {
         this.displayName = 'Flickr';
@@ -18,6 +20,11 @@
     //they can be easily composed together and used in async screen activation scenarios.
     Flickr.prototype.activate = function() {
         return callFlickrAPI(this, "mount ranier");
+    };
+
+    //the app model allows easy display of modal dialogs by passing a view model
+    Flickr.prototype.select = function (item) {
+        app.showModal(new Detail(item));
     };
 
     return Flickr;
