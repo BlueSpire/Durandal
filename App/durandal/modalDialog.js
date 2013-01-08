@@ -7,6 +7,10 @@
         modalCount = 0;
 
     var modalDialog = {
+        currentZIndex: 1000,
+        getNextZIndex: function () {
+            return ++this.currentZIndex;
+        },
         isModalOpen: function() {
             return modalCount > 0;
         },
@@ -72,20 +76,16 @@
     };
 
     modalDialog.addContext('default', {
-        currentZIndex: 1000,
         blockoutOpacity: .2,
         removeDelay: 200,
-        getNextZIndex: function() {
-            return ++this.currentZIndex;
-        },
         addHost: function(modal) {
             var body = $('body');
             var blockout = $('<div class="modalBlockout"></div>')
-                .css({ 'z-index': this.getNextZIndex(), 'opacity': this.blockoutOpacity })
+                .css({ 'z-index': modalDialog.getNextZIndex(), 'opacity': this.blockoutOpacity })
                 .appendTo(body);
 
             var host = $('<div class="modalHost"></div>')
-                .css({ 'z-index': this.getNextZIndex() })
+                .css({ 'z-index': modalDialog.getNextZIndex() })
                 .appendTo(body);
 
             modal.host = host.get(0);
