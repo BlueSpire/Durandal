@@ -1,6 +1,5 @@
 ﻿define(function(require) {
-    var dom = require('./dom'),
-        text = require('text');
+    var dom = require('./dom');
 
     return {
         viewExtension: '.html',
