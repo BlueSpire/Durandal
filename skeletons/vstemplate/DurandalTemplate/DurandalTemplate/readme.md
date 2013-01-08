@@ -1,12 +1,12 @@
 ﻿# Introduction
 
-Welcome to the Durandal template project for Visual Studio!
+Welcome to the Durandal Starter Project!
 
 Durandal is a cross-device, cross-platform application framework 
 designed to make building Single Page Applications (SPAs) easy to create and maintain. 
 We've used it to build build apps for PC, Mac, Linux, iOS and Android...and now it's your turn...
 
-This sample template sets up a basic navigation-style architecture for you. Below are a few 
+This template sets up a basic navigation-style architecture for you. Below are a few 
 "points of interest" for you to investigate along with some brief explanation. For further
 information please visit us at http://www.durandaljs.com
 
@@ -40,7 +40,7 @@ Create a view for each module following the naming convention you see presented 
 ## Going Further
 
 Durandal is built on jQuery, Knockout and RequireJS. So, you have all the power of those tools
-available to you to build your application. Additionally, this sample uses SammyJS for navigation. It also
+available to you to build your application. Additionally, this template uses SammyJS for navigation. It also
 provides you with a powerful CSS framework to get started with: Bootstrap, which has been augmented
 with Font-Awesome to supply you with hundreds of font-based (vector) icons applicable with a simple 
 CSS class. Durandal builds on top of this by providng you with a consistent API specifically designed for
