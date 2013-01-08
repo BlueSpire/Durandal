@@ -110,6 +110,16 @@
             });
 
             $(settings.model.modal.host).css('opacity', 1);
+
+            if ($(newChild).hasClass('autoclose')) {
+                $(settings.model.modal.blockout).click(function() {
+                    settings.model.modal.close();
+                });
+            }
+
+            $('.autofocus', newChild).each(function() {
+                $(this).focus();
+            });
         }
     });
 

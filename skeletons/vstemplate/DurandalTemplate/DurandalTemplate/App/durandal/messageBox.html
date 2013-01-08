@@ -6,6 +6,6 @@
         <p class="message" data-bind="html: message"></p>
     </div>
     <div class="modal-footer" data-bind="foreach: options">
-        <a class="btn" data-bind="click: function () { $parent.selectOption($data); }, html: $data, css: {'btn-primary':$index() == 0}"></a>
+        <button class="btn" data-bind="click: function () { $parent.selectOption($data); }, html: $data, css: { 'btn-primary': $index() == 0, autofocus: $index() == 0 }"></button>
     </div>
 </div>
