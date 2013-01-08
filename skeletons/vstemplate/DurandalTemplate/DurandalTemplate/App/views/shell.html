@@ -5,12 +5,10 @@
                 <i class="icon-home" style="font-size: 18px"></i>
                 <span>Durandal</span>
             </a>
-            <ul class="nav">
-                <!--ko foreach: router.navigation-->
+            <ul class="nav" data-bind="foreach: router.navigation">
                 <li data-bind="css: { active: $parent.activeItem() && (moduleId == $parent.activeItem().__moduleId__) }">
                     <a data-bind="attr: { href: '#/' + url }, html: name"></a>
                 </li>
-                <!--/ko-->
             </ul>
             <div class="loader pull-right" data-bind="css: { active: !activeItem() || activeItem.isActivating }">
                 <i class="icon-spinner icon-2x icon-spin"></i>
