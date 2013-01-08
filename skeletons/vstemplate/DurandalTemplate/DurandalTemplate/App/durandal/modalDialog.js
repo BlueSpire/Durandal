@@ -51,6 +51,7 @@
                                     if (closeSuccess) {
                                         modalCount--;
                                         modalContext.removeHost(modal);
+                                        delete obj.modal;
                                         dfd.resolve(result);
                                     }
                                 });

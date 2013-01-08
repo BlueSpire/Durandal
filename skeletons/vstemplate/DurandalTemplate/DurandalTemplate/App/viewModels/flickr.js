@@ -1,7 +1,6 @@
 ﻿define(function (require) {
     var http = require('durandal/http'),
-        app = require("durandal/app"),
-        Detail = require("./detail");
+        app = require("durandal/app");
     
     var Flickr = function() {
         this.displayName = 'Flickr';
@@ -24,7 +23,9 @@
 
     //the app model allows easy display of modal dialogs by passing a view model
     Flickr.prototype.select = function (item) {
-        app.showModal(new Detail(item));
+        //views are usually located by convention, but you an specify it as well
+        item.viewUrl = "views/detail";
+        app.showModal(item);
     };
 
     return Flickr;

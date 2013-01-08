@@ -29,6 +29,7 @@
     "viewModels/flickr",
     "viewModels/shell",
     "viewModels/welcome",
+    "text!views/detail.html",
     "text!views/flickr.html",
     "text!views/shell.html",
     "text!views/welcome.html"

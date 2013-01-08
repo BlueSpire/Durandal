@@ -131,7 +131,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="App\main-built.js" />
-    <Content Include="App\viewModels\detail.js" />
     <Content Include="App\views\detail.html" />
     <Content Include="Content\css\app.css" />
     <Content Include="Content\css\bootstrap-responsive.min.css" />
