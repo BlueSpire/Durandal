@@ -4,23 +4,23 @@ Durandal is a cross-device, cross-platform application framework designed to mak
 
 ## Features
 
-* Develop apps for PC, Mac, Linux, Android and iOS.
-* Built on top of the industry leading and proven libraries [jQuery](http://jquery.com/), [Knockout](http://knockoutjs.com/) and [RequireJS](http://requirejs.org/).
-* Enables clean and simple MVC, MVVM and MVP patterned architecures through intuitive module conventions.
-* CommonJS Promises are embraced everywhere in the API for a robust, consistent  approach to async programming.
-* The first HTML/JS framework where *UI Composition* is embraced at the very core and flows outward to everything.
-* A simple app model provides you with an app start lifecycle, modal dialogs, message boxes and an event aggregator.
-* Elegant creation of reusable, databindable, skinnable and templatable widgets.
-* Leverage optional components for screen activation and deactivation, enabling easy handling of complex screen states.
-* Optimize all your HTML and JavaScript into a single file for deploy.
-* Easily customize any part of the frameork.
-* Integrates beautifully with other libraries such as [SammyJS](http://sammyjs.org/) and [Bootstrap](http://twitter.github.com/bootstrap/).
-* Works with any backend technology.
+* Clean MV* Architecture
+* JS & HTML Modularity
+* Simple App Lifecycle
+* Eventing, Modals, Message Boxes, etc.
+* Navigation & Screen State Management
+* Consistent Async Programming w/ Promises
+* App Bundling and Optimization
+* Use any Backend Technology
+* Built on top of [jQuery](http://jquery.com/), [Knockout](http://knockoutjs.com/) and [RequireJS](http://requirejs.org/).
+* Integrates with other libraries such as [SammyJS](http://sammyjs.org/) and [Bootstrap](http://twitter.github.com/bootstrap/).
+* Make jQuery & Bootstrap widgets templatable and bindable (or build your own widgets).
 
 ## Documentation
 
 All the documentation is located in the [wiki](https://github.com/EisenbergEffect/Durandal/wiki), so have a look there for help on how to get started, read tutorials, view sample descriptions and peruse the module reference docs.
 
 ## Community
+
 Need help with something that the docs aren't providing an answer to? 
 Visit our [google group](https://groups.google.com/forum/?fromgroups#!forum/durandaljs) and join in the conversation. 
