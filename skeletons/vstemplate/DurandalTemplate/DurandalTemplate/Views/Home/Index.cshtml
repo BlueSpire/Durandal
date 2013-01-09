@@ -22,10 +22,11 @@
             <meta name="debug" content="true" />
         }
         
-        @Scripts.Render("~/scripts/vendor")
     </head>
     <body>
         <div id="applicationHost"></div>
+        
+        @Scripts.Render("~/scripts/vendor")
         
         @if (HttpContext.Current.IsDebuggingEnabled) {
             <script type="text/javascript" src="~/App/vendor/require.js" data-main="App/main"></script>
