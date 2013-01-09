@@ -1,30 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>Durandal</id>
-        <version>1.0.0</version>
+        <version>1.0.0-beta</version>
         <title>Durandal</title>
         <authors>EisenbergEffect</authors>
         <owners>EisenbergEffect</owners>
         <licenseUrl>https://github.com/EisenbergEffect/Durandal/blob/master/License.txt</licenseUrl>
         <projectUrl>http://www.durandaljs.com</projectUrl>
+        <iconUrl>https://github.com/EisenbergEffect/Durandal/blob/master/media/DURANDAL%20FINAL%20HI%20RES%20LOGO%20VER.jpg</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <description>A cross-device, cross-platform app framework written in JavaScript, Durandal is a very small amount of code built on top of three established JavaScript libraries: jQuery, Knockout and RequireJS.
+        <description>Durandal is a cross-device, cross-platform application framework designed to make building Single Page Applications (SPAs) easy to create and maintain.
 
 Features
--Fully modularize your html and js. ie. Shell.js automatically locates Shell.html, binds and gets composed into the dom. Naturally you can change the conventions…
--Leverage promises everywhere as the API uses no callbacks, but has CommonJS promises plumbed throughout
--Experience the first html/js framework where Composition is embraced at the very core. The view/view-model composition features of Durandal are even more powerful than any "native" client framework.
--A simple app model provides you with an app start lifecycle, modal dialogs, message boxes and an event aggregator.
--Build reusable, databindable, skinnable and templatable widgets.
--Leverage optional components for screen and sub-screen activation and de-activation enabling elegant handling of complex screen states.
--Optimize all your HTML and JavaScript into a single file for relelase.
-
-Documentation
-All the documentation is located in the wiki, so have a look there for help on how to get setup, tutorials, sample descriptions and module reference docs.</description>
-        <summary>A cross-device, cross-platform app framework written in JavaScript, Durandal is a very small amount of code built on top of three established JavaScript libraries: jQuery, Knockout and RequireJS.</summary>
+- Develop apps for PC, Mac, Linux, Android and iOS.
+- Built on top of the industry leading and proven libraries jQuery, Knockout and RequireJS.
+- Enables clean and simple MVC, MVVM and MVP patterned architecures through intuitive module conventions.
+- CommonJS Promises are embraced everywhere in the API for a robust, consistent approach to async programming.
+- The first HTML/JS framework where UI Composition is embraced at the very core and flows outward to everything.
+- A simple app model provides you with an app start lifecycle, modal dialogs, message boxes and an event aggregator.
+- Elegant creation of reusable, databindable, skinnable and templatable widgets.
+- Leverage optional components for screen activation and deactivation, enabling easy handling of complex screen states.
+- Optimize all your HTML and JavaScript into a single file for deploy.
+- Easily customize any part of the frameork.
+- Integrates beautifully with other libraries such as SammyJS and Bootstrap.
+- Works with any backend technology.</description>
+        <summary>A cross-device, cross-platform client framework written in JavaScript and designed to make building Single Page Applications (SPAs) easy to create and maintain.</summary>
         <copyright>Copyright (c) 2012 Blue Spire Consulting, Inc.</copyright>
-        <tags>MVVM JavaScript JS Durandal HTML CSS MVC MVP Web SPA RIA</tags>
+        <tags>MVVM JavaScript JS Durandal HTML CSS MVC MVP Web SPA RIA Knockout RequireJS jQuery</tags>
     </metadata>
     <files>
         <file src="content\App\durandal\app.js" target="content\App\durandal\app.js" />
