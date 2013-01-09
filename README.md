@@ -1,6 +1,6 @@
 Welcome to the Durandal project!
 
-Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain. We've used it to build build apps for PC, Mac, Linux, iOS and Android...and now it's your turn...
+Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain. We've used it to build apps for PC, Mac, Linux, iOS and Android...and now it's your turn...
 
 ## Features
 
