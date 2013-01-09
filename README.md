@@ -12,8 +12,8 @@ Durandal is a cross-device, cross-platform application framework designed to mak
 * Consistent Async Programming w/ Promises
 * App Bundling and Optimization
 * Use any Backend Technology
-* Built on top of [jQuery](http://jquery.com/), [Knockout](http://knockoutjs.com/) and [RequireJS](http://requirejs.org/).
-* Integrates with other libraries such as [SammyJS](http://sammyjs.org/) and [Bootstrap](http://twitter.github.com/bootstrap/).
+* Built on top of [jQuery](http://jquery.com/), [Knockout](http://knockoutjs.com/) & [RequireJS](http://requirejs.org/).
+* Integrates with other libraries such as [SammyJS](http://sammyjs.org/) & [Bootstrap](http://twitter.github.com/bootstrap/).
 * Make jQuery & Bootstrap widgets templatable and bindable (or build your own widgets).
 
 ## Documentation
