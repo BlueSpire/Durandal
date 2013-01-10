@@ -6,7 +6,7 @@
                 <span>Durandal</span>
             </a>
             <ul class="nav" data-bind="foreach: router.navigation">
-                <li data-bind="css: { active: $parent.activeItem() && (moduleId == $parent.activeItem().__moduleId__) }">
+                <li data-bind="css: { active: isActive }">
                     <a data-bind="attr: { href: '#/' + url }, html: name"></a>
                 </li>
             </ul>

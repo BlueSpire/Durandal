@@ -16,10 +16,17 @@
     return {
         navigation:ko.observableArray([]),
         mapRoute: function (url, moduleId, mainNavName) {
+            var that = this;
             var routeInfo = {
-                url:url,
+                url: url,
                 moduleId: moduleId,
-                name: mainNavName
+                name: mainNavName,
+                isActive: ko.computed({
+                    read: function() {
+                        return that.activator() && that.activator().__moduleId__ == routeInfo.moduleId;
+                    },
+                    deferEvaluation: true
+                })
             };
 
             routes[url] = routeInfo;
@@ -30,6 +37,9 @@
         },
         enable: function (activator, defaultRoute) {
             var cancelling = false, previousRoute;
+            
+            this.activator = activator;
+
             function trySwap(item, title) {
                 activator.activateItem(item).then(function (succeeded) {
                     if (succeeded) {
