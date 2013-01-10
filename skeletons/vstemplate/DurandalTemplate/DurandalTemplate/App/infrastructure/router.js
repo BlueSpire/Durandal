@@ -36,7 +36,11 @@
 
                 system.acquire(routes[lookup].moduleId).then(function(module) {
                     if (typeof module == "function") {
-                        activator(construct(module, params));
+                        if (params && params.length > 0) {
+                            activator(construct(module, params));
+                        } else {
+                            activator(new module());
+                        }
                     } else {
                         activator(module);
                     }

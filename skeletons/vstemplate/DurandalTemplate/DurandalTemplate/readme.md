@@ -13,9 +13,11 @@ information please visit us at http://www.durandaljs.com
 ## Points of Interest
 
 * The main app code lives under *App* and is organized into AMD modules and HTML views.
-* Css, fonts and images can be found in their own folders under *Content*.
+* Css, fonts and images can be found under *Content*.
+* Third party script libraries are located under Scripts.
 * Css and script library bundling has been configured in *App_Start/BundleConfig.cs*.
-* The *Home/Index* view contains the launcher page's html, links and script references.
+* The *Home/Index* view contains the host page's html, links and script references.
+* Application startup beings with the *App/main.js*
 
 ## Explanation of the SPA Architecture
 

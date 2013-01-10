@@ -9,22 +9,22 @@ namespace DurandalTemplate {
 
       bundles.Add(
         new ScriptBundle("~/scripts/vendor")
-          .Include("~/App/vendor/jquery-1.7.min.js")
-          .Include("~/App/vendor/knockout-2.2.0.js")
-          .Include("~/App/vendor/sammy.js")
-          .Include("~/App/vendor/bootstrap.min.js")
+          .Include("~/Scripts/jquery-1.8.3.min.js")
+          .Include("~/Scripts/knockout-2.2.0.js")
+          .Include("~/Scripts/sammy-0.7.1.min.js")
+          .Include("~/Scripts/bootstrap.min.js")
         );
 
       bundles.Add(
         new StyleBundle("~/css/vendor")
-          .Include("~/Content/css/bootstrap.min.css")
-          .Include("~/Content/css/bootstrap-responsive.min.css")
-          .Include("~/Content/css/font-awesome.min.css")
+          .Include("~/Content/bootstrap.min.css")
+          .Include("~/Content/bootstrap-responsive.min.css")
+          .Include("~/Content/font-awesome.min.css")
         );
 
       bundles.Add(
         new StyleBundle("~/css/app")
-          .Include("~/Content/css/app.css")
+          .Include("~/Content/app.css")
         );
     }
 
