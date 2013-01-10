@@ -25,5 +25,9 @@
         app.showModal(item);
     };
 
+    Flickr.prototype.canDeactivate = function () {
+        return app.showMessage("Are you sure you want to leave this page?", 'Navigate', ["Yes", "No"]);
+    };
+
     return Flickr;
 });

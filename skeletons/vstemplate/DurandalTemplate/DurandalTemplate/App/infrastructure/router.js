@@ -29,26 +29,45 @@
             }
         },
         enable: function (activator, defaultRoute) {
+            var cancelling = false, previousRoute;
+            function trySwap(item, title) {
+                activator.activateItem(item).then(function (succeeded) {
+                    if (succeeded) {
+                        document.title = title;
+                        previousRoute = app.last_location[1].replace('/', '');
+                    } else {
+                        cancelling = true;
+                        app.setLocation(previousRoute);
+                        cancelling = false;
+                    }
+                });
+            }
+
             function activateRoute(route) {
                 var parts = route.split('/');
                 var lookup = parts[0];
                 var params = parts.splice(1);
+                var routeInfo = routes[lookup];
 
-                system.acquire(routes[lookup].moduleId).then(function(module) {
+                system.acquire(routeInfo.moduleId).then(function (module) {
                     if (typeof module == "function") {
                         if (params && params.length > 0) {
-                            activator(construct(module, params));
+                            trySwap(construct(module, params), routeInfo.name);
                         } else {
-                            activator(new module());
+                            trySwap(new module(), routeInfo.name);
                         }
                     } else {
-                        activator(module);
+                        trySwap(module, routeInfo.name);
                     }
                 });
             }
 
             var app = Sammy(function (route) {
-                route.get('', function() {
+                route.get('', function () {
+                    if (cancelling) {
+                        return;
+                    }
+
                     var fragment = this.path.split('#/');
                     if (fragment.length == 2) {
                         activateRoute(fragment[1]);
