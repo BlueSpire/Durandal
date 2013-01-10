@@ -14,7 +14,7 @@
     }
 
     return {
-        navigation:[],
+        navigation:ko.observableArray([]),
         mapRoute: function (url, moduleId, mainNavName) {
             var routeInfo = {
                 url:url,
