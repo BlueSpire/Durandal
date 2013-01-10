@@ -16,13 +16,13 @@ define(function(require) {
     app.start().then(function () {
         //Customizing the view location strategy for our app is easy.
         viewLocator.convertModuleIdToViewUrl = function (moduleId) {
-            return moduleId.replace('viewModel', 'view');
+            return moduleId.replace('viewmodel', 'view');
         };
 
         //Here, we make the app fit to the screen for touch devices.
         app.preventBodyScroll();
         
         //Show the app by setting the root view model for our application.
-        app.setRoot('viewModels/shell');
+        app.setRoot('viewmodels/shell');
     });
 });

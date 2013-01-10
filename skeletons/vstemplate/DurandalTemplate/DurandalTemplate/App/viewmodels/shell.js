@@ -23,8 +23,8 @@
         });
     }
     
-    router.mapRoute('welcome', 'viewModels/welcome', 'Welcome');
-    router.mapRoute('flickr', 'viewModels/flickr', 'Flickr');
+    router.mapRoute('welcome', 'viewmodels/welcome', 'Welcome');
+    router.mapRoute('flickr', 'viewmodels/flickr', 'Flickr');
     router.enable(shell.activeItem, 'welcome');
 
     return shell;

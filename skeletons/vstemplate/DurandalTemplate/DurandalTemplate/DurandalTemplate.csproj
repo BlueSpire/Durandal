@@ -143,8 +143,8 @@
     <Content Include="Content\images\icon.png" />
     <Content Include="Content\images\ios-startup-image-landscape.png" />
     <Content Include="Content\images\ios-startup-image-portrait.png" />
-    <Content Include="App\viewModels\welcome.js" />
-    <Content Include="App\viewModels\flickr.js" />
+    <Content Include="App\viewmodels\welcome.js" />
+    <Content Include="App\viewmodels\flickr.js" />
     <Content Include="App\durandal\app.js" />
     <Content Include="App\durandal\composition.js" />
     <Content Include="App\durandal\dom.js" />
@@ -166,7 +166,7 @@
     <Content Include="App\vendor\r.js" />
     <Content Include="App\vendor\require.js" />
     <Content Include="App\vendor\text.js" />
-    <Content Include="App\viewModels\shell.js" />
+    <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\views\welcome.html" />
     <Content Include="App\views\flickr.html" />
     <Content Include="App\views\shell.html" />
