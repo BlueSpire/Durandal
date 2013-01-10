@@ -190,6 +190,6 @@ xcopy "$(SolutionDir)App\vendor" "$(SolutionDir)skeletons\nuget\content\App\vend
 
 xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\durandal\" /s /i /y
 xcopy "$(SolutionDir)App\vendor" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\vendor\" /s /i /y
-xcopy "$(SolutionDir)Content\img" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\img\" /s /i /y</PostBuildEvent>
+xcopy "$(SolutionDir)Content\img" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\images\" /s /i /y</PostBuildEvent>
   </PropertyGroup>
 </Project>

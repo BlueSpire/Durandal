@@ -18,10 +18,9 @@
         },
         start: function() {
             return system.defer(function(dfd) {
-                system.debug($('meta[name=debug]').attr('content') === 'true');
                 dom.ready().then(function() {
                     system.log('Starting Application');
-                    system.acquire('./messageBox').then(function (mb) {
+                    system.acquire('./messageBox').then(function(mb) {
                         MessageBox = mb;
                         dfd.resolve();
                         system.log('Started Application');
@@ -45,7 +44,7 @@
 
             composition.compose(hostElement, settings);
         },
-        makeFit: function() {
+        preventBodyScroll: function() {
             if (document.body.ontouchmove) {
                 document.body.ontouchmove = function(event) {
                     event.preventDefault();
