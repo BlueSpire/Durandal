@@ -14,8 +14,29 @@
         createElement: function(tagName) {
             return document.createElement(tagName);
         },
-        parseHTML: function(html) {
-            return $(html).get(0);
+        parseHTML: function (html, doNotWrapMultiple) {
+            var allElements = $(html).get();
+            if (allElements.length == 1) {
+                return allElements[0];
+            }
+
+            var withoutComments = [];
+            for (var i = 0; i < allElements.length; i++) {
+                var current = allElements[i];
+                if (current.nodeType != 8) {
+                    withoutComments.push(current);
+                }
+            }
+
+            if (withoutComments.length > 1) {
+                if (doNotWrapMultiple) {
+                    return withoutComments;
+                }
+                
+                return $(withoutComments).wrapAll("<div class='durandal-wrapper'></div").parent().get(0);
+            }
+            
+            return withoutComments[0];
         }
     };
 });

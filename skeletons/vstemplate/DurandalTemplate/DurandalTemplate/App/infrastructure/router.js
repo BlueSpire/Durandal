@@ -23,7 +23,7 @@
                 name: mainNavName,
                 isActive: ko.computed({
                     read: function() {
-                        return that.activator() && that.activator().__moduleId__ == routeInfo.moduleId;
+                        return that.activator && that.activator() && that.activator().__moduleId__ == routeInfo.moduleId;
                     },
                     deferEvaluation: true
                 })
