@@ -10,7 +10,7 @@
                     <a data-bind="attr: { href: '#/' + url }, html: name"></a>
                 </li>
             </ul>
-            <div class="loader pull-right" data-bind="css: { active: !activeItem() || activeItem.isActivating }">
+            <div class="loader pull-right" data-bind="css: { active: showSpinner }">
                 <i class="icon-spinner icon-2x icon-spin"></i>
             </div>
             <form class="navbar-search pull-right" data-bind="submit:search">
