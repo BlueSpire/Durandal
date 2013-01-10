@@ -1,6 +1,7 @@
 ﻿define(function (require) {
     var system = require('durandal/system');
     var routes = {};
+    var sammy;
     
     //NOTE: Sammy.js is not required by Durandal. This is just an example
     //of how you can use them together for navigation.
@@ -15,7 +16,13 @@
 
     return {
         navigationReady:ko.observable(false),
-        navigation:ko.observableArray([]),
+        navigation: ko.observableArray([]),
+        navigateBack:function () {
+            window.history.back();
+        },
+        navigateTo:function (url) {
+            sammy.setLocation(url);
+        },
         mapRoute: function (url, moduleId, mainNavName) {
             var that = this;
             var routeInfo = {
@@ -45,10 +52,10 @@
                 activator.activateItem(item).then(function (succeeded) {
                     if (succeeded) {
                         document.title = title;
-                        previousRoute = app.last_location[1].replace('/', '');
+                        previousRoute = sammy.last_location[1].replace('/', '');
                     } else {
                         cancelling = true;
-                        app.setLocation(previousRoute);
+                        sammy.setLocation(previousRoute);
                         cancelling = false;
                     }
                 });
@@ -73,8 +80,8 @@
                 });
             }
 
-            var app = Sammy(function (route) {
-                route.get('', function () {
+            sammy = Sammy(function(route) {
+                route.get('', function() {
                     if (cancelling) {
                         return;
                     }
@@ -88,13 +95,13 @@
                 });
             });
 
-            app._checkFormSubmission = function () {
+            sammy._checkFormSubmission = function () {
                 return false;
             };
 
             this.navigationReady(true);
 
-            app.run();
+            sammy.run();
         }
     };
 });
