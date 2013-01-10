@@ -5,10 +5,13 @@
 });
 
 define(function(require) {
-    var app = require('durandal/app');
+    var app = require('durandal/app'),
+        system = require('durandal/system');
+
+    system.debug(true);
 
     app.start().then(function() {
-        app.makeFit();
+        app.preventBodyScroll();
         app.setRoot('samples/widgets/shell');
     });
 });
