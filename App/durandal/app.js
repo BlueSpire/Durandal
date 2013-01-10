@@ -44,7 +44,7 @@
 
             composition.compose(hostElement, settings);
         },
-        preventBodyScroll: function() {
+        adaptToDevice: function() {
             if (document.body.ontouchmove) {
                 document.body.ontouchmove = function(event) {
                     event.preventDefault();

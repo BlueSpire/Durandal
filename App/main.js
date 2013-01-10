@@ -11,7 +11,7 @@ define(function(require) {
     system.debug(true);
 
     app.start().then(function() {
-        app.preventBodyScroll();
+        app.adaptToDevice();
         app.setRoot('samples/widgets/shell');
     });
 });

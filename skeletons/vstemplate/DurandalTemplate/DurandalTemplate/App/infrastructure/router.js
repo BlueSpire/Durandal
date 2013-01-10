@@ -14,6 +14,7 @@
     }
 
     return {
+        navigationReady:ko.observable(false),
         navigation:ko.observableArray([]),
         mapRoute: function (url, moduleId, mainNavName) {
             var that = this;
@@ -23,7 +24,7 @@
                 name: mainNavName,
                 isActive: ko.computed({
                     read: function() {
-                        return that.activator && that.activator() && that.activator().__moduleId__ == routeInfo.moduleId;
+                        return that.navigationReady() && that.activator() && that.activator().__moduleId__ == routeInfo.moduleId;
                     },
                     deferEvaluation: true
                 })
@@ -90,6 +91,8 @@
             app._checkFormSubmission = function () {
                 return false;
             };
+
+            this.navigationReady(true);
 
             app.run();
         }

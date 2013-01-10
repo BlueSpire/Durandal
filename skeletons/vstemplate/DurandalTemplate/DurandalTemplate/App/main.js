@@ -19,8 +19,7 @@ define(function(require) {
             return moduleId.replace('viewmodel', 'view');
         };
 
-        //Here, we make the app fit to the screen for touch devices.
-        app.preventBodyScroll();
+        app.adaptToDevice();
         
         //Show the app by setting the root view model for our application.
         app.setRoot('viewmodels/shell');
