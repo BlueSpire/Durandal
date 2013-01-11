@@ -52,12 +52,12 @@
         }
     }
 
-    function activate(newItem, activeItem, callback) {
+    function activate(newItem, activeItem, callback, activationData) {
         if (newItem) {
             if (newItem.activate) {
                 system.log("Activating", newItem);
 
-                var promise = newItem.activate();
+                var promise = newItem.activate(activationData);
 
                 if (promise && promise.then) {
                     promise.then(function() {
@@ -95,7 +95,7 @@
         }).promise();
     };
     
-    function canActivateItem(newItem, activeItem, settings) {
+    function canActivateItem(newItem, activeItem, settings, activationData) {
         return system.defer(function (dfd) {
             if (newItem == activeItem()) {
                 dfd.resolve(true);
@@ -103,7 +103,7 @@
             }
 
             if (newItem && newItem.canActivate) {
-                var resultOrPromise = newItem.canActivate();
+                var resultOrPromise = newItem.canActivate(activationData);
                 if (resultOrPromise.then) {
                     resultOrPromise.then(function (result) {
                         dfd.resolve(settings.interpretGuard(result));
@@ -150,11 +150,11 @@
             });
         };
 
-        computed.canActivateItem = function (newItem) {
-            return canActivateItem(newItem, activeItem, settings);
+        computed.canActivateItem = function (newItem, activationData) {
+            return canActivateItem(newItem, activeItem, settings, activationData);
         };
 
-        computed.activateItem = function (newItem) {
+        computed.activateItem = function (newItem, activationData) {
             return system.defer(function (dfd) {
                 if (computed.isActivating()) {
                     dfd.resolve(false);
@@ -172,7 +172,7 @@
 
                 computed.canDeactivateItem(currentItem, settings.closeOnDeactivate).then(function(canDeactivate) {
                     if (canDeactivate) {
-                        computed.canActivateItem(newItem).then(function(canActivate) {
+                        computed.canActivateItem(newItem, activationData).then(function(canActivate) {
                             if (canActivate) {
                                 system.defer(function(dfd2) {
                                     deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2);
@@ -181,7 +181,7 @@
                                     activate(newItem, activeItem, function(result) {
                                         computed.isActivating(false);
                                         dfd.resolve(result);
-                                    });
+                                    }, activationData);
                                 });
                             } else {
                                 computed.notifySubscribers();

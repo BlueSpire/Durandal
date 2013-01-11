@@ -5,7 +5,7 @@
         this.displayName = 'First Page';
     };
 
-    ctor.prototype.activate = function() {
+    ctor.prototype.activate = function () {
         system.log('Hello from first\'s activate function');
     };
 
