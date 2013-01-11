@@ -1,7 +1,8 @@
 ﻿define(function (require) {
     var system = require('durandal/system');
     var routesByPath = {},
-        routes = [],
+        allRoutes = ko.observableArray([]),
+        visibleRoutes = ko.observableArray([]),
         sammy,
         router,
         previousRoute,
@@ -78,8 +79,9 @@
     }
 
     return router = {
-        ready:ko.observable(false),
-        visible: ko.observableArray([]),
+        ready: ko.observable(false),
+        allRoutes:allRoutes,
+        visibleRoutes: visibleRoutes,
         navigateBack:function () {
             window.history.back();
         },
@@ -123,7 +125,7 @@
                 routeInfo.hash = routeInfo.hash || '#/' + routeInfo.url;
 
                 routesByPath[routeInfo.url] = routeInfo;
-                routes.push(routeInfo);
+                allRoutes.push(routeInfo);
 
                 if (routeInfo.visible) {
                     routeInfo.isActive = ko.computed(function() {
@@ -132,7 +134,7 @@
                             && navigationActivator().__moduleId__ == routeInfo.moduleId;
                     });
 
-                    this.visible.push(routeInfo);
+                    visibleRoutes.push(routeInfo);
                 }
             }
         },
@@ -140,9 +142,10 @@
             navigationActivator = activator;
             navigationDefaultRoute = defaultRoute;
 
-            sammy = Sammy(function(route) {
-                for (var i = 0; i < routes.length; i++) {
-                    var current = routes[i];
+            sammy = Sammy(function (route) {
+                var unwrapped = allRoutes();
+                for (var i = 0; i < unwrapped.length; i++) {
+                    var current = unwrapped[i];
 
                     if (!(current.url instanceof RegExp)) {
                         route.get(current.url, handleRoute);
