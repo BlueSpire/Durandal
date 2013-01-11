@@ -13,5 +13,8 @@
     exclude:[],
 	keepBuildDir: true,
     optimize: "uglify2",
-    out:""
+    out:"",
+    pragmas: {
+        build: true
+    }
 }

@@ -1,5 +1,5 @@
 ﻿define(function(require) {
-    var isDebugging = true;
+    var isDebugging = false;
     var nativeKeys = Object.keys;
     var hasOwnProperty = Object.prototype.hasOwnProperty;
     var toString = Object.prototype.toString;

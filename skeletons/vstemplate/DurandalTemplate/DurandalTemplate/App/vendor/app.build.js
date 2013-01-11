@@ -38,6 +38,9 @@
   "keepBuildDir": true,
   "optimize": "uglify2",
   "out": "C:\\Users\\Rob\\Documents\\GitHub\\Durandal\\skeletons\\vstemplate\\DurandalTemplate\\DurandalTemplate\\App\\main-built.js",
+  "pragmas": {
+    "build": true
+  },
   "wrap": true,
   "insertRequire": [
     "main"
