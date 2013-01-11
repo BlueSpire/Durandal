@@ -1,17 +1,9 @@
 ﻿define(function (require) {
     var system = require('durandal/system');
-    var routes = {}, autoNavPath, sammy;
+    var routesByPath = {}, routes = [], autoNavPath, sammy;
     
     //NOTE: Sammy.js is not required by the core of Durandal. 
     //However, this plugin leverages it to enable navigation.
-
-    function construct(ctor, args) {
-        function F() {
-            return ctor.apply(this, args);
-        }
-        F.prototype = ctor.prototype;
-        return new F();
-    }
 
     return {
         navigationReady:ko.observable(false),
@@ -36,7 +28,8 @@
                 name: name || (url.substring(0, 1).toUpperCase() + url.substring(1))
             };
 
-            routes[url] = routeInfo;
+            routesByPath[url] = routeInfo;
+            routes.push(routeInfo);
 
             if (isNav) {
                 routeInfo.isActive = ko.computed(function() {
@@ -64,11 +57,8 @@
                 });
             }
 
-            function activateRoute(route) {
-                var parts = route.split('/');
-                var lookup = parts[0];
-                var params = parts.splice(1);
-                var routeInfo = routes[lookup];
+            function activateRoute(route, params) {
+                var routeInfo = routesByPath[route];
 
                 if (!routeInfo) {
                     if (!autoNavPath) {
@@ -76,37 +66,61 @@
                     }
 
                     routeInfo = {
-                        moduleId: autoNavPath + "/" + lookup,
-                        name: lookup.substring(0, 1).toUpperCase() + lookup.substring(1)
+                        moduleId: autoNavPath + "/" + route,
+                        name: route.substring(0, 1).toUpperCase() + route.substring(1)
                     };
                 }
 
                 system.acquire(routeInfo.moduleId).then(function (module) {
                     if (typeof module == "function") {
-                        if (params && params.length > 0) {
-                            trySwap(construct(module, params), routeInfo.name);
-                        } else {
-                            trySwap(new module(), routeInfo.name);
-                        }
+                        trySwap(new module(params), routeInfo.name);
                     } else {
                         trySwap(module, routeInfo.name);
                     }
                 });
             }
 
+            function handleRoute() {
+                if (cancelling) {
+                    return;
+                }
+
+                var route = this.app.last_route.path.toString();
+                var params = this.params;
+
+                if (route == '/$/') {
+                    if (autoNavPath) {
+                        var fragment = this.path.split('#/');
+                        if (fragment.length == 2) {
+                            var parts = fragment[1].split('/');
+                            route = parts[0];
+                            params = parts.splice(1);
+                        } else {
+                            route = defaultRoute;
+                        }
+                    } else {
+                        route = defaultRoute;
+                    }
+                }
+
+                activateRoute(route, params);
+            }
+
             sammy = Sammy(function(route) {
-                route.get('', function() {
-                    if (cancelling) {
-                        return;
+                for (var i = 0; i < routes.length; i++) {
+                    var current = routes[i];
+
+                    if (!(current.url instanceof RegExp)) {
+                        route.get('#/' + current.url, handleRoute);
+                    } else {
+                        route.get(current.url, handleRoute);
                     }
 
-                    var fragment = this.path.split('#/');
-                    if (fragment.length == 2) {
-                        activateRoute(fragment[1]);
-                    } else {
-                        activateRoute(defaultRoute);
-                    }
-                });
+                    var processedRoute = this.routes.get[i];
+                    routesByPath[processedRoute.path.toString()] = current;
+                }
+
+                route.get('', handleRoute);
             });
 
             sammy._checkFormSubmission = function () {

@@ -25,7 +25,7 @@
     "durandal/viewModel",
     "durandal/viewModelBinder",
     "durandal/widget",
-    "infrastructure/router",
+    "durandal/plugins/router",
     "viewmodels/flickr",
     "viewmodels/shell",
     "viewmodels/welcome",
