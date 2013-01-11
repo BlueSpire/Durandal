@@ -2,26 +2,31 @@
     var viewLocator = require('./viewLocator'),
         viewModelBinder = require('./viewModelBinder'),
         viewEngine = require('./viewEngine'),
-        system = require('./system');
+        system = require('./system'),
+        viewModel = require('./viewModel');
 
     function shouldPerformActivation(settings) {
         return settings.model.activate
             && ((composition.activateDuringComposition && settings.activate == undefined) || settings.activate);
     }
 
+    function tryActivate(settings, successCallback) {
+        if (shouldPerformActivation(settings)) {
+            system.log("Composition Activating", settings.model);
+            viewModel.activator().activateItem(settings.model).then(function(success) {
+                if (success) {
+                    successCallback();
+                }
+            });
+        } else {
+            successCallback();
+        }
+    }
+
     function doTransition(parent, newChild, settings) {
         settings.transition(parent, newChild, settings).then(function() {
-            if (newChild) {
-                if (settings.model) {
-                    if (shouldPerformActivation(settings)) {
-                        system.log("Composition Activating", settings.model);
-                        settings.model.activate();
-                    }
-
-                    if (settings.model.viewAttached) {
-                        settings.model.viewAttached(newChild);
-                    }
-                }
+            if (newChild && settings.model && settings.model.viewAttached) {
+                settings.model.viewAttached(newChild);
             }
 
             if (settings.afterCompose) {
@@ -58,20 +63,22 @@
                 doTransition(parent, newChild, settings);
             }
         },
-        bindAndShow: function(element, view, settings) {
-            if (settings.beforeBind) {
-                settings.beforeBind(element, view, settings);
-            }
+        bindAndShow: function (element, view, settings) {
+            tryActivate(settings, function() {
+                if (settings.beforeBind) {
+                    settings.beforeBind(element, view, settings);
+                }
 
-            if (settings.preserveContext && settings.bindingContext) {
-                viewModelBinder.bindContext(settings.bindingContext, view, settings.model);
-            } else if (settings.model) {
-                viewModelBinder.bind(settings.model, view);
-            } else if (view) {
-                viewModelBinder.bind({}, view);
-            }
+                if (settings.preserveContext && settings.bindingContext) {
+                    viewModelBinder.bindContext(settings.bindingContext, view, settings.model);
+                } else if (settings.model) {
+                    viewModelBinder.bind(settings.model, view);
+                } else if (view) {
+                    viewModelBinder.bind({}, view);
+                }
 
-            this.switchContent(element, view, settings);
+                composition.switchContent(element, view, settings);
+            });
         },
         defaultStrategy: function(settings) {
             return viewLocator.locateViewForObject(settings.model);
