@@ -71,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\plugins\router.js" />
     <Content Include="Content\css\app.css" />
     <Content Include="Content\css\bootstrap-responsive.min.css" />
     <Content Include="Content\css\bootstrap.min.css" />
@@ -91,13 +92,12 @@
     <Content Include="App\durandal\viewLocator.js" />
     <Content Include="App\durandal\viewModelBinder.js" />
     <Content Include="App\durandal\widget.js" />
-    <Content Include="App\samples\navigationAdvanced\views\first.html" />
-    <Content Include="App\samples\navigationAdvanced\controllers\first.js" />
-    <Content Include="App\samples\navigationAdvanced\frontController.js" />
-    <Content Include="App\samples\navigationAdvanced\views\second.html" />
-    <Content Include="App\samples\navigationAdvanced\controllers\second.js" />
-    <Content Include="App\samples\navigationAdvanced\shell.html" />
-    <Content Include="App\samples\navigationAdvanced\shell.js" />
+    <Content Include="App\samples\navigation\views\first.html" />
+    <Content Include="App\samples\navigation\viewmodels\first.js" />
+    <Content Include="App\samples\navigation\views\second.html" />
+    <Content Include="App\samples\navigation\viewmodels\second.js" />
+    <Content Include="App\samples\navigation\shell.html" />
+    <Content Include="App\samples\navigation\shell.js" />
     <Content Include="App\vendor\almond-custom.js" />
     <Content Include="App\vendor\bootstrap.min.js" />
     <Content Include="App\vendor\jquery-1.7.min.js" />
@@ -113,12 +113,6 @@
     <Content Include="App\samples\masterDetail\project.js" />
     <Content Include="App\samples\masterDetail\shell.html" />
     <Content Include="App\samples\masterDetail\shell.js" />
-    <Content Include="App\samples\navigation\first.html" />
-    <Content Include="App\samples\navigation\first.js" />
-    <Content Include="App\samples\navigation\second.html" />
-    <Content Include="App\samples\navigation\second.js" />
-    <Content Include="App\samples\navigation\shell.html" />
-    <Content Include="App\samples\navigation\shell.js" />
     <Content Include="App\samples\viewComposition\childView1.html" />
     <Content Include="App\samples\viewComposition\childView2.html" />
     <Content Include="App\samples\viewComposition\shell.html" />
@@ -190,6 +184,7 @@ xcopy "$(SolutionDir)App\vendor" "$(SolutionDir)skeletons\nuget\content\App\vend
 
 xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\durandal\" /s /i /y
 xcopy "$(SolutionDir)App\vendor" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\vendor\" /s /i /y
-xcopy "$(SolutionDir)Content\img" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\images\" /s /i /y</PostBuildEvent>
+xcopy "$(SolutionDir)Content\img" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\images\" /s /i /y
+xcopy "$(SolutionDir)App\plugins" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\durandal\plugins\" /s /i /y</PostBuildEvent>
   </PropertyGroup>
 </Project>

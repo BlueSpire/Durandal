@@ -1,5 +1,5 @@
 ﻿define(function(require) {
-    var router = require('infrastructure/router'),
+    var router = require('durandal/plugins/router'),
         viewModel = require('durandal/viewModel'),
         app = require('durandal/app');
 
@@ -19,8 +19,8 @@
         }
     };
     
-    router.mapRoute('welcome', 'viewmodels/welcome', 'Welcome');
-    router.mapRoute('flickr', 'viewmodels/flickr', 'Flickr');
+    router.mapNav('welcome', 'viewmodels/welcome', 'Welcome');
+    router.mapNav('flickr', 'viewmodels/flickr', 'Flickr');
     router.enable(shell.activeItem, 'welcome');
 
     return shell;

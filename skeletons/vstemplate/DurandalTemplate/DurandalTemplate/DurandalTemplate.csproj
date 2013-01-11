@@ -130,6 +130,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App\durandal\plugins\router.js" />
     <Content Include="App\main-built.js" />
     <Content Include="App\views\detail.html" />
     <Content Include="Content\app.css" />
@@ -159,7 +160,6 @@
     <Content Include="App\durandal\viewModel.js" />
     <Content Include="App\durandal\viewModelBinder.js" />
     <Content Include="App\durandal\widget.js" />
-    <Content Include="App\infrastructure\router.js" />
     <Content Include="App\main.js" />
     <Content Include="App\vendor\almond-custom.js" />
     <Content Include="App\vendor\optimizer.exe" />

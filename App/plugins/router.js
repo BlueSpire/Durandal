@@ -1,10 +1,9 @@
 ﻿define(function (require) {
     var system = require('durandal/system');
-    var routes = {};
-    var sammy;
+    var routes = {}, autoNavPath, sammy;
     
-    //NOTE: Sammy.js is not required by Durandal. This is just an example
-    //of how you can use them together for navigation.
+    //NOTE: Sammy.js is not required by the core of Durandal. 
+    //However, this plugin leverages it to enable navigation.
 
     function construct(ctor, args) {
         function F() {
@@ -23,23 +22,27 @@
         navigateTo:function (url) {
             sammy.setLocation(url);
         },
-        mapRoute: function (url, moduleId, mainNavName) {
+        mapAuto: function (path) {
+            autoNavPath = path;
+        },
+        mapNav: function (url, moduleId, name) {
+            this.mapRoute(url, moduleId, name, true);
+        },
+        mapRoute: function (url, moduleId, name, isNav) {
             var that = this;
             var routeInfo = {
                 url: url,
                 moduleId: moduleId,
-                name: mainNavName,
-                isActive: ko.computed({
-                    read: function() {
-                        return that.navigationReady() && that.activator() && that.activator().__moduleId__ == routeInfo.moduleId;
-                    },
-                    deferEvaluation: true
-                })
+                name: name || (url.substring(0, 1).toUpperCase() + url.substring(1))
             };
 
             routes[url] = routeInfo;
 
-            if (mainNavName) {
+            if (isNav) {
+                routeInfo.isActive = ko.computed(function() {
+                    return that.navigationReady() && that.activator() && that.activator().__moduleId__ == routeInfo.moduleId;
+                });
+
                 this.navigation.push(routeInfo);
             }
         },
@@ -66,6 +69,17 @@
                 var lookup = parts[0];
                 var params = parts.splice(1);
                 var routeInfo = routes[lookup];
+
+                if (!routeInfo) {
+                    if (!autoNavPath) {
+                        return;
+                    }
+
+                    routeInfo = {
+                        moduleId: autoNavPath + "/" + lookup,
+                        name: lookup.substring(0, 1).toUpperCase() + lookup.substring(1)
+                    };
+                }
 
                 system.acquire(routeInfo.moduleId).then(function (module) {
                     if (typeof module == "function") {
