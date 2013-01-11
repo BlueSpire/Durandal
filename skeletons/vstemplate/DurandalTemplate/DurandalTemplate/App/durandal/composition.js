@@ -6,7 +6,7 @@
         viewModel = require('./viewModel');
 
     function shouldPerformActivation(settings) {
-        return settings.model.activate
+        return settings.model && settings.model.activate
             && ((composition.activateDuringComposition && settings.activate == undefined) || settings.activate);
     }
 
