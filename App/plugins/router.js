@@ -103,7 +103,8 @@
             var routeInfo = {
                 url: url,
                 moduleId: moduleId,
-                name: name || this.convertRouteToName(url)
+                name: name || this.convertRouteToName(url),
+                hash: '#/' + url
             };
 
             routesByPath[url] = routeInfo;
