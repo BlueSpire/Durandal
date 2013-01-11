@@ -23,7 +23,7 @@
             sammy.setLocation(url);
         },
         mapAuto: function (path) {
-            autoNavPath = path;
+            autoNavPath = path || 'viewmodels';
         },
         mapNav: function (url, moduleId, name) {
             this.mapRoute(url, moduleId, name, true);
