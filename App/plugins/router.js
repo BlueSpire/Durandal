@@ -43,7 +43,7 @@
 
         system.log('Activating Route', routeInfo, params);
         system.acquire(routeInfo.moduleId).then(function(module) {
-            if (typeof module == "function") {
+            if (typeof module == 'function') {
                 trySwap(new module(), routeInfo.name, params);
             } else {
                 trySwap(module, routeInfo.name, params);
@@ -78,8 +78,8 @@
     }
 
     return router = {
-        navigationReady:ko.observable(false),
-        navigation: ko.observableArray([]),
+        ready:ko.observable(false),
+        visible: ko.observableArray([]),
         navigateBack:function () {
             window.history.back();
         },
@@ -93,34 +93,48 @@
             path = path || 'viewmodels';
 
             this.convertRouteToModuleId = function(url) {
-                return path + "/" + url;
+                return path + '/' + url;
             };
         },
         mapNav: function (url, moduleId, name) {
             return this.mapRoute(url, moduleId, name, true);
         },
-        mapRoute: function (url, moduleId, name, isNav) {
+        mapRoute: function (url, moduleId, name, visible) {
             var routeInfo = {
                 url: url,
                 moduleId: moduleId,
-                name: name || this.convertRouteToName(url),
-                hash: '#/' + url
+                name: name,
+                visible: visible
             };
 
-            routesByPath[url] = routeInfo;
-            routes.push(routeInfo);
-
-            if (isNav) {
-                routeInfo.isActive = ko.computed(function() {
-                    return router.navigationReady()
-                        && navigationActivator()
-                        && navigationActivator().__moduleId__ == routeInfo.moduleId;
-                });
-
-                this.navigation.push(routeInfo);
+            this.map(routeInfo);
+            
+            return routeInfo;
+        },
+        map: function (routeOrRouteArray) {
+            if (!system.isArray(routeOrRouteArray)) {
+                routeOrRouteArray = [routeOrRouteArray];
             }
 
-            return routeInfo;
+            for (var i = 0; i < routeOrRouteArray.length; i++) {
+                var routeInfo = routeOrRouteArray[i];
+
+                routeInfo.name = routeInfo.name || this.convertRouteToName(routeInfo.url);
+                routeInfo.hash = routeInfo.hash || '#/' + routeInfo.url;
+
+                routesByPath[routeInfo.url] = routeInfo;
+                routes.push(routeInfo);
+
+                if (routeInfo.visible) {
+                    routeInfo.isActive = ko.computed(function() {
+                        return router.ready()
+                            && navigationActivator()
+                            && navigationActivator().__moduleId__ == routeInfo.moduleId;
+                    });
+
+                    this.visible.push(routeInfo);
+                }
+            }
         },
         enable: function (activator, defaultRoute) {
             navigationActivator = activator;
@@ -153,7 +167,7 @@
                 system.log.apply(system, args);
             };
 
-            this.navigationReady(true);
+            this.ready(true);
 
             sammy.run();
         }
