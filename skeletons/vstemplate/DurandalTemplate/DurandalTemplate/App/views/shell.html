@@ -10,7 +10,7 @@
                     <a data-bind="attr: { href: hash }, html: name"></a>
                 </li>
             </ul>
-            <div class="loader pull-right" data-bind="css: { active: showSpinner }">
+            <div class="loader pull-right" data-bind="css: { active: router.isNavigating }">
                 <i class="icon-spinner icon-2x icon-spin"></i>
             </div>
             <form class="navbar-search pull-right" data-bind="submit:search">
@@ -20,6 +20,6 @@
     </div>
     
     <div class="container-fluid">
-        <!--ko compose: activeItem--><!--/ko-->
+        <!--ko compose: { model: router.activeItem, afterCompose: router.afterCompose }--><!--/ko-->
     </div>
 </div>

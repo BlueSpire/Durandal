@@ -1,9 +1,12 @@
 ﻿define(function(require) {
-    var system = require('durandal/system');
+    var system = require('durandal/system'),
+        viewModel = require('durandal/viewModel');
+    
     var routesByPath = {},
         allRoutes = ko.observableArray([]),
         visibleRoutes = ko.observableArray([]),
         ready = ko.observable(false),
+        isNavigating = ko.observable(false),
         sammy,
         router,
         previousRoute,
@@ -26,6 +29,7 @@
                 system.log('Cancelling Navigation');
                 sammy.setLocation(previousRoute);
                 cancelling = false;
+                isNavigating(false);
             }
         });
     }
@@ -35,6 +39,7 @@
 
         if (!routeInfo) {
             if (!router.convertRouteToModuleId) {
+                isNavigating(false);
                 system.log('No Route Found', route, params);
                 return;
             }
@@ -58,6 +63,8 @@
         if (cancelling) {
             return;
         }
+
+        isNavigating(true);
 
         var route = this.app.last_route.path.toString();
         var params = this.params;
@@ -102,6 +109,10 @@
         ready: ready,
         allRoutes: allRoutes,
         visibleRoutes: visibleRoutes,
+        isNavigating: isNavigating,
+        afterCompose: function () {
+            isNavigating(false);
+        },
         navigateBack: function() {
             window.history.back();
         },
@@ -141,8 +152,8 @@
                 configureRoute(routeOrRouteArray[i]);
             }
         },
-        enable: function(activator, defaultRoute) {
-            navigationActivator = activator;
+        enable: function(defaultRoute, activator) {
+            this.activeItem = (navigationActivator = activator || viewModel.activator());
             navigationDefaultRoute = defaultRoute;
 
             sammy = Sammy(function(route) {

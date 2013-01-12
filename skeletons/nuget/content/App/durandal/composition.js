@@ -25,13 +25,15 @@
 
     function doTransition(parent, newChild, settings) {
         settings.transition(parent, newChild, settings).then(function() {
-            if (newChild && settings.model && settings.model.viewAttached) {
-                settings.model.viewAttached(newChild);
-            }
+            setTimeout(function() {
+                if (newChild && settings.model && settings.model.viewAttached) {
+                    settings.model.viewAttached(newChild);
+                }
 
-            if (settings.afterCompose) {
-                settings.afterCompose(parent, newChild, settings);
-            }
+                if (settings.afterCompose) {
+                    settings.afterCompose(parent, newChild, settings);
+                }
+            }, 1);
         });
     }
 
