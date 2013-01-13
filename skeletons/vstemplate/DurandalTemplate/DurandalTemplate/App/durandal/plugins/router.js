@@ -10,6 +10,7 @@
         sammy,
         router,
         previousRoute,
+        previousModule,
         cancelling = false,
         activeItem = viewModel.activator(),
         navigationDefaultRoute;
@@ -23,6 +24,7 @@
         activeItem.activateItem(module, params).then(function (succeeded) {
             if (succeeded) {
                 document.title = routeInfo.name;
+                previousModule = module;
                 previousRoute = sammy.last_location[1].replace('/', '');
             } else {
                 cancelling = true;
@@ -51,6 +53,11 @@
         }
 
         system.acquire(routeInfo.moduleId).then(function (module) {
+            if (previousModule == module) {
+                isNavigating(false);
+                return;
+            }
+            
             if (typeof module == 'function') {
                 activateRoute(routeInfo, params, new module());
             } else {
@@ -61,6 +68,10 @@
 
     function handleRoute() {
         if (cancelling) {
+            return;
+        }
+
+        if (sammy.last_location[1].replace('/', '') == previousRoute) {
             return;
         }
 
