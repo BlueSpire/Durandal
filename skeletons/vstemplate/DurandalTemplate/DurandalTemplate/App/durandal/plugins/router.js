@@ -18,7 +18,7 @@
     //NOTE: Sammy.js is not required by the core of Durandal. 
     //However, this plugin leverages it to enable navigation.
 
-    function activateRoute(routeInfo, params, module) {
+    function activateRoute(routeInfo, params, module, forceStopNavigation) {
         system.log('Activating Route', routeInfo, params, module);
 
         activeItem.activateItem(module, params).then(function (succeeded) {
@@ -26,6 +26,10 @@
                 document.title = routeInfo.name;
                 previousModule = module;
                 previousRoute = sammy.last_location[1].replace('/', '');
+
+                if (forceStopNavigation) {
+                    isNavigating(false);
+                }
             } else {
                 cancelling = true;
                 system.log('Cancelling Navigation');
@@ -53,15 +57,10 @@
         }
 
         system.acquire(routeInfo.moduleId).then(function (module) {
-            if (previousModule == module) {
-                isNavigating(false);
-                return;
-            }
-            
             if (typeof module == 'function') {
                 activateRoute(routeInfo, params, new module());
             } else {
-                activateRoute(routeInfo, params, module);
+                activateRoute(routeInfo, params, module, previousModule == module);
             }
         });
     }
