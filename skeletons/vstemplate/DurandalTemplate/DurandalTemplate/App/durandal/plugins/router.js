@@ -100,6 +100,8 @@
     function configureRoute(routeInfo) {
         routeInfo.name = routeInfo.name || router.convertRouteToName(routeInfo.url);
         routeInfo.hash = routeInfo.hash || '#/' + routeInfo.url;
+        routeInfo.caption = routeInfo.caption || routeInfo.name;
+        routeInfo.settings = routeInfo.settings || { };
 
         routesByPath[routeInfo.url] = routeInfo;
         allRoutes.push(routeInfo);
