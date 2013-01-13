@@ -1,7 +1,7 @@
-﻿define(function(require) {
+﻿define(function (require) {
     var system = require('durandal/system'),
         viewModel = require('durandal/viewModel');
-    
+
     var routesByPath = {},
         allRoutes = ko.observableArray([]),
         visibleRoutes = ko.observableArray([]),
@@ -11,7 +11,7 @@
         router,
         previousRoute,
         cancelling = false,
-        navigationActivator,
+        activeItem = viewModel.activator(),
         navigationDefaultRoute;
 
     //NOTE: Sammy.js is not required by the core of Durandal. 
@@ -20,7 +20,7 @@
     function activateRoute(routeInfo, params, module) {
         system.log('Activating Route', routeInfo, params, module);
 
-        navigationActivator.activateItem(module, params).then(function(succeeded) {
+        activeItem.activateItem(module, params).then(function (succeeded) {
             if (succeeded) {
                 document.title = routeInfo.name;
                 previousRoute = sammy.last_location[1].replace('/', '');
@@ -50,7 +50,7 @@
             };
         }
 
-        system.acquire(routeInfo.moduleId).then(function(module) {
+        system.acquire(routeInfo.moduleId).then(function (module) {
             if (typeof module == 'function') {
                 activateRoute(routeInfo, params, new module());
             } else {
@@ -95,8 +95,8 @@
         allRoutes.push(routeInfo);
 
         if (routeInfo.visible) {
-            routeInfo.isActive = ko.computed(function() {
-                return ready() && navigationActivator() && navigationActivator().__moduleId__ == routeInfo.moduleId;
+            routeInfo.isActive = ko.computed(function () {
+                return ready() && activeItem() && activeItem().__moduleId__ == routeInfo.moduleId;
             });
 
             visibleRoutes.push(routeInfo);
@@ -110,29 +110,30 @@
         allRoutes: allRoutes,
         visibleRoutes: visibleRoutes,
         isNavigating: isNavigating,
+        activeItem: activeItem,
         afterCompose: function () {
             isNavigating(false);
         },
-        navigateBack: function() {
+        navigateBack: function () {
             window.history.back();
         },
-        navigateTo: function(url) {
+        navigateTo: function (url) {
             sammy.setLocation(url);
         },
-        convertRouteToName: function(route) {
+        convertRouteToName: function (route) {
             return route.substring(0, 1).toUpperCase() + route.substring(1);
         },
-        mapAuto: function(path) {
+        mapAuto: function (path) {
             path = path || 'viewmodels';
 
-            this.convertRouteToModuleId = function(url) {
+            this.convertRouteToModuleId = function (url) {
                 return path + '/' + url;
             };
         },
-        mapNav: function(url, moduleId, name) {
+        mapNav: function (url, moduleId, name) {
             return this.mapRoute(url, moduleId, name, true);
         },
-        mapRoute: function(url, moduleId, name, visible) {
+        mapRoute: function (url, moduleId, name, visible) {
             var routeInfo = {
                 url: url,
                 moduleId: moduleId,
@@ -142,7 +143,7 @@
 
             return configureRoute(routeInfo);
         },
-        map: function(routeOrRouteArray) {
+        map: function (routeOrRouteArray) {
             if (!system.isArray(routeOrRouteArray)) {
                 configureRoute(routeOrRouteArray);
                 return;
@@ -152,11 +153,10 @@
                 configureRoute(routeOrRouteArray[i]);
             }
         },
-        enable: function(defaultRoute, activator) {
-            this.activeItem = (navigationActivator = activator || viewModel.activator());
+        enable: function (defaultRoute) {
             navigationDefaultRoute = defaultRoute;
 
-            sammy = Sammy(function(route) {
+            sammy = Sammy(function (route) {
                 var unwrapped = allRoutes();
                 for (var i = 0; i < unwrapped.length; i++) {
                     var current = unwrapped[i];
@@ -174,11 +174,11 @@
                 route.get('', handleRoute);
             });
 
-            sammy._checkFormSubmission = function() {
+            sammy._checkFormSubmission = function () {
                 return false;
             };
 
-            sammy.log = function() {
+            sammy.log = function () {
                 var args = Array.prototype.slice.call(arguments, 0);
                 args.unshift('Sammy');
                 system.log.apply(system, args);
