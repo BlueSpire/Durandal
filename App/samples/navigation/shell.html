@@ -1,6 +1,6 @@
 ﻿<div>
     <h1 data-bind='html:displayName'></h1>
-    <div data-bind='compose: { model: router.activeItem, afterCompose: router.afterCompose }'></div>
+    <div data-bind='compose: { model: router.activeItem, afterCompose: router.afterCompose, transition:"entrance" }'></div>
     <div>
         <a class="btn" href="#/first">Goto First</a>
         <a class="btn" href="#/second">Goto Second</a>

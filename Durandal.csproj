@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\plugins\router.js" />
+    <Content Include="App\transitions\entrance.js" />
     <Content Include="Content\css\app.css" />
     <Content Include="Content\css\bootstrap-responsive.min.css" />
     <Content Include="Content\css\bootstrap.min.css" />
@@ -185,6 +186,7 @@ xcopy "$(SolutionDir)App\vendor" "$(SolutionDir)skeletons\nuget\content\App\vend
 xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\durandal\" /s /i /y
 xcopy "$(SolutionDir)App\vendor" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\vendor\" /s /i /y
 xcopy "$(SolutionDir)Content\img" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\images\" /s /i /y
-xcopy "$(SolutionDir)App\plugins" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\plugins\" /s /i /y</PostBuildEvent>
+xcopy "$(SolutionDir)App\plugins" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\plugins\" /s /i /y
+xcopy "$(SolutionDir)App\transitions" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\transitions\" /s /i /y</PostBuildEvent>
   </PropertyGroup>
 </Project>

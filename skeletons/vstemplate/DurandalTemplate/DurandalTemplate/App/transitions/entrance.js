@@ -1,4 +1,6 @@
-﻿define(['durandal/system'], function(system) {
+﻿define(function (require) {
+    var system = require('durandal/system');
+
     var entrance = function (parent, newChild, settings) {
         return system.defer(function(dfd) {
             if (!newChild) {
@@ -6,6 +8,7 @@
                 dfd.resolve();
             } else {
                 var $previousView = $(ko.virtualElements.firstChild(parent));
+                var $view = $(newChild);
                 var duration = settings.duration || 500;
 
                 ko.virtualElements.setDomNodeChildren(parent, [newChild]);
@@ -21,8 +24,6 @@
                 function beginEntranceTransition() {
                     system.log('Running the entrance transition');
 
-                    var $view = $('.view');
-
                     $view.css({
                         marginLeft: '20px',
                         marginRight: '-20px',
@@ -33,8 +34,6 @@
                 }
 
                 function entranceThemeTransition() {
-                    var $view = $(newChild);
-
                     var css = {
                         display: 'block',
                         visibility: 'visible'

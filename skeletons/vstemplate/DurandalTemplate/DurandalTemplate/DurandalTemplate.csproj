@@ -132,6 +132,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="App\plugins\router.js" />
     <Content Include="App\main-built.js" />
+    <Content Include="App\transitions\entrance.js" />
     <Content Include="App\views\detail.html" />
     <Content Include="Content\app.css" />
     <Content Include="Content\bootstrap-responsive.css" />
