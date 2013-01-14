@@ -130,7 +130,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Content Include="App\durandal\plugins\router.js" />
+    <Content Include="App\plugins\router.js" />
     <Content Include="App\main-built.js" />
     <Content Include="App\views\detail.html" />
     <Content Include="Content\app.css" />

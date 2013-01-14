@@ -1,5 +1,5 @@
 ﻿define(function(require) {
-    var router = require('durandal/plugins/router'),
+    var router = require('plugins/router'),
         app = require('durandal/app');
 
     var shell = {
