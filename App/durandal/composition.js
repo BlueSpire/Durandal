@@ -1,9 +1,11 @@
-﻿define(function(require) {
+﻿define(function (require) {
     var viewLocator = require('./viewLocator'),
         viewModelBinder = require('./viewModelBinder'),
         viewEngine = require('./viewEngine'),
         system = require('./system'),
         viewModel = require('./viewModel');
+
+    var runningTransitions = [];
 
     function shouldPerformActivation(settings) {
         return settings.model && settings.model.activate
@@ -13,7 +15,7 @@
     function tryActivate(settings, successCallback) {
         if (shouldPerformActivation(settings)) {
             system.log('Composition Activating', settings.model);
-            viewModel.activator().activateItem(settings.model).then(function(success) {
+            viewModel.activator().activateItem(settings.model).then(function (success) {
                 if (success) {
                     successCallback();
                 }
@@ -23,41 +25,58 @@
         }
     }
 
-    function doTransition(parent, newChild, settings) {
-        settings.transition(parent, newChild, settings).then(function() {
-            setTimeout(function() {
-                if (newChild && settings.model && settings.model.viewAttached) {
-                    settings.model.viewAttached(newChild);
-                }
+    function nextTransition() {
+        var next = runningTransitions[0];
+        if (next) {
+            next();
+        }
+    }
 
-                if (settings.afterCompose) {
-                    settings.afterCompose(parent, newChild, settings);
-                }
-            }, 1);
-        });
+    function afterTransition(parent, newChild, settings) {
+        if (newChild && settings.model && settings.model.viewAttached) {
+            settings.model.viewAttached(newChild);
+        }
+
+        if (settings.afterCompose) {
+            settings.afterCompose(parent, newChild, settings);
+        }
+    }
+
+    function doTransition(parent, newChild, settings) {
+        if (!settings.transition) {
+            if (!newChild) {
+                ko.virtualElements.emptyNode(parent);
+            } else {
+                ko.virtualElements.setDomNodeChildren(parent, [newChild]);
+            }
+
+            afterTransition(parent, newChild, settings);
+        } else {
+            runningTransitions.push(function() {
+                settings.transition(parent, newChild, settings).then(function() {
+                    afterTransition(parent, newChild, settings);
+                    runningTransitions.splice(0, 1);
+                    nextTransition();
+                });
+            });
+
+            if (runningTransitions.length == 1) {
+                nextTransition();
+            }
+        }
     }
 
     var composition = {
         activateDuringComposition: false,
-        convertTransitionToModuleId: function(name) {
+        convertTransitionToModuleId: function (name) {
             return 'transitions/' + name;
         },
-        defaultTransition: function(parent, newChild, settings) {
-            return system.defer(function(dfd) {
-                if (!newChild) {
-                    ko.virtualElements.emptyNode(parent);
-                } else {
-                    ko.virtualElements.setDomNodeChildren(parent, [newChild]);
-                }
-                dfd.resolve();
-            }).promise();
-        },
-        switchContent: function(parent, newChild, settings) {
+        switchContent: function (parent, newChild, settings) {
             settings.transition = settings.transition || this.defaultTransition;
 
             if (typeof settings.transition == 'string') {
                 var transitionModuleId = this.convertTransitionToModuleId(settings.transition);
-                system.acquire(transitionModuleId).then(function(transition) {
+                system.acquire(transitionModuleId).then(function (transition) {
                     settings.transition = transition;
                     doTransition(parent, newChild, settings);
                 });
@@ -66,7 +85,7 @@
             }
         },
         bindAndShow: function (element, view, settings) {
-            tryActivate(settings, function() {
+            tryActivate(settings, function () {
                 if (settings.beforeBind) {
                     settings.beforeBind(element, view, settings);
                 }
@@ -82,10 +101,10 @@
                 composition.switchContent(element, view, settings);
             });
         },
-        defaultStrategy: function(settings) {
+        defaultStrategy: function (settings) {
             return viewLocator.locateViewForObject(settings.model);
         },
-        getSettings: function(valueAccessor) {
+        getSettings: function (valueAccessor) {
             var settings = {},
                 value = ko.utils.unwrapObservable(valueAccessor()) || {};
 
@@ -109,19 +128,19 @@
 
             return settings;
         },
-        executeStrategy: function(element, settings) {
-            settings.strategy(settings).then(function(view) {
+        executeStrategy: function (element, settings) {
+            settings.strategy(settings).then(function (view) {
                 composition.bindAndShow(element, view, settings);
             });
         },
-        inject: function(element, settings) {
+        inject: function (element, settings) {
             if (!settings.model) {
                 this.bindAndShow(element, null, settings);
                 return;
             }
 
             if (settings.view) {
-                viewLocator.locateView(settings.view, settings.area).then(function(view) {
+                viewLocator.locateView(settings.view, settings.area).then(function (view) {
                     composition.bindAndShow(element, view, settings);
                 });
                 return;
@@ -136,7 +155,7 @@
             }
 
             if (typeof settings.strategy == 'string') {
-                system.acquire(settings.strategy).then(function(strategy) {
+                system.acquire(settings.strategy).then(function (strategy) {
                     settings.strategy = strategy;
                     composition.executeStrategy(element, settings);
                 });
@@ -144,7 +163,7 @@
                 this.executeStrategy(element, settings);
             }
         },
-        compose: function(element, settings, bindingContext) {
+        compose: function (element, settings, bindingContext) {
             if (typeof settings == 'string') {
                 if (settings.indexOf(viewEngine.viewExtension, settings.length - viewEngine.viewExtension.length) !== -1) {
                     settings = {
@@ -172,12 +191,12 @@
                 } else {
                     settings.area = settings.area || 'partial';
                     settings.preserveContext = true;
-                    viewLocator.locateView(settings.view, settings.area).then(function(view) {
+                    viewLocator.locateView(settings.view, settings.area).then(function (view) {
                         composition.bindAndShow(element, view, settings);
                     });
                 }
             } else if (typeof settings.model == 'string') {
-                system.acquire(settings.model).then(function(module) {
+                system.acquire(settings.model).then(function (module) {
                     if (typeof (module) == 'function') {
                         settings.model = new module(element, settings);
                     } else {
@@ -193,7 +212,7 @@
     };
 
     ko.bindingHandlers.compose = {
-        update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var settings = composition.getSettings(valueAccessor);
             composition.compose(element, settings, bindingContext);
         }

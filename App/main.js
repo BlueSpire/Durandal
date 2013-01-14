@@ -11,12 +11,18 @@ define(function(require) {
 
     system.debug(true);
 
+    //Only used by navigation sample.
     viewLocator.convertModuleIdToViewUrl = function (moduleId) {
         return moduleId.replace('viewmodels', 'views');
+    };
+    
+    //Only used by view composition sample.
+    viewLocator.convertViewUrlToAreaUrl = function (area, viewUrl) {
+        return 'samples/viewComposition/' + viewUrl;
     };
 
     app.start().then(function() {
         app.adaptToDevice();
-        app.setRoot('samples/navigation/shell');
+        app.setRoot('samples/widgets/shell');
     });
 });

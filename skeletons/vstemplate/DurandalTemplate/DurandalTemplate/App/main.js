@@ -22,6 +22,6 @@ define(function(require) {
         app.adaptToDevice();
         
         //Show the app by setting the root view model for our application.
-        app.setRoot('viewmodels/shell');
+        app.setRoot('viewmodels/shell', 'entrance');
     });
 });

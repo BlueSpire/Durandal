@@ -3,6 +3,22 @@
     padding-top: 40px;
 }
 
+.page-splash-message {
+    text-align: center;
+    margin: 10% 0 0 0;
+    font-size: 400%;
+    font-weight: normal;
+    -webkit-text-shadow: 2px 2px rgba(0, 0, 0, 0.15);
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.15);
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0;
+}
+
+.page-progress-bar {
+    margin: 10% 30% 0 30%;
+}
+
 .navbar-fixed-top {
     z-index: 100;
 }

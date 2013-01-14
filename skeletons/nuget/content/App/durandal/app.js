@@ -28,9 +28,9 @@
                 });
             }).promise();
         },
-        setRoot: function(root, applicationHost) {
+        setRoot: function(root, transition, applicationHost) {
             var hostElement = dom.getElementById(applicationHost || 'applicationHost');
-            var settings = { activate: true };
+            var settings = { activate: true, transition: transition };
 
             if (typeof root === 'string') {
                 if (root.indexOf(viewEngine.viewExtension) != -1) {

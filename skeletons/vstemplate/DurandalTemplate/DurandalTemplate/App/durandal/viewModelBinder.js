@@ -29,8 +29,8 @@
                     ko.applyBindingsToNode(view, null, childContext);
                 });
             } else {
-                doBind(bindingContext, view, function() {
-                    ko.applyBindingsToNode(view, null, bindingContext);
+                doBind(bindingContext, view, function () {
+                    ko.applyBindings(bindingContext, view);
                 });
             }
         },
