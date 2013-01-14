@@ -6,8 +6,8 @@
 
     //see http://patik.com/blog/complete-cross-browser-console-log/
     // Tell IE9 to use its built-in console
-    if (Array.prototype.forEach && Function.prototype.bind && (typeof console === 'object' || typeof console === 'function') && typeof console.log == "object") {
-        ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"]
+    if (Array.prototype.forEach && Function.prototype.bind && (typeof console === 'object' || typeof console === 'function') && typeof console.log == 'object') {
+        ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd']
             .forEach(function(method) {
                 console[method] = this.call(console[method], console);
             }, Function.prototype.bind);
@@ -19,12 +19,12 @@
             return;
         }
 
-        if (typeof module == "function") {
+        if (typeof module == 'function') {
             module.prototype.__moduleId__ = map.id;
             return;
         }
 
-        if (typeof module == "string") {
+        if (typeof module == 'string') {
             return;
         }
 
@@ -67,7 +67,7 @@
                 if (window.opera) {
                     var i = 0;
                     while (i < arguments.length) {
-                        console.log("Item " + (i + 1) + ": " + arguments[i]);
+                        console.log('Item ' + (i + 1) + ': ' + arguments[i]);
                         i++;
                     }
                 }
@@ -92,7 +92,7 @@
                 if (!document.getElementById('firebug-lite')) {
                     // Include the script
                     var script = document.createElement('script');
-                    script.type = "text/javascript";
+                    script.type = 'text/javascript';
                     script.id = 'firebug-lite';
                     // If you run the script locally, point to /path/to/firebug-lite/build/firebug-lite.js
                     script.src = 'https://getfirebug.com/firebug-lite.js';

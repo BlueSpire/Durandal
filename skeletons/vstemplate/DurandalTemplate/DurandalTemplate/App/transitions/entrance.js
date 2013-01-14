@@ -19,11 +19,7 @@
                     dfd.resolve();
                 }
 
-                // Internal animation helpers
-
                 function beginEntranceTransition() {
-                    system.log('Running the entrance transition');
-
                     $view.css({
                         marginLeft: '20px',
                         marginRight: '-20px',

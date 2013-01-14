@@ -30,7 +30,7 @@
 
     function deactivate(item, close, settings, dfd) {
         if (item && item.deactivate) {
-            system.log("Deactivating", item);
+            system.log('Deactivating', item);
 
             var promise = item.deactivate(close);
 
@@ -55,7 +55,7 @@
     function activate(newItem, activeItem, callback, activationData) {
         if (newItem) {
             if (newItem.activate) {
-                system.log("Activating", newItem);
+                system.log('Activating', newItem);
 
                 var promise = newItem.activate(activationData);
 

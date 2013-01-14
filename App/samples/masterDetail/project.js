@@ -8,15 +8,15 @@
     };
     
     ctor.prototype.canActivate = function () {
-        return app.showMessage("Do you want to view " + this.name + "?", "Master Detail", ['Yes', 'No']);
+        return app.showMessage('Do you want to view ' + this.name + '?', 'Master Detail', ['Yes', 'No']);
     };
 
     ctor.prototype.activate = function() {
-        system.log("Model Activating", this);
+        system.log('Model Activating', this);
     };
 
     ctor.prototype.canDeactivate = function () {
-        return app.showMessage("Do you want to leave " + this.name + "?", "Master Detail", ['Yes', 'No']);
+        return app.showMessage('Do you want to leave ' + this.name + '?', 'Master Detail', ['Yes', 'No']);
     };
 
     ctor.prototype.deactivate = function () {

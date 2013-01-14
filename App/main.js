@@ -1,6 +1,6 @@
 ﻿require.config({
     paths: {
-        "text": "vendor/text"
+        'text': 'vendor/text'
     }
 });
 

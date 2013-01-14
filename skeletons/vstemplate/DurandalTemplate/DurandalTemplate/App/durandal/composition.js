@@ -12,7 +12,7 @@
 
     function tryActivate(settings, successCallback) {
         if (shouldPerformActivation(settings)) {
-            system.log("Composition Activating", settings.model);
+            system.log('Composition Activating', settings.model);
             viewModel.activator().activateItem(settings.model).then(function(success) {
                 if (success) {
                     successCallback();
@@ -40,7 +40,7 @@
     var composition = {
         activateDuringComposition: false,
         convertTransitionToModuleId: function(name) {
-            return "transitions/" + name;
+            return 'transitions/' + name;
         },
         defaultTransition: function(parent, newChild, settings) {
             return system.defer(function(dfd) {
@@ -178,7 +178,7 @@
                 }
             } else if (typeof settings.model == 'string') {
                 system.acquire(settings.model).then(function(module) {
-                    if (typeof (module) == "function") {
+                    if (typeof (module) == 'function') {
                         settings.model = new module(element, settings);
                     } else {
                         settings.model = module;

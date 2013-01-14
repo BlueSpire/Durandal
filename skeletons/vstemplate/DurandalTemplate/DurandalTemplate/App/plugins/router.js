@@ -198,7 +198,7 @@
 
             sammy.run();
             ready(true);
-            system.log("Router enabled.");
+            system.log('Router enabled.');
         }
     };
 });

@@ -14,7 +14,7 @@
 
         var viewName = view.getAttribute('data-view');
         try {
-            system.log("Binding", viewName, obj);
+            system.log('Binding', viewName, obj);
             action();
         } catch (e) {
             system.log(e.message, viewName, obj);

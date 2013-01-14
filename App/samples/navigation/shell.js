@@ -2,7 +2,7 @@
     var router = require('plugins/router');
 
     var shell = {
-        displayName: "Navigation",
+        displayName: 'Navigation',
         router: router
     };
 

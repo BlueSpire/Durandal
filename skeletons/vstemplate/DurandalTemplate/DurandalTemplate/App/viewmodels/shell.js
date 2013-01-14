@@ -2,7 +2,11 @@
     var router = require('plugins/router'),
         app = require('durandal/app');
 
-    var shell = {
+    router.mapNav('welcome', 'viewmodels/welcome', 'Welcome');
+    router.mapNav('flickr', 'viewmodels/flickr', 'Flickr');
+    router.enable('welcome');
+
+    return {
         router: router,
         search: function() {
             //It's really easy to show a message box.
@@ -10,10 +14,4 @@
             app.showMessage('Search not yet implemented...');
         }
     };
-    
-    router.mapNav('welcome', 'viewmodels/welcome', 'Welcome');
-    router.mapNav('flickr', 'viewmodels/flickr', 'Flickr');
-    router.enable('welcome');
-
-    return shell;
 });

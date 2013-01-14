@@ -1,13 +1,13 @@
 ﻿define(function (require) {
     var http = require('durandal/http'),
-        app = require("durandal/app");
+        app = require('durandal/app');
     
     var Flickr = function() {
         this.displayName = 'Flickr';
         this.images = ko.observableArray([]);
     };
 
-    //The activator created in the shell calls 'activate' on any view model that it's set to.
+    //The activator created by the router calls 'activate' on any view model that it's set to.
     //You can optionally return a promise for async activation.
     //NOTE: All Durandal's async operations return promises and so do all jQuery's ajax functions, so
     //they can be easily composed together and used in async screen activation scenarios.
@@ -26,7 +26,7 @@
     };
 
     Flickr.prototype.canDeactivate = function () {
-        return app.showMessage("Are you sure you want to leave this page?", 'Navigate', ["Yes", "No"]);
+        return app.showMessage('Are you sure you want to leave this page?', 'Navigate', ['Yes', 'No']);
     };
 
     return Flickr;

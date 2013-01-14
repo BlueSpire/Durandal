@@ -7,10 +7,10 @@
     });
 
     return {
-        displayName: "What is your name?",
+        displayName: 'What is your name?',
         name: name,
         sayHello: function () {
-            app.showMessage("Hello " + name() + "!", "Greetings");
+            app.showMessage('Hello ' + name() + '!', 'Greetings');
         },
         canSayHello: canSayHello
     };

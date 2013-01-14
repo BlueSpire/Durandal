@@ -1,6 +1,6 @@
 ﻿define(function() {
     return {
-        defaultJSONPCallbackParam:"callback",
+        defaultJSONPCallbackParam:'callback',
         get:function(url, query) {
             return $.ajax(url, query);
         },
@@ -11,10 +11,10 @@
                 if (url.indexOf('?') == -1) {
                     url += '?';
                 } else {
-                    url += "&";
+                    url += '&';
                 }
 
-                url += callbackParam + "=?";
+                url += callbackParam + '=?';
             }
 
             return $.ajax({

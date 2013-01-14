@@ -33,7 +33,7 @@
                     return withoutComments;
                 }
                 
-                return $(withoutComments).wrapAll("<div class='durandal-wrapper'></div").parent().get(0);
+                return $(withoutComments).wrapAll('<div class="durandal-wrapper"></div').parent().get(0);
             }
             
             return withoutComments[0];

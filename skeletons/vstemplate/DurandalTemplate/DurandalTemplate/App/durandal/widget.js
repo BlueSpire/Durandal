@@ -3,7 +3,7 @@
         composition = require('./composition');
 
     var widgetPartAttribute = 'data-part',
-        widgetPartSelector = "[" + widgetPartAttribute + "]";
+        widgetPartSelector = '[' + widgetPartAttribute + ']';
 
     var kindModuleMaps = {},
         kindViewMaps = {};
@@ -77,10 +77,10 @@
             }
         },
         convertKindToModuleId: function(kind) {
-            return kindModuleMaps[kind] || "widgets/" + kind + "/controller";
+            return kindModuleMaps[kind] || 'widgets/' + kind + '/controller';
         },
         convertKindToView: function(kind) {
-            return kindViewMaps[kind] || "widgets/" + kind + "/view";
+            return kindViewMaps[kind] || 'widgets/' + kind + '/view';
         },
         beforeBind: function(element, view, settings) {
             var replacementParts = widget.getParts(element);
