@@ -7,6 +7,7 @@
             } else {
                 var $previousView = $(ko.virtualElements.firstChild(parent));
                 var duration = settings.duration || 500;
+                var $view = $(newChild);
 
                 ko.virtualElements.setDomNodeChildren(parent, [newChild]);
 
@@ -17,11 +18,8 @@
                 }
 
                 // Internal animation helpers
-
                 function beginEntranceTransition() {
                     system.log('Running the entrance transition');
-
-                    var $view = $('.view');
 
                     $view.css({
                         marginLeft: '20px',
@@ -33,8 +31,6 @@
                 }
 
                 function entranceThemeTransition() {
-                    var $view = $(newChild);
-
                     var css = {
                         display: 'block',
                         visibility: 'visible'
