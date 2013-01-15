@@ -21,8 +21,8 @@
             settings.afterDeactivate = function () { };
         }
 
-        if (!settings.interpretGuard) {
-            settings.interpretGuard = viewModel.defaultInterpretGuard;
+        if (!settings.interpretResponse) {
+            settings.interpretResponse = viewModel.interpretResponse;
         }
 
         return settings;
@@ -84,10 +84,10 @@
 
                 if (resultOrPromise.then) {
                     resultOrPromise.then(function (result) {
-                        dfd.resolve(settings.interpretGuard(result));
+                        dfd.resolve(settings.interpretResponse(result));
                     });
                 } else {
-                    dfd.resolve(settings.interpretGuard(resultOrPromise));
+                    dfd.resolve(settings.interpretResponse(resultOrPromise));
                 }
             } else {
                 dfd.resolve(true);
@@ -106,10 +106,10 @@
                 var resultOrPromise = newItem.canActivate(activationData);
                 if (resultOrPromise.then) {
                     resultOrPromise.then(function (result) {
-                        dfd.resolve(settings.interpretGuard(result));
+                        dfd.resolve(settings.interpretResponse(result));
                     });
                 } else {
-                    dfd.resolve(settings.interpretGuard(resultOrPromise));
+                    dfd.resolve(settings.interpretResponse(resultOrPromise));
                 }
             } else {
                 dfd.resolve(true);
@@ -373,9 +373,10 @@
     }
 
     return viewModel = {
-        defaultInterpretGuard: function (value) {
+        interpretResponse: function (value) {
             if (typeof value == 'string') {
-                return value == 'Yes' || value == 'Ok';
+                var lowered = value.toLowerCase();
+                return lowered == 'yes' || lowered == 'ok';
             }
 
             return value;
