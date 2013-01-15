@@ -139,7 +139,8 @@
             sammy.setLocation(url);
         },
         convertRouteToName: function (route) {
-            return route.substring(0, 1).toUpperCase() + route.substring(1);
+            var endIndex = route.indexOf(':') || route.length();
+            return route.substring(0, 1).toUpperCase() + route.substring(0, endIndex);
         },
         convertRouteToModuleId: function (url) {
             return 'viewmodels/' + url;
