@@ -180,8 +180,10 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\nuget\content\App\durandal\" /s /i /y
-xcopy "$(SolutionDir)App\vendor" "$(SolutionDir)skeletons\nuget\content\App\vendor\" /s /i /y
+    <PostBuildEvent>xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\nuget\Durandal\content\App\durandal\" /s /i /y
+xcopy "$(SolutionDir)App\vendor" "$(SolutionDir)skeletons\nuget\Durandal\content\App\vendor\" /s /i /y
+xcopy "$(SolutionDir)App\plugins\router.js" "$(SolutionDir)skeletons\nuget\Durandal.Router\content\App\plugins\" /s /i /y
+xcopy "$(SolutionDir)App\transitions" "$(SolutionDir)skeletons\nuget\Durandal.Transitions\content\App\transitions" /s /i /y
 
 xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\durandal\" /s /i /y
 xcopy "$(SolutionDir)App\vendor" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\vendor\" /s /i /y
