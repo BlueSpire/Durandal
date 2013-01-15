@@ -1,11 +1,6 @@
 ﻿define(function(require) {
     var router = require('plugins/router'),
-        app = require('durandal/app'),
-        system = require('durandal/system');
-
-    router.mapNav('welcome', 'viewmodels/welcome', 'Welcome');
-    router.mapNav('flickr', 'viewmodels/flickr', 'Flickr');
-    router.enable('welcome');
+        app = require('durandal/app');
 
     return {
         router: router,
@@ -15,9 +10,9 @@
             app.showMessage('Search not yet implemented...');
         },
         activate: function () {
-            return system.defer(function (dfd) {
-                setTimeout(dfd.resolve, 1000); //simulate preloading some data...
-            });
+            router.mapNav('welcome', 'viewmodels/welcome', 'Welcome');
+            router.mapNav('flickr', 'viewmodels/flickr', 'Flickr');
+            return router.activate('welcome');
         }
     };
 });

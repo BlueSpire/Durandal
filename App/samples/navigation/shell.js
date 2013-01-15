@@ -1,13 +1,12 @@
 ﻿define(function(require) {
     var router = require('plugins/router');
 
-    var shell = {
+    return {
         displayName: 'Navigation',
-        router: router
+        router: router,
+        activate: function() {
+            router.mapAuto('samples/navigation/viewmodels');
+            return router.activate('first');
+        }
     };
-
-    router.mapAuto('samples/navigation/viewmodels');
-    router.enable('first');
-
-    return shell;
 });

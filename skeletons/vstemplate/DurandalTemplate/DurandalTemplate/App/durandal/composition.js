@@ -5,8 +5,6 @@
         system = require('./system'),
         viewModel = require('./viewModel');
 
-    var runningTransitions = [];
-
     function shouldPerformActivation(settings) {
         return settings.model && settings.model.activate
             && ((composition.activateDuringComposition && settings.activate == undefined) || settings.activate);
@@ -14,7 +12,6 @@
 
     function tryActivate(settings, successCallback) {
         if (shouldPerformActivation(settings)) {
-            system.log('Composition Activating', settings.model);
             viewModel.activator().activateItem(settings.model).then(function (success) {
                 if (success) {
                     successCallback();
@@ -25,14 +22,7 @@
         }
     }
 
-    function nextTransition() {
-        var next = runningTransitions[0];
-        if (next) {
-            next();
-        }
-    }
-
-    function afterTransition(parent, newChild, settings) {
+    function afterContentSwitch(parent, newChild, settings) {
         if (newChild && settings.model && settings.model.viewAttached) {
             settings.model.viewAttached(newChild);
         }
@@ -42,46 +32,30 @@
         }
     }
 
-    function doTransition(parent, newChild, settings) {
-        if (!settings.transition) {
-            if (!newChild) {
-                ko.virtualElements.emptyNode(parent);
-            } else {
-                ko.virtualElements.setDomNodeChildren(parent, [newChild]);
-            }
-
-            afterTransition(parent, newChild, settings);
-        } else {
-            runningTransitions.push(function() {
-                settings.transition(parent, newChild, settings).then(function() {
-                    afterTransition(parent, newChild, settings);
-                    runningTransitions.splice(0, 1);
-                    nextTransition();
-                });
-            });
-
-            if (runningTransitions.length == 1) {
-                nextTransition();
-            }
-        }
-    }
-
     var composition = {
         activateDuringComposition: false,
         convertTransitionToModuleId: function (name) {
             return 'transitions/' + name;
         },
         switchContent: function (parent, newChild, settings) {
-            settings.transition = settings.transition || this.defaultTransition;
+            settings.transition = settings.transition || this.defaultTransitionName;
 
-            if (typeof settings.transition == 'string') {
+            if (typeof settings.transition == 'string' && newChild) {
                 var transitionModuleId = this.convertTransitionToModuleId(settings.transition);
                 system.acquire(transitionModuleId).then(function (transition) {
                     settings.transition = transition;
-                    doTransition(parent, newChild, settings);
+                    transition(parent, newChild, settings).then(function () {
+                        afterContentSwitch(parent, newChild, settings);
+                    });
                 });
             } else {
-                doTransition(parent, newChild, settings);
+                if (!newChild) {
+                    ko.virtualElements.emptyNode(parent);
+                } else {
+                    ko.virtualElements.setDomNodeChildren(parent, [newChild]);
+                }
+
+                afterContentSwitch(parent, newChild, settings);
             }
         },
         bindAndShow: function (element, view, settings) {

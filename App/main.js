@@ -23,6 +23,6 @@ define(function(require) {
 
     app.start().then(function() {
         app.adaptToDevice();
-        app.setRoot('samples/widgets/shell');
+        app.setRoot('samples/hello/shell');
     });
 });

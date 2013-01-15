@@ -37,6 +37,13 @@
                 cancelling = false;
                 isNavigating(false);
             }
+
+            if (router.dfd) {
+                ready(true);
+                router.dfd.resolve();
+
+                delete router.dfd;
+            }
         });
     }
 
@@ -101,7 +108,7 @@
         routeInfo.name = routeInfo.name || router.convertRouteToName(routeInfo.url);
         routeInfo.hash = routeInfo.hash || '#/' + routeInfo.url;
         routeInfo.caption = routeInfo.caption || routeInfo.name;
-        routeInfo.settings = routeInfo.settings || { };
+        routeInfo.settings = routeInfo.settings || {};
 
         routesByPath[routeInfo.url] = routeInfo;
         allRoutes.push(routeInfo);
@@ -165,40 +172,41 @@
                 configureRoute(routeOrRouteArray[i]);
             }
         },
-        enable: function (defaultRoute) {
-            navigationDefaultRoute = defaultRoute;
+        activate: function (defaultRoute) {
+            return system.defer(function (dfd) {
+                router.dfd = dfd;
+                navigationDefaultRoute = defaultRoute;
 
-            sammy = Sammy(function (route) {
-                var unwrapped = allRoutes();
-                for (var i = 0; i < unwrapped.length; i++) {
-                    var current = unwrapped[i];
+                sammy = Sammy(function (route) {
+                    var unwrapped = allRoutes();
+                    for (var i = 0; i < unwrapped.length; i++) {
+                        var current = unwrapped[i];
 
-                    if (!(current.url instanceof RegExp)) {
-                        route.get(current.url, handleRoute);
-                    } else {
-                        route.get(current.url, handleRoute);
+                        if (!(current.url instanceof RegExp)) {
+                            route.get(current.url, handleRoute);
+                        } else {
+                            route.get(current.url, handleRoute);
+                        }
+
+                        var processedRoute = this.routes.get[i];
+                        routesByPath[processedRoute.path.toString()] = current;
                     }
 
-                    var processedRoute = this.routes.get[i];
-                    routesByPath[processedRoute.path.toString()] = current;
-                }
+                    route.get('', handleRoute);
+                });
 
-                route.get('', handleRoute);
-            });
+                sammy._checkFormSubmission = function () {
+                    return false;
+                };
 
-            sammy._checkFormSubmission = function () {
-                return false;
-            };
+                sammy.log = function () {
+                    var args = Array.prototype.slice.call(arguments, 0);
+                    args.unshift('Sammy');
+                    system.log.apply(system, args);
+                };
 
-            sammy.log = function () {
-                var args = Array.prototype.slice.call(arguments, 0);
-                args.unshift('Sammy');
-                system.log.apply(system, args);
-            };
-
-            sammy.run();
-            ready(true);
-            system.log('Router enabled.');
+                sammy.run();
+            }).promise();
         }
     };
 });
