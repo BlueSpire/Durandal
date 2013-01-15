@@ -10,8 +10,8 @@
             app.showMessage('Search not yet implemented...');
         },
         activate: function () {
-            router.mapNav('welcome', 'viewmodels/welcome', 'Welcome');
-            router.mapNav('flickr', 'viewmodels/flickr', 'Flickr');
+            router.mapNav('welcome');
+            router.mapNav('flickr');
             return router.activate('welcome');
         }
     };

@@ -13,7 +13,8 @@
         previousModule,
         cancelling = false,
         activeItem = viewModel.activator(),
-        navigationDefaultRoute;
+        navigationDefaultRoute,
+        automap = false;
 
     //NOTE: Sammy.js is not required by the core of Durandal. 
     //However, this plugin leverages it to enable navigation.
@@ -54,7 +55,7 @@
         var routeInfo = routesByPath[route];
 
         if (!routeInfo) {
-            if (!router.convertRouteToModuleId) {
+            if (!automap) {
                 isNavigating(false);
                 system.log('No Route Found', route, params);
                 return;
@@ -90,7 +91,7 @@
         var params = this.params;
 
         if (route == '/$/') {
-            if (router.convertRouteToModuleId) {
+            if (automap) {
                 var fragment = this.path.split('#/');
                 if (fragment.length == 2) {
                     route = fragment[1];
@@ -106,10 +107,7 @@
     }
 
     function configureRoute(routeInfo) {
-        routeInfo.name = routeInfo.name || router.convertRouteToName(routeInfo.url);
-        routeInfo.hash = routeInfo.hash || '#/' + routeInfo.url;
-        routeInfo.caption = routeInfo.caption || routeInfo.name;
-        routeInfo.settings = routeInfo.settings || {};
+        router.prepareRouteInfo(routeInfo);
 
         routesByPath[routeInfo.url] = routeInfo;
         allRoutes.push(routeInfo);
@@ -143,11 +141,24 @@
         convertRouteToName: function (route) {
             return route.substring(0, 1).toUpperCase() + route.substring(1);
         },
+        convertRouteToModuleId: function (url) {
+            return 'viewmodels/' + url;
+        },
+        prepareRouteInfo: function (info) {
+            info.name = info.name || router.convertRouteToName(info.url);
+            info.moduleId = info.moduleId || router.convertRouteToModuleId(info.url);
+            info.caption = info.caption || info.name;
+            info.hash = info.hash || '#/' + info.url;
+            info.settings = info.settings || {};
+        }, 
         mapAuto: function (path) {
+            automap = true;
+            
             path = path || 'viewmodels';
+            path += '/';
 
             this.convertRouteToModuleId = function (url) {
-                return path + '/' + url;
+                return path + url;
             };
         },
         mapNav: function (url, moduleId, name) {
