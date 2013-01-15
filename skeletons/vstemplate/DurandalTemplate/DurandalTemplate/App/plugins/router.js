@@ -19,7 +19,10 @@
     //However, this plugin leverages it to enable navigation.
 
     function activateRoute(routeInfo, params, module, forceStopNavigation) {
-        system.log('Activating Route', routeInfo, params, module);
+        params.routeInfo = routeInfo;
+        params.router = router;
+
+        system.log('Activating Route', routeInfo, module, params);
 
         activeItem.activateItem(module, params).then(function (succeeded) {
             if (succeeded) {
@@ -58,7 +61,7 @@
             }
 
             routeInfo = {
-                moduleId: router.convertRouteToModuleId(route),
+                moduleId: router.convertRouteToModuleId(route, params),
                 name: router.convertRouteToName(route)
             };
         }
@@ -90,9 +93,7 @@
             if (router.convertRouteToModuleId) {
                 var fragment = this.path.split('#/');
                 if (fragment.length == 2) {
-                    var parts = fragment[1].split('/');
-                    route = parts[0];
-                    params = parts.splice(1);
+                    route = fragment[1];
                 } else {
                     route = navigationDefaultRoute;
                 }
