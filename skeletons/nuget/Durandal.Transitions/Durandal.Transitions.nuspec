@@ -2,13 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>Durandal.Transitions</id>
-        <version>0.9.0-pre</version>
+        <version>0.9.1-pre</version>
         <title>Durandal Transitions</title>
         <authors>Rob Eisenberg,John Papa</authors>
         <owners>EisenbergEffect</owners>
         <licenseUrl>https://raw.github.com/EisenbergEffect/Durandal/master/License.txt</licenseUrl>
         <projectUrl>http://www.durandaljs.com</projectUrl>
-        <iconUrl>https://raw.github.com/EisenbergEffect/Durandal/master/media/DURANDAL%20FINAL%20HI%20RES%20LOGO%20VER.jpg</iconUrl>
+        <iconUrl>https://raw.github.com/EisenbergEffect/Durandal/master/media/icon.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain. We've used it to build apps for PC, Mac, Linux, iOS and Android...and now it's your turn...
 
