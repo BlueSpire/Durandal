@@ -35,7 +35,7 @@
     var composition = {
         activateDuringComposition: false,
         convertTransitionToModuleId: function (name) {
-            return 'transitions/' + name;
+            return 'durandal/transitions/' + name;
         },
         switchContent: function (parent, newChild, settings) {
             settings.transition = settings.transition || this.defaultTransitionName;

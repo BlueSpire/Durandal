@@ -3,14 +3,15 @@
     <head>
         <title>Durandal</title>
 
-        <link rel="apple-touch-startup-image" href="Content/img/ios-startup-image-landscape.png" media="(orientation:landscape)" />
-        <link rel="apple-touch-startup-image" href="Content/img/ios-startup-image-portrait.png" media="(orientation:portrait)" />
-        <link rel="apple-touch-icon" href="Content/img/icon.png"/>
+        <link rel="apple-touch-startup-image" href="Content/images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+        <link rel="apple-touch-startup-image" href="Content/images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+        <link rel="apple-touch-icon" href="Content/images/icon.png"/>
         
-        <!--Durandal does not require Bootstrap.-->
-        <link rel="stylesheet" href="Content/css/bootstrap.min.css" type="text/css"/>
-        <link rel="stylesheet" href="Content/css/bootstrap-responsive.min.css" type="text/css"/>
-        <link rel="stylesheet" href="Content/css/app.css" type="text/css"/>
+        <!--Durandal does not require Bootstrap. It's used to make the samples look nice.-->
+        <link rel="stylesheet" href="Content/bootstrap.min.css" type="text/css"/>
+        <link rel="stylesheet" href="Content/bootstrap-responsive.min.css" type="text/css"/>
+
+        <link rel="stylesheet" href="Content/app.css" type="text/css"/>
 
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -21,12 +22,12 @@
     <body>
         <div id="applicationHost"></div>
         
-        <script type="text/javascript" src="App/vendor/jquery-1.7.min.js"></script>
-        <script type="text/javascript" src="App/vendor/knockout-2.2.0.js"></script>
+        <script type="text/javascript" src="Scripts/jquery-1.6.min.js"></script>
+        <script type="text/javascript" src="Scripts/knockout-2.2.0.js"></script>
         
-        <!--Durandal does not require SammyJS.-->
-        <script type="text/javascript" src="App/vendor/sammy.js"></script>
+        <!--Durandal does not require SammyJS. The router plugin uses it.-->
+        <script type="text/javascript" src="Scripts/sammy-0.7.1.js"></script>
 
-        <script type="text/javascript" src="App/vendor/require.js" data-main="app/main"></script>
+        <script type="text/javascript" src="app/durandal/amd/require.js" data-main="app/main"></script>
     </body>
 </html>

@@ -6,8 +6,8 @@ namespace Optimizer {
   class RJSConfigBuilder {
     readonly Options options;
     readonly string[] extensionIncludes;
-    readonly string[] fileExcludes = new[] {"app.build.js", "r.js", "optimizer.base.js", "main-built.js"};
-    const string relativeAlmondPath = "vendor/almond-custom";
+    const string amdPath = "durandal/amd";
+    const string almondName = "almond-custom";
 
     public RJSConfigBuilder(Options options) {
       this.options = options;
@@ -23,9 +23,9 @@ namespace Optimizer {
       info.Excludes = FixupPaths(info.BaseUrl, GetExcludes(info.BaseUrl));
       info.Includes = FixupPaths(info.BaseUrl, GetIncludes(info.BaseUrl)).Except(info.Excludes);
 
-      info.BuildFilePath = Path.Combine(options.ApplicationSource, "vendor/app.build.js");
-      info.OptimizerPath = Path.Combine(options.ApplicationSource, "vendor/r.js");
-      info.AlmondPath = Path.Combine(options.ApplicationSource, relativeAlmondPath + ".js");
+      info.BuildFilePath = Path.Combine(options.ApplicationSource, amdPath, "app.build.js");
+      info.OptimizerPath = Path.Combine(options.ApplicationSource, amdPath, "r.js");
+      info.AlmondPath = Path.Combine(options.ApplicationSource, amdPath, almondName + ".js");
       info.OutputPath = Path.Combine(options.ApplicationSource, "main-built.js");
       info.MainPath = Path.Combine(options.ApplicationSource, "main.js");
 
@@ -40,7 +40,7 @@ namespace Optimizer {
       if(options.Almond) {
         options.Log("Configuring for deploy with almond (custom).");
 
-        JSON.EnsureProperty(config, "name", relativeAlmondPath);
+        JSON.EnsureProperty(config, "name", amdPath + "/" + almondName);
         JSON.EnsureProperty(config, "mainConfigFile", info.MainPath);
         JSON.EnsureProperty(config, "wrap", true);
 
@@ -72,7 +72,8 @@ namespace Optimizer {
         }
       } else {
         var current = Directory.GetCurrentDirectory();
-        sourcePath = new DirectoryInfo(current).Parent.FullName;
+        sourcePath = new DirectoryInfo(current).Parent.Parent.FullName;
+                                      //amd -> durandal -> App
       }
 
       options.ApplicationSource = sourcePath;
@@ -87,7 +88,7 @@ namespace Optimizer {
     }
 
     public IEnumerable<string> GetExcludes(string applicationSource) {
-      var vendor = Path.Combine(applicationSource, "vendor");
+      var vendor = Path.Combine(applicationSource, "durandal/amd");
 
       if(!Directory.Exists(vendor)) {
         return new string[] {};
@@ -99,12 +100,7 @@ namespace Optimizer {
 
     bool ShouldIncludeFile(FileInfo info) {
       var extension = Path.GetExtension(info.FullName);
-
-      if(!extensionIncludes.Contains(extension)) {
-        return false;
-      }
-
-      return !fileExcludes.Contains(info.Name);
+      return extensionIncludes.Contains(extension);
     }
 
     IEnumerable<string> FixupPaths(string applicationPath, IEnumerable<string> paths) {

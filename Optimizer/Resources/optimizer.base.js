@@ -2,10 +2,10 @@
     name: "",
     inlineText: true,
     stubModules: [
-        "vendor/text"
+        "durandal/amd/text"
     ],
     paths: {
-        text: "vendor/text"
+        text: "durandal/amd/text"
     },
     baseUrl: "",
     mainConfigFile:"",

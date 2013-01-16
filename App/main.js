@@ -1,6 +1,6 @@
 ﻿require.config({
     paths: {
-        'text': 'vendor/text'
+        'text': 'durandal/amd/text'
     }
 });
 
@@ -23,6 +23,6 @@ define(function(require) {
 
     app.start().then(function() {
         app.adaptToDevice();
-        app.setRoot('samples/hello/shell');
+        app.setRoot('samples/widgets/shell');
     });
 });

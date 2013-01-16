@@ -77,10 +77,10 @@
             }
         },
         convertKindToModuleId: function(kind) {
-            return kindModuleMaps[kind] || 'widgets/' + kind + '/controller';
+            return kindModuleMaps[kind] || 'durandal/widgets/' + kind + '/controller';
         },
         convertKindToView: function(kind) {
-            return kindViewMaps[kind] || 'widgets/' + kind + '/view';
+            return kindViewMaps[kind] || 'durandal/widgets/' + kind + '/view';
         },
         beforeBind: function(element, view, settings) {
             var replacementParts = widget.getParts(element);
