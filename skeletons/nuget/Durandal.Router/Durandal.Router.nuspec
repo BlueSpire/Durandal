@@ -22,6 +22,6 @@ This is a router designed to integrate SammyJS with Durandal. It makes building 
         </dependencies>
     </metadata>
     <files>
-        <file src="content\App\plugins\router.js" target="content\App\plugins\router.js" />
+        <file src="content\App\durandal\plugins\router.js" target="content\App\durandal\plugins\router.js" />
     </files>
 </package>

@@ -33,6 +33,11 @@ Features
         </dependencies>
     </metadata>
     <files>
+        <file src="content\App\durandal\amd\almond-custom.js" target="content\App\durandal\amd\almond-custom.js" />
+        <file src="content\App\durandal\amd\optimizer.exe" target="content\App\durandal\amd\optimizer.exe" />
+        <file src="content\App\durandal\amd\r.js" target="content\App\durandal\amd\r.js" />
+        <file src="content\App\durandal\amd\require.js" target="content\App\durandal\amd\require.js" />
+        <file src="content\App\durandal\amd\text.js" target="content\App\durandal\amd\text.js" />
         <file src="content\App\durandal\app.js" target="content\App\durandal\app.js" />
         <file src="content\App\durandal\composition.js" target="content\App\durandal\composition.js" />
         <file src="content\App\durandal\dom.js" target="content\App\durandal\dom.js" />
@@ -47,10 +52,5 @@ Features
         <file src="content\App\durandal\viewModel.js" target="content\App\durandal\viewModel.js" />
         <file src="content\App\durandal\viewModelBinder.js" target="content\App\durandal\viewModelBinder.js" />
         <file src="content\App\durandal\widget.js" target="content\App\durandal\widget.js" />
-        <file src="content\App\vendor\almond-custom.js" target="content\App\vendor\almond-custom.js" />
-        <file src="content\App\vendor\optimizer.exe" target="content\App\vendor\optimizer.exe" />
-        <file src="content\App\vendor\r.js" target="content\App\vendor\r.js" />
-        <file src="content\App\vendor\require.js" target="content\App\vendor\require.js" />
-        <file src="content\App\vendor\text.js" target="content\App\vendor\text.js" />
     </files>
 </package>
