@@ -57,7 +57,7 @@
         if (!routeInfo) {
             if (!automap) {
                 isNavigating(false);
-                system.log('No Route Found', route, params);
+                router.handleInvalidRoute(route, params);
                 return;
             }
 
@@ -99,6 +99,12 @@
                     route = navigationDefaultRoute;
                 }
             } else {
+                if (this.app.last_location[1] != '/') {
+                    router.handleInvalidRoute(this.app.last_location[1], params);
+                    isNavigating(false);
+                    return;
+                }
+
                 route = navigationDefaultRoute;
             }
         }
@@ -132,6 +138,9 @@
         afterCompose: function () {
             isNavigating(false);
         },
+        handleInvalidRoute: function (route, params) {
+            system.log('No Route Found', route, params);
+        },
         navigateBack: function () {
             window.history.back();
         },
@@ -150,10 +159,10 @@
             info.caption = info.caption || info.name;
             info.hash = info.hash || '#/' + info.url;
             info.settings = info.settings || {};
-        }, 
+        },
         mapAuto: function (path) {
             automap = true;
-            
+
             path = path || 'viewmodels';
             path += '/';
 
