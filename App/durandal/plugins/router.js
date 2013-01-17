@@ -88,18 +88,13 @@
         isNavigating(true);
 
         var route = this.app.last_route.path.toString();
-        var params = this.params || {};
+        var params = this.params;
 
         if (route == '/$/') {
             if (automap) {
                 var fragment = this.path.split('#/');
                 if (fragment.length == 2) {
-                    var parts = fragment[1].split('/');
-                    route = parts[0];
-                    var splat = parts.splice(1);
-                    if (splat.length > 0) {
-                        params.splat = splat;
-                    }
+                    route = fragment[1];
                 } else {
                     route = navigationDefaultRoute;
                 }
@@ -134,6 +129,12 @@
         return routeInfo;
     }
 
+    function stripParameter(val) {
+        var colonIndex = val.indexOf(':');
+        var length = colonIndex > 0 ? colonIndex - 1 : val.length;
+        return val.substring(0, length);
+    }
+
     return router = {
         ready: ready,
         allRoutes: allRoutes,
@@ -153,10 +154,11 @@
             sammy.setLocation(url);
         },
         convertRouteToName: function (route) {
-            return route.substring(0, 1).toUpperCase() + route.substring(1);
+            var value = stripParameter(route);
+            return value.substring(0, 1).toUpperCase() + value.substring(1);
         },
         convertRouteToModuleId: function (url) {
-            return 'viewmodels/' + url;
+            return 'viewmodels/' + stripParameter(url);
         },
         prepareRouteInfo: function (info) {
             info.name = info.name || router.convertRouteToName(info.url);
