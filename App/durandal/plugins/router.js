@@ -88,13 +88,18 @@
         isNavigating(true);
 
         var route = this.app.last_route.path.toString();
-        var params = this.params;
+        var params = this.params || {};
 
         if (route == '/$/') {
             if (automap) {
                 var fragment = this.path.split('#/');
                 if (fragment.length == 2) {
-                    route = fragment[1];
+                    var parts = fragment[1].split('/');
+                    route = parts[0];
+                    var splat = parts.splice(1);
+                    if (splat.length > 0) {
+                        params.splat = splat;
+                    }
                 } else {
                     route = navigationDefaultRoute;
                 }
