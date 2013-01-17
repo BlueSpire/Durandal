@@ -29,7 +29,7 @@ Features
         <tags>JavaScript JS Durandal HTML CSS MVC MVVM MVP Web SPA RIA Knockout RequireJS jQuery</tags>
         <dependencies>
             <dependency id="knockoutjs" version="2.2.0" />
-            <dependency id="jQuery" version="1.6" />
+            <dependency id="jQuery" version="1.6.0" />
         </dependencies>
     </metadata>
     <files>
