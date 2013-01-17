@@ -96,7 +96,10 @@
                 if (fragment.length == 2) {
                     var parts = fragment[1].split('/');
                     route = parts[0];
-                    params.splat = parts.splice(1);
+                    var splat = parts.splice(1);
+                    if (splat.length > 0) {
+                        params.splat = splat;
+                    }
                 } else {
                     route = navigationDefaultRoute;
                 }
