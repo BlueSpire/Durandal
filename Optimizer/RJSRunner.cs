@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace Optimizer {
   class RJSRunner {
@@ -15,7 +16,11 @@ namespace Optimizer {
     public void Run() {
       if(File.Exists(config.OutputPath)) {
         options.Log("Deleting old output file.", true);
-        File.Delete(config.OutputPath);
+        var info = new FileInfo(config.OutputPath);
+        using(info.Create()) {
+          //effectively deletes the contents of the file
+          //calling delete seamed to break the following optimizer code, not sure why
+        }
       }
 
       if(!File.Exists(config.OptimizerPath)) {
