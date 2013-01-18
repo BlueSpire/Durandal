@@ -17,8 +17,8 @@ This is a router designed to integrate SammyJS with Durandal. It makes building 
         <copyright>Copyright (c) 2012 Blue Spire Consulting, Inc.</copyright>
         <tags>JavaScript JS Durandal HTML CSS MVC MVVM MVP Web SPA RIA Knockout RequireJS jQuery SammyJS Navigation Router</tags>
         <dependencies>
-            <dependency id="Sammy.js" version="0.7.1" />
             <dependency id="Durandal" version="0.9.1-pre" />
+            <dependency id="Sammy.js" version="0.7.2" />
         </dependencies>
     </metadata>
     <files>

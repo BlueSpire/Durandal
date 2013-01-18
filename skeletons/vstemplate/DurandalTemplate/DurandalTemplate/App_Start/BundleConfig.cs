@@ -11,7 +11,7 @@ namespace DurandalTemplate {
         new ScriptBundle("~/scripts/vendor")
           .Include("~/Scripts/jquery-1.8.3.min.js")
           .Include("~/Scripts/knockout-2.2.0.js")
-          .Include("~/Scripts/sammy-0.7.1.min.js")
+          .Include("~/Scripts/sammy-0.7.2.min.js")
           .Include("~/Scripts/bootstrap.min.js")
         );
 
