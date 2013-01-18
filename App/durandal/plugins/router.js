@@ -158,6 +158,9 @@
         navigateTo: function (url) {
             sammy.setLocation(url);
         },
+        replaceLocation: function (url) {
+            window.location.replace(url);
+        },
         convertRouteToName: function (route) {
             var value = stripParameter(route);
             return value.substring(0, 1).toUpperCase() + value.substring(1);
