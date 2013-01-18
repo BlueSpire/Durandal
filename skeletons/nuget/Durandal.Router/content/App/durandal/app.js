@@ -29,8 +29,14 @@
             }).promise();
         },
         setRoot: function(root, transition, applicationHost) {
-            var hostElement = dom.getElementById(applicationHost || 'applicationHost');
-            var settings = { activate: true, transition: transition };
+            var hostElement,
+                settings = { activate: true, transition: transition };
+
+            if (!applicationHost || typeof applicationHost == "string") {
+                hostElement = dom.getElementById(applicationHost || 'applicationHost');
+            } else {
+                hostElement = applicationHost;
+            }
 
             if (typeof root === 'string') {
                 if (root.indexOf(viewEngine.viewExtension) != -1) {
