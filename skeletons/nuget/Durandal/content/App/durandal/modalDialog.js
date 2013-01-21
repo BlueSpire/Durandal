@@ -19,9 +19,6 @@
         },
         addContext: function(name, modalContext) {
             modalContext.name = name;
-            modalContext.modals = ko.observableArray([]);
-            modalContext.activator = viewModel.activator().forItems(modalContext.modals);
-
             contexts[name] = modalContext;
 
             var helperName = 'show' + name.substr(0, 1).toUpperCase() + name.substr(1);
@@ -44,14 +41,18 @@
         show: function(obj, context) {
             var that = this;
             var modalContext = contexts[context || 'default'];
-            return system.defer(function(dfd) {
-                modalContext.activator.activateItem(obj).then(function(success) {
+            
+            return system.defer(function (dfd) {
+                var activator = viewModel.activator();
+
+                activator.activateItem(obj).then(function(success) {
                     if (success) {
                         var modal = obj.modal = {
                             owner: obj,
                             context: modalContext,
+                            activator:activator,
                             close: function(result) {
-                                modalContext.activator.deactivateItem(obj, true).then(function(closeSuccess) {
+                                activator.deactivateItem(obj, true).then(function(closeSuccess) {
                                     if (closeSuccess) {
                                         modalCount--;
                                         modalContext.removeHost(modal);
