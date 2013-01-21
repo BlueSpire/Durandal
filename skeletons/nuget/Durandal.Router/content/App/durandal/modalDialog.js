@@ -109,6 +109,19 @@
 
             modal.host = host.get(0);
             modal.blockout = blockout.get(0);
+
+            if (!modalDialog.isModalOpen()) {
+                modal.oldBodyMarginRight = $("body").css("margin-right");
+                
+                var html = $("html");
+                var oldBodyOuterWidth = body.outerWidth(true);
+                var oldScrollTop = html.scrollTop();
+                $("html").css("overflow-y", "hidden");
+                var newBodyOuterWidth = $("body").outerWidth(true);
+                body.css("margin-right", (newBodyOuterWidth - oldBodyOuterWidth + parseInt(modal.oldBodyMarginRight)) + "px");
+                html.scrollTop(oldScrollTop); // necessary for Firefox
+                $("#simplemodal-overlay").css("width", newBodyOuterWidth + "px");
+            }
         },
         removeHost: function(modal) {
             $(modal.host).css('opacity', 0);
@@ -118,6 +131,13 @@
                 $(modal.host).remove();
                 $(modal.blockout).remove();
             }, this.removeDelay);
+            
+            if (!modalDialog.isModalOpen()) {
+                var html = $("html");
+                var oldScrollTop = html.scrollTop(); // necessary for Firefox.
+                html.css("overflow-y", "").scrollTop(oldScrollTop);
+                $("body").css("margin-right", modal.oldBodyMarginRight);
+            }
         },
         afterCompose: function(parent, newChild, settings) {
             var $child = $(newChild);
