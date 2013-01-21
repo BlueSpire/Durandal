@@ -30,7 +30,8 @@
                 document.title = routeInfo.name;
                 previousModule = module;
                 previousRoute = sammy.last_location[1].replace('/', '');
-
+                // scroll to the top
+                $(document).scrollTop(0);
                 if (forceStopNavigation) {
                     isNavigating(false);
                 }
