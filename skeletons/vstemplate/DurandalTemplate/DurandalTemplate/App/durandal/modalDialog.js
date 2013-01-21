@@ -22,8 +22,8 @@
             contexts[name] = modalContext;
 
             var helperName = 'show' + name.substr(0, 1).toUpperCase() + name.substr(1);
-            this[helperName] = function(obj) {
-                return this.show(obj, name);
+            this[helperName] = function (obj, activationData) {
+                return this.show(obj, activationData, name);
             };
         },
         createCompositionSettings: function(obj, modalContext) {
@@ -38,14 +38,14 @@
 
             return settings;
         },
-        show: function(obj, context) {
+        show: function(obj, activationData, context) {
             var that = this;
             var modalContext = contexts[context || 'default'];
             
             return system.defer(function (dfd) {
                 var activator = viewModel.activator();
 
-                activator.activateItem(obj).then(function(success) {
+                activator.activateItem(obj, activationData).then(function (success) {
                     if (success) {
                         var modal = obj.modal = {
                             owner: obj,

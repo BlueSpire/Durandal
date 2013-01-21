@@ -10,8 +10,8 @@
     var MessageBox;
 
     var app = {
-        showModal: function(viewModel) {
-            return modalDialog.show(viewModel);
+        showModal: function(obj, activationData, context) {
+            return modalDialog.show(obj, activationData, context);
         },
         showMessage: function(message, title, options) {
             return modalDialog.show(new MessageBox(message, title, options));
