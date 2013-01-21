@@ -6,6 +6,22 @@
     var contexts = {},
         modalCount = 0;
 
+    function ensureModalInstance(objOrModuleId) {
+        return system.defer(function(dfd) {
+            if (typeof objOrModuleId == "string") {
+                system.acquire(objOrModuleId).then(function(module) {
+                    if (typeof(module) == 'function') {
+                        dfd.resolve(new module());
+                    } else {
+                        dfd.resolve(module);
+                    }
+                });
+            } else {
+                dfd.resolve(objOrModuleId);
+            }
+        }).promise();
+    }
+
     var modalDialog = {
         currentZIndex: 1000,
         getNextZIndex: function () {
@@ -41,36 +57,38 @@
         show: function(obj, activationData, context) {
             var that = this;
             var modalContext = contexts[context || 'default'];
-            
-            return system.defer(function (dfd) {
-                var activator = viewModel.activator();
 
-                activator.activateItem(obj, activationData).then(function (success) {
-                    if (success) {
-                        var modal = obj.modal = {
-                            owner: obj,
-                            context: modalContext,
-                            activator:activator,
-                            close: function(result) {
-                                activator.deactivateItem(obj, true).then(function(closeSuccess) {
-                                    if (closeSuccess) {
-                                        modalCount--;
-                                        modalContext.removeHost(modal);
-                                        delete obj.modal;
-                                        dfd.resolve(result);
-                                    }
-                                });
-                            }
-                        };
+            return system.defer(function(dfd) {
+                ensureModalInstance(obj).then(function(instance) {
+                    var activator = viewModel.activator();
 
-                        modal.settings = that.createCompositionSettings(obj, modalContext);
-                        modalContext.addHost(modal);
+                    activator.activateItem(instance, activationData).then(function (success) {
+                        if (success) {
+                            var modal = instance.modal = {
+                                owner: instance,
+                                context: modalContext,
+                                activator: activator,
+                                close: function(result) {
+                                    activator.deactivateItem(instance, true).then(function (closeSuccess) {
+                                        if (closeSuccess) {
+                                            modalCount--;
+                                            modalContext.removeHost(modal);
+                                            delete instance.modal;
+                                            dfd.resolve(result);
+                                        }
+                                    });
+                                }
+                            };
 
-                        modalCount++;
-                        composition.compose(modal.host, modal.settings);
-                    } else {
-                        dfd.resolve(false);
-                    }
+                            modal.settings = that.createCompositionSettings(instance, modalContext);
+                            modalContext.addHost(modal);
+
+                            modalCount++;
+                            composition.compose(modal.host, modal.settings);
+                        } else {
+                            dfd.resolve(false);
+                        }
+                    });
                 });
             }).promise();
         }
