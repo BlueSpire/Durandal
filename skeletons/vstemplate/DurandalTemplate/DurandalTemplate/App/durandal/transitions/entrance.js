@@ -25,6 +25,12 @@
                 }
 
                 function beginEntranceTransition() {
+
+                    if (!settings.keepScrollPosition) {
+                        // scroll to the top
+                        $(document).scrollTop(0);
+                    }
+
                     ko.virtualElements.setDomNodeChildren(parent, [newChild]);
 
                     $(newChild).css({
