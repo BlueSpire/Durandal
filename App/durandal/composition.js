@@ -193,6 +193,13 @@
     };
 
     ko.virtualElements.allowedBindings.compose = true;
+    ko.virtualElements.firstChildElement = function (parent) {
+        var child = ko.virtualElements.firstChild(parent);
+        while (child && child.nodeType != 1) {
+            child = ko.virtualElements.nextSibling(child);
+        }
+        return child;
+    };
 
     return composition;
 });
