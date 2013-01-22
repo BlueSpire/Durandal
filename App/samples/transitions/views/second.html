@@ -1,0 +1,31 @@
+﻿<div>
+    <h4>Second</h4>
+
+    <div class="alert alert-info">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Part 3!</h4>
+        Scroll down and then switch projects, scroll does not reset even though transition is used.
+    </div>
+
+    <div class="hero-unit">
+        <h1>Ignore me!</h1>
+        <p>This is just some random content to create a scrollbar to test the non-scrolling transition.</p>
+        <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+        <p><a class="btn btn-primary btn-large">Learn less &raquo;</a></p>
+      </div>
+
+    <select data-bind="options: projects, optionsText: 'name', value: activeProject"></select>
+    
+    <!--ko compose: { 
+            model: activeProject,  
+            transition:'entrance',
+            keepScroll: true 
+        }--><!--/ko-->
+
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Done!</h4>
+        Transition does not scroll back to the top. 
+    </div>
+
+</div>

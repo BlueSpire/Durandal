@@ -26,8 +26,10 @@
 
                 function beginEntranceTransition() {
 
-                    // scroll to the top
-                    $(document).scrollTop(0);
+                    if (settings.keepScroll == undefined || settings.keepScroll == false) {
+                        // scroll to the top
+                        $(document).scrollTop(0);
+                    }
 
                     ko.virtualElements.setDomNodeChildren(parent, [newChild]);
 
