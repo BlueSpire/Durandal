@@ -26,7 +26,7 @@
 
                 function beginEntranceTransition() {
 
-                    if (settings.keepScroll == undefined || settings.keepScroll == false) {
+                    if (!settings.keepScrollPosition) {
                         // scroll to the top
                         $(document).scrollTop(0);
                     }
