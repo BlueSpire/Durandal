@@ -3,15 +3,20 @@
         nativeKeys = Object.keys,
         hasOwnProperty = Object.prototype.hasOwnProperty,
         toString = Object.prototype.toString,
-        system;
+        system,
+        treatAsIE8 = false;
 
     //see http://patik.com/blog/complete-cross-browser-console-log/
     // Tell IE9 to use its built-in console
-    if (Array.prototype.forEach && Function.prototype.bind && (typeof console === 'object' || typeof console === 'function') && typeof console.log == 'object') {
-        ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd']
-            .forEach(function(method) {
-                console[method] = this.call(console[method], console);
-            }, Function.prototype.bind);
+    if (Function.prototype.bind && (typeof console === 'object' || typeof console === 'function') && typeof console.log == 'object') {
+        try {
+            ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd']
+                .forEach(function(method) {
+                    console[method] = this.call(console[method], console);
+                }, Function.prototype.bind);
+        } catch (ex) {
+            treatAsIE8 = true;
+        }
     }
 
     requirejs.onResourceLoad = function(context, map, depArray) {
@@ -32,7 +37,7 @@
         module.__moduleId__ = map.id;
     };
 
-    var noop = function() {};
+    var noop = function() { };
 
     var log = function() {
         // Modern browsers
@@ -45,37 +50,19 @@
                     i++;
                 }
             }
-                // All other modern browsers
+            // All other modern browsers
             else if ((Array.prototype.slice.call(arguments)).length == 1 && typeof Array.prototype.slice.call(arguments)[0] == 'string') {
                 console.log((Array.prototype.slice.call(arguments)).toString());
             } else {
                 console.log(Array.prototype.slice.call(arguments));
             }
-
         }
-            // IE8
-        else if (!Function.prototype.bind && typeof console != 'undefined' && typeof console.log == 'object') {
+        // IE8
+        else if ((!Function.prototype.bind || treatAsIE8) && typeof console != 'undefined' && typeof console.log == 'object') {
             Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
         }
-            // IE7 and lower, and other old browsers
-        else {
-            // Inject Firebug lite
-            if (!document.getElementById('firebug-lite')) {
-                // Include the script
-                var script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.id = 'firebug-lite';
-                // If you run the script locally, point to /path/to/firebug-lite/build/firebug-lite.js
-                script.src = 'https://getfirebug.com/firebug-lite.js';
-                // If you want to expand the console window by default, uncomment this line
-                //document.getElementsByTagName('HTML')[0].setAttribute('debug','true');
-                document.getElementsByTagName('HEAD')[0].appendChild(script);
-                setTimeout(function() { system.log(Array.prototype.slice.call(arguments)); }, 2000);
-            } else {
-                // FBL was included but it hasn't finished loading yet, so try again momentarily
-                setTimeout(function() { system.log(Array.prototype.slice.call(arguments)); }, 500);
-            }
-        }
+        
+        // IE7 and lower, and other old browsers
     };
 
     system = {

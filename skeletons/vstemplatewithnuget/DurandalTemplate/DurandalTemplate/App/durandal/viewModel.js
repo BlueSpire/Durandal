@@ -1,4 +1,4 @@
-﻿define(function (require) {
+﻿define(function(require) {
     var system = require('./system');
     var viewModel;
 
@@ -8,21 +8,23 @@
         }
 
         if (!settings.closeOnDeactivate) {
-            settings.closeOnDeactivate = true;
+            settings.closeOnDeactivate = viewModel.defaults.closeOnDeactivate;
         }
 
         if (!settings.beforeActivate) {
-            settings.beforeActivate = function (newItem) {
-                return newItem;
-            };
+            settings.beforeActivate = viewModel.defaults.beforeActivate;
         }
 
         if (!settings.afterDeactivate) {
-            settings.afterDeactivate = function () { };
+            settings.afterDeactivate = viewModel.defaults.afterDeactivate;
         }
 
         if (!settings.interpretResponse) {
-            settings.interpretResponse = viewModel.interpretResponse;
+            settings.interpretResponse = viewModel.defaults.interpretResponse;
+        }
+
+        if (!settings.areSameItem) {
+            settings.areSameItem = viewModel.defaults.areSameItem;
         }
 
         return settings;
@@ -35,7 +37,7 @@
             var promise = item.deactivate(close);
 
             if (promise && promise.then) {
-                promise.then(function () {
+                promise.then(function() {
                     settings.afterDeactivate(item, close);
                     dfd.resolve(true);
                 });
@@ -60,7 +62,7 @@
                 var promise = newItem.activate(activationData);
 
                 if (promise && promise.then) {
-                    promise.then(function () {
+                    promise.then(function() {
                         activeItem(newItem);
                         callback(true);
                     });
@@ -78,12 +80,12 @@
     }
 
     function canDeactivateItem(item, close, settings) {
-        return system.defer(function (dfd) {
+        return system.defer(function(dfd) {
             if (item && item.canDeactivate) {
                 var resultOrPromise = item.canDeactivate(close);
 
                 if (resultOrPromise.then) {
-                    resultOrPromise.then(function (result) {
+                    resultOrPromise.then(function(result) {
                         dfd.resolve(settings.interpretResponse(result));
                     });
                 } else {
@@ -96,7 +98,7 @@
     };
 
     function canActivateItem(newItem, activeItem, settings, activationData) {
-        return system.defer(function (dfd) {
+        return system.defer(function(dfd) {
             if (newItem == activeItem()) {
                 dfd.resolve(true);
                 return;
@@ -105,7 +107,7 @@
             if (newItem && newItem.canActivate) {
                 var resultOrPromise = newItem.canActivate(activationData);
                 if (resultOrPromise.then) {
-                    resultOrPromise.then(function (result) {
+                    resultOrPromise.then(function(result) {
                         dfd.resolve(settings.interpretResponse(result));
                     });
                 } else {
@@ -123,24 +125,25 @@
         settings = ensureSettings(settings);
 
         var computed = ko.computed({
-            read: function () {
+            read: function() {
                 return activeItem();
             },
-            write: function (newValue) {
+            write: function(newValue) {
                 computed.viaSetter = true;
                 computed.activateItem(newValue);
             }
         });
 
+        computed.settings = settings;
         computed.isActivating = ko.observable(false);
 
-        computed.canDeactivateItem = function (item, close) {
+        computed.canDeactivateItem = function(item, close) {
             return canDeactivateItem(item, close, settings);
         };
 
-        computed.deactivateItem = function (item, close) {
-            return system.defer(function (dfd) {
-                computed.canDeactivateItem(item, close).then(function (canDeactivate) {
+        computed.deactivateItem = function(item, close) {
+            return system.defer(function(dfd) {
+                computed.canDeactivateItem(item, close).then(function(canDeactivate) {
                     if (canDeactivate) {
                         deactivate(item, close, settings, dfd);
                     } else {
@@ -151,15 +154,15 @@
             });
         };
 
-        computed.canActivateItem = function (newItem, activationData) {
+        computed.canActivateItem = function(newItem, activationData) {
             return canActivateItem(newItem, activeItem, settings, activationData);
         };
 
-        computed.activateItem = function (newItem, activationData) {
+        computed.activateItem = function(newItem, activationData) {
             var viaSetter = computed.viaSetter;
             computed.viaSetter = false;
 
-            return system.defer(function (dfd) {
+            return system.defer(function(dfd) {
                 if (computed.isActivating()) {
                     dfd.resolve(false);
                     return;
@@ -168,21 +171,21 @@
                 computed.isActivating(true);
 
                 var currentItem = activeItem();
-                if (currentItem == newItem) {
+                if (settings.areSameItem(currentItem, newItem, activationData)) {
                     computed.isActivating(false);
                     dfd.resolve(true);
                     return;
                 }
 
-                computed.canDeactivateItem(currentItem, settings.closeOnDeactivate).then(function (canDeactivate) {
+                computed.canDeactivateItem(currentItem, settings.closeOnDeactivate).then(function(canDeactivate) {
                     if (canDeactivate) {
-                        computed.canActivateItem(newItem, activationData).then(function (canActivate) {
+                        computed.canActivateItem(newItem, activationData).then(function(canActivate) {
                             if (canActivate) {
-                                system.defer(function (dfd2) {
+                                system.defer(function(dfd2) {
                                     deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2);
-                                }).promise().then(function () {
+                                }).promise().then(function() {
                                     newItem = settings.beforeActivate(newItem);
-                                    activate(newItem, activeItem, function (result) {
+                                    activate(newItem, activeItem, function(result) {
                                         computed.isActivating(false);
                                         dfd.resolve(result);
                                     }, activationData);
@@ -208,7 +211,7 @@
             }).promise();
         };
 
-        computed.canActivate = function () {
+        computed.canActivate = function() {
             var toCheck;
 
             if (initialActiveItem) {
@@ -221,7 +224,7 @@
             return computed.canActivateItem(toCheck);
         };
 
-        computed.activate = function () {
+        computed.activate = function() {
             var toActivate;
 
             if (initialActiveItem) {
@@ -234,28 +237,28 @@
             return computed.activateItem(toActivate);
         };
 
-        computed.canDeactivate = function (close) {
+        computed.canDeactivate = function(close) {
             return computed.canDeactivateItem(computed(), close);
         };
 
-        computed.deactivate = function (close) {
+        computed.deactivate = function(close) {
             return computed.deactivateItem(computed(), close);
         };
 
-        computed.includeIn = function (includeIn) {
-            includeIn.canActivate = function () {
+        computed.includeIn = function(includeIn) {
+            includeIn.canActivate = function() {
                 return computed.canActivate();
             };
 
-            includeIn.activate = function () {
+            includeIn.activate = function() {
                 return computed.activate();
             };
 
-            includeIn.canDeactivate = function (close) {
+            includeIn.canDeactivate = function(close) {
                 return computed.canDeactivate(close);
             };
 
-            includeIn.deactivate = function (close) {
+            includeIn.deactivate = function(close) {
                 return computed.deactivate(close);
             };
         };
@@ -266,10 +269,10 @@
             computed.activate();
         }
 
-        computed.forItems = function (items) {
+        computed.forItems = function(items) {
             settings.closeOnDeactivate = false;
 
-            settings.determineNextItemToActivate = function (list, lastIndex) {
+            settings.determineNextItemToActivate = function(list, lastIndex) {
                 var toRemoveAt = lastIndex - 1;
 
                 if (toRemoveAt == -1 && list.length > 1) {
@@ -283,7 +286,7 @@
                 return null;
             };
 
-            settings.beforeActivate = function (newItem) {
+            settings.beforeActivate = function(newItem) {
                 var currentItem = computed();
 
                 if (!newItem) {
@@ -301,16 +304,16 @@
                 return newItem;
             };
 
-            settings.afterDeactivate = function (oldItem, close) {
+            settings.afterDeactivate = function(oldItem, close) {
                 if (close) {
                     items.remove(oldItem);
                 }
             };
 
             var originalCanDeactivate = computed.canDeactivate;
-            computed.canDeactivate = function (close) {
+            computed.canDeactivate = function(close) {
                 if (close) {
-                    return system.defer(function (dfd) {
+                    return system.defer(function(dfd) {
                         var list = items();
                         var results = [];
 
@@ -326,7 +329,7 @@
                         }
 
                         for (var i = 0; i < list.length; i++) {
-                            computed.canDeactivateItem(list[i], close).then(function (result) {
+                            computed.canDeactivateItem(list[i], close).then(function(result) {
                                 results.push(result);
                                 if (results.length == list.length) {
                                     finish();
@@ -340,15 +343,15 @@
             };
 
             var originalDeactivate = computed.deactivate;
-            computed.deactivate = function (close) {
+            computed.deactivate = function(close) {
                 if (close) {
-                    return system.defer(function (dfd) {
+                    return system.defer(function(dfd) {
                         var list = items();
                         var results = 0;
                         var listLength = list.length;
 
                         function doDeactivate(item) {
-                            computed.deactivateItem(item, close).then(function () {
+                            computed.deactivateItem(item, close).then(function() {
                                 results++;
                                 items.remove(item);
                                 if (results == listLength) {
@@ -373,13 +376,23 @@
     }
 
     return viewModel = {
-        interpretResponse: function (value) {
-            if (typeof value == 'string') {
-                var lowered = value.toLowerCase();
-                return lowered == 'yes' || lowered == 'ok';
-            }
+        defaults: {
+            closeOnDeactivate: true,
+            interpretResponse: function(value) {
+                if (typeof value == 'string') {
+                    var lowered = value.toLowerCase();
+                    return lowered == 'yes' || lowered == 'ok';
+                }
 
-            return value;
+                return value;
+            },
+            areSameItem: function(currentItem, newItem, activationData) {
+                return currentItem == newItem;
+            },
+            beforeActivate: function(newItem) {
+                return newItem;
+            },
+            afterDeactivate:function() { }
         },
         activator: createActivator
     };

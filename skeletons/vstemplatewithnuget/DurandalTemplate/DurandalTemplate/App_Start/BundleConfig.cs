@@ -16,15 +16,11 @@ namespace DurandalTemplate {
         );
 
       bundles.Add(
-        new StyleBundle("~/css/vendor")
+        new StyleBundle("~/Content/css")
           .Include("~/Content/bootstrap.min.css")
+          .Include("~/Content/app.css")
           .Include("~/Content/bootstrap-responsive.min.css")
           .Include("~/Content/font-awesome.min.css")
-        );
-
-      bundles.Add(
-        new StyleBundle("~/css/app")
-          .Include("~/Content/app.css")
         );
     }
 

@@ -6,6 +6,22 @@
     var contexts = {},
         modalCount = 0;
 
+    function ensureModalInstance(objOrModuleId) {
+        return system.defer(function(dfd) {
+            if (typeof objOrModuleId == "string") {
+                system.acquire(objOrModuleId).then(function(module) {
+                    if (typeof(module) == 'function') {
+                        dfd.resolve(new module());
+                    } else {
+                        dfd.resolve(module);
+                    }
+                });
+            } else {
+                dfd.resolve(objOrModuleId);
+            }
+        }).promise();
+    }
+
     var modalDialog = {
         currentZIndex: 1000,
         getNextZIndex: function () {
@@ -19,14 +35,11 @@
         },
         addContext: function(name, modalContext) {
             modalContext.name = name;
-            modalContext.modals = ko.observableArray([]);
-            modalContext.activator = viewModel.activator().forItems(modalContext.modals);
-
             contexts[name] = modalContext;
 
             var helperName = 'show' + name.substr(0, 1).toUpperCase() + name.substr(1);
-            this[helperName] = function(obj) {
-                return this.show(obj, name);
+            this[helperName] = function (obj, activationData) {
+                return this.show(obj, activationData, name);
             };
         },
         createCompositionSettings: function(obj, modalContext) {
@@ -41,35 +54,41 @@
 
             return settings;
         },
-        show: function(obj, context) {
+        show: function(obj, activationData, context) {
             var that = this;
             var modalContext = contexts[context || 'default'];
+
             return system.defer(function(dfd) {
-                modalContext.activator.activateItem(obj).then(function(success) {
-                    if (success) {
-                        var modal = obj.modal = {
-                            owner: obj,
-                            context: modalContext,
-                            close: function(result) {
-                                modalContext.activator.deactivateItem(obj, true).then(function(closeSuccess) {
-                                    if (closeSuccess) {
-                                        modalCount--;
-                                        modalContext.removeHost(modal);
-                                        delete obj.modal;
-                                        dfd.resolve(result);
-                                    }
-                                });
-                            }
-                        };
+                ensureModalInstance(obj).then(function(instance) {
+                    var activator = viewModel.activator();
 
-                        modal.settings = that.createCompositionSettings(obj, modalContext);
-                        modalContext.addHost(modal);
+                    activator.activateItem(instance, activationData).then(function (success) {
+                        if (success) {
+                            var modal = instance.modal = {
+                                owner: instance,
+                                context: modalContext,
+                                activator: activator,
+                                close: function(result) {
+                                    activator.deactivateItem(instance, true).then(function (closeSuccess) {
+                                        if (closeSuccess) {
+                                            modalCount--;
+                                            modalContext.removeHost(modal);
+                                            delete instance.modal;
+                                            dfd.resolve(result);
+                                        }
+                                    });
+                                }
+                            };
 
-                        modalCount++;
-                        composition.compose(modal.host, modal.settings);
-                    } else {
-                        dfd.resolve(false);
-                    }
+                            modal.settings = that.createCompositionSettings(instance, modalContext);
+                            modalContext.addHost(modal);
+
+                            modalCount++;
+                            composition.compose(modal.host, modal.settings);
+                        } else {
+                            dfd.resolve(false);
+                        }
+                    });
                 });
             }).promise();
         }
@@ -90,6 +109,19 @@
 
             modal.host = host.get(0);
             modal.blockout = blockout.get(0);
+
+            if (!modalDialog.isModalOpen()) {
+                modal.oldBodyMarginRight = $("body").css("margin-right");
+                
+                var html = $("html");
+                var oldBodyOuterWidth = body.outerWidth(true);
+                var oldScrollTop = html.scrollTop();
+                $("html").css("overflow-y", "hidden");
+                var newBodyOuterWidth = $("body").outerWidth(true);
+                body.css("margin-right", (newBodyOuterWidth - oldBodyOuterWidth + parseInt(modal.oldBodyMarginRight)) + "px");
+                html.scrollTop(oldScrollTop); // necessary for Firefox
+                $("#simplemodal-overlay").css("width", newBodyOuterWidth + "px");
+            }
         },
         removeHost: function(modal) {
             $(modal.host).css('opacity', 0);
@@ -99,6 +131,13 @@
                 $(modal.host).remove();
                 $(modal.blockout).remove();
             }, this.removeDelay);
+            
+            if (!modalDialog.isModalOpen()) {
+                var html = $("html");
+                var oldScrollTop = html.scrollTop(); // necessary for Firefox.
+                html.css("overflow-y", "").scrollTop(oldScrollTop);
+                $("body").css("margin-right", modal.oldBodyMarginRight);
+            }
         },
         afterCompose: function(parent, newChild, settings) {
             var $child = $(newChild);

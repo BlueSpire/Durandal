@@ -10,6 +10,7 @@
   "baseUrl": "C:\\Users\\Rob\\Documents\\GitHub\\Durandal\\skeletons\\vstemplatewithnuget\\DurandalTemplate\\DurandalTemplate\\App",
   "mainConfigFile": "C:\\Users\\Rob\\Documents\\GitHub\\Durandal\\skeletons\\vstemplatewithnuget\\DurandalTemplate\\DurandalTemplate\\App\\main.js",
   "include": [
+    "main-built",
     "main",
     "durandal/app",
     "durandal/composition",
