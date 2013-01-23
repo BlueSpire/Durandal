@@ -1,4 +1,4 @@
-﻿define(function (require) {
+﻿define(function(require) {
     var system = require('../system');
 
     var entrance = function(parent, newChild, settings) {
@@ -20,6 +20,9 @@
 
                 function startTransition() {
                     ko.virtualElements.setDomNodeChildren(parent, [newChild]);
+                    if ($previousView) {
+                        $previousView.style.display = 'block';
+                    }
 
                     var startValues = {
                         marginLeft: '20px',

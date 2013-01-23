@@ -392,8 +392,22 @@
             beforeActivate: function(newItem) {
                 return newItem;
             },
-            afterDeactivate:function() { }
+            afterDeactivate: function() { }
         },
-        activator: createActivator
+        activator: createActivator,
+        addViewCaching: function(obj) {
+            obj.getView = function() {
+                var view = this.__view__;
+                if (view) {
+                    system.log('Cached View Served', obj, view);
+                }
+                return view;
+            };
+
+            obj.setView = function(view) {
+                system.log('View Cached', obj, view);
+                this.__view__ = view;
+            };
+        }
     };
 });
