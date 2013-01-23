@@ -1,15 +1,14 @@
 ﻿define(function(require) {
     var system = require('durandal/system');
-    var viewModel = require('durandal/viewModel');
 
-    var obj = {
+    return {
         displayName: 'Second Page',
+        items: ko.observableArray([]),
         deactivate: function() {
             system.log('Hello from second\'s deactivate function');
+        },
+        add: function() {
+            this.items.push("Item");
         }
     };
-
-    viewModel.enableViewCaching(obj); //demonstrates a singleton module which caches it's view after creation
-
-    return obj;
 });

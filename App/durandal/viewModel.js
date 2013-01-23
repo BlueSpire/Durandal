@@ -394,22 +394,6 @@
             },
             afterDeactivate: function() { }
         },
-        activator: createActivator,
-        enableViewCaching: function(obj) {
-            obj.getView = function() {
-                var view = this.__view__;
-                if (view) {
-                    system.log('Cached View Served', obj, view);
-                }
-                return view;
-            };
-
-            obj.setView = function(view) {
-                if (this.__view__ != view) {
-                    system.log('View Cached', obj, view);
-                    this.__view__ = view;
-                }
-            };
-        }
+        activator: createActivator
     };
 });

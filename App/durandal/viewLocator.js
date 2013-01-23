@@ -2,27 +2,37 @@
     var system = require('./system'),
         viewEngine = require('./viewEngine');
 
+    function findInElements(nodes, url) {
+        for (var i = 0; i < nodes.length; i++) {
+            var current = nodes[i];
+            var existingUrl = current.getAttribute('data-view');
+            if (existingUrl == url) {
+                return current;
+            }
+        }
+    }
+
     return {
-        locateViewForObject: function(obj) {
+        locateViewForObject: function (obj, elementsToSearch) {
             var view;
 
             if (obj.getView) {
                 view = obj.getView();
                 if (view) {
-                    return this.locateView(view);
+                    return this.locateView(view, null, elementsToSearch);
                 }
             }
 
             if (obj.viewUrl) {
-                return this.locateView(obj.viewUrl);
+                return this.locateView(obj.viewUrl, null, elementsToSearch);
             }
 
             var id = system.getModuleId(obj);
             if (id) {
-                return this.locateView(this.convertModuleIdToViewUrl(id));
+                return this.locateView(this.convertModuleIdToViewUrl(id), null, elementsToSearch);
             }
 
-            return this.locateView(this.determineFallbackViewUrl(obj));
+            return this.locateView(this.determineFallbackViewUrl(obj), null, elementsToSearch);
         },
         convertModuleIdToViewUrl: function(moduleId) {
             return moduleId;
@@ -37,7 +47,7 @@
         convertViewUrlToAreaUrl: function(area, viewUrl) {
             return viewUrl;
         },
-        locateView: function(viewOrUrl, area) {
+        locateView: function(viewOrUrl, area, elementsToSearch) {
             var that = this;
             return system.defer(function(dfd) {
                 if (typeof viewOrUrl === 'string') {
@@ -49,9 +59,17 @@
                         viewOrUrl = that.convertViewUrlToAreaUrl(area, viewOrUrl);
                     }
 
+                    if (elementsToSearch) {
+                        var existing = findInElements(elementsToSearch, viewOrUrl);
+                        if (existing) {
+                            dfd.resolve(existing);
+                            return;
+                        }
+                    }
+
                     var requirePath = viewEngine.pluginPath + '!' + viewOrUrl + viewEngine.viewExtension;
 
-                    system.acquire(requirePath).then(function(result) {
+                    system.acquire(requirePath).then(function (result) {
                         dfd.resolve(viewEngine.createView(viewOrUrl, result));
                     });
                 } else {

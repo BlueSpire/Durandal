@@ -5,6 +5,9 @@
         system = require('./system'),
         viewModel = require('./viewModel');
 
+    var dummyModel = {},
+        activeViewAttributeName = 'data-active-view';
+
     function shouldPerformActivation(settings) {
         return settings.model && settings.model.activate
             && ((composition.activateDuringComposition && settings.activate == undefined) || settings.activate);
@@ -22,9 +25,42 @@
         }
     }
 
+    function getHostState(parent) {
+        var elements = [];
+        var state = {
+            childElements: elements,
+            activeView: null
+        };
+
+        var child = ko.virtualElements.firstChild(parent);
+
+        while (child) {
+            if (child.nodeType == 1) {
+                elements.push(child);
+                if (child.getAttribute(activeViewAttributeName)) {
+                    state.activeView = child;
+                }
+            }
+
+            child = ko.virtualElements.nextSibling(child);
+        }
+
+        return state;
+    }
+
     function afterContentSwitch(parent, newChild, settings) {
-        if (newChild && settings.model && settings.model.viewAttached) {
-            settings.model.viewAttached(newChild);
+        if (settings.activeView) {
+            settings.activeView.removeAttribute(activeViewAttributeName);
+        }
+
+        if (newChild) {
+            if (settings.model) {
+                if (settings.model.viewAttached) {
+                    settings.model.viewAttached(newChild);
+                }
+            }
+
+            newChild.setAttribute(activeViewAttributeName, true);
         }
 
         if (settings.afterCompose) {
@@ -49,16 +85,38 @@
                     });
                 });
             } else {
+                if (settings.cacheViews && settings.activeView) {
+                    $(settings.activeView).css('display', 'none');
+                }
+
                 if (!newChild) {
-                    ko.virtualElements.emptyNode(parent);
+                    if (!settings.cacheViews) {
+                        ko.virtualElements.emptyNode(parent);
+                    }
                 } else {
-                    ko.virtualElements.setDomNodeChildren(parent, [newChild]);
+                    if (settings.cacheViews) {
+                        if (settings.composingNewView) {
+                            settings.viewElements.push(newChild);
+                            ko.virtualElements.prepend(parent, newChild);
+                        } else {
+                            $(newChild).css('display', '');
+                        }
+                    } else {
+                        ko.virtualElements.emptyNode(parent);
+                        ko.virtualElements.prepend(parent, newChild);
+                    }
                 }
 
                 afterContentSwitch(parent, newChild, settings);
             }
         },
         bindAndShow: function (element, view, settings) {
+            if (settings.cacheViews) {
+                settings.composingNewView = (settings.viewElements.indexOf(view) == -1);
+            } else {
+                settings.composingNewView = true;
+            }
+
             tryActivate(settings, function () {
                 if (settings.beforeBind) {
                     settings.beforeBind(element, view, settings);
@@ -66,19 +124,26 @@
 
                 if (settings.preserveContext && settings.bindingContext) {
                     viewModelBinder.bindContext(settings.bindingContext, view, settings.model);
-                } else if (settings.model) {
-                    viewModelBinder.bind(settings.model, view);
                 } else if (view) {
-                    viewModelBinder.bind({}, view);
+                    var modelToBind = settings.model || dummyModel;
+                    var currentModel = ko.dataFor(view);
+
+                    if (currentModel != modelToBind) {
+                        if (!settings.composingNewView) {
+                            console.log('Warning...composing an existing view against a differnt model may go badly for you.');
+                        }
+
+                        viewModelBinder.bind(modelToBind, view);
+                    }
                 }
 
                 composition.switchContent(element, view, settings);
             });
         },
         defaultStrategy: function (settings) {
-            return viewLocator.locateViewForObject(settings.model);
+            return viewLocator.locateViewForObject(settings.model, settings.viewElements);
         },
-        getSettings: function (valueAccessor) {
+        getSettings: function (valueAccessor, element) {
             var settings = {},
                 value = ko.utils.unwrapObservable(valueAccessor()) || {};
 
@@ -114,7 +179,7 @@
             }
 
             if (settings.view) {
-                viewLocator.locateView(settings.view, settings.area).then(function (view) {
+                viewLocator.locateView(settings.view, settings.area, settings.viewElements).then(function (view) {
                     composition.bindAndShow(element, view, settings);
                 });
                 return;
@@ -157,15 +222,23 @@
                 };
             }
 
-            settings.bindingContext = bindingContext;
+            var hostState = getHostState(element);
 
+            settings.bindingContext = bindingContext;
+            settings.activeView = hostState.activeView;
+
+            if (settings.cacheViews && !settings.viewElements) {
+                settings.viewElements = hostState.childElements;
+            }
+            
             if (!settings.model) {
                 if (!settings.view) {
                     this.bindAndShow(element, null, settings);
                 } else {
                     settings.area = settings.area || 'partial';
                     settings.preserveContext = true;
-                    viewLocator.locateView(settings.view, settings.area).then(function (view) {
+                    
+                    viewLocator.locateView(settings.view, settings.area, settings.viewElements).then(function (view) {
                         composition.bindAndShow(element, view, settings);
                     });
                 }
@@ -193,13 +266,6 @@
     };
 
     ko.virtualElements.allowedBindings.compose = true;
-    ko.virtualElements.firstChildElement = function (parent) {
-        var child = ko.virtualElements.firstChild(parent);
-        while (child && child.nodeType != 1) {
-            child = ko.virtualElements.nextSibling(child);
-        }
-        return child;
-    };
 
     return composition;
 });

@@ -79,14 +79,6 @@
     <Content Include="App\samples\modal\customModal.js" />
     <Content Include="App\samples\modal\shell.html" />
     <Content Include="App\samples\modal\shell.js" />
-    <Content Include="App\samples\transitions\shell.html" />
-    <Content Include="App\samples\transitions\shell.js" />
-    <Content Include="App\samples\transitions\viewmodels\first.js" />
-    <Content Include="App\samples\transitions\viewmodels\project.js" />
-    <Content Include="App\samples\transitions\viewmodels\second.js" />
-    <Content Include="App\samples\transitions\views\first.html" />
-    <Content Include="App\samples\transitions\views\project.html" />
-    <Content Include="App\samples\transitions\views\second.html" />
     <Content Include="Content\app.css" />
     <Content Include="Content\bootstrap-responsive.css" />
     <Content Include="Content\bootstrap-responsive.min.css" />

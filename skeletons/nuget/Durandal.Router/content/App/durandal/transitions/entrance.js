@@ -1,5 +1,6 @@
 ﻿define(function(require) {
     var system = require('../system');
+    var fadeOutDuration = 100;
 
     var entrance = function(parent, newChild, settings) {
         return system.defer(function(dfd) {
@@ -12,22 +13,38 @@
             }
 
             if (!newChild) {
-                ko.virtualElements.emptyNode(parent);
-                endTransition();
+                if (settings.activeView) {
+                    $(settings.activeView).fadeOut(fadeOutDuration, function () {
+                        if (!settings.cacheViews) {
+                            ko.virtualElements.emptyNode(parent);
+                        }
+                        endTransition();
+                    });
+                } else {
+                    if (!settings.cacheViews) {
+                        ko.virtualElements.emptyNode(parent);
+                    }
+                    endTransition();
+                }
             } else {
-                var $previousView = $(ko.virtualElements.firstChildElement(parent));
+                var $previousView = $(settings.activeView);
                 var duration = settings.duration || 500;
 
                 function startTransition() {
-                    ko.virtualElements.setDomNodeChildren(parent, [newChild]);
-                    if ($previousView) {
-                        $previousView.css('display', 'block');
+                    if (settings.cacheViews) {
+                        if (settings.composingNewView) {
+                            ko.virtualElements.prepend(parent, newChild);
+                        }
+                    } else {
+                        ko.virtualElements.emptyNode(parent);
+                        ko.virtualElements.prepend(parent, newChild);
                     }
 
                     var startValues = {
                         marginLeft: '20px',
                         marginRight: '-20px',
-                        opacity: 0
+                        opacity: 0,
+                        display: 'block'
                     };
 
                     var endValues = {
@@ -41,7 +58,7 @@
                 }
 
                 if ($previousView.length) {
-                    $previousView.fadeOut(100, startTransition);
+                    $previousView.fadeOut(fadeOutDuration, startTransition);
                 } else {
                     startTransition();
                 }
