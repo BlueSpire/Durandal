@@ -9,7 +9,7 @@
         }
     };
 
-    viewModel.enableViewChaching(obj); //demonstrates a singleton module which caches it's view after creation
+    viewModel.enableViewCaching(obj); //demonstrates a singleton module which caches it's view after creation
 
     return obj;
 });

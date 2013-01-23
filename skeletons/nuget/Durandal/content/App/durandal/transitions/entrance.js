@@ -21,7 +21,7 @@
                 function startTransition() {
                     ko.virtualElements.setDomNodeChildren(parent, [newChild]);
                     if ($previousView) {
-                        $previousView.style.display = 'block';
+                        $previousView.css('display', 'block');
                     }
 
                     var startValues = {

@@ -395,7 +395,7 @@
             afterDeactivate: function() { }
         },
         activator: createActivator,
-        enableViewChaching: function(obj) {
+        enableViewCaching: function(obj) {
             obj.getView = function() {
                 var view = this.__view__;
                 if (view) {
@@ -405,8 +405,10 @@
             };
 
             obj.setView = function(view) {
-                system.log('View Cached', obj, view);
-                this.__view__ = view;
+                if (this.__view__ != view) {
+                    system.log('View Cached', obj, view);
+                    this.__view__ = view;
+                }
             };
         }
     };
