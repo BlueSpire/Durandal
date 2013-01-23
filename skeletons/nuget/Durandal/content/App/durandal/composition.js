@@ -130,7 +130,7 @@
 
                     if (currentModel != modelToBind) {
                         if (!settings.composingNewView) {
-                            console.log('Warning...composing an existing view against a differnt model may go badly for you.');
+                            console.log('Warning...composing an existing view against a different model may go badly for you.');
                         }
 
                         viewModelBinder.bind(modelToBind, view);
