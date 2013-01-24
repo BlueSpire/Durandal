@@ -392,7 +392,7 @@
             beforeActivate: function(newItem) {
                 return newItem;
             },
-            afterDeactivate:function() { }
+            afterDeactivate: function() { }
         },
         activator: createActivator
     };

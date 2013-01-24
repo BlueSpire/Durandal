@@ -21,9 +21,10 @@
     
     <div class="container-fluid">
         <!--ko compose: { 
-            model: router.activeItem, 
-            afterCompose: router.afterCompose, 
-            transition:'entrance' 
+            model: router.activeItem, //wiring the router
+            afterCompose: router.afterCompose, //wiring the router
+            transition:'entrance', //use the 'entrance' transition when switching views
+            cacheViews:true //telling composition to keep views in the dom, and reuse them (only a good idea with singleton view models)
         }--><!--/ko-->
     </div>
 </div>
