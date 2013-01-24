@@ -18,8 +18,8 @@ Durandal is a cross-device, cross-platform client framework written in JavaScrip
 
 ## Documentation
 
-All the documentation is located in the [wiki](https://github.com/EisenbergEffect/Durandal/wiki), so have a look there for help on how to get started, read tutorials, view sample descriptions and peruse the module reference docs.
-If you want to keep up to date with the activity that is happening on the master branch, you can [subscribe to the commit feed](https://github.com/eisenbergeffect/durandal/commits/master.atom).
+All the documentation is located in the [wiki](https://github.com/BlueSpire/Durandal/wiki), so have a look there for help on how to get started, read tutorials, view sample descriptions and peruse the module reference docs.
+If you want to keep up to date with the activity that is happening on the master branch, you can [subscribe to the commit feed](https://github.com/BlueSpire/durandal/commits/master.atom).
 
 ## Community
 
