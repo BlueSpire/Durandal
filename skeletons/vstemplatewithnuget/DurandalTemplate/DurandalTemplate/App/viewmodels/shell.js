@@ -10,7 +10,8 @@
             app.showMessage('Search not yet implemented...');
         },
         activate: function () {
-            router.mapNav('welcome');
+            router.useConvention();
+            router.mapNav('welcome'); //because of conventions, we look for viewmodels/welcome
             router.mapNav('flickr');
             return router.activate('welcome');
         }

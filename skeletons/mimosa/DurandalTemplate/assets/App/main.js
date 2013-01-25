@@ -19,7 +19,7 @@ define(function(require) {
     //>>excludeEnd("build");
 
     app.start().then(function () {
-        //If our view model is in a 'viewmodels' folder, looks for the view in a 'view' folder.
+        //If our view model is in a 'viewmodels' folder, looks for the view in a 'views' folder.
         viewLocator.useConvention();
 
         app.adaptToDevice();
