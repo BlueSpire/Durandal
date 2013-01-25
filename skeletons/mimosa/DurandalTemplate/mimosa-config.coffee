@@ -1,4 +1,6 @@
 exports.config =
+  minMimosaVersion:'0.8.7'
+
   modules: ['server', 'require', 'minify', 'live-reload', 'combine', 'mimosa-requirebuild-textplugin-include', 'skeleton']
 
   combine:[
@@ -14,10 +16,9 @@ exports.config =
   ]
 
   copy:
-    extensions: ['js', 'css', 'png', 'jpg', 'gif', 'html', 'eot', 'svg', 'ttf', 'woff', 'otf', 'json', 'txt', 'xml', 'xsd']
+    extensions: ['js', 'css', 'png', 'jpg', 'jpeg', 'gif', 'htm', 'html', 'eot', 'svg', 'ttf', 'woff', 'otf', 'yaml', 'kml', 'ico', 'htc', 'json', 'txt', 'xml', 'xsd']
 
   watch:
-    sourceDir: 'assets'
     javascriptDir: 'App'
 
   server:
