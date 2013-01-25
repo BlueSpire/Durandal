@@ -10,6 +10,7 @@ define(function(require) {
         system = require('durandal/system');
 
     require('durandal/messageBox')
+    require('durandal/transitions/entrance')
     require('viewmodels/shell')
     require('viewmodels/welcome')
     require('viewmodels/flickr')
