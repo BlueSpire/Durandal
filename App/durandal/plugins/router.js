@@ -14,9 +14,11 @@
         cancelling = false,
         activeItem = viewModel.activator(),
         navigationDefaultRoute,
-        automap = false;
+        automap = false,
+        titleSeparator = ko.observable(' • '),
+        baseTitle = ko.observableArray([]);
 
-    //NOTE: Sammy.js is not required by the core of Durandal. 
+    //NOTE: Sammy.js is not required by the core of Durandal.
     //However, this plugin leverages it to enable navigation.
 
     function activateRoute(routeInfo, params, module, forceStopNavigation) {
@@ -27,7 +29,7 @@
 
         activeItem.activateItem(module, params).then(function (succeeded) {
             if (succeeded) {
-                document.title = routeInfo.name;
+                document.title = routeInfo.name + titleSeparator() + baseTitle().join(titleSeparator());
                 previousModule = module;
                 previousRoute = sammy.last_location[1].replace('/', '');
 
@@ -146,6 +148,8 @@
         visibleRoutes: visibleRoutes,
         isNavigating: isNavigating,
         activeItem: activeItem,
+        titleSeparator: titleSeparator,
+        baseTitle: baseTitle,
         afterCompose: function () {
             isNavigating(false);
         },
