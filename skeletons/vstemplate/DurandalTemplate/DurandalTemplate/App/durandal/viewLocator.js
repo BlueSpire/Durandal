@@ -11,8 +11,20 @@
             }
         }
     }
+    
+    function escape(str) {
+        return (str + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, "\\$1");
+    }
 
     return {
+        useConvention: function (search, replace) {
+            search = search || 'viewmodel';
+            replace = replace || 'view';
+            var reg = new RegExp(escape(search), 'gi');
+            this.convertModuleIdToViewUrl = function(moduleId) {
+                return moduleId.replace(reg, replace);
+            };
+        },
         locateViewForObject: function (obj, elementsToSearch) {
             var view;
 

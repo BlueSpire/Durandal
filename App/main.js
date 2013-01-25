@@ -11,10 +11,8 @@ define(function(require) {
 
     system.debug(true);
 
-    //Only used by navigation sample, since it has a more interesting structure.
-    viewLocator.convertModuleIdToViewUrl = function (moduleId) {
-        return moduleId.replace('viewmodels', 'views');
-    };
+    //If our view model is in a 'viewmodels' folder, looks for the view in a 'view' folder.
+    viewLocator.useConvention();
     
     //Only used by view composition sample to map partial views.
     viewLocator.convertViewUrlToAreaUrl = function (area, viewUrl) {

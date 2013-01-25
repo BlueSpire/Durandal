@@ -1,4 +1,4 @@
-﻿define(function (require) {
+﻿define(function(require) {
     var system = require('../system'),
         viewModel = require('../viewModel');
 
@@ -13,8 +13,7 @@
         previousModule,
         cancelling = false,
         activeItem = viewModel.activator(),
-        navigationDefaultRoute,
-        automap = false;
+        navigationDefaultRoute;
 
     //NOTE: Sammy.js is not required by the core of Durandal. 
     //However, this plugin leverages it to enable navigation.
@@ -25,7 +24,7 @@
 
         system.log('Activating Route', routeInfo, module, params);
 
-        activeItem.activateItem(module, params).then(function (succeeded) {
+        activeItem.activateItem(module, params).then(function(succeeded) {
             if (succeeded) {
                 document.title = routeInfo.name;
                 previousModule = module;
@@ -55,19 +54,19 @@
         var routeInfo = routesByPath[route];
 
         if (!routeInfo) {
-            if (!automap) {
+            if (!router.autoConvertRouteToModuleId) {
                 isNavigating(false);
                 router.handleInvalidRoute(route, params);
                 return;
             }
 
             routeInfo = {
-                moduleId: router.convertRouteToModuleId(route, params),
+                moduleId: router.autoConvertRouteToModuleId(route, params),
                 name: router.convertRouteToName(route)
             };
         }
 
-        system.acquire(routeInfo.moduleId).then(function (module) {
+        system.acquire(routeInfo.moduleId).then(function(module) {
             if (typeof module == 'function') {
                 activateRoute(routeInfo, params, new module());
             } else {
@@ -91,7 +90,7 @@
         var params = this.params || {};
 
         if (route == '/$/') {
-            if (automap) {
+            if (router.autoConvertRouteToModuleId) {
                 var fragment = this.path.split('#/');
                 if (fragment.length == 2) {
                     var parts = fragment[1].split('/');
@@ -124,7 +123,7 @@
         allRoutes.push(routeInfo);
 
         if (routeInfo.visible) {
-            routeInfo.isActive = ko.computed(function () {
+            routeInfo.isActive = ko.computed(function() {
                 return ready() && activeItem() && activeItem().__moduleId__ == routeInfo.moduleId;
             });
 
@@ -134,61 +133,68 @@
         return routeInfo;
     }
 
-    function stripParameter(val) {
-        var colonIndex = val.indexOf(':');
-        var length = colonIndex > 0 ? colonIndex - 1 : val.length;
-        return val.substring(0, length);
-    }
-
     return router = {
         ready: ready,
         allRoutes: allRoutes,
         visibleRoutes: visibleRoutes,
         isNavigating: isNavigating,
         activeItem: activeItem,
-        afterCompose: function () {
+        afterCompose: function() {
             isNavigating(false);
         },
-        handleInvalidRoute: function (route, params) {
+        useConvention: function (rootPath) {
+            rootPath = rootPath || 'viewmodels';
+            rootPath += '/';
+            router.convertRouteToModuleId = function(url) {
+                return rootPath + router.stripParameter(url);
+            };
+        },
+        stripParameter: function(val) {
+            var colonIndex = val.indexOf(':');
+            var length = colonIndex > 0 ? colonIndex - 1 : val.length;
+            return val.substring(0, length);
+        },
+        handleInvalidRoute: function(route, params) {
             system.log('No Route Found', route, params);
         },
-        navigateBack: function () {
+        navigateBack: function() {
             window.history.back();
         },
-        navigateTo: function (url) {
+        navigateTo: function(url) {
             sammy.setLocation(url);
         },
-        replaceLocation: function (url) {
+        replaceLocation: function(url) {
             window.location.replace(url);
         },
-        convertRouteToName: function (route) {
-            var value = stripParameter(route);
+        convertRouteToName: function(route) {
+            var value = router.stripParameter(route);
             return value.substring(0, 1).toUpperCase() + value.substring(1);
         },
-        convertRouteToModuleId: function (url) {
-            return 'viewmodels/' + stripParameter(url);
+        convertRouteToModuleId: function(url) {
+            return router.stripParameter(url);
         },
-        prepareRouteInfo: function (info) {
-            info.name = info.name || router.convertRouteToName(info.url);
-            info.moduleId = info.moduleId || router.convertRouteToModuleId(info.url);
+        prepareRouteInfo: function(info) {
+            if (!(info.url instanceof RegExp)) {
+                info.name = info.name || router.convertRouteToName(info.url);
+                info.moduleId = info.moduleId || router.convertRouteToModuleId(info.url);
+                info.hash = info.hash || '#/' + info.url;
+            }
+
             info.caption = info.caption || info.name;
-            info.hash = info.hash || '#/' + info.url;
             info.settings = info.settings || {};
         },
-        mapAuto: function (path) {
-            automap = true;
-
+        mapAuto: function(path) {
             path = path || 'viewmodels';
             path += '/';
 
-            this.convertRouteToModuleId = function (url) {
-                return path + url;
+            router.autoConvertRouteToModuleId = function(url) {
+                return path + router.stripParameter(url);
             };
         },
-        mapNav: function (url, moduleId, name) {
+        mapNav: function(url, moduleId, name) {
             return this.mapRoute(url, moduleId, name, true);
         },
-        mapRoute: function (url, moduleId, name, visible) {
+        mapRoute: function(url, moduleId, name, visible) {
             var routeInfo = {
                 url: url,
                 moduleId: moduleId,
@@ -198,7 +204,7 @@
 
             return configureRoute(routeInfo);
         },
-        map: function (routeOrRouteArray) {
+        map: function(routeOrRouteArray) {
             if (!system.isArray(routeOrRouteArray)) {
                 configureRoute(routeOrRouteArray);
                 return;
@@ -208,22 +214,16 @@
                 configureRoute(routeOrRouteArray[i]);
             }
         },
-        activate: function (defaultRoute) {
-            return system.defer(function (dfd) {
+        activate: function(defaultRoute) {
+            return system.defer(function(dfd) {
                 router.dfd = dfd;
                 navigationDefaultRoute = defaultRoute;
 
-                sammy = Sammy(function (route) {
+                sammy = Sammy(function(route) {
                     var unwrapped = allRoutes();
                     for (var i = 0; i < unwrapped.length; i++) {
                         var current = unwrapped[i];
-
-                        if (!(current.url instanceof RegExp)) {
-                            route.get(current.url, handleRoute);
-                        } else {
-                            route.get(current.url, handleRoute);
-                        }
-
+                        route.get(current.url, handleRoute);
                         var processedRoute = this.routes.get[i];
                         routesByPath[processedRoute.path.toString()] = current;
                     }
@@ -231,11 +231,11 @@
                     route.get('', handleRoute);
                 });
 
-                sammy._checkFormSubmission = function () {
+                sammy._checkFormSubmission = function() {
                     return false;
                 };
 
-                sammy.log = function () {
+                sammy.log = function() {
                     var args = Array.prototype.slice.call(arguments, 0);
                     args.unshift('Sammy');
                     system.log.apply(system, args);

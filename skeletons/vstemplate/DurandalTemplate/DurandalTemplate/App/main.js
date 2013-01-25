@@ -14,10 +14,8 @@ define(function(require) {
     //>>excludeEnd("build");
 
     app.start().then(function () {
-        //Customizing the view location strategy for our app is easy.
-        viewLocator.convertModuleIdToViewUrl = function (moduleId) {
-            return moduleId.replace('viewmodel', 'view');
-        };
+        //If our view model is in a 'viewmodels' folder, looks for the view in a 'view' folder.
+        viewLocator.useConvention();
 
         app.adaptToDevice();
         
