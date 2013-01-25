@@ -8,33 +8,34 @@ define(function(require) {
         this.owner = owner;
         this.events = events;
     };
-
-    Subscription.prototype.then = function(callback, context) {
-        if (!callback) {
+    
+    Subscription.prototype.then = function (callback, context) {
+        this.callback = callback || this.callback;
+        this.context = context || this.context;
+        
+        if (!this.callback) {
             return this;
         }
 
-        var calls = this.owner.callbacks || (this.owner.callbacks = {});
-        var events = this.events, list;
-
-        for (var i = 0; i < events.length; i++) {
-            var current = events[i];
-
-            list = calls[current] || (calls[current] = []);
-            list.push(callback, context);
-        }
-
+        this.owner.on(this.events, this.callback, this.context);
         return this;
     };
-
+    
+    Subscription.prototype.on = Subscription.prototype.then;
+    
+    Subscription.prototype.off = function () {
+        this.owner.off(this.events, this.callback, this.context);
+        return this;
+    };
+    
     Events.prototype.on = function(events, callback, context) {
         var calls, event, list;
-        events = events.split(eventSplitter);
 
         if (!callback) {
             return new Subscription(this, events);
         } else {
             calls = this.callbacks || (this.callbacks = {});
+            events = events.split(eventSplitter);
 
             while (event = events.shift()) {
                 list = calls[event] || (calls[event] = []);

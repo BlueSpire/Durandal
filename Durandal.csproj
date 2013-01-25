@@ -75,6 +75,12 @@
   <ItemGroup>
     <Content Include="App\durandal\plugins\router.js" />
     <Content Include="App\durandal\transitions\entrance.js" />
+    <Content Include="App\samples\eventAggregator\publisher.html" />
+    <Content Include="App\samples\eventAggregator\publisher.js" />
+    <Content Include="App\samples\eventAggregator\shell.html" />
+    <Content Include="App\samples\eventAggregator\shell.js" />
+    <Content Include="App\samples\eventAggregator\subscriber.html" />
+    <Content Include="App\samples\eventAggregator\subscriber.js" />
     <Content Include="App\samples\modal\customModal.html" />
     <Content Include="App\samples\modal\customModal.js" />
     <Content Include="App\samples\modal\shell.html" />
