@@ -10,9 +10,6 @@
             app.showMessage('Search not yet implemented...');
         },
         activate: function () {
-            router.useConvention();
-            router.mapNav('welcome');
-            router.mapNav('flickr');
             return router.activate('welcome');
         }
     };

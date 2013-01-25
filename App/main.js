@@ -21,6 +21,6 @@ define(function(require) {
 
     app.start().then(function() {
         app.adaptToDevice();
-        app.setRoot('samples/eventAggregator/shell');
+        app.setRoot('samples/navigation/shell');
     });
 });

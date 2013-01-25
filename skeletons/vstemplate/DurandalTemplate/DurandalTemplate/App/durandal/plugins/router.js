@@ -49,13 +49,20 @@
             }
         });
     }
+    
+    function shouldStopNavigation() {
+        return cancelling || (sammy.last_location[1].replace('/', '') == previousRoute);
+    }
 
     function ensureRoute(route, params) {
         var routeInfo = routesByPath[route];
+        
+        if (shouldStopNavigation()) {
+            return;
+        }
 
         if (!routeInfo) {
             if (!router.autoConvertRouteToModuleId) {
-                isNavigating(false);
                 router.handleInvalidRoute(route, params);
                 return;
             }
@@ -65,6 +72,8 @@
                 name: router.convertRouteToName(route)
             };
         }
+        
+        isNavigating(true);
 
         system.acquire(routeInfo.moduleId).then(function(module) {
             if (typeof module == 'function') {
@@ -75,45 +84,33 @@
         });
     }
 
-    function handleRoute() {
-        if (cancelling) {
-            return;
-        }
+    function handleDefaultRoute() {
+        ensureRoute(navigationDefaultRoute, this.params || {});
+    }
+    
+    function handleMappedRoute() {
+        ensureRoute(this.app.last_route.path.toString(), this.params || {});
+    }
 
-        if (sammy.last_location[1].replace('/', '') == previousRoute) {
-            return;
-        }
+    function handleWildCardRoute() {
+        var params = this.params || {}, route;
 
-        isNavigating(true);
+        if (router.autoConvertRouteToModuleId) {
+            var fragment = this.path.split('#/');
 
-        var route = this.app.last_route.path.toString();
-        var params = this.params || {};
-
-        if (route == '/$/') {
-            if (router.autoConvertRouteToModuleId) {
-                var fragment = this.path.split('#/');
-                if (fragment.length == 2) {
-                    var parts = fragment[1].split('/');
-                    route = parts[0];
-                    var splat = parts.splice(1);
-                    if (splat.length > 0) {
-                        params.splat = splat;
-                    }
-                } else {
-                    route = navigationDefaultRoute;
+            if (fragment.length == 2) {
+                var parts = fragment[1].split('/');
+                route = parts[0];
+                var splat = parts.splice(1);
+                if (splat.length > 0) {
+                    params.splat = splat;
                 }
-            } else {
-                if (this.app.last_location[1] != '/') {
-                    router.handleInvalidRoute(this.app.last_location[1], params);
-                    isNavigating(false);
-                    return;
-                }
-
-                route = navigationDefaultRoute;
+                ensureRoute(route, params);
+                return;
             }
         }
 
-        ensureRoute(route, params);
+        router.handleInvalidRoute(this.app.last_location[1], params);
     }
 
     function configureRoute(routeInfo) {
@@ -216,19 +213,23 @@
         },
         activate: function(defaultRoute) {
             return system.defer(function(dfd) {
+                var processedRoute;
+                
                 router.dfd = dfd;
                 navigationDefaultRoute = defaultRoute;
 
                 sammy = Sammy(function(route) {
                     var unwrapped = allRoutes();
+                    
                     for (var i = 0; i < unwrapped.length; i++) {
                         var current = unwrapped[i];
-                        route.get(current.url, handleRoute);
-                        var processedRoute = this.routes.get[i];
+                        route.get(current.url, handleMappedRoute);
+                        processedRoute = this.routes.get[i];
                         routesByPath[processedRoute.path.toString()] = current;
                     }
 
-                    route.get('', handleRoute);
+                    route.get(/\#\/(.*)/, handleWildCardRoute);
+                    route.get('', handleDefaultRoute);
                 });
 
                 sammy._checkFormSubmission = function() {
