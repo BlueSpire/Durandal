@@ -2,7 +2,7 @@
 using System.Web.Optimization;
 
 namespace DurandalTemplate.App_Start {
-  public class BundleConfig {
+  public class DurandalBundleConfig {
     public static void RegisterBundles(BundleCollection bundles) {
       bundles.IgnoreList.Clear();
       AddDefaultIgnorePatterns(bundles.IgnoreList);
