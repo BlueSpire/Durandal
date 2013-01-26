@@ -17,12 +17,19 @@
     }
 
     return {
-        useConvention: function (search, replace) {
-            search = search || 'viewmodel';
-            replace = replace || 'view';
-            var reg = new RegExp(escape(search), 'gi');
+        useConvention: function (modulesPath, viewsPath, partialsPath) {
+            modulesPath = modulesPath || 'viewmodels';
+            viewsPath = viewsPath || 'views';
+            partialsPath = partialsPath || viewsPath;
+            
+            var reg = new RegExp(escape(modulesPath), 'gi');
+            
             this.convertModuleIdToViewUrl = function(moduleId) {
-                return moduleId.replace(reg, replace);
+                return moduleId.replace(reg, viewsPath);
+            };
+
+            this.convertViewUrlToAreaUrl = function(area, viewUrl) {
+                return partialsPath + '/' + viewUrl;
             };
         },
         locateViewForObject: function (obj, elementsToSearch) {

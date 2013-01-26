@@ -153,7 +153,6 @@
     <Content Include="App\viewmodels\flickr.js" />
     <Content Include="App\durandal\app.js" />
     <Content Include="App\durandal\composition.js" />
-    <Content Include="App\durandal\dom.js" />
     <Content Include="App\durandal\events.js" />
     <Content Include="App\durandal\http.js" />
     <Content Include="App\durandal\messageBox.html" />

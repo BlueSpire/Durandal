@@ -3,7 +3,6 @@
         viewEngine = require('./viewEngine'),
         composition = require('./composition'),
         widget = require('./widget'), //loads the widget handler
-        dom = require('./dom'),
         modalDialog = require('./modalDialog'),
         Events = require('./events');
 
@@ -17,8 +16,8 @@
             return modalDialog.show(new MessageBox(message, title, options));
         },
         start: function() {
-            return system.defer(function(dfd) {
-                dom.ready().then(function() {
+            return system.defer(function (dfd) {
+                $(function() {
                     system.log('Starting Application');
                     system.acquire('./messageBox').then(function(mb) {
                         MessageBox = mb;
@@ -33,7 +32,7 @@
                 settings = { activate: true, transition: transition };
 
             if (!applicationHost || typeof applicationHost == "string") {
-                hostElement = dom.getElementById(applicationHost || 'applicationHost');
+                hostElement = document.getElementById(applicationHost || 'applicationHost');
             } else {
                 hostElement = applicationHost;
             }

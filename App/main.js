@@ -11,15 +11,11 @@ define(function(require) {
 
     system.debug(true);
 
-    //If our view model is in a 'viewmodels' folder, looks for the view in a 'view' folder.
-    viewLocator.useConvention();
-    
-    //Only used by view composition sample to map partial views.
-    viewLocator.convertViewUrlToAreaUrl = function (area, viewUrl) {
-        return 'samples/viewComposition/' + viewUrl;
-    };
+    app.start().then(function () {
+        //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
+        //Look for partial views in a 'views' folder in the root.
+        viewLocator.useConvention();
 
-    app.start().then(function() {
         app.adaptToDevice();
         app.setRoot('samples/navigation/shell');
     });

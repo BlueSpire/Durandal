@@ -15,7 +15,8 @@ define(function(require) {
     //>>excludeEnd("build");
 
     app.start().then(function () {
-        //If our view model is in a 'viewmodels' folder, looks for the view in a 'views' folder.
+        //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
+        //Look for partial views in a 'views' folder in the root.
         viewLocator.useConvention();
         
         //configure routing
@@ -25,7 +26,7 @@ define(function(require) {
 
         app.adaptToDevice();
         
-        //Show the app by setting the root view model for our application.
+        //Show the app by setting the root view model for our application with a transition.
         app.setRoot('viewmodels/shell', 'entrance');
     });
 });
