@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>Durandal</id>
-        <version>0.9.5-pre</version>
+        <version>0.9.6-pre</version>
         <title>Durandal</title>
         <authors>Rob Eisenberg</authors>
         <owners>EisenbergEffect</owners>
@@ -40,7 +40,6 @@ Features
         <file src="content\App\durandal\amd\text.js" target="content\App\durandal\amd\text.js" />
         <file src="content\App\durandal\app.js" target="content\App\durandal\app.js" />
         <file src="content\App\durandal\composition.js" target="content\App\durandal\composition.js" />
-        <file src="content\App\durandal\dom.js" target="content\App\durandal\dom.js" />
         <file src="content\App\durandal\events.js" target="content\App\durandal\events.js" />
         <file src="content\App\durandal\http.js" target="content\App\durandal\http.js" />
         <file src="content\App\durandal\messageBox.html" target="content\App\durandal\messageBox.html" />
