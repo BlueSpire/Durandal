@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Durandal.Router</id>
-        <version>0.9.6-pre</version>
+        <version>1.0.0</version>
         <title>Durandal Router</title>
         <authors>Rob Eisenberg</authors>
         <owners>EisenbergEffect</owners>
         <licenseUrl>https://raw.github.com/EisenbergEffect/Durandal/master/License.txt</licenseUrl>
         <projectUrl>http://www.durandaljs.com</projectUrl>
-        <iconUrl>https://raw.github.com/EisenbergEffect/Durandal/master/media/icon.png</iconUrl>
+        <iconUrl>https://raw.github.com/BlueSpire/Durandal/master/media/icon_128.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain. We've used it to build apps for PC, Mac, Linux, iOS and Android...and now it's your turn...
 
@@ -18,7 +18,7 @@ This is a router designed to integrate SammyJS with Durandal. It makes building 
         <tags>JavaScript JS Durandal HTML CSS MVC MVVM MVP Web SPA RIA Knockout RequireJS jQuery SammyJS Navigation Router</tags>
         <dependencies>
             <dependency id="Sammy.js" version="0.7.2" />
-            <dependency id="Durandal" version="0.9.6-pre" />
+            <dependency id="Durandal" version="1.0.0" />
         </dependencies>
     </metadata>
     <files>
