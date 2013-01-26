@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace DurandalTemplate {
+namespace DurandalTemplate.App_Start {
   public static class WebApiConfig {
     public static void Register(HttpConfiguration config) {
       config.Routes.MapHttpRoute(

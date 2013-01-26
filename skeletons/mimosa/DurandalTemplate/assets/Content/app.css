@@ -10,6 +10,7 @@
 
 .splash .message {
     font-size: 5em;
+    line-height: 5em;
     -webkit-text-shadow: 2px 2px rgba(0, 0, 0, 0.15);
     text-shadow: 2px 2px rgba(0, 0, 0, 0.15);
     text-transform: uppercase;

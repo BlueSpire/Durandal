@@ -14,9 +14,9 @@ information please visit us at http://www.durandaljs.com
 
 * The main app code lives under *App* and is organized into AMD modules and HTML views.
 * Css, fonts and images can be found under *Content*.
-* Third party script libraries are located under Scripts.
+* Third party script libraries are located under *Scripts*.
 * Css and script library bundling has been configured in *App_Start/BundleConfig.cs*.
-* The *Home/Index* view contains the host page's html, links and script references.
+* The *Durandal/Index* view contains the host page's html, links and script references.
 * Application startup beings with the *App/main.js*
 
 ## Explanation of the SPA Architecture
@@ -28,15 +28,14 @@ constructed by building View Models (aka Presentation Models) or Controllers and
 binds them together and inserts them into the dom. Durandal's composition features allow you to break
 down very complex user interfaces into small modules which can be recursively composed together. This 
 technique makes even the most complex user interfaces relatively easy to build. In this starter kit the
-*viewModels/shell* module is bound to the "views/shell" html and inserted into the dom. The shell view
-then composes in "page" view models based on the navigation location. Navigation is handled by a router
-built for this starter kit. Under the covers it uses SammyJS, but ultimately urls get mapped to modules which
+*viewmodels/shell* module is bound to the "views/shell" html and inserted into the dom. The shell view
+then composes in "page" view models based on the navigation location. Navigation is handled by the router
+plugin. Under the covers it uses SammyJS, but ultimately urls get mapped to modules which
 then get composed into the page by the shell. This happens because the router changes the value of the 
-*activeItem* property which the shell provides it with. This same activator is bound via the *compose* binding
-in the shell's view. Each page view model is free to follow it's own architecure internally, depending on 
+*activeItem* property which is bound in the shell's view. Each page view model is free to follow it's own architecure internally, depending on 
 what makes the most sense for the feature being developed. The shell is unconcerned with the inner details of the
 pages it is displaying, as you would hope. To build on top of this sample, begin by creating view models for
-the pages you wish to add to the navigation structure. In the shell, register the view models with the router.
+the pages you wish to add to the navigation structure. In the main, register the view models with the router.
 Create a view for each module following the naming convention you see presented here.
 
 ## Going Further
