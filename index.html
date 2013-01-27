@@ -1,92 +1,37 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <title>Durandal by Blue Spire</title>
-  </head>
-
-  <body>
-    <header>
-      <div class="inner">
-        <img src="images/durandalLogo.png" style="width:80%" />
-        <a href="https://github.com/BlueSpire/Durandal" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
-
-
-
-    <div id="content-wrapper">
-
-
-      <div class="inner clearfix">
-        <section id="main-content">
-          <blockquote>
-<p>Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain.</p>
-</blockquote>
-
-    <ul class="quick-links">
-      <li>
-        <iframe src="http://ghbtns.com/github-btn.html?user=BlueSpire&repo=durandal&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
-      </li>
-      <li>
-        <iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html?hashtags=durandal&original_referer=http%3A%2F%2Fdurandaljs.com&size=m&text=Check out Durandal for building awesome JS applications!&via=durandaljs" style="width:100px; height:20px;"></iframe>
-      </li>
-      <li>
-        <iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/follow_button.html?screen_name=durandaljs"  style="height:20px;"></iframe>
-      </li>
-    </ul>
-
-<h2>Features</h2>
-
-<ul>
-  <li>Clean MV* Architecture</li>
-  <li>JS &amp; HTML Modularity</li>
-  <li>Simple App Lifecycle</li>
-  <li>Eventing, Modals, Message Boxes, etc.</li>
-  <li>Navigation &amp; Screen State Management</li>
-  <li>Consistent Async Programming w/ Promises</li>
-  <li>App Bundling and Optimization</li>
-  <li>Use any Backend Technology</li>
-  <li>Built on top of <a href="http://jquery.com/">jQuery</a>, <a href="http://knockoutjs.com/">Knockout</a> &amp; <a href="http://requirejs.org/">RequireJS</a>.</li>
-  <li>Integrates with other libraries such as <a href="http://sammyjs.org/">SammyJS</a> &amp; <a href="http://twitter.github.com/bootstrap/">Bootstrap</a>.</li>
-  <li>Make jQuery &amp; Bootstrap widgets templatable and bindable (or build your own widgets).</li>
-</ul>
-
-<h2>Documentation</h2>
-
-<p>All the documentation is located in the <a href="https://github.com/BlueSpire/Durandal/wiki">wiki</a>, so have a look there for help on how to get started, read tutorials, view sample descriptions and peruse the module reference docs.</p>
+    <head>
+        <title>Durandal</title>
         
-<h2>Community</h2>
-<p>Need help with something that the docs aren't providing an answer to? Visit our <a href="https://groups.google.com/forum/?fromgroups#!forum/durandaljs">google group</a> and join in the conversation.</p>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="format-detection" content="telephone=no"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        <link rel="apple-touch-startup-image" href="Content/images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+        <link rel="apple-touch-startup-image" href="Content/images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+        <link rel="apple-touch-icon" href="Content/images/icon.png"/>
+        
+        <link rel="stylesheet" href="Content/styles.css" />
+        
+        <script type="text/javascript">
+            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                var mq = "@@-ms-viewport{width:auto!important}";
+                msViewportStyle.appendChild(document.createTextNode(mq));
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+        </script>
 
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/BlueSpire/Durandal/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/BlueSpire/Durandal/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner">Durandal<a href="https://github.com/BlueSpire/Durandal"></a> is maintained by <a href="https://github.com/BlueSpire">Blue Spire</a>.</p>
-        </aside>
-      </div>
-    </div>
-
-  
-  </body>
+        <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    </head>
+    <body>
+        <div id="applicationHost"></div>
+        
+        <script src="Scripts/vendor.js"></script>
+        <script src="App/main-built.js"></script>
+    </body>
 </html>
