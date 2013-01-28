@@ -7274,6 +7274,7 @@ only screen and (     -o-min-device-pixel-ratio: 2/1) {
   line-height: 1;
   letter-spacing: -2px;
   font-family: "trajan-pro-3";
+  text-shadow: black 0 0 8px;
 }
 
 .masthead p {
