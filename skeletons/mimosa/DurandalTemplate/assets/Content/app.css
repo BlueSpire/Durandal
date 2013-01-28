@@ -1,9 +1,4 @@
-﻿body {
-    position: relative;
-    padding-top: 40px;
-}
-
-.splash {
+﻿.splash {
     text-align: center;
     margin: 10% 0 0 0;
 }
@@ -21,6 +16,11 @@
     display: inline-block;
     font-size: 5em;
     margin-top: 50px;
+}
+
+.page-host {
+    position: relative;
+    top: 40px;
 }
 
 .navbar-fixed-top {
@@ -93,4 +93,14 @@
     -moz-background-clip: padding-box;
     background-clip: padding-box;
     min-width: 300px;
+}
+
+@media (max-width: 979px) {
+    .page-host {
+        top: 0;
+    }
+
+    .navbar-fixed-top {
+        margin-bottom: 0;
+    }
 }

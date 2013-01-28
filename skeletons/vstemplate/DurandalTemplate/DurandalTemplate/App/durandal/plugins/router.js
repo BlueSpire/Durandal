@@ -18,6 +18,10 @@
     //NOTE: Sammy.js is not required by the core of Durandal. 
     //However, this plugin leverages it to enable navigation.
 
+    activeItem.settings.areSameItem = function(currentItem, newItem, activationData) {
+        return false;
+    };
+
     function activateRoute(routeInfo, params, module, forceStopNavigation) {
         params.routeInfo = routeInfo;
         params.router = router;

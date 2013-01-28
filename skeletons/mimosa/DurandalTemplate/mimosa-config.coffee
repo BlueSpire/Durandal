@@ -7,6 +7,7 @@ exports.config =
     {
       folder:'Content'
       output:'Content/styles.css'
+      order: ['bootstrap.css', 'bootstrap-responsive.css']
     }
     {
       folder:'Scripts'
