@@ -66,6 +66,7 @@
     };
 
     system = {
+        version:"1.0.1",
         noop: noop,
         getModuleId: function(obj) {
             if (!obj) {
