@@ -145,7 +145,9 @@
         },
         useConvention: function (rootPath) {
             rootPath = rootPath == null ? 'viewmodels' : rootPath;
-            if (rootPath) rootPath += '/';
+            if (rootPath) {
+                rootPath += '/';
+            }
             router.convertRouteToModuleId = function(url) {
                 return rootPath + router.stripParameter(url);
             };
