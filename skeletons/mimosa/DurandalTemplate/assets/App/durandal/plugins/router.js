@@ -144,8 +144,10 @@
             isNavigating(false);
         },
         useConvention: function (rootPath) {
-            rootPath = rootPath || 'viewmodels';
-            rootPath += '/';
+            rootPath = rootPath == null ? 'viewmodels' : rootPath;
+            if (rootPath) {
+                rootPath += '/';
+            }
             router.convertRouteToModuleId = function(url) {
                 return rootPath + router.stripParameter(url);
             };
