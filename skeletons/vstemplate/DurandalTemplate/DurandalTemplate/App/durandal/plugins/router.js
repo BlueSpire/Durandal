@@ -22,7 +22,7 @@
         return false;
     };
 
-    function activateRoute(routeInfo, params, module, forceStopNavigation) {
+    function activateRoute(routeInfo, params, module) {
         params.routeInfo = routeInfo;
         params.router = router;
 
@@ -30,13 +30,9 @@
 
         activeItem.activateItem(module, params).then(function(succeeded) {
             if (succeeded) {
-                document.title = routeInfo.name;
+                router.onNavigationComplete(routeInfo, params, module);
                 previousModule = module;
                 previousRoute = sammy.last_location[1].replace('/', '');
-
-                if (forceStopNavigation) {
-                    isNavigating(false);
-                }
             } else {
                 cancelling = true;
                 system.log('Cancelling Navigation');
@@ -83,7 +79,7 @@
             if (typeof module == 'function') {
                 activateRoute(routeInfo, params, new module());
             } else {
-                activateRoute(routeInfo, params, module, previousModule == module);
+                activateRoute(routeInfo, params, module);
             }
         });
     }
@@ -160,6 +156,9 @@
         handleInvalidRoute: function(route, params) {
             system.log('No Route Found', route, params);
         },
+        onNavigationComplete: function (routeInfo, params, module) {
+            document.title = routeInfo.name;
+        },
         navigateBack: function() {
             window.history.back();
         },
@@ -173,8 +172,8 @@
             var value = router.stripParameter(route);
             return value.substring(0, 1).toUpperCase() + value.substring(1);
         },
-        convertRouteToModuleId: function(url) {
-            return router.stripParameter(url);
+        convertRouteToModuleId: function(route) {
+            return router.stripParameter(route);
         },
         prepareRouteInfo: function(info) {
             if (!(info.url instanceof RegExp)) {
@@ -190,32 +189,40 @@
             path = path || 'viewmodels';
             path += '/';
 
-            router.autoConvertRouteToModuleId = function(url) {
+            router.autoConvertRouteToModuleId = function(url, params) {
                 return path + router.stripParameter(url);
             };
         },
-        mapNav: function(url, moduleId, name) {
-            return this.mapRoute(url, moduleId, name, true);
-        },
-        mapRoute: function(url, moduleId, name, visible) {
-            var routeInfo = {
-                url: url,
-                moduleId: moduleId,
-                name: name,
-                visible: visible
-            };
+        mapNav: function (urlOrConfig, moduleId, name) {
+            if (typeof urlOrConfig == "string") {
+                return this.mapRoute(urlOrConfig, moduleId, name, true);
+            }
 
-            return configureRoute(routeInfo);
+            urlOrConfig.visible = true;
+            return configureRoute(urlOrConfig);
+        },
+        mapRoute: function(urlOrConfig, moduleId, name, visible) {
+            if (typeof urlOrConfig == "string") {
+                return configureRoute({
+                    url: urlOrConfig,
+                    moduleId: moduleId,
+                    name: name,
+                    visible: visible
+                });
+            } else {
+                return configureRoute(urlOrConfig);
+            }
         },
         map: function(routeOrRouteArray) {
             if (!system.isArray(routeOrRouteArray)) {
-                configureRoute(routeOrRouteArray);
-                return;
+                return configureRoute(routeOrRouteArray);
             }
 
+            var configured = [];
             for (var i = 0; i < routeOrRouteArray.length; i++) {
-                configureRoute(routeOrRouteArray[i]);
+                configured.push(configureRoute(routeOrRouteArray[i]));
             }
+            return configured;
         },
         activate: function(defaultRoute) {
             return system.defer(function(dfd) {

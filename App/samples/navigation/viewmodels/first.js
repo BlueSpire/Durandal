@@ -3,7 +3,8 @@
 
     return {
         displayName: 'First Page',
-        activate: function() {
+        activate: function () {
+            //called by the activator when entering this screen
             system.log('Hello from first\'s activate function');
         }
     };

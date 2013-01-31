@@ -54,8 +54,8 @@
         }
 
         if (newChild) {
-            if (settings.model) {
-                if (settings.model.viewAttached) {
+            if (settings.model && settings.model.viewAttached) {
+                if (settings.composingNewView || settings.alwaysAttachView) {
                     settings.model.viewAttached(newChild);
                 }
             }
