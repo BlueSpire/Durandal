@@ -12,7 +12,7 @@ exports.config =
     {
       folder:'Scripts'
       output:'Scripts/vendor.js'
-      order: ['jquery-1.8.3.js', 'knockout-2.2.0.js']
+      order: ['jquery-1.9.0.js', 'knockout-2.2.1.js']
     }
   ]
 
