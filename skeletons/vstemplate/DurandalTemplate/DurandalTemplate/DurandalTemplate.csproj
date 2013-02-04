@@ -124,7 +124,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App_Start\DurandalBundleConfig.cs.pp" />
     <Compile Include="App_Start\DurandalBundleConfig.cs" />
+    <None Include="Controllers\DurandalController.cs.pp" />
     <Compile Include="Controllers\DurandalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -269,7 +271,14 @@ xcopy "$(SolutionDir)DurandalTemplate\Scripts\sammy-0.7.4.js" "..\..\..\..\mimos
 xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\almond-custom.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\r.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\require.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\text.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y</PostBuildEvent>
+xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\text.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
+
+
+
+xcopy "$(SolutionDir)DurandalTemplate\App\viewmodels" "..\..\..\..\nuget\Durandal.StarterKit\content\App\viewmodels" /s /i /y
+xcopy "$(SolutionDir)DurandalTemplate\App\views" "..\..\..\..\nuget\Durandal.StarterKit\content\App\views" /s /i /y
+xcopy "$(SolutionDir)DurandalTemplate\App\main.js" "..\..\..\..\nuget\Durandal.StarterKit\content\App\" /s /i /y
+xcopy "$(SolutionDir)DurandalTemplate\App\main-built.js" "..\..\..\..\nuget\Durandal.StarterKit\content\App\" /s /i /y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

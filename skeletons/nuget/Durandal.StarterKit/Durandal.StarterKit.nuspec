@@ -26,5 +26,19 @@ This is a starter kit for durandal-based projects.</description>
             <dependency id="Microsoft.AspNet.Web.Optimization" version="1.1.0-alpha1" />
         </dependencies>
     </metadata>
-    <files />
+    <files>
+        <file src="content\App\viewmodels\flickr.js" target="content\App\viewmodels\flickr.js" />
+        <file src="content\App\viewmodels\shell.js" target="content\App\viewmodels\shell.js" />
+        <file src="content\App\viewmodels\welcome.js" target="content\App\viewmodels\welcome.js" />
+        <file src="content\App\views\detail.html" target="content\App\views\detail.html" />
+        <file src="content\App\views\flickr.html" target="content\App\views\flickr.html" />
+        <file src="content\App\views\shell.html" target="content\App\views\shell.html" />
+        <file src="content\App\views\welcome.html" target="content\App\views\welcome.html" />
+        <file src="content\App\main-built.js" target="content\App\main-built.js" />
+        <file src="content\App\main.js" target="content\App\main.js" />
+        <file src="content\App_Start\_._" target="content\App_Start\_._" />
+        <file src="content\Content\images\_._" target="content\Content\images\_._" />
+        <file src="content\Controllers\_._" target="content\Controllers\_._" />
+        <file src="content\Views\Durandal\_._" target="content\Views\Durandal\_._" />
+    </files>
 </package>
