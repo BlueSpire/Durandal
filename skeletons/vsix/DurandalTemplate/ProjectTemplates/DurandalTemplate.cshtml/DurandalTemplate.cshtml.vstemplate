@@ -32,7 +32,7 @@
             <Folder Name="App_Start" TargetFolderName="App_Start">
                 <ProjectItem ReplaceParameters="true" TargetFileName="FilterConfig.cs">FilterConfig.cs</ProjectItem>
                 <ProjectItem ReplaceParameters="true" TargetFileName="RouteConfig.cs">RouteConfig.cs</ProjectItem>
-				<ProjectItem ReplaceParameters="true" TargetFileName="WebApiConfig.cs">WebApiConfig.SinglePage.cs</ProjectItem>
+				<ProjectItem ReplaceParameters="true" TargetFileName="WebApiConfig.cs">WebApiConfig.cs</ProjectItem>
             </Folder> 
             <ProjectItem ReplaceParameters="true" TargetFileName="Global.asax">Global.asax</ProjectItem>
             <ProjectItem ReplaceParameters="true" TargetFileName="Global.asax.cs">Global.asax.cs</ProjectItem>
