@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Durandal.StarterKit</id>
-        <version>1.0.2</version>
+        <version>1.0.2.1</version>
         <title>Durandal StarterKit</title>
         <authors>Rob Eisenberg</authors>
         <owners>EisenbergEffect</owners>
@@ -24,6 +24,7 @@ This is a starter kit for durandal-based projects.</description>
             <dependency id="Twitter.Bootstrap" version="2.2.2" />
             <dependency id="FontAwesome" version="3.0.2.1" />
             <dependency id="Microsoft.AspNet.Web.Optimization" version="1.0.0" />
+            <dependency id="WebActivator" version="1.5.3" />
         </dependencies>
     </metadata>
     <files>
@@ -37,6 +38,7 @@ This is a starter kit for durandal-based projects.</description>
         <file src="content\App\main-built.js" target="content\App\main-built.js" />
         <file src="content\App\main.js" target="content\App\main.js" />
         <file src="content\App_Start\DurandalBundleConfig.cs.pp" target="content\App_Start\DurandalBundleConfig.cs.pp" />
+        <file src="content\App_Start\DurandalConfig.cs.pp" target="content\App_Start\DurandalConfig.cs.pp" />
         <file src="content\Content\images\icon.png" target="content\Content\images\icon.png" />
         <file src="content\Content\images\ios-startup-image-landscape.png" target="content\Content\images\ios-startup-image-landscape.png" />
         <file src="content\Content\images\ios-startup-image-portrait.png" target="content\Content\images\ios-startup-image-portrait.png" />
