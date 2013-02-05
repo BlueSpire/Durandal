@@ -127,7 +127,8 @@
     </Compile>                                                                                                                                                                            
     <Compile Include="Properties\AssemblyInfo.cs" />                                                                                                                                      
   </ItemGroup> 
-  <ItemGroup>                                                                                                                                                                             
+  <ItemGroup>           
+    <Content Include="readme.md" />                                                                                                                                                                   
     <Content Include="Global.asax" />                                                                                                                                                     
     <Content Include="Web.config" />                                                                                                                                                      
     <Content Include="Web.Debug.config">                                                                                                                                                  
