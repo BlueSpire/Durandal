@@ -42,7 +42,6 @@
             <ProjectItem ReplaceParameters="true" TargetFileName="Web.config">Web.config</ProjectItem>
             <ProjectItem ReplaceParameters="true" TargetFileName="Web.Debug.config">Web.Debug.config</ProjectItem>
             <ProjectItem ReplaceParameters="true" TargetFileName="Web.Release.config">Web.Release.config</ProjectItem>
-            <ProjectItem ReplaceParameters="true" TargetFileName="readme.md">readme.md</ProjectItem>
         </Project>
     </TemplateContent>
     <WizardExtension>
@@ -66,7 +65,8 @@
             <package id="WebGrease" version="1.3.0" skipAssemblyReferences="true" />
         </packages>
         <packages repository="extension" repositoryId="DurandalVSIX..0ef2dc13-b4cd-4d95-ad03-2df4a36764ac">
-          <package id="Durandal.StarterKit" version="1.0.2" skipAssemblyReferences="true" />
+          <package id="Durandal.StarterKit" version="1.0.2.1" skipAssemblyReferences="true" />
+          <package id="WebActivator" version="1.5.3" skipAssemblyReferences="true" />
         </packages>
     </WizardData>
 </VSTemplate>

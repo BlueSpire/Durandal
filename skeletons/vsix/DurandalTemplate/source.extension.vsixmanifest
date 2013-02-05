@@ -41,7 +41,5 @@
     <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\Web.config" />
     <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\Web.Release.config" />
     <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\Web.Debug.config" />
-
-    <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\readme.md" />
   </Assets> 
 </PackageManifest>
