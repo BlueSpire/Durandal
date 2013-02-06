@@ -19,8 +19,6 @@
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="4.5" />
   </Dependencies>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="packages\Durandal.StarterKit.1.0.2.nupkg" />
-
     <Asset d:VsixSubPath="ProjectTemplates\DurandalTemplate.cshtml"
                Type="Microsoft.VisualStudio.Mvc.Template"
                d:Source="File"
