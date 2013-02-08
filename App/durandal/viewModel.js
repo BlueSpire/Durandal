@@ -338,7 +338,7 @@
                         }
                     }).promise();
                 } else {
-                    return originalCanDeactivate;
+                    return originalCanDeactivate();
                 }
             };
 
@@ -365,7 +365,7 @@
                         }
                     }).promise();
                 } else {
-                    return originalDeactivate;
+                    return originalDeactivate();
                 }
             };
 
