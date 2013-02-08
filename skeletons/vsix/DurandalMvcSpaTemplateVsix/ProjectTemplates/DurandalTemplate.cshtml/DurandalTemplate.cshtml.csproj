@@ -59,7 +59,7 @@
       <HintPath>$nugetpackagesfolder$Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>                                            
     </Reference>                                                                                                                                                                          
     <Reference Include="Newtonsoft.Json">                                                                                                                                                 
-      <HintPath>$nugetpackagesfolder$Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>                                                                                       
+      <HintPath>$nugetpackagesfolder$Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>                                                                                       
     </Reference>                                                                                                                                                                          
     <Reference Include="System.Net.Http">                                                                                                                                                 
       $if$ ($targetframeworkversion$ >= 4.5) $else$                                                                                                                                       

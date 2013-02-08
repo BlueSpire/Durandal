@@ -51,7 +51,7 @@
     <WizardData>
         <packages repository="registry" keyName="AspNetMvc4VS11">
             <package id="Microsoft.Web.Infrastructure" version="1.0.0.0" skipAssemblyReferences="true" />
-            <package id="Newtonsoft.Json" version="4.5.10" skipAssemblyReferences="true" />
+            <package id="Newtonsoft.Json" version="4.5.11" skipAssemblyReferences="true" />
             <package id="Microsoft.AspNet.Razor" version="2.0.20715.0" skipAssemblyReferences="true" />
             <package id="Microsoft.AspNet.WebPages" version="2.0.20710.0" skipAssemblyReferences="true" />
             <package id="Microsoft.AspNet.Mvc" version="4.0.20710.0" skipAssemblyReferences="true" />
