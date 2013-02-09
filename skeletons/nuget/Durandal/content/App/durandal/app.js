@@ -38,7 +38,7 @@
             }
 
             if (typeof root === 'string') {
-                if (root.indexOf(viewEngine.viewExtension) != -1) {
+                if (viewEngine.isViewUrl(root)) {
                     settings.view = root;
                 } else {
                     settings.model = root;

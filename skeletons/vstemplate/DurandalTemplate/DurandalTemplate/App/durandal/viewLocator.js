@@ -17,22 +17,22 @@
     }
 
     return {
-        useConvention: function (modulesPath, viewsPath, partialsPath) {
+        useConvention: function(modulesPath, viewsPath, partialsPath) {
             modulesPath = modulesPath || 'viewmodels';
             viewsPath = viewsPath || 'views';
             partialsPath = partialsPath || viewsPath;
-            
+
             var reg = new RegExp(escape(modulesPath), 'gi');
-            
+
             this.convertModuleIdToViewUrl = function(moduleId) {
                 return moduleId.replace(reg, viewsPath);
             };
 
-            this.convertViewUrlToAreaUrl = function(area, viewUrl) {
-                return partialsPath + '/' + viewUrl;
+            this.translateViewIdToArea = function (viewId, area) {
+                return partialsPath + '/' + viewId;
             };
         },
-        locateViewForObject: function (obj, elementsToSearch) {
+        locateViewForObject: function(obj, elementsToSearch) {
             var view;
 
             if (obj.getView) {
@@ -63,37 +63,37 @@
 
             return 'views/' + typeName;
         },
-        convertViewUrlToAreaUrl: function(area, viewUrl) {
-            return viewUrl;
+        translateViewIdToArea: function (viewId, area) {
+            return viewId;
         },
         locateView: function(viewOrUrl, area, elementsToSearch) {
-            var that = this;
-            return system.defer(function(dfd) {
-                if (typeof viewOrUrl === 'string') {
-                    if (viewOrUrl.indexOf(viewEngine.viewExtension) != -1) {
-                        viewOrUrl = viewOrUrl.substring(0, viewOrUrl.length - viewEngine.viewExtension.length);
-                    }
+            if (typeof viewOrUrl === 'string') {
+                var viewId;
 
-                    if (area) {
-                        viewOrUrl = that.convertViewUrlToAreaUrl(area, viewOrUrl);
-                    }
-
-                    if (elementsToSearch) {
-                        var existing = findInElements(elementsToSearch, viewOrUrl);
-                        if (existing) {
-                            dfd.resolve(existing);
-                            return;
-                        }
-                    }
-
-                    var requirePath = viewEngine.pluginPath + '!' + viewOrUrl + viewEngine.viewExtension;
-
-                    system.acquire(requirePath).then(function (result) {
-                        dfd.resolve(viewEngine.createView(viewOrUrl, result));
-                    });
+                if (viewEngine.isViewUrl(viewOrUrl)) {
+                    viewId = viewEngine.convertViewUrlToViewId(viewOrUrl);
                 } else {
-                    dfd.resolve(viewOrUrl);
+                    viewId = viewOrUrl;
                 }
+
+                if (area) {
+                    viewId = this.translateViewIdToArea(viewId, area);
+                }
+
+                if (elementsToSearch) {
+                    var existing = findInElements(elementsToSearch, viewId);
+                    if (existing) {
+                        return system.defer(function(dfd) {
+                            dfd.resolve(existing);
+                        }).promise();
+                    }
+                }
+
+                return viewEngine.createView(viewId);
+            }
+
+            return system.defer(function(dfd) {
+                dfd.resolve(viewOrUrl);
             }).promise();
         }
     };

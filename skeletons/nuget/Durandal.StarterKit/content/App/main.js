@@ -1,4 +1,4 @@
-﻿require.config({
+﻿requirejs.config({
     paths: {
         'text': 'durandal/amd/text'
     }
