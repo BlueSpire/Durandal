@@ -137,7 +137,9 @@
         activeItem: activeItem,
         activeRoute: activeRoute,
         afterCompose: function() {
-            isNavigating(false);
+            setTimeout(function () {
+                isNavigating(false);
+            }, 10);
         },
         useConvention: function (rootPath) {
             rootPath = rootPath == null ? 'viewmodels' : rootPath;

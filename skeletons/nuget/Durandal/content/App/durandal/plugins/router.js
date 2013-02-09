@@ -103,10 +103,7 @@
             if (fragment.length == 2) {
                 var parts = fragment[1].split('/');
                 route = parts[0];
-                var splat = parts.splice(1);
-                if (splat.length > 0) {
-                    params.splat = splat;
-                }
+                params.splat = parts.splice(1);
                 ensureRoute(route, params);
                 return;
             }
@@ -140,7 +137,9 @@
         activeItem: activeItem,
         activeRoute: activeRoute,
         afterCompose: function() {
-            isNavigating(false);
+            setTimeout(function () {
+                isNavigating(false);
+            }, 10);
         },
         useConvention: function (rootPath) {
             rootPath = rootPath == null ? 'viewmodels' : rootPath;
