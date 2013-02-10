@@ -67,9 +67,9 @@
 
             ko.virtualElements.allowedBindings[kind] = true;
         },
-        mapKind: function(kind, view, moduleId) {
-            if (view) {
-                kindViewMaps[kind] = view;
+        mapKind: function(kind, viewId, moduleId) {
+            if (viewId) {
+                kindViewMaps[kind] = viewId;
             }
 
             if (moduleId) {
