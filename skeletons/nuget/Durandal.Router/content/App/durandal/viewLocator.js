@@ -17,19 +17,23 @@
     }
 
     return {
-        useConvention: function(modulesPath, viewsPath, partialsPath) {
+        useConvention: function(modulesPath, viewsPath, areasPath) {
             modulesPath = modulesPath || 'viewmodels';
             viewsPath = viewsPath || 'views';
-            partialsPath = partialsPath || viewsPath;
+            areasPath = areasPath || viewsPath;
 
             var reg = new RegExp(escape(modulesPath), 'gi');
 
-            this.convertModuleIdToViewUrl = function(moduleId) {
+            this.convertModuleIdToViewId = function (moduleId) {
                 return moduleId.replace(reg, viewsPath);
             };
 
             this.translateViewIdToArea = function (viewId, area) {
-                return partialsPath + '/' + viewId;
+                if (!area || area == 'partial') {
+                    return areasPath + '/' + viewId;
+                }
+                
+                return areasPath + '/' + area + '/' + viewId;
             };
         },
         locateViewForObject: function(obj, elementsToSearch) {
@@ -48,15 +52,15 @@
 
             var id = system.getModuleId(obj);
             if (id) {
-                return this.locateView(this.convertModuleIdToViewUrl(id), null, elementsToSearch);
+                return this.locateView(this.convertModuleIdToViewId(id), null, elementsToSearch);
             }
 
-            return this.locateView(this.determineFallbackViewUrl(obj), null, elementsToSearch);
+            return this.locateView(this.determineFallbackViewId(obj), null, elementsToSearch);
         },
-        convertModuleIdToViewUrl: function(moduleId) {
+        convertModuleIdToViewId: function(moduleId) {
             return moduleId;
         },
-        determineFallbackViewUrl: function(obj) {
+        determineFallbackViewId: function (obj) {
             var funcNameRegex = /function (.{1,})\(/;
             var results = (funcNameRegex).exec((obj).constructor.toString());
             var typeName = (results && results.length > 1) ? results[1] : "";
@@ -66,14 +70,14 @@
         translateViewIdToArea: function (viewId, area) {
             return viewId;
         },
-        locateView: function(viewOrUrl, area, elementsToSearch) {
-            if (typeof viewOrUrl === 'string') {
+        locateView: function(viewOrUrlOrId, area, elementsToSearch) {
+            if (typeof viewOrUrlOrId === 'string') {
                 var viewId;
 
-                if (viewEngine.isViewUrl(viewOrUrl)) {
-                    viewId = viewEngine.convertViewUrlToViewId(viewOrUrl);
+                if (viewEngine.isViewUrl(viewOrUrlOrId)) {
+                    viewId = viewEngine.convertViewUrlToViewId(viewOrUrlOrId);
                 } else {
-                    viewId = viewOrUrl;
+                    viewId = viewOrUrlOrId;
                 }
 
                 if (area) {
@@ -93,7 +97,7 @@
             }
 
             return system.defer(function(dfd) {
-                dfd.resolve(viewOrUrl);
+                dfd.resolve(viewOrUrlOrId);
             }).promise();
         }
     };
