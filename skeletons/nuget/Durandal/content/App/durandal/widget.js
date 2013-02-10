@@ -79,7 +79,7 @@
         convertKindToModuleId: function(kind) {
             return kindModuleMaps[kind] || 'durandal/widgets/' + kind + '/controller';
         },
-        convertKindToView: function(kind) {
+        convertKindToViewId: function (kind) {
             return kindViewMaps[kind] || 'durandal/widgets/' + kind + '/view';
         },
         beforeBind: function(element, view, settings) {
@@ -96,7 +96,7 @@
             }
 
             if (!settings.view) {
-                settings.view = this.convertKindToView(settings.kind);
+                settings.view = this.convertKindToViewId(settings.kind);
             }
 
             settings.preserveContext = true;

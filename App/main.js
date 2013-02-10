@@ -17,6 +17,6 @@ define(function(require) {
         viewLocator.useConvention();
 
         app.adaptToDevice();
-        app.setRoot('samples/navigation/shell');
+        app.setRoot('samples/widgets/shell');
     });
 });
