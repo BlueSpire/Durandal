@@ -14,7 +14,7 @@
 
     return {
         viewExtension: '.html',
-        pluginPath: 'text',
+        viewPlugin: 'text',
         isViewUrl: function (url) {
             return url.indexOf(this.viewExtension, url.length - this.viewExtension.length) !== -1;
         },
@@ -22,7 +22,7 @@
             return url.substring(0, url.length - this.viewExtension.length);
         },
         convertViewIdToRequirePath: function (viewId) {
-            return this.pluginPath + '!' + viewId + this.viewExtension;
+            return this.viewPlugin + '!' + viewId + this.viewExtension;
         },
         parseMarkup: function (markup) {
             var allElements = parseMarkupCore(markup);
