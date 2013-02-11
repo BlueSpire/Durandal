@@ -17,7 +17,7 @@ information please visit us at http://www.durandaljs.com
 * Third party script libraries are located under *Scripts*.
 * Css and script library bundling has been configured in *App_Start/DurandalBundleConfig.cs*.
 * The *Durandal/Index* view contains the host page's html, links and script references.
-* Application startup beings with the *App/main.js*
+* Application startup begins with the *App/main.js*
 
 ## Explanation of the SPA Architecture
 

@@ -40,33 +40,35 @@
     var noop = function() { };
 
     var log = function() {
-        // Modern browsers
-        if (typeof console != 'undefined' && typeof console.log == 'function') {
-            // Opera 11
-            if (window.opera) {
-                var i = 0;
-                while (i < arguments.length) {
-                    console.log('Item ' + (i + 1) + ': ' + arguments[i]);
-                    i++;
+        try {
+            // Modern browsers
+            if (typeof console != 'undefined' && typeof console.log == 'function') {
+                // Opera 11
+                if (window.opera) {
+                    var i = 0;
+                    while (i < arguments.length) {
+                        console.log('Item ' + (i + 1) + ': ' + arguments[i]);
+                        i++;
+                    }
+                }
+                    // All other modern browsers
+                else if ((Array.prototype.slice.call(arguments)).length == 1 && typeof Array.prototype.slice.call(arguments)[0] == 'string') {
+                    console.log((Array.prototype.slice.call(arguments)).toString());
+                } else {
+                    console.log(Array.prototype.slice.call(arguments));
                 }
             }
-            // All other modern browsers
-            else if ((Array.prototype.slice.call(arguments)).length == 1 && typeof Array.prototype.slice.call(arguments)[0] == 'string') {
-                console.log((Array.prototype.slice.call(arguments)).toString());
-            } else {
-                console.log(Array.prototype.slice.call(arguments));
+                // IE8
+            else if ((!Function.prototype.bind || treatAsIE8) && typeof console != 'undefined' && typeof console.log == 'object') {
+                Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
             }
-        }
-        // IE8
-        else if ((!Function.prototype.bind || treatAsIE8) && typeof console != 'undefined' && typeof console.log == 'object') {
-            Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
-        }
-        
-        // IE7 and lower, and other old browsers
+
+            // IE7 and lower, and other old browsers
+        } catch(ignore) {}
     };
 
     system = {
-        version:"1.0.2",
+        version:"1.1.0",
         noop: noop,
         getModuleId: function(obj) {
             if (!obj) {

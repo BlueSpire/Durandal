@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Id="DurandalMvcSpaTemplateVsix..0ef2dc13-b4cd-4d95-ad03-2df4a36764ac" Version="1.0" Language="en-US" Publisher="EisenbergEffect" />
+    <DisplayName>Durandal</DisplayName>
+    <Description xml:space="preserve">An ASP.NET MVC 4 project for building a single page application (SPA) with Durandal.</Description>
+    <MoreInfo>http://durandaljs.com/</MoreInfo>
+    <License>License.txt</License>
+    <GettingStartedGuide>https://github.com/BlueSpire/Durandal/wiki/Understanding-the-Starter-Kit</GettingStartedGuide>
+    <Icon>__VsixIcon.ico</Icon>
+    <PreviewImage>DURANDAL FINAL HI RES LOGO VER.jpg</PreviewImage>
+    <Tags>MVVM JavaScript JS Durandal HTML CSS MVC MVP Web SPA RIA Knockout RequireJS Sammy</Tags>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="11.0" />
+    <InstallationTarget Version="[11.0,12.0)" Id="Microsoft.VisualStudio.VWDExpress" />
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="4.5" />
+  </Dependencies>
+  <Assets>
+    <Asset d:VsixSubPath="ProjectTemplates\DurandalTemplate.cshtml"
+               Type="Microsoft.VisualStudio.Mvc.Template"
+               d:Source="File"
+               Path="ProjectTemplates\DurandalTemplate.cshtml\DurandalTemplate.cshtml.vstemplate"
+               ProjectType="MVC"
+               Language="C#"
+               ViewEngine="Razor"
+               TemplateId="DurandalMvcSpaTemplate"
+               Title="Durandal SPA Project"
+               Description="An ASP.NET MVC 4 project for building a single page application (SPA) with Durandal."
+               Version="4.0"/>
+    <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\App_Start\FilterConfig.cs" />
+    <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\App_Start\RouteConfig.cs" />
+    <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\App_Start\WebApiConfig.cs" />
+
+    <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\Global.asax" />
+    <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\Global.asax.cs" />
+
+    <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\Views\Web.config" />
+    <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\Web.config" />
+    <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\Web.Release.config" />
+    <Asset Type="Microsoft.VisualStudio.Mvc.Templates" d:Source="File" Path="ProjectTemplates\DurandalTemplate.cshtml\Web.Debug.config" />
+  </Assets>
+</PackageManifest>

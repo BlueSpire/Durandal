@@ -204,7 +204,7 @@
         },
         compose: function (element, settings, bindingContext) {
             if (typeof settings == 'string') {
-                if (settings.indexOf(viewEngine.viewExtension, settings.length - viewEngine.viewExtension.length) !== -1) {
+                if (viewEngine.isViewUrl(settings)) {
                     settings = {
                         view: settings
                     };

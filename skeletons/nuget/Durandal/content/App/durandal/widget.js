@@ -67,9 +67,9 @@
 
             ko.virtualElements.allowedBindings[kind] = true;
         },
-        mapKind: function(kind, view, moduleId) {
-            if (view) {
-                kindViewMaps[kind] = view;
+        mapKind: function(kind, viewId, moduleId) {
+            if (viewId) {
+                kindViewMaps[kind] = viewId;
             }
 
             if (moduleId) {
@@ -79,7 +79,7 @@
         convertKindToModuleId: function(kind) {
             return kindModuleMaps[kind] || 'durandal/widgets/' + kind + '/controller';
         },
-        convertKindToView: function(kind) {
+        convertKindToViewId: function (kind) {
             return kindViewMaps[kind] || 'durandal/widgets/' + kind + '/view';
         },
         beforeBind: function(element, view, settings) {
@@ -96,7 +96,7 @@
             }
 
             if (!settings.view) {
-                settings.view = this.convertKindToView(settings.kind);
+                settings.view = this.convertKindToViewId(settings.kind);
             }
 
             settings.preserveContext = true;

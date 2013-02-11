@@ -30,7 +30,7 @@
         return settings;
     }
 
-    function deactivate(item, close, settings, dfd) {
+    function deactivate(item, close, settings, dfd, setter) {
         if (item && item.deactivate) {
             system.log('Deactivating', item);
 
@@ -38,16 +38,16 @@
 
             if (promise && promise.then) {
                 promise.then(function() {
-                    settings.afterDeactivate(item, close);
+                    settings.afterDeactivate(item, close, setter);
                     dfd.resolve(true);
                 });
             } else {
-                settings.afterDeactivate(item, close);
+                settings.afterDeactivate(item, close, setter);
                 dfd.resolve(true);
             }
         } else {
             if (item) {
-                settings.afterDeactivate(item, close);
+                settings.afterDeactivate(item, close, setter);
             }
 
             dfd.resolve(true);
@@ -135,6 +135,8 @@
         });
 
         computed.settings = settings;
+        settings.activator = computed;
+        
         computed.isActivating = ko.observable(false);
 
         computed.canDeactivateItem = function(item, close) {
@@ -145,7 +147,7 @@
             return system.defer(function(dfd) {
                 computed.canDeactivateItem(item, close).then(function(canDeactivate) {
                     if (canDeactivate) {
-                        deactivate(item, close, settings, dfd);
+                        deactivate(item, close, settings, dfd, activeItem);
                     } else {
                         computed.notifySubscribers();
                         dfd.resolve(false);
@@ -338,7 +340,7 @@
                         }
                     }).promise();
                 } else {
-                    return originalCanDeactivate;
+                    return originalCanDeactivate();
                 }
             };
 
@@ -365,7 +367,7 @@
                         }
                     }).promise();
                 } else {
-                    return originalDeactivate;
+                    return originalDeactivate();
                 }
             };
 
@@ -392,7 +394,11 @@
             beforeActivate: function(newItem) {
                 return newItem;
             },
-            afterDeactivate: function() { }
+            afterDeactivate: function(item, close, setter) {
+                if (close && setter) {
+                    setter(null);
+                }
+            }
         },
         activator: createActivator
     };

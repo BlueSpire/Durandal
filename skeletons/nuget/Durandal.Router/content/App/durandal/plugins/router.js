@@ -13,6 +13,7 @@
         previousModule,
         cancelling = false,
         activeItem = viewModel.activator(),
+        activeRoute = ko.observable(),
         navigationDefaultRoute;
 
     //NOTE: Sammy.js is not required by the core of Durandal. 
@@ -30,6 +31,7 @@
 
         activeItem.activateItem(module, params).then(function(succeeded) {
             if (succeeded) {
+                activeRoute(routeInfo);
                 router.onNavigationComplete(routeInfo, params, module);
                 previousModule = module;
                 previousRoute = sammy.last_location[1].replace('/', '');
@@ -101,10 +103,7 @@
             if (fragment.length == 2) {
                 var parts = fragment[1].split('/');
                 route = parts[0];
-                var splat = parts.splice(1);
-                if (splat.length > 0) {
-                    params.splat = splat;
-                }
+                params.splat = parts.splice(1);
                 ensureRoute(route, params);
                 return;
             }
@@ -136,8 +135,11 @@
         visibleRoutes: visibleRoutes,
         isNavigating: isNavigating,
         activeItem: activeItem,
+        activeRoute: activeRoute,
         afterCompose: function() {
-            isNavigating(false);
+            setTimeout(function () {
+                isNavigating(false);
+            }, 10);
         },
         useConvention: function (rootPath) {
             rootPath = rootPath == null ? 'viewmodels' : rootPath;
