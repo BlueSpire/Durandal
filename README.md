@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/JontyMC/Durandal.png)](https://travis-ci.org/JontyMC/Durandal)
+[![Build Status](https://travis-ci.org/BlueSpire/Durandal.png)](https://travis-ci.org/BlueSpire/Durandal)
 
 Welcome to the Durandal project!
 
