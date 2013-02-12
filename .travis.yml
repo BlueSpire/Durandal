@@ -1,0 +1,7 @@
+branches:
+  only:
+    - master
+
+script:
+  - cd test
+  - phantomjs spec.js
