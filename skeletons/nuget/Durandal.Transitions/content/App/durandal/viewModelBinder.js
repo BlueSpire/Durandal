@@ -25,8 +25,12 @@
         bindContext: function(bindingContext, view, obj) {
             if (obj) {
                 var childContext = bindingContext.createChildContext(obj);
-                doBind(childContext, view, function() {
-                    ko.applyBindingsToNode(view, null, childContext);
+                doBind(childContext, view, function () {
+                    if ($(view).hasClass('durandal-wrapper')) {
+                        ko.applyBindings(childContext, view);
+                    } else {
+                        ko.applyBindingsToNode(view, null, childContext);
+                    }
                 });
             } else {
                 doBind(bindingContext, view, function () {
