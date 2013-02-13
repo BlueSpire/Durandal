@@ -50,7 +50,7 @@
 
             return system.defer(function(dfd) {
                 system.acquire(requirePath).then(function(markup) {
-                    var element = that.parseMarkup(markup);
+                    var element = $(that.parseMarkup(markup)).hide().appendTo('body').get(0);
                     element.setAttribute('data-view', viewId);
                     dfd.resolve(element);
                 });
