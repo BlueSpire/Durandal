@@ -146,7 +146,8 @@
 
             $child.css({
                 'margin-top': (-height / 2).toString() + 'px',
-                'margin-left': (-width / 2).toString() + 'px'
+                'margin-left': (-width / 2).toString() + 'px',
+                display: 'block'
             });
 
             $(settings.model.modal.host).css('opacity', 1);
