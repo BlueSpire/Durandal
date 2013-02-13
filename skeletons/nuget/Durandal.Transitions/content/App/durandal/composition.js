@@ -123,7 +123,9 @@
                 }
 
                 if (settings.preserveContext && settings.bindingContext) {
-                    viewModelBinder.bindContext(settings.bindingContext, view, settings.model);
+                    if (settings.composingNewView) {
+                        viewModelBinder.bindContext(settings.bindingContext, view, settings.model);
+                    }
                 } else if (view) {
                     var modelToBind = settings.model || dummyModel;
                     var currentModel = ko.dataFor(view);
