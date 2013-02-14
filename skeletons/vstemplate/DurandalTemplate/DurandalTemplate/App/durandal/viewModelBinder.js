@@ -24,19 +24,15 @@
     return {
         bindContext: function(bindingContext, view, obj) {
             if (obj) {
-                var childContext = bindingContext.createChildContext(obj);
-                doBind(childContext, view, function () {
-                    if ($(view).hasClass('durandal-wrapper')) {
-                        ko.applyBindings(childContext, view);
-                    } else {
-                        ko.applyBindingsToNode(view, null, childContext);
-                    }
-                });
-            } else {
-                doBind(bindingContext, view, function () {
-                    ko.applyBindings(bindingContext, view);
-                });
+                bindingContext = bindingContext.createChildContext(obj);
             }
+
+            doBind(bindingContext, view, function() {
+                ko.applyBindings(bindingContext, view);
+                if (obj && obj.setView) {
+                    obj.setView(view);
+                }
+            });
         },
         bind: function(obj, view) {
             doBind(obj, view, function() {
