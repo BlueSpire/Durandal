@@ -34,12 +34,22 @@
         if (item && item.deactivate) {
             system.log('Deactivating', item);
 
-            var promise = item.deactivate(close);
+            var result;
+            try {
+                result = item.deactivate(close);
+            } catch(error) {
+                system.log(error);
+                dfd.resolve(false);
+                return;
+            }
 
-            if (promise && promise.then) {
-                promise.then(function () {
+            if (result && result.then) {
+                result.then(function() {
                     settings.afterDeactivate(item, close, setter);
                     dfd.resolve(true);
+                }, function(reason) {
+                    system.log(reason);
+                    dfd.resolve(false);
                 });
             } else {
                 settings.afterDeactivate(item, close, setter);
@@ -59,12 +69,22 @@
             if (newItem.activate) {
                 system.log('Activating', newItem);
 
-                var promise = newItem.activate(activationData);
+                var result;
+                try {
+                    result = newItem.activate(activationData);
+                } catch (error) {
+                    system.log(error);
+                    callback(false);
+                    return;
+                }
 
-                if (promise && promise.then) {
-                    promise.then(function () {
+                if (result && result.then) {
+                    result.then(function() {
                         activeItem(newItem);
                         callback(true);
+                    }, function(reason) {
+                        system.log(reason);
+                        callback(false);
                     });
                 } else {
                     activeItem(newItem);
@@ -82,11 +102,21 @@
     function canDeactivateItem(item, close, settings) {
         return system.defer(function (dfd) {
             if (item && item.canDeactivate) {
-                var resultOrPromise = item.canDeactivate(close);
+                var resultOrPromise;
+                try {
+                    resultOrPromise = item.canDeactivate(close);
+                } catch(error) {
+                    system.log(error);
+                    dfd.resolve(false);
+                    return;
+                }
 
                 if (resultOrPromise.then) {
-                    resultOrPromise.then(function (result) {
+                    resultOrPromise.then(function(result) {
                         dfd.resolve(settings.interpretResponse(result));
+                    }, function(reason) {
+                        system.log(reason);
+                        dfd.resolve(false);
                     });
                 } else {
                     dfd.resolve(settings.interpretResponse(resultOrPromise));
@@ -105,10 +135,21 @@
             }
 
             if (newItem && newItem.canActivate) {
-                var resultOrPromise = newItem.canActivate(activationData);
+                var resultOrPromise;
+                try {
+                    resultOrPromise = newItem.canActivate(activationData);
+                } catch (error) {
+                    system.log(error);
+                    dfd.resolve(false);
+                    return;
+                }
+
                 if (resultOrPromise.then) {
-                    resultOrPromise.then(function (result) {
+                    resultOrPromise.then(function(result) {
                         dfd.resolve(settings.interpretResponse(result));
+                    }, function(reason) {
+                        system.log(reason);
+                        dfd.resolve(false);
                     });
                 } else {
                     dfd.resolve(settings.interpretResponse(resultOrPromise));
