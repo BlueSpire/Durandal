@@ -112,7 +112,7 @@
         },
         bindAndShow: function (element, view, settings) {
             if (settings.cacheViews) {
-                settings.composingNewView = (settings.viewElements.indexOf(view) == -1);
+                settings.composingNewView = (ko.utils.arrayIndexOf(settings.viewElements, view) == -1);
             } else {
                 settings.composingNewView = true;
             }
@@ -239,14 +239,14 @@
             if (settings.cacheViews && !settings.viewElements) {
                 settings.viewElements = hostState.childElements;
             }
-            
+
             if (!settings.model) {
                 if (!settings.view) {
                     this.bindAndShow(element, null, settings);
                 } else {
                     settings.area = settings.area || 'partial';
                     settings.preserveContext = true;
-                    
+
                     viewLocator.locateView(settings.view, settings.area, settings.viewElements).then(function (view) {
                         composition.bindAndShow(element, view, settings);
                     });
