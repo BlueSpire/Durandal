@@ -212,7 +212,7 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\nuget\Durandal\content\App\durandal\" /s /i /y
-xcopy "$(SolutionDir)Content\durandal.css "$(SolutionDir)skeletons\nuget\Durandal\content\Content\" /s /i /y
+xcopy "$(SolutionDir)Content\durandal.css" "$(SolutionDir)skeletons\nuget\Durandal\content\Content" /s /i /y
 
 xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\nuget\Durandal.Router\content\App\durandal\" /s /i /y
 
