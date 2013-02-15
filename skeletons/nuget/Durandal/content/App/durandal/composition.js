@@ -132,16 +132,12 @@
 
                     if (currentModel != modelToBind) {
                         if (!settings.composingNewView) {
-                            //todo: remove old view
-                            //todo: locate view again (use data-view to get id)
-                            //todo: set composingNewView = true
-                            //todo: call bind
-                            //todo: switch content
-                            //todo: exit this if block
-
-                            console.log('Warning...composing an existing view against a different model may go badly for you.');
+                            $(view).remove();
+                            viewEngine.createView(view.getAttribute('data-view')).then(function(recreatedView) {
+                                composition.bindAndShow(element, recreatedView, settings);
+                            });
+                            return;
                         }
-
                         viewModelBinder.bind(modelToBind, view);
                     }
                 }
