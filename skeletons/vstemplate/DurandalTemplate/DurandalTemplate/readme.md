@@ -18,6 +18,7 @@ information please visit us at http://www.durandaljs.com
 * Css and script library bundling has been configured in *App_Start/DurandalBundleConfig.cs*.
 * The *Durandal/Index* view contains the host page's html, links and script references.
 * Application startup begins with the *App/main.js*
+* Notice the differences in the way that the welcome module is declared (contructor function) vs the flicr module (object instance).
 
 ## Explanation of the SPA Architecture
 
