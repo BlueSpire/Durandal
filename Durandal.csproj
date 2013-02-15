@@ -85,11 +85,11 @@
     <Content Include="App\samples\modal\customModal.js" />
     <Content Include="App\samples\modal\shell.html" />
     <Content Include="App\samples\modal\shell.js" />
-    <Content Include="Content\app.css" />
     <Content Include="Content\bootstrap-responsive.css" />
     <Content Include="Content\bootstrap-responsive.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\durandal.css" />
     <Content Include="Content\font-awesome-ie7.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
@@ -212,11 +212,15 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\nuget\Durandal\content\App\durandal\" /s /i /y
+xcopy "$(SolutionDir)Content\durandal.css "$(SolutionDir)skeletons\nuget\Durandal\content\Content\" /s /i /y
+
 xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\nuget\Durandal.Router\content\App\durandal\" /s /i /y
+
 xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\nuget\Durandal.Transitions\content\App\durandal" /s /i /y
 
 xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\durandal\" /s /i /y
-xcopy "$(SolutionDir)Content\images" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\images\" /s /i /y</PostBuildEvent>
+xcopy "$(SolutionDir)Content\images" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\images\" /s /i /y
+xcopy "$(SolutionDir)Content\durandal.css" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\" /s /i /y</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

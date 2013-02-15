@@ -126,6 +126,7 @@
   <ItemGroup>
     <None Include="App_Start\DurandalBundleConfig.cs.pp" />
     <Compile Include="App_Start\DurandalBundleConfig.cs" />
+    <Content Include="Content\durandal.css" />
     <Content Include="Content\font\fontawesome-webfont.woff" />
     <Content Include="Content\font\fontawesome-webfont.ttf" />
     <Content Include="Content\font\fontawesome-webfont.eot" />
@@ -258,6 +259,7 @@ rd "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\widgets" /S /Q
 xcopy "$(SolutionDir)DurandalTemplate\Content\font" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\font" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\Content\images" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\images" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\Content\app.css" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\" /s /i /y
+xcopy "$(SolutionDir)DurandalTemplate\Content\durandal.css" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\Content\bootstrap.css" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\Content\bootstrap-responsive.css" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\Content\font-awesome.css" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\" /s /i /y
