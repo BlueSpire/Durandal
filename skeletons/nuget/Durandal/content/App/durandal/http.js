@@ -25,11 +25,11 @@
         },
         post:function(url, data) {
             return $.ajax({
-                url:url,
-                data:JSON.stringify(data),
-                type:'POST',
-                contentType:'application/json',
-                dataType:'json'
+                url: url,
+                data: ko.toJSON(data),
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json'
             });
         }
     };
