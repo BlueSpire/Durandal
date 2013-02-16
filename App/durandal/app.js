@@ -6,9 +6,12 @@
         modalDialog = require('./modalDialog'),
         Events = require('./events');
 
-    var MessageBox;
+    var MessageBox,
+        defaultTitle = 'Application';
 
     var app = {
+        title: defaultTitle,
+
         showModal: function(obj, activationData, context) {
             return modalDialog.show(obj, activationData, context);
         },
@@ -16,11 +19,17 @@
             return modalDialog.show(new MessageBox(message, title, options));
         },
         start: function() {
+            var that = this;
+            if (that.title) {
+                document.title = that.title;
+            }
+
             return system.defer(function (dfd) {
                 $(function() {
                     system.log('Starting Application');
                     system.acquire('./messageBox').then(function(mb) {
                         MessageBox = mb;
+                        MessageBox.defaultTitle = that.title || defaultTitle;
                         dfd.resolve();
                         system.log('Started Application');
                     });
