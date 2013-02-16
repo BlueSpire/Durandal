@@ -11,7 +11,6 @@
 
     var app = {
         title: defaultTitle,
-
         showModal: function(obj, activationData, context) {
             return modalDialog.show(obj, activationData, context);
         },

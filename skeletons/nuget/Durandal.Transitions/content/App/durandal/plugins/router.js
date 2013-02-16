@@ -100,12 +100,9 @@
 
         isNavigating(true);
 
-        system.acquire(routeInfo.moduleId).then(function (module) {
-            if (typeof module == 'function') {
-                activateRoute(routeInfo, params, new module());
-            } else {
-                activateRoute(routeInfo, params, module);
-            }
+        system.acquire(routeInfo.moduleId).then(function(module) {
+            var instance = router.getActivatableInstance(routeInfo, params, module);
+            activateRoute(routeInfo, params, instance);
         });
     }
 
@@ -163,6 +160,13 @@
             setTimeout(function () {
                 isNavigating(false);
             }, 10);
+        },
+        getActivatableInstance: function (routeInfo, params, module) {
+            if (typeof module == 'function') {
+                return new module();
+            } else {
+                return module;
+            }
         },
         useConvention: function (rootPath) {
             rootPath = rootPath == null ? 'viewmodels' : rootPath;

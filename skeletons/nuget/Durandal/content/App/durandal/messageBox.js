@@ -9,7 +9,7 @@
         this.modal.close(dialogResult);
     };
 
-    MessageBox.defaultTitle = 'Application';
+    MessageBox.defaultTitle = '';
     MessageBox.defaultOptions = ['Ok'];
 
     return MessageBox;
