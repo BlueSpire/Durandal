@@ -68,6 +68,28 @@
         }
     }
 
+    function shouldTransition(newChild, settings) {
+        if (typeof settings.transition == 'string' && newChild) {
+            if (settings.activeView) {
+                if (settings.activeView == newChild) {
+                    return false;
+                }
+
+                if (settings.skipTransitionOnSameViewId) {
+                    var currentViewId = settings.activeView.getAttribute('data-view');
+                    var newViewId = newChild.getAttribute('data-view');
+                    return currentViewId != newViewId;
+                }
+
+                return true;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     var composition = {
         activateDuringComposition: false,
         convertTransitionToModuleId: function (name) {
@@ -76,7 +98,7 @@
         switchContent: function (parent, newChild, settings) {
             settings.transition = settings.transition || this.defaultTransitionName;
 
-            if (typeof settings.transition == 'string' && newChild) {
+            if (shouldTransition(newChild, settings)) {
                 var transitionModuleId = this.convertTransitionToModuleId(settings.transition);
                 system.acquire(transitionModuleId).then(function (transition) {
                     settings.transition = transition;
@@ -85,25 +107,27 @@
                     });
                 });
             } else {
-                if (settings.cacheViews && settings.activeView) {
-                    $(settings.activeView).css('display', 'none');
-                }
-
-                if (!newChild) {
-                    if (!settings.cacheViews) {
-                        ko.virtualElements.emptyNode(parent);
+                if (newChild != settings.activeView) {
+                    if (settings.cacheViews && settings.activeView) {
+                        $(settings.activeView).css('display', 'none');
                     }
-                } else {
-                    if (settings.cacheViews) {
-                        if (settings.composingNewView) {
-                            settings.viewElements.push(newChild);
-                            ko.virtualElements.prepend(parent, newChild);
-                        } else {
-                            $(newChild).css('display', '');
+
+                    if (!newChild) {
+                        if (!settings.cacheViews) {
+                            ko.virtualElements.emptyNode(parent);
                         }
                     } else {
-                        ko.virtualElements.emptyNode(parent);
-                        ko.virtualElements.prepend(parent, newChild);
+                        if (settings.cacheViews) {
+                            if (settings.composingNewView) {
+                                settings.viewElements.push(newChild);
+                                ko.virtualElements.prepend(parent, newChild);
+                            } else {
+                                $(newChild).css('display', '');
+                            }
+                        } else {
+                            ko.virtualElements.emptyNode(parent);
+                            ko.virtualElements.prepend(parent, newChild);
+                        }
                     }
                 }
 
