@@ -333,9 +333,9 @@
                 var currentItem = computed();
 
                 if (!newItem) {
-                    newItem = settings.determineNextItemToActivate(items, currentItem ? ko.utils.arrayIndexOf(items, currentItem) : 0);
+                    newItem = settings.determineNextItemToActivate(items, currentItem ? items.indexOf(currentItem) : 0);
                 } else {
-                    var index = ko.utils.arrayIndexOf(items, newItem);
+                    var index = items.indexOf(newItem);
 
                     if (index == -1) {
                         items.push(newItem);
