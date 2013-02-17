@@ -76,7 +76,8 @@
         switchContent: function (parent, newChild, settings) {
             settings.transition = settings.transition || this.defaultTransitionName;
 
-            if (typeof settings.transition == 'string' && newChild) {
+            if (typeof settings.transition == 'string' && newChild &&
+                (!settings.skipTransitionOnSameView || settings.skipTransitionOnSameView == true && newChild != settings.activeView)) {
                 var transitionModuleId = this.convertTransitionToModuleId(settings.transition);
                 system.acquire(transitionModuleId).then(function (transition) {
                     settings.transition = transition;
