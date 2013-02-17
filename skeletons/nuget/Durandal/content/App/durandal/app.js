@@ -26,7 +26,7 @@
             return system.defer(function (dfd) {
                 $(function() {
                     system.log('Starting Application');
-                    system.acquire('./messageBox').then(function(mb) {
+                    system.acquire('./messageBox').then(function (mb) {
                         MessageBox = mb;
                         MessageBox.defaultTitle = that.title || defaultTitle;
                         dfd.resolve();
@@ -36,8 +36,7 @@
             }).promise();
         },
         setRoot: function(root, transition, applicationHost) {
-            var hostElement,
-                settings = { activate: true, transition: transition };
+            var hostElement, settings = { activate: true, transition: transition };
 
             if (!applicationHost || typeof applicationHost == "string") {
                 hostElement = document.getElementById(applicationHost || 'applicationHost');

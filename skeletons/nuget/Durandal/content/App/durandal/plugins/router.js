@@ -1,6 +1,7 @@
 ﻿define(function (require) {
     var system = require('../system'),
-        viewModel = require('../viewModel');
+        viewModel = require('../viewModel'),
+        app = require('../app');
 
     //NOTE: Sammy.js is not required by the core of Durandal. 
     //However, this plugin leverages it to enable navigation.
@@ -186,7 +187,11 @@
             system.log('No Route Found', route, params);
         },
         onNavigationComplete: function (routeInfo, params, module) {
-            document.title = routeInfo.name;
+            if (app.title) {
+                document.title = routeInfo.name + " | " + app.title;
+            } else {
+                document.title = routeInfo.name;
+            }
         },
         navigateBack: function () {
             window.history.back();
