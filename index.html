@@ -1,51 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <title>Durandal</title>
-        
         <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <meta name="format-detection" content="telephone=no"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        
-        <link rel="apple-touch-startup-image" href="Content/images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
-        <link rel="apple-touch-startup-image" href="Content/images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
-        <link rel="apple-touch-icon" href="Content/images/icon.png"/>
-        
-        <link rel="stylesheet" href="Content/styles.css" />
-        
-        <script type="text/javascript">
-            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-                var msViewportStyle = document.createElement("style");
-                var mq = "@@-ms-viewport{width:auto!important}";
-                msViewportStyle.appendChild(document.createTextNode(mq));
-                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
-            }
-        </script>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+      <meta name="format-detection" content="telephone=no"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
-        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <title>Home | Durandal</title>
+        <meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+        <meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
+        <meta name="author" content="EisenbergEffect" />
+        
+        <meta http-equiv="X-Powered-By" content="DocPad"/>
+
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+      <link rel="apple-touch-icon" href="images/icon.png"/>
+
+        <!-- Shims: IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Styles -->
+        <link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+         <script type="text/javascript">
+                if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                    var msViewportStyle = document.createElement("style");
+                    var mq = "@@-ms-viewport{width:auto!important}";
+                    msViewportStyle.appendChild(document.createTextNode(mq));
+                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+                }
+          </script>
+
+          <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+          <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     </head>
     <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+            <a class="brand" href="/">
+                <span>&nbsp;&nbsp;Durandal</span>
+            </a>
+            <ul class="nav">
+                        
+                            <li typeof="sioc:Page" about="/pages/get-started" class="">
+                                <a href="/pages/get-started" property="dc:title">Get Started</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/docs" class="">
+                                <a href="/pages/docs" property="dc:title">Docs</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/videos" class="">
+                                <a href="/pages/videos" property="dc:title">Videos</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/training" class="">
+                                <a href="/pages/training" property="dc:title">Training</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/support" class="">
+                                <a href="/pages/support" property="dc:title">Support</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/merchandise" class="">
+                                <a href="/pages/merchandise" property="dc:title">Merchandise</a>
+                            </li>
+                        
+                    </ul>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <a class="brand" href="index.html">
-            <span>&nbsp;&nbsp;Durandal</span>
-        </a>
-        <!--
-        <ul class="nav" data-bind="foreach: router.visibleRoutes">
-            <li data-bind="css: { active: isActive }">
-                <a data-bind="attr: { href: hash }, html: name"></a>
-            </li>
-        </ul>
-        -->
-    </div>
-</div>
+                    <ul class="nav pull-right">
+                        <li>
+                            <a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
 
-<div class="jumbotron masthead">
+        <div class="jumbotron masthead">
     <div class="container">
       <h1>Durandal</h1>
       <p>Single Page Apps Done Right</p>
@@ -55,7 +92,7 @@
           <a href="http://github.com/BlueSpire/Durandal">GitHub Project</a>
         </li>
         <li>
-          Version 1.1.0
+          Version 1.1.1
         </li>
       </ul>
     </div>
@@ -78,49 +115,46 @@
         </li>
         <li>
             <a href="https://groups.google.com/forum/?fromgroups=#!forum/durandaljs">
-                <img class="google-group-icon" src="Content/images/groups_logo.png" title="Durandal Google Group" alt="Durandal Google Group">
+                <img class="google-group-icon" src="images/groups_logo.png" title="Durandal Google Group" alt="Durandal Google Group">
             </a>
         </li>
       </ul>
     </div>
 </div>
 
-<div class="container">
-    <div class="marketing">
-        <h1>Meet Durandal</h1>
-        <h2>Your search for a SPA framework ends here.</h2>
+<div class="container content home">
+    <h1>Meet Durandal</h1>
+    <h2>Your search for a SPA framework ends here.</h2>
 
-        <div class="row-fluid">
-          <div class="span4">
-            <h3>Comfortable</h3>
-            <p>
-                We didn't try to re-invent the wheel. Durandal is built on libs you know and 
-                love like <a href="http://jquery.com/">jQuery</a>, <a href="http://knockoutjs.com/">Knockout</a> 
-                and <a href="http://requirejs.org/">RequireJS</a>. There's little to learn and building apps 
-                feels comfortable and familiar. Dive in and enjoy.</p>
-          </div>
-          <div class="span4">
-            <h3>Feature-rich</h3>
-            <p>
-                MVC? MVP? MVVM? Yes. Messaging, navigation, modals? Check. Durandal has the features you need to 
-                build whatever apps you can imagine; the apps of today and of tomorrow. Let your creativity soar.
-            </p>
-          </div>
-          <div class="span4">
-            <h3>Versatile</h3>
-            <p>
-                Building an Android phone app? An enterprise LOB targeted at Windows? or a web gaming platform? No 
-                matter how large or small the app, it's effortless with Durandal....and we give you the tools to 
-                develop on any platform, for any platform.
-            </p>
-          </div>
-        </div>
+    <div class="row-fluid">
+      <div class="span4">
+        <h4>Comfortable</h4>
+        <p>
+            We didn't try to re-invent the wheel. Durandal is built on libs you know and 
+            love like <a href="http://jquery.com/">jQuery</a>, <a href="http://knockoutjs.com/">Knockout</a> 
+            and <a href="http://requirejs.org/">RequireJS</a>. There's little to learn and building apps 
+            feels comfortable and familiar. Dive in and enjoy.</p>
+      </div>
+      <div class="span4">
+        <h4>Feature-rich</h4>
+        <p>
+            MVC? MVP? MVVM? Yes. Messaging, navigation, modals? Check. Durandal has the features you need to 
+            build whatever apps you can imagine; the apps of today and of tomorrow. Let your creativity soar.
+        </p>
+      </div>
+      <div class="span4">
+        <h4>Versatile</h4>
+        <p>
+            Building an Android phone app? An enterprise LOB targeted at Windows? A web gaming platform? No 
+            matter how large or small the app, it's effortless with Durandal....and we give you the tools to 
+            develop on any platform, for any platform.
+        </p>
+      </div>
     </div>
 
-    <hr class="soften">
+    <h3>Features</h3>
 
     <div class="row features">
-        <h3>Features</h3>
         <ul>
             <li>Clean MV* Architecture</li>
             <li>JS &amp; HTML Modularity</li>
@@ -130,9 +164,9 @@
             <li>Consistent Async Programming w/ Promises</li>
             <li>App Bundling and Optimization</li>
             <li>Use any Backend Technology</li>
-            <li>Built on top of jQuery, Knockout &amp; RequireJS</li>
-            <li>Integrates with other libraries such as SammyJS &amp; Bootstrap</li>
-            <li>Make jQuery &amp; Bootstrap widgets templatable and bindable (or build your own widgets).</li>
+            <li>Built on top of <a href="http://jquery.com/">jQuery</a>, <a href="http://knockoutjs.com/">Knockout</a> &amp; <a href="http://requirejs.org/">RequireJS</a></li>
+            <li>Integrates with other libraries such as <a href="http://sammyjs.org/">SammyJS</a> &amp; <a href="http://twitter.github.com/bootstrap/">Bootstrap</a></li>
+            <li>Make <a href="http://jquery.com/">jQuery</a> &amp; <a href="http://twitter.github.com/bootstrap/">Bootstrap</a> widgets templatable and bindable (or build your own widgets).</li>
         </ul>
     </div>
 
@@ -143,7 +177,7 @@
         <h2>What are they saying?</h2>
         <div class="row-fluid">
             <blockquote>
-              <p>Durandal is built to handle the plumbing and makes it easier for me to focus on building rich webs apps with JavaScript faster.</p>
+              <p>Durandal is built to handle the plumbing and makes it easier for me to focus on building rich webs apps with JavaScript faster. Only when you've written SPA's without Durandal do you realize how much it saves you!</p>
               <small>John Papa, <cite title="Source Title">Author &amp; Microsoft Regional Director</cite></small>
             </blockquote>
 
@@ -169,11 +203,32 @@
     </div>
 </div>
 
-<footer class="footer">
-  <div class="container">
-    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
-    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
-  </div>
-</footer>
+        <footer class="footer">
+          <div class="container">
+            <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+            <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
+            <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+          </div>
+        </footer>
+
+        <script src="/vendor/jquery.js"></script>
+        <script src="/vendor/modernizr.js"></script>
+        <script src="/vendor/prettify.js"></script>
+        <script src="/vendor/knockout-2.2.1.js"></script>
+        <script src="/scripts/behavior.js"></script>
+
+        
+
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-38441871-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
     </body>
 </html>

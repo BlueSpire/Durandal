@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+      <meta name="format-detection" content="telephone=no"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Docs - Creating a Widget | Durandal</title>
+        <meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+        <meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
+        <meta name="author" content="EisenbergEffect" />
+        
+        <meta http-equiv="X-Powered-By" content="DocPad"/>
+
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+      <link rel="apple-touch-icon" href="images/icon.png"/>
+
+        <!-- Shims: IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Styles -->
+        <link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+         <script type="text/javascript">
+                if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                    var msViewportStyle = document.createElement("style");
+                    var mq = "@@-ms-viewport{width:auto!important}";
+                    msViewportStyle.appendChild(document.createTextNode(mq));
+                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+                }
+          </script>
+
+          <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+          <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+            <a class="brand" href="/">
+                <span>&nbsp;&nbsp;Durandal</span>
+            </a>
+            <ul class="nav">
+                        
+                            <li typeof="sioc:Page" about="/pages/get-started" class="">
+                                <a href="/pages/get-started" property="dc:title">Get Started</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/docs" class="">
+                                <a href="/pages/docs" property="dc:title">Docs</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/videos" class="">
+                                <a href="/pages/videos" property="dc:title">Videos</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/training" class="">
+                                <a href="/pages/training" property="dc:title">Training</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/support" class="">
+                                <a href="/pages/support" property="dc:title">Support</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/merchandise" class="">
+                                <a href="/pages/merchandise" property="dc:title">Merchandise</a>
+                            </li>
+                        
+                    </ul>
+
+                    <ul class="nav pull-right">
+                        <li>
+                            <a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+
+        <section class="container content docs">
+  <h1>Creating a Widget</h1>
+<h4> </h4>
+<blockquote>
+  <strong>Key Points</strong>
+  <ul>
+    <li>
+        Durandal supports creating skinnable, templatable, data-binding enabled widgets.
+    </li>
+    <li>
+        Create widgets by adding controller.js and view.html files at durandal/widgets/{your-widget-name}.
+    </li>
+    <li>
+        Leverage part templating by adding <em>data-part</em> attributes to replacable sections of your widget&#39;s view.
+    </li>
+    <li>
+        Use the <em>widget</em> binding handler to instantiate a widget. (Or call registerKind to create a custom handler.)
+    </li>
+  </ul>
+</blockquote>
+
+<h3>Getting Set Up</h3>
+<p>In this tutorial we will learn how to create a very simple widget and explore some of the APIs provided to help in the most common scenarios. Code related to this tutorial can be found in the repo in the appropriate locations as described below. Let&#39;s create a very simple <em>Expander</em> widget.</p>
+<p>In order to leverage Durandal&#39;s default widget support we need to organize our widget code in a particular way. If you don&#39;t already have one, create a directory under the durandal directory of your app called &quot;widgets&quot;. Durandal&#39;s default is to look in this location for all widget implementations. Next, add a subdirectory named &quot;expander&quot;. Again, Durandal expects there to be a folder per widget inside the &quot;widgets&quot; folder. This keeps code nicely organized and predictable. Finally, let&#39;s add two files to the expander folder: controller.js and view.html. These two files will make up your actual implementation.</p>
+<blockquote>
+<p><strong>Note:</strong> Don&#39;t like any of the conventions detailed above? No problem. See the <a href="/documentation/Widget.html">reference documentation</a> on widgets for information on how to change these conventions globally as well as on a per widget basis.</p>
+</blockquote>
+<p>Your folder structure should now look like this:</p>
+<ul>
+<li>app<ul>
+<li>durandal<ul>
+<li>widgets<ul>
+<li>expander<ul>
+<li>controller.js</li>
+<li>view.html</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>controller.js is a function exported module that will serve as a location for all your widget&#39;s code. It will be bound to view.html by the widget infrastructure via the <em>composition</em> module. Following is the source code list for these two modules which we will then explain piece by piece:</p>
+<p><strong>view.html</strong></p>
+<pre class="prettyprint linenums">&lt;div data-bind=&quot;foreach: { data:settings.items, afterRender:afterRenderItem }&quot;&gt;
+    &lt;a data-part=&quot;headerContainer&quot; href=&quot;#&quot;&gt;
+        &lt;div data-part=&quot;header&quot; data-bind=&quot;html: $parent.getHeaderText($data)&quot;&gt;&lt;/div&gt;
+    &lt;/a&gt;
+    &lt;div data-part=&quot;itemContainer&quot;&gt;
+        &lt;div data-part=&quot;item&quot; data-bind=&quot;compose: $data&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+<p><strong>controller.js</strong></p>
+<pre class="prettyprint linenums">define(function(require) {
+    var widget = require(&#39;durandal/widget&#39;);
+
+    var ctor = function(element, settings) {
+        this.settings = settings;
+    };
+
+    ctor.prototype.getHeaderText = function(item) {
+        if (this.settings.headerProperty) {
+            return item[this.settings.headerProperty];
+        }
+
+        return item.toString();
+    };
+
+    ctor.prototype.afterRenderItem = function(elements, item) {
+        var parts = widget.getParts(elements);
+        var $itemContainer = $(parts.itemContainer);
+
+        $itemContainer.hide();
+
+        $(parts.headerContainer).bind(&#39;click&#39;, function() {
+            $itemContainer.toggle(&#39;fast&#39;);
+        });
+    };
+
+    return ctor;
+});</pre>
+<h3>How the View Works</h3>
+<p>Looking at the view implementation first, we can see that we have a pretty straight forward knockout-bound view. This is a simple expander implementation which consists of a <em>div</em> wrapping an <em>a</em> for every header and another <em>div</em> for each content. The root <em>div</em> leverage&#39;s KO&#39;s <em>foreach</em> binding to bind a list of items, providing the <em>afterRenderItem</em> hook as well. The header implementation leverages a $parent binding to jump out of the <em>foreach</em> scope and call a custom function on the controller, used to determine the header&#39;s text, based on the item bound. Finally, each item&#39;s content is displayed using Durandal&#39;s <em>compose</em> binding. This is all standard knockout and Durandal code which you would use to build any view. There&#39;s one unique thing about this markup you need to understand. I&#39;m pretty sure you noticed it. It&#39;s the presence of the <em>data-part</em> attributes. This is what enables per-use templating. Simply mark any part of the view you wish to be customizable with a <em>view-part</em> attribute set to a unique name (unique in this widget, not globally). At code time, a developer will be able to specify replacement parts for any aspect of the view you have tagged in this way. </p>
+<h3>How the Controller Works</h3>
+<p>Controller modules always export the widget&#39;s constructor function. The widget infrastructure will always invoke this function with <em>new</em> and pass it the <em>element</em> on which the widget is being created as well as the <em>settings</em> that have been specified for the widget. In this case, we have chosen to keep a reference to the settings object so that we can bind it in the view. If you look back at the view, you will see that we have done just that, binding to an expected list of items to generate expanders for. The view&#39;s default &quot;header&quot; template also calls into the controller, invoking its <em>getHeaderText</em> function. This function checks the settings to see if a specific property has been specified for the header text, or falls back to a <em>toString</em> call. Finally, we have the <em>afterRenderItem</em> callback which was specified in the view&#39;s <em>foreach</em> binding. This is invoked when the <em>foreach</em> creates elements for an item. Knockout provides an array of <em>elements</em> as well as a reference to the <em>item</em> that was bound. This is where things get interesting. Here, we use the <em>widget</em> module&#39;s <em>getParts</em> function to obtain a keyed object pointing to all the templated parts present in the list of elements. This API is important because it handles lookups based within a scoped set of elements and understands the template part mechanism. Once the object is returned, we use some simple jQuery to add basic behavior to those parts.</p>
+<p>That&#39;s all there is to creating a re-usable widget.</p>
+<blockquote>
+<p><strong>Note:</strong> In some cases, your widget may not actually need a view. Perhaps it&#39;s just adding some jQuery behavior or applying an existing jQuery plugin to a dom element. To tell Durandal that there is no view to load and bind, add a <em>view</em> property to the <em>settings</em> object with a value of <em>false</em> inside your widget&#39;s constructor.</p>
+</blockquote>
+<h3>Using a Widget</h3>
+<p>Once you&#39;ve gone through the trouble of creating a widget, you are going to want to use it somewhere. The most common way to use a widget is through the <em>widget</em> binding. To use our expander widget to display a theoretical list of &quot;projects&quot; we would write the following html.</p>
+<p><strong>A view bound to a model with a projects property...</strong></p>
+<pre class="prettyprint linenums">&lt;div&gt;
+    &lt;h1&gt;Widgets Sample&lt;/h1&gt;
+    &lt;div data-bind=&quot;widget: {kind:&#39;expander&#39;, items:projects, headerProperty:&#39;name&#39;}&quot;&gt;/div&gt;
+&lt;/div&gt;</pre>
+<p>You can make this a little nicer by calling the <em>widget</em> module&#39;s <em>registerKind</em> function like so:</p>
+<p><code>widget.registerKind(&#39;expander&#39;)</code></p>
+<p>You should do this in your application startup. Then you can write html like this:</p>
+<p><strong>A view bound after calling registerKind...</strong></p>
+<pre class="prettyprint linenums">&lt;div&gt;
+    &lt;h1&gt;Widgets Sample&lt;/h1&gt;
+    &lt;div data-bind=&quot;expander: {items:projects, headerProperty:&#39;name&#39;}&quot;&gt;/div&gt;
+&lt;/div&gt;</pre>
+<p>Now, let&#39;s suppose that instead of displaying a simple property for the header, we actually want to have some custom html to replace the default header part. Here&#39;s how we would do that:</p>
+<p><strong>A widget with a templated part override...</strong></p>
+<pre class="prettyprint linenums">&lt;div&gt;
+    &lt;h1&gt;Widgets Sample&lt;/h1&gt;
+    &lt;div data-bind=&quot;expander:{items:projects}&quot;&gt;
+        &lt;h2 data-part=&quot;header&quot;&gt;Project: &lt;span data-bind=&quot;text: name&quot;&gt;&lt;/span&gt;&lt;/h2&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+<p>We can override any part this way. We simply add child elements to the widget&#39;s element, each with a <em>data-part</em> attribute, referencing the part we wish to override. One final thing to note is that each templated part override&#39;s binding scope is parented to the surrounding view&#39;s scope. This allows a templated part to use $root to access the containing view&#39;s view model.</p>
+<p>For further information on different ways to create or customize widgets, see the <a href="/documentation/Widget.html">reference documentation</a>. You can find a working implementation of the above widget under source. Run it via the widgets sample.</p>
+
+</section>
+
+        <footer class="footer">
+          <div class="container">
+            <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+            <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
+            <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+          </div>
+        </footer>
+
+        <script src="/vendor/jquery.js"></script>
+        <script src="/vendor/modernizr.js"></script>
+        <script src="/vendor/prettify.js"></script>
+        <script src="/vendor/knockout-2.2.1.js"></script>
+        <script src="/scripts/behavior.js"></script>
+
+        
+
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-38441871-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+    </body>
+</html>
