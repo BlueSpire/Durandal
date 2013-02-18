@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+      <meta name="format-detection" content="telephone=no"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Docs - Showing Mssage Boxes and Modals | Durandal</title>
+        <meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+        <meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
+        <meta name="author" content="EisenbergEffect" />
+        
+        <meta http-equiv="X-Powered-By" content="DocPad"/>
+
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+      <link rel="apple-touch-icon" href="images/icon.png"/>
+
+        <!-- Shims: IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Styles -->
+        <link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+         <script type="text/javascript">
+                if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                    var msViewportStyle = document.createElement("style");
+                    var mq = "@@-ms-viewport{width:auto!important}";
+                    msViewportStyle.appendChild(document.createTextNode(mq));
+                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+                }
+          </script>
+
+          <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+          <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+            <a class="brand" href="/">
+                <span>&nbsp;&nbsp;Durandal</span>
+            </a>
+            <ul class="nav">
+                        
+                            <li typeof="sioc:Page" about="/pages/get-started" class="">
+                                <a href="/pages/get-started" property="dc:title">Get Started</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/docs" class="">
+                                <a href="/pages/docs" property="dc:title">Docs</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/videos" class="">
+                                <a href="/pages/videos" property="dc:title">Videos</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/training" class="">
+                                <a href="/pages/training" property="dc:title">Training</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/support" class="">
+                                <a href="/pages/support" property="dc:title">Support</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/merchandise" class="">
+                                <a href="/pages/merchandise" property="dc:title">Merchandise</a>
+                            </li>
+                        
+                    </ul>
+
+                    <ul class="nav pull-right">
+                        <li>
+                            <a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+
+        <section class="container content docs">
+  <h1>Showing Message Boxes and Modals</h1>
+<h4> </h4>
+<blockquote>
+  <strong>Key Points</strong>
+  <ul>
+    <li>
+      Use <code>app.showMessage(...)</code> to show a message box.
+    </li>
+    <li>
+      Use <code>app.showModal(...)</code> to show a custom modal.
+    </li>
+    <li>
+      Custom modals consist of a module and a view.
+    </li>
+    <li>
+      Use <code>this.modal.close(...)</code> from within a module to close it.
+    </li>
+    <li>
+      All modals return a promise, resolved by its close.
+    </li>
+  </ul>
+</blockquote>
+
+<h3>Message Boxes</h3>
+<p>Showing a message box in Durandal is easy. Simply require the <em>app</em> module and call <em>showMessage</em>. Here&#39;s an example of the most basic usage:</p>
+<pre class="prettyprint linenums">var app = require(&#39;durandal/app&#39;);
+...
+app.showMessage(&#39;This is a message.&#39;);</pre>
+<p>This will display a message box with the default title and the message &quot;This is a message.&quot; It will also display an &quot;Ok&quot; button.
+By default, your message box&#39;s title is set to your applications&#39;s title (<code>app.title</code>). If you haven&#39;t set the title, then it defaults to &quot;Application&quot;.
+You can easily add a custom title by providing the second parameter. Here&#39;s an example:</p>
+<pre class="prettyprint linenums">app.showMessage(&#39;This is a message.&#39;, &#39;Demo&#39;);</pre>
+<p>This message box is the same as the first, but with &quot;Demo&quot; displayed in the header. Now, suppose you want more than just an &quot;Ok&quot; button. 
+The third parameter to this function specifies an array of options to display to the user. Here&#39;s what that looks like:</p>
+<pre class="prettyprint linenums">var screen = {
+  ...
+  canDeactivate:function(){
+    return app.showMessage(&#39;You have unsaved data. Are you sure you want to close?&#39;, &#39;Unsaved Data&#39;, [&#39;Yes&#39;, &#39;No&#39;]);
+  }
+  ...
+};</pre>
+<p>This message box will have two buttons &quot;Yes&quot; and &quot;No&quot;. The yes button, which is first in the list, will be configured as the default action.
+Notice also that a call to <code>showMessage</code> has a return value. This return value is actually a promise for the user&#39;s response. 
+It will be resolved when they select an option and the message box is closed.</p>
+<h3>Custom Modals</h3>
+<p>It turns out that message boxes are just an implementation of a custom modal dialog.
+With Durandal, you can show any UI as a modal, using the same techniques as you aready know. Just create a view and a view model.
+Let&#39;s see how to do it by looking at how the built-in message box is implemented. 
+First, let&#39;s see the implementation of <em>showMessage</em> and <em>showModal</em> from the <em>app</em> module:</p>
+<pre class="prettyprint linenums">var app = {
+  ...
+  showModal: function(obj, activationData, context) {
+      return modalDialog.show(obj, activationData, context);
+  },
+  showMessage: function(message, title, options) {
+      return modalDialog.show(new MessageBox(message, title, options));
+  }
+  ...
+};</pre>
+<p>It looks like both functions actually call into the <em>modal dialog</em> module. The <em>showModal</em> function is just a direct pass through, but <em>showMessage</em> does a little bit more.
+It shows the typical technique for displaying a custom modal. All you have to do is pass an object to <em>showModal</em> and under the covers it will use the composition system to locate its view and bind the two together. Then, it will display it as a modal.
+Let&#39;s see the implementation of <em>MessageBox</em> and its view.</p>
+<p><strong>messageBox.js</strong></p>
+<pre class="prettyprint linenums">define(function() {
+    var MessageBox = function(message, title, options) {
+        this.message = message;
+        this.title = title || MessageBox.defaultTitle;
+        this.options = options || MessageBox.defaultOptions;
+    };
+
+    MessageBox.prototype.selectOption = function (dialogResult) {
+        this.modal.close(dialogResult);
+    };
+
+    MessageBox.defaultTitle = &#39;&#39;;
+    MessageBox.defaultOptions = [&#39;Ok&#39;];
+
+    return MessageBox;
+});</pre>
+<p><strong>messageBox.html</strong></p>
+<pre class="prettyprint linenums">&lt;div class=&quot;messageBox&quot;&gt;
+    &lt;div class=&quot;modal-header&quot;&gt;
+        &lt;h3 data-bind=&quot;html: title&quot;&gt;&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;modal-body&quot;&gt;
+        &lt;p class=&quot;message&quot; data-bind=&quot;html: message&quot;&gt;&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;modal-footer&quot; data-bind=&quot;foreach: options&quot;&gt;
+        &lt;button class=&quot;btn&quot; data-bind=&quot;click: function () { $parent.selectOption($data); }, html: $data, css: { &#39;btn-primary&#39;: $index() == 0, autofocus: $index() == 0 }&quot;&gt;&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+<p>As you can see, <em>MessageBox</em> is just a normal prototype-based class. It stores it&#39;s parameters and provides a function to select a particular option.
+The view is located by the composition system and bound to it before displaying it in a modal style. The view uses a standard set of Knockout bindings along with some css classes.
+There&#39;s one important detail to notice. Have a look at the <em>selectOption</em> function of the modal implementation.
+It access an attribute of itself called <em>modal</em>. When an object is displayed by Durandal&#39;s modal system, this special attribute is added. 
+It&#39;s value is an object with a <em>close</em> function, which, when called, will cause the modal to close.
+The interesting thing about it is that you can pass it a value to return to its caller.
+When the caller invokes <em>showModal</em> a promise is returned which, as mentioned above, resolves when the modal closes and will carry with it whatever the modal passes to <em>close</em>.
+Here&#39;s how a client might obtain that value:</p>
+<pre class="prettyprint linenums">var app = require(&#39;durandal/app&#39;);
+...
+app.showMessage(&#39;This is a message.&#39;).then(function(dialogResult){
+  //do something with the dialog result here
+});</pre>
+<p>That&#39;s all there is to creating a custom modal dialog. It&#39;s built like any other UI, by constructing a module and a view. Then, just call <code>app.showModal</code> and you are in business.</p>
+
+</section>
+
+        <footer class="footer">
+          <div class="container">
+            <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+            <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
+            <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+          </div>
+        </footer>
+
+        <script src="/vendor/jquery.js"></script>
+        <script src="/vendor/modernizr.js"></script>
+        <script src="/vendor/prettify.js"></script>
+        <script src="/vendor/knockout-2.2.1.js"></script>
+        <script src="/scripts/behavior.js"></script>
+
+        
+
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-38441871-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+    </body>
+</html>

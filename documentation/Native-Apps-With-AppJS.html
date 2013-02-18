@@ -9,7 +9,7 @@
       <meta name="format-detection" content="telephone=no"/>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title>Docs | Durandal</title>
+        <title>Docs - Native Apps with AppJS | Durandal</title>
         <meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
         <meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
         <meta name="author" content="EisenbergEffect" />
@@ -52,7 +52,7 @@
                                 <a href="/pages/get-started" property="dc:title">Get Started</a>
                             </li>
                         
-                            <li typeof="sioc:Page" about="/pages/docs" class="active">
+                            <li typeof="sioc:Page" about="/pages/docs" class="">
                                 <a href="/pages/docs" property="dc:title">Docs</a>
                             </li>
                         
@@ -82,91 +82,46 @@
             </div>
         </div>
 
-        <section class="container content">
-  <h1>Welcome to the Durandal Docs!</h1>
-    <h2>
-    This is a branching off point for digging into the various aspects of Durandal. Here you will find information pertaining to how the framework is put together as well as how it is used to build apps.</p>
-    </h2>
+        <section class="container content docs">
+  <h1>Native Apps with AppJS</h1>
+<h4> </h4>
+<blockquote>
+  <strong>Key Points</strong>
+  <ul>
+    <li>
+      Optimize your app.
+    </li>
+    <li>
+      Configure AppJS to serve files from your content folder.
+    </li>
+    <li>
+      Copy all assets to the content folder of your AppJS project.
+    </li>
+    <li>
+      Update the <em>index.html</em> file to point to the optimized build (and your other assets).
+    </li>
+  </ul>
+</blockquote>
 
-    <h3>Articles</h3>
-        <ul>
-        <li><a href="/documentation/Introduction.html">Introduction</a></li>
-        <li>Getting Set Up
-            <ul>
-                <li><a href="/documentation/Mimosa.html">With Mimosa</a> (Recommended for Node/Ruby/PHP)</li>
-                <li><a href="/documentation/NuGet.html">With NuGet</a> (Recommended for .NET)</li>
-                <li><a href="/documentation/Visual-Studio-Project-Template.html">With the Visual Studio MVC Project Template</a></li>
-                <li><a href="/documentation/Manual-Setup.html">Manual Setup</a></li>
-            </ul>
-        </li>
-        <li><a href="/documentation/Understanding-the-Starter-Kit.html">Understanding the Starter Kit</a></li>
-        <li><a href="/documentation/Understanding-the-Samples.html">Understanding the Samples</a></li>
-        <li>Common Tasks
-            <ul>
-                <li><a href="/documentation/Creating-A-Module.html">Creating a Module</a></li>
-                <li><a href="/documentation/Creating-A-View.html">Creating a View</a></li>
-                <li><a href="/documentation/Using-Composition.html">Using Composition</a></li>
-                <li><a href="/documentation/Adding-a-Splash-Screen.html">Adding a Splash Screen</a></li>
-                <li><a href="/documentation/Showing-Message-Boxes-And-Modals.html">Showing Message Boxes and Modals</a></li>
-                <li><a href="/documentation/Debugging.html">Debugging</a></li>
-                <li><a href="/documentation/Creating-A-Widget.html">Creating a Widget</a></li>
-                <li><a href="/documentation/Creating-A-Transition.html">Creating a Transition</a></li>
-                <li><a href="/documentation/Leveraging-Publish-Subscribe.html">Leveraging Publish/Subscribe</a></li>
-                <li><a href="/documentation/Customizing-the-Configuration.html">Customizing the Configuration</a></li>
-            </ul>
-        </li>
-        <li>Build and Deploy
-            <ul>
-                <li><a href="/documentation/Optimizing-On-Dot-Net.html">Optimizing on .NET</a></li>
-                <li><a href="/documentation/Optimizing-With-Mimosa.html">Optimizing with Mimosa</a></li>
-                <li><a href="/documentation/Using-Durandal-with-Almond.html">Using Durandal with Almond</a></li>
-            </ul>
-        </li>
-        <li>Building Native Apps
-            <ul>
-                <li><a href="/documentation/Native-Apps-With-PhoneGap-Cordova.html">With PhoneGap/Cordova</a></li>
-                <li><a href="/documentation/Native-Apps-With-AppJS.html">With AppJS</a></li>
-                <li>For Windows 8</li>
-            </ul>
-        </li>
-    </ul>
+<h3>Explanation</h3>
+<p>Creating native applications for desktop is easy by combining Durandal with <a href="http://appjs.org/">AppJS</a>.
+The first step is to optimize your application for deploy. How you do this depends on what platform and setup you are running.
+In general, you have these options:</p>
+<ul>
+<li>If you are using the .NET project, you can run optimizer.exe, located at <em>app/durandal/amd/optimizer.exe</em></li>
+<li>If you are using Mimosa, then you can execute the command <code>mimosa build -mo</code></li>
+<li>For all other configurations, you should see the <a href="http://requirejs.org/docs/optimization.html">r.js documentation</a> for help using the optimizer directly.</li>
+</ul>
+<p>Ultimately, the output of this process should be a file such as <em>main-built.js</em> which contains all your app&#39;s JavaScript and HTML.
+Next, you will want to make sure that AppJS is configured to serve files from a particular folder.
+To do that, locate the app.js file in your AppJS project and make sure it has something like this:</p>
+<pre class="prettyprint linenums">app.serveFilesFrom(__dirname + &#39;/content&#39;);</pre>
+<p>Then, copy all your applications&#39;s assets to that folder. This includes, images, css, 3rd party JS libraries...and of course, your <em>main-built.js</em> file.
+Finally, you need to update the index.html file so that it points to your css, etc and be sure to add a script reference for <em>main-built.js</em>. That&#39;s it.</p>
+<blockquote>
+<p><strong>Note:</strong> AppJS is still in the early stages of development. The integration described above may change in the future, or there may be more/better options as well. Be sure to check the AppJS documentation.</p>
+</blockquote>
 
-    <h3>Module Reference</h3>
-    <p>Durandal is distributed as a set of AMD modules intended to work with RequireJS. Below is a list of the modules that make up the framework. For a brief overrview, read <a href="/documentation/Understanding-Durandal-Modules">Understanding Durandal's Modules</a>.</p>
-    <ul>
-        <li><a href="/documentation/App.html">App</a></li>
-        <li><a href="/documentation/Composition.html">Composition</a></li>
-        <li><a href="/documentation/Events.html">Events</a></li>
-        <li><a href="/documentation/HTTP.html">HTTP</a></li>
-        <li><a href="/documentation/Modal-Dialog.html">Modal Dialog</a></li>
-        <li><a href="/documentation/Message-Box.html">Message Box</a></li>
-        <li><a href="/documentation/System.html">System</a></li>
-        <li><a href="/documentation/View-Locator.html">View Locator</a></li>
-        <li><a href="/documentation/View-Engine.html">View Engine</a></li>
-        <li><a href="/documentation/View-Model-Binder.html">View Model Binder</a></li>
-        <li><a href="/documentation/View-Model.html">View Model</a></li>
-        <li><a href="/documentation/Widget.html">Widget</a></li>
-    </ul>
-
-    <h3>Plugin Reference</h3>
-    <p>In addition to the core framework, below you will find some plugins to extend the out-of-the-box functionality.</p>
-    <ul>
-        <li><a href="/documentation/Router.html">Router</a></li>
-    </ul>
-
-    <h3>Community</h3>
-    <p>In addition to the official documentation and plugins, below you will find some great community contributions.</p>
-    <ul>
-        <li>
-            <a href="https://gist.github.com/evanlarsen/4799019">Transition Helper</a> - Tons of transition animations for Durandal's composition mechanism.
-        </li>
-        <li>
-            <a href="https://github.com/rniemeyer/knockout-delegatedEvents">knockout-delegatedEvents</a> - A KO plugin that makes delegated events easy, without resorting to manual jQuery code.
-        </li>
-        <li>
-            <a href="https://gist.github.com/hyle/1180607">Knockout Utility Signatures</a> - A breif gist dhowing all the KO utility functions and their signatures.
-        </li>
-    </ul>
 </section>
 
         <footer class="footer">
