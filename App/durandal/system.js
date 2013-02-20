@@ -19,9 +19,17 @@ define(['require'], function (require) {
         }
     }
 
-    requirejs.onResourceLoad = function(context, map, depArray) {
-        system.setModuleId(context.defined[map.id], map.id);
-    };
+    if (require.on) {
+        require.on("moduleLoaded", function (module, mid) {
+            system.setModuleId(module, mid);
+        });
+    }
+    
+    if (typeof requirejs !== 'undefined') {
+        requirejs.onResourceLoad = function(context, map, depArray) {
+            system.setModuleId(context.defined[map.id], map.id);
+        };
+    }
 
     var noop = function() { };
 
