@@ -1,5 +1,5 @@
-﻿define(function(require) {
-    var system = require('./system');
+define(['./system'],
+    function (system) {
 
     function doBind(obj, view, action) {
         if (!view || !obj) {
