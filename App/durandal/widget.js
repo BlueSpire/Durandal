@@ -1,6 +1,5 @@
-﻿define(function(require) {
-    var system = require('./system'),
-        composition = require('./composition');
+define(['./system', './composition'],
+    function (system, composition) {
 
     var widgetPartAttribute = 'data-part',
         widgetPartSelector = '[' + widgetPartAttribute + ']';
