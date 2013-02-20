@@ -37,7 +37,7 @@ namespace Optimizer {
     void BuildConfig(RJSConfig info) {
       var config = info.Config;
 
-      if(options.Almond) {
+      if(options.Loader == Options.LoaderOptions.Almond) {
         options.Log("Configuring for deploy with almond (custom).");
 
         JSON.EnsureProperty(config, "name", amdPath + "/" + almondName);
