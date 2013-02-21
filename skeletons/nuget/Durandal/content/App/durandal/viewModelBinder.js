@@ -1,14 +1,25 @@
 ﻿define(function(require) {
     var system = require('./system');
+    var viewModelBinder;
+    var insufficientInfoMessage = 'Insufficient Information to Bind';
+    var unexpectedViewMessage = 'Unexpected View Type';
 
     function doBind(obj, view, action) {
         if (!view || !obj) {
-            system.log('Insufficent Information to Bind', view, obj);
+            if (viewModelBinder.throwOnErrors) {
+                throw new Error(insufficientInfoMessage);
+            } else {
+                system.log(insufficientInfoMessage, view, obj);
+            }
             return;
         }
 
         if (!view.getAttribute) {
-            system.log('Unexpected View Type', view, obj);
+            if (viewModelBinder.throwOnErrors) {
+                throw new Error(unexpectedViewMessage);
+            } else {
+                system.log(unexpectedViewMessage, view, obj);
+            }
             return;
         }
 
@@ -17,11 +28,15 @@
             system.log('Binding', viewName, obj);
             action();
         } catch (e) {
-            system.log(e.message, viewName, obj);
+            if (viewModelBinder.throwOnErrors) {
+                throw new Error(e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(obj));
+            } else {
+                system.log(e.message, viewName, obj);
+            }
         }
     }
 
-    return {
+    return viewModelBinder = {
         bindContext: function(bindingContext, view, obj) {
             if (obj) {
                 bindingContext = bindingContext.createChildContext(obj);
