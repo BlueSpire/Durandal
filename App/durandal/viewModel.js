@@ -1,5 +1,5 @@
-﻿define(function (require) {
-    var system = require('./system');
+define(['./system'],
+    function (system) {
     var viewModel;
 
     function ensureSettings(settings) {

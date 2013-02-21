@@ -1,4 +1,4 @@
-﻿define(function(require) {
+define(['require'], function (require) {
     var isDebugging = false,
         nativeKeys = Object.keys,
         hasOwnProperty = Object.prototype.hasOwnProperty,
@@ -19,9 +19,17 @@
         }
     }
 
-    requirejs.onResourceLoad = function(context, map, depArray) {
-        system.setModuleId(context.defined[map.id], map.id);
-    };
+    if (require.on) {
+        require.on("moduleLoaded", function (module, mid) {
+            system.setModuleId(module, mid);
+        });
+    }
+    
+    if (typeof requirejs !== 'undefined') {
+        requirejs.onResourceLoad = function(context, map, depArray) {
+            system.setModuleId(context.defined[map.id], map.id);
+        };
+    }
 
     var noop = function() { };
 
