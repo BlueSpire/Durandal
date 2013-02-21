@@ -227,7 +227,7 @@
                                 system.defer(function (dfd2) {
                                     deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2);
                                 }).promise().then(function () {
-                                    newItem = settings.beforeActivate(newItem);
+                                    newItem = settings.beforeActivate(newItem, activationData);
                                     activate(newItem, activeItem, function (result) {
                                         computed.isActivating(false);
                                         dfd.resolve(result);

@@ -8,8 +8,7 @@
                 dfd.resolve();
             }
 
-            function scrollIfNeeded()
-            {
+            function scrollIfNeeded() {
                 if (!settings.keepScrollPosition) {
                     $(document).scrollTop(0);
                 }
