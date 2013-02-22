@@ -23,7 +23,7 @@
     }
 
     var modalDialog = {
-        currentZIndex: 1000,
+        currentZIndex: 1050,
         getNextZIndex: function () {
             return ++this.currentZIndex;
         },

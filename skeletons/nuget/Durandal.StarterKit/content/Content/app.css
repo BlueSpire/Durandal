@@ -23,10 +23,6 @@
     top: 40px;
 }
 
-.navbar-fixed-top {
-    z-index: 100;
-}
-
 .navbar-fixed-top .navbar-inner {
     padding-left: 1em;
     padding-right: 1em;
