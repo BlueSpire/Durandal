@@ -38,22 +38,21 @@
             return parts;
         },
         getSettings: function(valueAccessor) {
-            var settings = {},
-                value = ko.utils.unwrapObservable(valueAccessor()) || {};
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
 
             if (typeof value == 'string') {
-                settings = value;
+                return value;
             } else {
                 for (var attrName in value) {
                     if (ko.utils.arrayIndexOf(bindableSettings, attrName) != -1) {
-                        settings[attrName] = ko.utils.unwrapObservable(value[attrName]);
+                        value[attrName] = ko.utils.unwrapObservable(value[attrName]);
                     } else {
-                        settings[attrName] = value[attrName];
+                        value[attrName] = value[attrName];
                     }
                 }
             }
 
-            return settings;
+            return value;
         },
         registerKind: function(kind) {
             ko.bindingHandlers[kind] = {

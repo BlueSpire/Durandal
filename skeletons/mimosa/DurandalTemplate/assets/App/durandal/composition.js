@@ -173,8 +173,7 @@
             return viewLocator.locateViewForObject(settings.model, settings.viewElements);
         },
         getSettings: function (valueAccessor, element) {
-            var settings = {},
-                value = ko.utils.unwrapObservable(valueAccessor()) || {};
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
 
             if (typeof value == 'string') {
                 return value;
@@ -188,13 +187,10 @@
             }
 
             for (var attrName in value) {
-                if (typeof attrName == 'string') {
-                    var attrValue = ko.utils.unwrapObservable(value[attrName]);
-                    settings[attrName] = attrValue;
-                }
+                value[attrName] = ko.utils.unwrapObservable(value[attrName]);
             }
 
-            return settings;
+            return value;
         },
         executeStrategy: function (element, settings) {
             settings.strategy(settings).then(function (view) {

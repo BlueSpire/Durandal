@@ -18,6 +18,6 @@ define(function(require) {
         viewLocator.useConvention();
 
         app.adaptToDevice();
-        app.setRoot('samples/widgets/shell');
+        app.setRoot('samples/navigation/shell');
     });
 });
