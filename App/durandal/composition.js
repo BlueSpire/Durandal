@@ -188,10 +188,7 @@
             }
 
             for (var attrName in value) {
-                if (typeof attrName == 'string') {
-                    var attrValue = ko.utils.unwrapObservable(value[attrName]);
-                    settings[attrName] = attrValue;
-                }
+                settings[attrName] = ko.utils.unwrapObservable(value[attrName]);
             }
 
             return settings;

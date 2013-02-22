@@ -6,7 +6,8 @@
         widgetPartSelector = '[' + widgetPartAttribute + ']';
 
     var kindModuleMaps = {},
-        kindViewMaps = {};
+        kindViewMaps = {},
+        bindableSettings = ['model','view','kind'];
 
     var widget = {
         getParts: function(elements) {
@@ -44,9 +45,10 @@
                 settings = value;
             } else {
                 for (var attrName in value) {
-                    if (typeof attrName == 'string') {
-                        var attrValue = ko.utils.unwrapObservable(value[attrName]);
-                        settings[attrName] = attrValue;
+                    if (ko.utils.arrayIndexOf(bindableSettings, attrName) != -1) {
+                        settings[attrName] = ko.utils.unwrapObservable(value[attrName]);
+                    } else {
+                        settings[attrName] = value[attrName];
                     }
                 }
             }
@@ -104,7 +106,7 @@
 
             return settings;
         },
-        create: function(element, settings, bindingContext) {
+        create: function (element, settings, bindingContext) {
             if (typeof settings == 'string') {
                 settings = {
                     kind: settings
