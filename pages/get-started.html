@@ -13,7 +13,7 @@
         <meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
         <meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
         <meta name="author" content="EisenbergEffect" />
-        
+
         <meta http-equiv="X-Powered-By" content="DocPad"/>
 
       <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
@@ -47,31 +47,31 @@
                 <span>&nbsp;&nbsp;Durandal</span>
             </a>
             <ul class="nav">
-                        
+
                             <li typeof="sioc:Page" about="/pages/get-started" class="active">
                                 <a href="/pages/get-started" property="dc:title">Get Started</a>
                             </li>
-                        
+
                             <li typeof="sioc:Page" about="/pages/docs" class="">
                                 <a href="/pages/docs" property="dc:title">Docs</a>
                             </li>
-                        
+
                             <li typeof="sioc:Page" about="/pages/videos" class="">
                                 <a href="/pages/videos" property="dc:title">Videos</a>
                             </li>
-                        
+
                             <li typeof="sioc:Page" about="/pages/training" class="">
                                 <a href="/pages/training" property="dc:title">Training</a>
                             </li>
-                        
+
                             <li typeof="sioc:Page" about="/pages/support" class="">
                                 <a href="/pages/support" property="dc:title">Support</a>
                             </li>
-                        
+
                             <li typeof="sioc:Page" about="/pages/merchandise" class="">
                                 <a href="/pages/merchandise" property="dc:title">Merchandise</a>
                             </li>
-                        
+
                     </ul>
 
                     <ul class="nav pull-right">
@@ -91,11 +91,11 @@
 
   <h4>.NET</h4>
   <p>
-  If you are coming from a .NET background or using Visual Studio, you've got two options. 
+  If you are coming from a .NET background or using Visual Studio, you've got two options.
     <ol>
       <li>
-      If you have VS2012 and the 2012 web tools installed, you can grab the VSIX file and install it. 
-      Then, start Visual Studio and choose to create a new 'ASP.NET MVC 4 Web Application'. 
+      If you have VS2012 and the 2012 web tools installed, you can grab the VSIX file and install it.
+      Then, start Visual Studio and choose to create a new 'ASP.NET MVC 4 Web Application'.
       After selecting MVC, you will have the option to choose which template you want. Choose 'Durandal SPA Template'.
       </li>
       <li>
@@ -118,7 +118,7 @@
   </p>
   <ol>
     <li>Install Node.js</li>
-    <li>From the command line execute: <code>npm install -g mimosa</code>
+    <li>From the command line execute: <code>npm install -g mimosa@0.9.0</code>
     </li>
     <li>Once mimosa is installed, execute: <code>mimosa mod:install mimosa-skeleton</code>
     </li>
@@ -186,7 +186,7 @@ define(function(require) {
 
     app.start().then(function () {
         viewLocator.useConvention();
-        
+
         router.useConvention();
         router.mapNav(&#39;welcome&#39;);
         router.mapNav(&#39;flickr&#39;);
@@ -248,9 +248,9 @@ define(function(require) {
             &lt;/ul&gt;
         &lt;/div&gt;
     &lt;/div&gt;
-    
+
     &lt;div class=&quot;container-fluid page-host&quot;&gt;
-        &lt;!--ko compose: { 
+        &lt;!--ko compose: {
             model: router.activeItem,
             afterCompose: router.afterCompose,
             transition:&#39;entrance&#39;
@@ -349,7 +349,7 @@ define(function (require) {
         <script src="/vendor/knockout-2.2.1.js"></script>
         <script src="/scripts/behavior.js"></script>
 
-        
+
 
         <script type="text/javascript">
           var _gaq = _gaq || [];
