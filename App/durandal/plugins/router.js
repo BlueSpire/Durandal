@@ -103,6 +103,9 @@
 
         system.acquire(routeInfo.moduleId).then(function(module) {
             var instance = router.getActivatableInstance(routeInfo, params, module);
+            
+            //insert guard
+
             activateRoute(routeInfo, params, instance);
         });
     }
