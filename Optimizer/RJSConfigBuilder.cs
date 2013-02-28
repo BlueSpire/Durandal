@@ -43,14 +43,14 @@ namespace Optimizer {
         JSON.EnsureProperty(config, "name", amdPath + "/" + almondName);
         JSON.EnsureProperty(config, "mainConfigFile", info.MainPath);
         JSON.EnsureProperty(config, "wrap", true);
-
-        var insertRequire = JSON.EnsureArray(config, "insertRequire");
-        insertRequire.Add("main");
       } else {
         options.Log("Configuring for deploy with require.");
 
         JSON.EnsureProperty(config, "name", "main");
       }
+
+      var insertRequire = JSON.EnsureArray(config, "insertRequire");
+      insertRequire.Add("main");
 
       JSON.EnsureProperty(config, "baseUrl", info.BaseUrl);
       JSON.EnsureProperty(config, "out", info.OutputPath);
