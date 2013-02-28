@@ -31,6 +31,12 @@
         return false;
     };
 
+    function redirect(url) {
+        isNavigating(false);
+        system.log('Redirecting');
+        router.navigateTo(url);
+    }
+
     function cancelNavigation() {
         cancelling = true;
         system.log('Cancelling Navigation');
@@ -62,9 +68,6 @@
     }
 
     function activateRoute(routeInfo, params, module) {
-        params.routeInfo = routeInfo;
-        params.router = router;
-
         system.log('Activating Route', routeInfo, module, params);
 
         activeItem.activateItem(module, params).then(function (succeeded) {
@@ -78,6 +81,33 @@
 
     function shouldStopNavigation() {
         return cancelling || (sammy.last_location[1].replace('/', '') == previousRoute);
+    }
+
+    function handleGuardedRoute(routeInfo, params, instance) {
+        var resultOrPromise = router.guardRoute(routeInfo, params, instance);
+        if (resultOrPromise) {
+            if (resultOrPromise.then) {
+                resultOrPromise.then(function(result) {
+                    if (result) {
+                        if (typeof result == 'string') {
+                            redirect(result);
+                        } else {
+                            activateRoute(routeInfo, params, instance);
+                        }
+                    } else {
+                        cancelNavigation();
+                    }
+                });
+            } else {
+                if (typeof resultOrPromise == 'string') {
+                    redirect(resultOrPromise);
+                } else {
+                    activateRoute(routeInfo, params, instance);
+                }
+            }
+        } else {
+            cancelNavigation();
+        }
     }
 
     function ensureRoute(route, params) {
@@ -101,9 +131,17 @@
 
         isNavigating(true);
 
-        system.acquire(routeInfo.moduleId).then(function(module) {
+        system.acquire(routeInfo.moduleId).then(function (module) {
+            params.routeInfo = routeInfo;
+            params.router = router;
+
             var instance = router.getActivatableInstance(routeInfo, params, module);
-            activateRoute(routeInfo, params, instance);
+
+            if (router.guardRoute) {
+                handleGuardedRoute(routeInfo, params, instance);
+            } else {
+                activateRoute(routeInfo, params, instance);
+            }
         });
     }
 
