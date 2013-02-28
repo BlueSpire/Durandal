@@ -275,8 +275,8 @@
                         routesByPath[processedRoute.path.toString()] = current;
                     }
 
+                    route.get('#/', handleDefaultRoute);
                     route.get(/\#\/(.*)/, handleWildCardRoute);
-                    route.get('', handleDefaultRoute);
                 });
 
                 sammy._checkFormSubmission = function () {
@@ -289,7 +289,7 @@
                     system.log.apply(system, args);
                 };
 
-                sammy.run();
+                sammy.run('#/');
             }).promise();
         }
     };
