@@ -24,9 +24,13 @@
         }
 
         var viewName = view.getAttribute('data-view');
+        
         try {
             system.log('Binding', viewName, obj);
+            
+            viewModelBinder.beforeBind(obj, view);
             action();
+            viewModelBinder.afterBind(obj, view);
         } catch (e) {
             if (viewModelBinder.throwOnErrors) {
                 throw new Error(e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(obj));
@@ -37,6 +41,8 @@
     }
 
     return viewModelBinder = {
+        beforeBind: system.noop,
+        afterBind:system.noop,
         bindContext: function(bindingContext, view, obj) {
             if (obj) {
                 bindingContext = bindingContext.createChildContext(obj);
