@@ -185,8 +185,8 @@
         };
 
         computed.deactivateItem = function (item, close) {
-            return system.defer(function (dfd) {
-                computed.canDeactivateItem(item, close).then(function (canDeactivate) {
+            return system.defer(function(dfd) {
+                computed.canDeactivateItem(item, close).then(function(canDeactivate) {
                     if (canDeactivate) {
                         deactivate(item, close, settings, dfd, activeItem);
                     } else {
@@ -194,7 +194,7 @@
                         dfd.resolve(false);
                     }
                 });
-            });
+            }).promise();
         };
 
         computed.canActivateItem = function (newItem, activationData) {
