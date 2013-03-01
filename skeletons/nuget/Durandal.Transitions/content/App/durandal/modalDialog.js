@@ -1,7 +1,5 @@
-﻿define(function(require) {
-    var composition = require('./composition'),
-        system = require('./system'),
-        viewModel = require('./viewModel');
+﻿define(['./composition', './system', './viewModel'],
+    function (composition, system, viewModel) {
 
     var contexts = {},
         modalCount = 0;

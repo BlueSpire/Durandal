@@ -1,9 +1,5 @@
-﻿define(function (require) {
-    var viewLocator = require('./viewLocator'),
-        viewModelBinder = require('./viewModelBinder'),
-        viewEngine = require('./viewEngine'),
-        system = require('./system'),
-        viewModel = require('./viewModel');
+﻿define(['./viewLocator', './viewModelBinder', './viewEngine', './system', './viewModel'],
+    function (viewLocator, viewModelBinder, viewEngine, system, viewModel) {
 
     var dummyModel = {},
         activeViewAttributeName = 'data-active-view';

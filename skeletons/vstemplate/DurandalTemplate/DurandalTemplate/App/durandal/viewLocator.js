@@ -1,6 +1,5 @@
-﻿define(function(require) {
-    var system = require('./system'),
-        viewEngine = require('./viewEngine');
+﻿define(['./system', './viewEngine'],
+    function (system, viewEngine) {
 
     function findInElements(nodes, url) {
         for (var i = 0; i < nodes.length; i++) {
