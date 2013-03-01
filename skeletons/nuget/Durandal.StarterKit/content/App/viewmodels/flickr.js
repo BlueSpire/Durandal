@@ -1,6 +1,4 @@
-﻿define(function (require) {
-    var http = require('durandal/http'),
-        app = require('durandal/app');
+﻿define(['durandal/http', 'durandal/app'], function (http, app) {
     
     return {
         displayName: 'Flickr',
