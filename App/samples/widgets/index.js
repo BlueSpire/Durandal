@@ -1,7 +1,5 @@
-﻿define(function (require) {
-    var Project = require('samples/widgets/project'),
-        widget = require('durandal/widget');
-
+﻿define(['./project', 'durandal/widget'], function (Project, widget) {
+    
     //The widget registration below is only necessary if you want to enable the short widget syntax.
     //Normally, you would put this widget configuration in your main.js.
     //It is here only to keep it from cluttering the main.js and confusing the code of other samples.

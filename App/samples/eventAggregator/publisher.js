@@ -1,5 +1,4 @@
-﻿define(function (require) {
-    var app = require('durandal/app');
+﻿define(['durandal/app'], function (app) {
     
     var message = ko.observable();
     var canPublish = ko.computed(function () {

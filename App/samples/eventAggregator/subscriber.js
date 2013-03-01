@@ -1,6 +1,5 @@
-﻿define(function (require) {
-    var app = require('durandal/app');
-
+﻿define(['durandal/app'], function (app) {
+    
     return {
         received: ko.observableArray([]),
         subscription:ko.observable(),

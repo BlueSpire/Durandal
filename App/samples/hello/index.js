@@ -1,6 +1,5 @@
-﻿define(function (require) {
-    var app = require('durandal/app');
-
+﻿define(['durandal/app'], function (app) {
+    
     var name = ko.observable();
     var canSayHello = ko.computed(function () {
         return name() ? true : false;
