@@ -1,7 +1,5 @@
-﻿define(function(require) {
-    var system = require('durandal/system'),
-        app = require('durandal/app');
-
+﻿define(['durandal/system', 'durandal/app'], function(system, app) {
+    
     var ctor = function(name, description) {
         this.name = name;
         this.description = description;
