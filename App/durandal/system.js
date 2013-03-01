@@ -1,4 +1,4 @@
-﻿define(function(require) {
+﻿define(['require'], function (require) {
     var isDebugging = false,
         nativeKeys = Object.keys,
         hasOwnProperty = Object.prototype.hasOwnProperty,
@@ -19,9 +19,27 @@
         }
     }
 
-    requirejs.onResourceLoad = function(context, map, depArray) {
-        system.setModuleId(context.defined[map.id], map.id);
-    };
+    // callback for dojo's loader 
+    // note: if you wish to use Durandal with dojo's AMD loader,
+    // currently you must fork the dojo source with the following
+    // dojo/dojo.js, line 1187, the last line of the finishExec() function: 
+    //  (add) signal("moduleLoaded", [module.result, module.mid]);
+    // an enhancement request has been submitted to dojo to make this
+    // a permanent change. To view the status of this request, visit:
+    // http://bugs.dojotoolkit.org/ticket/16727
+
+    if (require.on) {
+        require.on("moduleLoaded", function (module, mid) {
+            system.setModuleId(module, mid);
+        });
+    }
+
+    // callback for require.js loader
+    if (typeof requirejs !== 'undefined') {
+        requirejs.onResourceLoad = function (context, map, depArray) {
+            system.setModuleId(context.defined[map.id], map.id);
+        };
+    }
 
     var noop = function() { };
 
