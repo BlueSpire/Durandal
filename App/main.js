@@ -4,11 +4,9 @@
     }
 });
 
-define(function(require) {
-    var app = require('durandal/app'),
-        system = require('durandal/system'),
-        viewLocator = require('durandal/viewLocator');
-
+define(['durandal/app', 'durandal/system', 'durandal/viewLocator'],
+  function (app, system, viewLocator) {
+    
     system.debug(true);
     
     app.title = 'Durandal Samples';
