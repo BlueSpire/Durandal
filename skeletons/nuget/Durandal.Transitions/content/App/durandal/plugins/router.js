@@ -171,7 +171,7 @@
     function configureRoute(routeInfo) {
         router.prepareRouteInfo(routeInfo);
 
-        routesByPath[routeInfo.url] = routeInfo;
+        routesByPath[routeInfo.url.toString()] = routeInfo;
         allRoutes.push(routeInfo);
 
         if (routeInfo.visible) {
