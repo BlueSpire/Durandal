@@ -15,7 +15,8 @@
         cancelling = false,
         activeItem = viewModel.activator(),
         activeRoute = ko.observable(),
-        navigationDefaultRoute;
+        navigationDefaultRoute,
+        queue = [];
 
     var tryActivateRouter = function () {
         tryActivateRouter = system.noop;
@@ -107,6 +108,43 @@
         }
     }
 
+    function dequeueRoute() {
+        if (isNavigating()) {
+            return;
+        }
+
+        var next = queue.shift();
+        queue = [];
+
+        if (!next) {
+            return;
+        }
+
+        isNavigating(true);
+
+        system.acquire(next.routeInfo.moduleId).then(function(module) {
+            next.params.routeInfo = next.routeInfo;
+            next.params.router = router;
+
+            var instance = router.getActivatableInstance(next.routeInfo, next.params, module);
+
+            if (router.guardRoute) {
+                handleGuardedRoute(next.routeInfo, next.params, instance);
+            } else {
+                activateRoute(next.routeInfo, next.params, instance);
+            }
+        });
+    }
+
+    function queueRoute(routeInfo, params) {
+        queue.unshift({
+            routeInfo: routeInfo,
+            params: params
+        });
+
+        dequeueRoute();
+    }
+
     function ensureRoute(route, params) {
         var routeInfo = routesByPath[route];
 
@@ -126,20 +164,7 @@
             };
         }
 
-        isNavigating(true);
-
-        system.acquire(routeInfo.moduleId).then(function (module) {
-            params.routeInfo = routeInfo;
-            params.router = router;
-
-            var instance = router.getActivatableInstance(routeInfo, params, module);
-
-            if (router.guardRoute) {
-                handleGuardedRoute(routeInfo, params, instance);
-            } else {
-                activateRoute(routeInfo, params, instance);
-            }
-        });
+        queueRoute(routeInfo, params);
     }
 
     function handleDefaultRoute() {
@@ -195,6 +220,7 @@
         afterCompose: function () {
             setTimeout(function () {
                 isNavigating(false);
+                dequeueRoute();
             }, 10);
         },
         getActivatableInstance: function (routeInfo, params, module) {
