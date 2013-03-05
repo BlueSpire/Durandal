@@ -160,9 +160,12 @@
     <Content Include="test\spec.html" />
     <Content Include="test\specs\system.spec.js" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <Content Include="test\README.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <Content Include="test\specs\viewEngine.spec.js" />
+    <Content Include="test\specs\viewModelBinder.spec.js" />
     <Content Include="web.config" />
     <Content Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
