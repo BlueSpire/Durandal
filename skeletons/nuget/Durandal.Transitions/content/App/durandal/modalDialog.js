@@ -66,13 +66,14 @@
                                 owner: instance,
                                 context: modalContext,
                                 activator: activator,
-                                close: function(result) {
+                                close: function () {
+                                    var args = arguments;
                                     activator.deactivateItem(instance, true).then(function (closeSuccess) {
                                         if (closeSuccess) {
                                             modalCount--;
                                             modalContext.removeHost(modal);
                                             delete instance.modal;
-                                            dfd.resolve(result);
+                                            dfd.resolve.apply(dfd, args);
                                         }
                                     });
                                 }
