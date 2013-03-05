@@ -13,6 +13,7 @@
         previousRoute,
         previousModule,
         cancelling = false,
+        skipRouteUrl,
         activeItem = viewModel.activator(),
         activeRoute = ko.observable(),
         navigationDefaultRoute,
@@ -264,6 +265,10 @@
                 window.location.href = url;
             }
         },
+        navigateToSkipRouting: function (url) {
+            skipRouteUrl = url;
+            navigateTo(url);
+        },
         replaceLocation: function (url) {
             window.location.replace(url);
         },
@@ -347,6 +352,17 @@
                 sammy._checkFormSubmission = function () {
                     return false;
                 };
+
+                sammy.before(null, function (context) {
+                    if (!skipRouteUrl){
+                        return true;                                    //Do continue
+                    } else if (context.path === "/" + skipRouteUrl) {
+                        skipRouteUrl = null;
+                        return false;                                   //Stop Sammy processing, skip routing
+                    } else {
+                        throw new Error("Expected to skip url '" + skipRouteUrl + "', but found url '" + context.path + "'");
+                    } 
+                });
 
                 sammy.log = function () {
                     var args = Array.prototype.slice.call(arguments, 0);
