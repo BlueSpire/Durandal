@@ -46,7 +46,7 @@
             }
 
             if (withoutCommentsOrEmptyText.length > 1) {
-                return $(withoutCommentsOrEmptyText).wrapAll('<div class="durandal-wrapper"></div').parent().get(0);
+                return $(withoutCommentsOrEmptyText).wrapAll('<div class="durandal-wrapper"></div>').parent().get(0);
             }
 
             return withoutCommentsOrEmptyText[0];
