@@ -13,7 +13,7 @@ namespace Optimizer {
         }
 
         var options = new Options();
-        if(CommandLineParser.Default.ParseArguments(args, options)) {
+        if(Parser.Default.ParseArguments(args, options)) {
 #if DEBUG
         options.Verbose = true;
 #endif
