@@ -267,7 +267,7 @@
         },
         navigateToSkipRouting: function (url) {
             skipRouteUrl = url;
-            navigateTo(url);
+            router.navigateTo(url);
         },
         replaceLocation: function (url) {
             window.location.replace(url);
