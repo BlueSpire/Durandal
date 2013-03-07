@@ -71,6 +71,10 @@
                     return false;
                 }
 
+                if (!newChild) {
+                    return true;
+                }
+
                 if (settings.skipTransitionOnSameViewId) {
                     var currentViewId = settings.activeView.getAttribute('data-view');
                     var newViewId = newChild.getAttribute('data-view');

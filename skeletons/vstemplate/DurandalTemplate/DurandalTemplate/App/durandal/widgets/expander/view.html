@@ -5,8 +5,8 @@
         <div data-part="header" data-bind="html: $parent.getHeaderText($data)"></div>
       </a>
     </div>
-    <div data-part="itemContainer" class="accordion-body collapse in">
-      <div class="accordion-inner">
+    <div class="accordion-body collapse in">
+      <div class="accordion-inner" data-part="itemContainer" >
         <div data-part="item" data-bind="compose: $data"></div>
       </div>
     </div>
