@@ -81,8 +81,10 @@
                     return currentViewId != newViewId;
                 }
             }
+            
             return true;
         }
+        
         return false;
     }
 
