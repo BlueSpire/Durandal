@@ -249,9 +249,9 @@
         },
         onNavigationComplete: function (routeInfo, params, module) {
             if (app.title) {
-                document.title = routeInfo.name + " | " + app.title;
+                document.title = routeInfo.caption + " | " + app.title;
             } else {
-                document.title = routeInfo.name;
+                document.title = routeInfo.caption;
             }
         },
         navigateBack: function () {
