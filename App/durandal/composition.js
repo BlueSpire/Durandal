@@ -65,7 +65,7 @@
     }
 
     function shouldTransition(newChild, settings) {
-        if (typeof settings.transition == 'string' && newChild) {
+        if (typeof settings.transition == 'string') {
             if (settings.activeView) {
                 if (settings.activeView == newChild) {
                     return false;
@@ -76,13 +76,9 @@
                     var newViewId = newChild.getAttribute('data-view');
                     return currentViewId != newViewId;
                 }
-
-                return true;
             }
-
             return true;
         }
-
         return false;
     }
 
