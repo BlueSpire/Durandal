@@ -267,6 +267,7 @@
         navigateToRoute: function (url, data) {
 
             var newUrl = url;
+            // find the hash using the url with parameters stripped 
             for (var route in routesByPath) {
                 if (router.stripParameter(routesByPath[route].url) == url) {
                     newUrl = routesByPath[route].hash;
@@ -274,6 +275,7 @@
                 }
             }
 
+            // if this is an url with parameters, add data.property for these parameters to the url
             var colonIndex = newUrl.indexOf(':');
             if (colonIndex > 0) {
                 var paramstring = newUrl.substring(colonIndex - 1, newUrl.length);
@@ -284,12 +286,9 @@
                         newUrl += '/' + data[params[i]];
                     }
                 }
+            }
 
-                sammy.setLocation(newUrl);
-            }
-            else {
-                sammy.setLocation(url);
-            }
+            sammy.setLocation(newUrl);
         },
         replaceLocation: function (url) {
             window.location.replace(url);
