@@ -264,6 +264,33 @@
                 window.location.href = url;
             }
         },
+        navigateToRoute: function (url, data) {
+
+            var newUrl = url;
+            for (var route in routesByPath) {
+                if (router.stripParameter(routesByPath[route].url) == url) {
+                    newUrl = routesByPath[route].hash;
+                    break;
+                }
+            }
+
+            var colonIndex = newUrl.indexOf(':');
+            if (colonIndex > 0) {
+                var paramstring = newUrl.substring(colonIndex - 1, newUrl.length);
+                var params = paramstring.split('/:');
+                newUrl = router.stripParameter(newUrl);
+                for (var i = 0; i < params.length; i++) {
+                    if (params[i]) {
+                        newUrl += '/' + data[params[i]];
+                    }
+                }
+
+                sammy.setLocation(newUrl);
+            }
+            else {
+                sammy.setLocation(url);
+            }
+        },
         replaceLocation: function (url) {
             window.location.replace(url);
         },
