@@ -1,16 +1,17 @@
 ﻿define(['./system', './viewEngine', './composition', './widget', './modalDialog', './events'], 
     function(system, viewEngine, composition, widget, modalDialog, Events) {
 
-    var MessageBox,
-        defaultTitle = 'Application';
-
     var app = {
-        title: defaultTitle,
+        title: 'Application',
         showModal: function(obj, activationData, context) {
             return modalDialog.show(obj, activationData, context);
         },
         showMessage: function(message, title, options) {
-            return modalDialog.show(new MessageBox(message, title, options));
+            return modalDialog.show('./messageBox', {
+                message: message,
+                title: title || this.title,
+                options: options
+            });
         },
         start: function() {
             var that = this;
@@ -21,12 +22,8 @@
             return system.defer(function (dfd) {
                 $(function() {
                     system.log('Starting Application');
-                    system.acquire('./messageBox').then(function (mb) {
-                        MessageBox = mb;
-                        MessageBox.defaultTitle = that.title || defaultTitle;
-                        dfd.resolve();
-                        system.log('Started Application');
-                    });
+                    dfd.resolve();
+                    system.log('Started Application');
                 });
             }).promise();
         },
