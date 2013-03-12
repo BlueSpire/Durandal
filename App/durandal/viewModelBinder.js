@@ -47,18 +47,28 @@
                 bindingContext = bindingContext.createChildContext(obj);
             }
 
-            doBind(bindingContext, view, function() {
+            doBind(bindingContext, view, function () {
+                if (obj && obj.beforeBind) {
+                    obj.beforeBind(view);
+                }
+
                 ko.applyBindings(bindingContext, view);
-                if (obj && obj.setView) {
-                    obj.setView(view);
+                
+                if (obj && obj.afterBind) {
+                    obj.afterBind(view);
                 }
             });
         },
         bind: function(obj, view) {
-            doBind(obj, view, function() {
+            doBind(obj, view, function () {
+                if (obj.beforeBind) {
+                    obj.beforeBind(view);
+                }
+                
                 ko.applyBindings(obj, view);
-                if (obj.setView) {
-                    obj.setView(view);
+                
+                if (obj.afterBind) {
+                    obj.afterBind(view);
                 }
             });
         }
