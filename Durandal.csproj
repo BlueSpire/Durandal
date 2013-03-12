@@ -86,6 +86,7 @@
     <Content Include="App\samples\modal\index.html" />
     <Content Include="App\samples\modal\index.js" />
     <Content Include="App\samples\shell.js" />
+    <Content Include="Changes.txt" />
     <Content Include="Content\app.css" />
     <Content Include="Content\bootstrap-responsive.css" />
     <Content Include="Content\bootstrap-responsive.min.css" />
