@@ -16,7 +16,8 @@
         activeItem = viewModel.activator(),
         activeRoute = ko.observable(),
         navigationDefaultRoute,
-        queue = [];
+        queue = [],
+        skipRouteUrl;
 
     var tryActivateRouter = function () {
         tryActivateRouter = system.noop;
@@ -249,23 +250,36 @@
         },
         onNavigationComplete: function (routeInfo, params, module) {
             if (app.title) {
-                document.title = routeInfo.name + " | " + app.title;
+                document.title = routeInfo.caption + " | " + app.title;
             } else {
-                document.title = routeInfo.name;
+                document.title = routeInfo.caption;
             }
         },
         navigateBack: function () {
             window.history.back();
         },
-        navigateTo: function (url) {
-            if (sammy.lookupRoute('get', url)) {
-                sammy.setLocation(url);
-            } else {
-                window.location.href = url;
+        navigateTo: function (url, option) {
+            option = option || 'trigger';
+
+            switch (option.toLowerCase()) {
+                case 'skip':
+                    skipRouteUrl = url;
+                    sammy.setLocation(url);
+                    break;
+                case 'replace':
+                    window.location.replace(url);
+                    break;
+                default:
+                    if (sammy.lookupRoute('get', url)) {
+                        sammy.setLocation(url);
+                    } else {
+                        window.location.href = url;
+                    }
+                    break;
             }
         },
         replaceLocation: function (url) {
-            window.location.replace(url);
+            this.navigateTo(url, 'replace');
         },
         convertRouteToName: function (route) {
             var value = router.stripParameter(route);
@@ -347,6 +361,17 @@
                 sammy._checkFormSubmission = function () {
                     return false;
                 };
+
+                sammy.before(null, function(context) {
+                    if (!skipRouteUrl) {
+                        return true;
+                    } else if (context.path === "/" + skipRouteUrl) {
+                        skipRouteUrl = null;
+                        return false;
+                    } else {
+                        throw new Error("Expected to skip url '" + skipRouteUrl + "', but found url '" + context.path + "'");
+                    }
+                });
 
                 sammy.log = function () {
                     var args = Array.prototype.slice.call(arguments, 0);
