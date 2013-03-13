@@ -74,19 +74,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages\Durandal.StarterKit.1.1.1.nupkg">
+    <Content Include="packages\Durandal.StarterKit.1.2.0.nupkg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="packages\Durandal.1.1.1.nupkg">
+    <Content Include="packages\Durandal.1.2.0.nupkg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="packages\Durandal.Router.1.1.1.nupkg">
+    <Content Include="packages\Durandal.Router.1.2.0.nupkg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="packages\Durandal.Transitions.1.1.1.nupkg">
+    <Content Include="packages\Durandal.Transitions.1.2.0.nupkg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -106,7 +106,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="packages\Twitter.Bootstrap.2.2.2.nupkg">
+    <Content Include="packages\Twitter.Bootstrap.2.3.1.nupkg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
