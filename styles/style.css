@@ -13,9 +13,9 @@ p.lead{line-height:35px}
 hr{margin:60px 0}
 ul{list-style-type:square}
 ol,ul{margin-bottom:20px}
-li{line-height:25px;margin-bottom:5px}
+li{line-height:25px}
 figcaption{font-weight:600;margin-bottom:5px}
-.navbar .brand{color:#000;font-size:25px;font-weight:800;text-shadow:0 1px 0 rgba(255,255,255,0.1),0 0 30px rgba(255,255,255,0.125);text-transform:uppercase;font-family:"trajan-pro-3";position:relative;top:2px}
+.navbar .brand{color:#000;font-size:25px;font-weight:800;text-shadow:0 1px 0 rgba(255,255,255,0.1),0 0 30px rgba(255,255,255,0.125);text-transform:uppercase;font-family:"trajan-pro-3";position:relative;top:4px}
 .jumbotron{background:url("../images/jumbotron.jpg");background-size:100% 100%;box-shadow:inset 0 3px 7px rgba(0,0,0,0.2),inset 0 -3px 7px rgba(0,0,0,0.2);color:#fff;position:relative;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,0.4),0 0 30px rgba(0,0,0,0.075)}
 .masthead{color:#fff;margin-bottom:0;padding:120px 0 80px}
 .masthead h1{font-family:"trajan-pro-3";font-size:120px;letter-spacing:-2px;line-height:1;text-shadow:0 0 8px rgba(0,0,0,0.5)}

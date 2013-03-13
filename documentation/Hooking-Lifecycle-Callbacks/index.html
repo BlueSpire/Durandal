@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+      <meta name="format-detection" content="telephone=no"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Docs - Hooking Lifecycle Callbacks | Durandal</title>
+        <meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+        <meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
+        <meta name="author" content="EisenbergEffect" />
+        
+        <meta http-equiv="X-Powered-By" content="DocPad"/>
+
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+      <link rel="apple-touch-icon" href="images/icon.png"/>
+
+        <!-- Shims: IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Styles -->
+        <link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+         <script type="text/javascript">
+                if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                    var msViewportStyle = document.createElement("style");
+                    var mq = "@@-ms-viewport{width:auto!important}";
+                    msViewportStyle.appendChild(document.createTextNode(mq));
+                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+                }
+          </script>
+
+          <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+          <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+            <a class="brand" href="/">
+                <span>&nbsp;&nbsp;Durandal</span>
+            </a>
+            <ul class="nav">
+                        
+                            <li typeof="sioc:Page" about="/pages/get-started" class="">
+                                <a href="/pages/get-started" property="dc:title">Get Started</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/docs" class="">
+                                <a href="/pages/docs" property="dc:title">Docs</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/videos" class="">
+                                <a href="/pages/videos" property="dc:title">Videos</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/training" class="">
+                                <a href="/pages/training" property="dc:title">Training</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/support" class="">
+                                <a href="/pages/support" property="dc:title">Support</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/merchandise" class="">
+                                <a href="/pages/merchandise" property="dc:title">Merchandise</a>
+                            </li>
+                        
+                    </ul>
+
+                    <ul class="nav pull-right">
+                        <li>
+                            <a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+
+        <section class="container content docs">
+  <h1>Hooking Lifecycle Callbacks</h1>
+<h4> </h4>
+<blockquote>
+  <strong>Key Points</strong>
+  <ul>
+    <li>The view locator, view model binder, composition engine and activator all look for callbacks related to their individual functions.</li>
+    <li>Composition involves the view locator, the view model binder and it&#39;s own DOM manipulation.</li>
+    <li>Activator callbacks are not executed unless an <a href="/documentation/View-Model.html">activator</a> is present or <code>activate:true</code> is set on the compose binding.</li>
+  </ul>
+</blockquote>
+
+<p>There are various services which play a role in the construction of a screen or of part of a screen. 
+Each of these services looks for callbacks on your objects that pertain to its own unique functionality.
+Below is a list of the services which may be involved and an explanation of the available callbacks in each context.</p>
+<h3>View Locator Callbacks</h3>
+<p>When the composition engine (or you) calls <code>viewLocator.locateViewForObject()</code> it goes through a process of attempting to find the correct view for that object.
+Usually, this is accomplished through convention. But, there is a hook which your object can implement to manually return a view.
+To do so, add a function called <code>getView()</code> to your object. This function can either return a <em>view id</em>, used by the infrastructure to lookup the view, 
+or it can return a DOMElement, allowing your object to manually construct it&#39;s view for absolute control.</p>
+<h3>View Model Binder Callbacks</h3>
+<p>Once a view is obtained, the composition engine will attempt to bind it to the associated object. 
+To do this, it uses the view model binder, which looks for two possible hooks on your object. It calls <code>beforeBind()</code> just before the databinding happens.
+After databinding is complete, it calls <code>afterBind()</code>. In both cases it passes the view as an argument.</p>
+<h3>Composition Callbacks</h3>
+<p>After databinding is complete, the composition module then does its part to compose the bound view into the DOM.
+It may or may not use a transition as part of this process. Either way, once the view is attached to its parent&#39;s DOM node, it will check your object for a <code>viewAttached()</code> callback.
+This will be called with the view as its argument.</p>
+<h3>Activator Callbacks</h3>
+<p>The hooks described above are checked and run as part of every call to <em>compose</em> whether through the API or the binding handler.
+There are another set of hooks cenetered less around the view composition aspects of Durandal and more around screen and component lifecycles.
+These hooks are only checked/run when an <em>activator</em> is present. When is an activator present?</p>
+<ol>
+<li>The Router has an internal activator called &quot;activeItem&quot; which manages the current page.</li>
+<li>You can create an activator yourself at any time by requiring the view model module and calling it&#39;s <em>activator</em> function.
+This returns a computed observable that serves as the activator for your objects.</li>
+<li>When you call <code>app.setRoot</code> an activator is used on your root module.</li>
+<li>If you set <code>activate:true</code> on a <em>compose</em> binding, an activator will be used during composition.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Cases 3 and 4 are a bit different as they only enforce <em>canActivate</em> and <em>activate</em> callbacks; not the deactivation lifecycle.
+To enable that, you must use a full activator yourself (cases 1 or 2).</p>
+</blockquote>
+<h4>Activator Lifecycle</h4>
+<ul>
+<li><strong>canDeactivate</strong> - Before a new screen (or component) is activated, the activator checks its current value.
+If this value has a <code>canDeactivate()</code> hook, then it is called. If this returns false, activation stops.</li>
+<li><strong>canActivate</strong> - Assuming canDeactivate returned true (or isn&#39;t present), the new value will be checked for a <code>canActivate()</code> hook.
+If present, it will be called. If it returns false, activation stops here.</li>
+<li><strong>deactivate</strong> - If the previous value can deactivate and the new value can activate, then will call the previous value&#39;s <code>deactivate()</code> function, if present.</li>
+<li><strong>activate</strong> - Assuming everything has gone well up to this point: if the new value has an <code>activate()</code> function, we call that and the process finishes until a new activation begins.</li>
+</ul>
+<p>You can read much more about this in the <a href="/documentation/View-Model.html">view model module&#39;s docs</a>. Remember that all these hooks can return promises and all of them are optional</p>
+<h3>Full Lifecycle</h3>
+<p>Below is a table which shows the order of callbacks and their sources, assuming all necessary components are involved.</p>
+<table class="table table-bordered">
+  <tr>
+    <th>Callback Name</th>
+    <th>Durandal Source Module</th>
+    <th>Purpose</th>
+  </tr>
+
+  <tr class="success">
+    <td><code>getView()</code></td>
+    <td><a href="/documentation/View-Locator.html">View Locator</a></td>
+    <td>Enables the new object to return a custom view.</td>
+  </tr>
+
+  <tr class="warning">
+    <td><code>canDeactivate()</code></td>
+    <td><a href="/documentation/View-Model.html">View Model</a></td>
+    <td>Allows the previous object to cancel deactivation.</td>
+  </tr>
+
+  <tr class="warning">
+    <td><code>canActivate()</code></td>
+    <td><a href="/documentation/View-Model.html">View Model</a></td>
+    <td>Allows the new object to cancel activation.</td>
+  </tr>
+
+  <tr class="warning">
+    <td><code>deactivate()</code></td>
+    <td><a href="/documentation/View-Model.html">View Model</a></td>
+    <td>Allows the previous object to execute custom deactivation logic.</td>
+  </tr>
+
+  <tr class="warning">
+    <td><code>activate()</code></td>
+    <td><a href="/documentation/View-Model.html">View Model</a></td>
+    <td>Allows the new object to execute custom activation logic.</td>
+  </tr>
+
+  <tr class="success">
+    <td><code>beforeBind()</code></td>
+    <td><a href="/documentation/View-Model-Binder.html">View Model Binder</a></td>
+    <td>Notifies the new object immediately before databinding occurs.</td>
+  </tr>
+
+  <tr class="success">
+    <td><code>afterBind()</code></td>
+    <td><a href="/documentation/View-Model-Binder.html">View Model Binder</a></td>
+    <td>Notifies the new object immediately after databinding occurs.</td>
+  </tr>
+
+  <tr class="success">
+    <td><code>viewAttached()</code></td>
+    <td><a href="/documentation/Composition.html">Composition</a></td>
+    <td>Notifies the new object when its view is attached to its parent DOM node.</td>
+  </tr>
+</table>
+
+<blockquote>
+<p><strong>Remember:</strong> Rows highlighted green will always execute when composing. Those in yellow require the presence of an activator.</p>
+</blockquote>
+
+</section>
+
+        <footer class="footer">
+          <div class="container">
+            <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+            <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
+            <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+          </div>
+        </footer>
+
+        <script src="/vendor/jquery.js"></script>
+        <script src="/vendor/modernizr.js"></script>
+        <script src="/vendor/prettify.js"></script>
+        <script src="/vendor/knockout-2.2.1.js"></script>
+        <script src="/scripts/behavior.js"></script>
+
+        
+
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-38441871-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+    </body>
+</html>
