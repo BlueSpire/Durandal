@@ -90,7 +90,7 @@
   <ul>
     <li>The view locator, view model binder, composition engine and activator all look for callbacks related to their individual functions.</li>
     <li>Composition involves the view locator, the view model binder and it&#39;s own DOM manipulation.</li>
-    <li>Activator callbacks are not executed unless an <a href="/documentation/View-Model.html">activator</a> is present or <code>activate:true</code> is set on the compose binding.</li>
+    <li>Activator callbacks are not executed unless an <a href="/documentation/View-Model">activator</a> is present or <code>activate:true</code> is set on the compose binding.</li>
   </ul>
 </blockquote>
 
@@ -134,7 +134,7 @@ If present, it will be called. If it returns false, activation stops here.</li>
 <li><strong>deactivate</strong> - If the previous value can deactivate and the new value can activate, then will call the previous value&#39;s <code>deactivate()</code> function, if present.</li>
 <li><strong>activate</strong> - Assuming everything has gone well up to this point: if the new value has an <code>activate()</code> function, we call that and the process finishes until a new activation begins.</li>
 </ul>
-<p>You can read much more about this in the <a href="/documentation/View-Model.html">view model module&#39;s docs</a>. Remember that all these hooks can return promises and all of them are optional</p>
+<p>You can read much more about this in the <a href="/documentation/View-Model">view model module&#39;s docs</a>. Remember that all these hooks can return promises and all of them are optional</p>
 <h3>Full Lifecycle</h3>
 <p>Below is a table which shows the order of callbacks and their sources, assuming all necessary components are involved.</p>
 <table class="table table-bordered">

@@ -102,7 +102,7 @@ It&#39;s a simple way to encapsulate view-related code, keeping your normal modu
 This is the most common mechanism for interacting with the DOM in an application, particularly if the logic is reusable.
 For example, it&#39;s common to wrap jQuery plugins inside of a custom binding handler so they can be declaratively applied to any element.
 It&#39;s extremely efficient as well, since the jQuery plugin will gain access to the element it&#39;s declared on and won&#39;t need to execute any selectors.
-Lest you feel that such a mechanism can&#39;t be very powerful, it&#39;s important to note that Durandal&#39;s <a href="/documentation/Composition.html">composition</a> and <a href="/documentation/Widget.html">widget</a> bindings are just custom KO binding handlers.
+Lest you feel that such a mechanism can&#39;t be very powerful, it&#39;s important to note that Durandal&#39;s <a href="/documentation/Composition">composition</a> and <a href="/documentation/Widget">widget</a> bindings are just custom KO binding handlers.
 For information on building your own binding handlers, see <a href="http://knockoutjs.com/documentation/custom-bindings.html">the Knockout documentation on the subject</a>.</p>
 <p>A visit to the KO site or a quick search on github will also help you find many existing community binding handlers which are usable with Durandal.
 A useful example of what can be done is <a href="https://github.com/rniemeyer/knockout-delegatedEvents">knockout-delegatedEvents</a> which makes delegated events bindable, without resorting to manual jQuery code.</p>
@@ -112,9 +112,9 @@ A useful example of what can be done is <a href="https://github.com/rniemeyer/kn
 <p>When the composition engine uses the view locator to find the view for an object, one of the first things the view locator does is check to see if the object has a <code>getView():DOMElement</code> function.
 This function allows the object to manually construct a view, wiring any events and doing whatever it desires before handing it back to the locator.
 This is the earliest event that can be hooked and provides complete control over the view. Usually, conventional location of HTML files is sufficient, but this hook provides a very paowerful alternative.
-See the <a href="/documentation/View-Locator.html">view locator docs</a> for more information.</p>
+See the <a href="/documentation/View-Locator">view locator docs</a> for more information.</p>
 <h4>beforeBind &amp; afterBind</h4>
-<p>When the composition engine takes your view and object, and uses the <a href="/documentation/View-Model-Binder.html">view model binder</a> to bind them together, two other callbacks are executed before and after the binding takes place.
+<p>When the composition engine takes your view and object, and uses the <a href="/documentation/View-Model-Binder">view model binder</a> to bind them together, two other callbacks are executed before and after the binding takes place.
 <code>beforeBind(DOMElement)</code> is called prior to binding and <code>afterBind(DOMElement)</code> is called immeidately after. Each call passes the view to your object.</p>
 <h4>viewAttached</h4>
 <p>Finally, after the composition engine attaches the bound view to its parent in the DOM, the <code>viewAttached(DOMElement)</code> callback is called.
@@ -124,7 +124,7 @@ It&#39;s a perfect time to add additional behavior, execute selectors, etc.</p>
 <p>Widgets also provide a way to encapsulate DOM interactions. A widget is most approriate when you have a combination of view+behavior that you want to reuse.
 In many cases, you may want this re-usable component to be bindable and templatable as well. 
 This shouldn&#39;t be your first choice when just needing to interact with the DOM. But, it&#39;s listed here for completeness.
-You can read more about widgets <a href="/documentation/Creating-A-Widget.html">here</a> and <a href="/documentation/Widget.html">here</a>.</p>
+You can read more about widgets <a href="/documentation/Creating-A-Widget">here</a> and <a href="/documentation/Widget">here</a>.</p>
 
 </section>
 

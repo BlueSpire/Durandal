@@ -107,7 +107,7 @@
 <p>In this tutorial we will learn how to create a very simple widget and explore some of the APIs provided to help in the most common scenarios. Code related to this tutorial can be found in the repo in the appropriate locations as described below. Let&#39;s create a very simple <em>Expander</em> widget.</p>
 <p>In order to leverage Durandal&#39;s default widget support we need to organize our widget code in a particular way. If you don&#39;t already have one, create a directory under the durandal directory of your app called &quot;widgets&quot;. Durandal&#39;s default is to look in this location for all widget implementations. Next, add a subdirectory named &quot;expander&quot;. Again, Durandal expects there to be a folder per widget inside the &quot;widgets&quot; folder. This keeps code nicely organized and predictable. Finally, let&#39;s add two files to the expander folder: controller.js and view.html. These two files will make up your actual implementation.</p>
 <blockquote>
-<p><strong>Note:</strong> Don&#39;t like any of the conventions detailed above? No problem. See the <a href="/documentation/Widget.html">reference documentation</a> on widgets for information on how to change these conventions globally as well as on a per widget basis.</p>
+<p><strong>Note:</strong> Don&#39;t like any of the conventions detailed above? No problem. See the <a href="/documentation/Widget">reference documentation</a> on widgets for information on how to change these conventions globally as well as on a per widget basis.</p>
 </blockquote>
 <p>Your folder structure should now look like this:</p>
 <ul>
@@ -203,7 +203,7 @@
     &lt;/div&gt;
 &lt;/div&gt;</pre>
 <p>We can override any part this way. We simply add child elements to the widget&#39;s element, each with a <em>data-part</em> attribute, referencing the part we wish to override. One final thing to note is that each templated part override&#39;s binding scope is parented to the surrounding view&#39;s scope. This allows a templated part to use $root to access the containing view&#39;s view model.</p>
-<p>For further information on different ways to create or customize widgets, see the <a href="/documentation/Widget.html">reference documentation</a>. You can find a working implementation of the above widget under source. Run it via the widgets sample.</p>
+<p>For further information on different ways to create or customize widgets, see the <a href="/documentation/Widget">reference documentation</a>. You can find a working implementation of the above widget under source. Run it via the widgets sample.</p>
 
 </section>
 

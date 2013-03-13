@@ -110,7 +110,7 @@ This is nothing unique to Durandal, but is provided entirely by the AMD mechanis
 By leveraging object and function modules with declarative module dependencies, you can implement object modularization and composition in a way that will help you to easily solve some very complex problems.</p>
 <h3>Visual Composition</h3>
 <p>Visual compositon allows you to break down your views into re-usable components and to connect them with their composed, object counterparts.
-This functionality is a central and unique feature of Durandal and is provided by the <a href="/documentation/Composition.html">Composition Module</a>.
+This functionality is a central and unique feature of Durandal and is provided by the <a href="/documentation/Composition">Composition Module</a>.
 While you can use the composition module directly to achieve this in code, the most common way of leveraging it will be through the <em>compose binding</em>.
 If you create widgets or use modal dialogs, you will also be leveraging it indirectly. In fact, everything you see presented in the browser&#39;s view is run through Durandal&#39;s composition pipeline.</p>
 <p>Let&#39;s see how composition works, by first looking at app startup. Here&#39;s some code from a stripped down <em>main.js</em> file:</p>
@@ -180,7 +180,7 @@ Well, the compose binding can take an observable, like so:</p>
 </ul>
 <p>The important thing to remember in this case is that this is an <em>observable</em>. So any time your <em>activeScreen</em> property changes, the composition engine will re-compose that part of the DOM.
 This enables extremely powerful dynamic, changing composition of any part of the dom simply through data-binding. 
-There&#39;s lots more the composition engine can do. To dig in deeper have a look at the <a href="/documentation/Composition.html">reference documentation</a> and study the sample and starter kit.</p>
+There&#39;s lots more the composition engine can do. To dig in deeper have a look at the <a href="/documentation/Composition">reference documentation</a> and study the sample and starter kit.</p>
 
 </section>
 

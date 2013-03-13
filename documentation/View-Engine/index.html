@@ -92,11 +92,11 @@
 <ul>
 <li><code>viewExtension</code> - The file extension that view source files are expected to have.</li>
 <li><code>viewPlugin</code> - The name of the RequireJS loader plugin used by the <em>viewLocator</em> to obtain the view source. (Use requirejs to map the plugin&#39;s full path).</li>
-<li><a href="/documentation/Overridable.html">overridable</a> <code>function isViewUrl(potential):bool</code> - Returns true if the potential string is a url for a view, according to the view engine.</li>
-<li><a href="/documentation/Overridable.html">overridable</a> <code>function convertViewUrlToViewId(url):string</code> - Converts a view url into a view id.</li>
-<li><a href="/documentation/Overridable.html">overridable</a> <code>function convertViewIdToRequirePath(viewId):string</code> - Converts a view id into a full RequireJS path.</li>
-<li><a href="/documentation/Overridable.html">overridable</a> <code>function parseMarkup(markup):domElement</code> - Parses some markup and turns it into a dom element.</li>
-<li><a href="/documentation/Overridable.html">overridable</a> <code>function createView(viewId):promise</code> - Returns a promise for a dom element identified by the <em>viewId</em> parameter.</li>
+<li><a href="/documentation/Overridable">overridable</a> <code>function isViewUrl(potential):bool</code> - Returns true if the potential string is a url for a view, according to the view engine.</li>
+<li><a href="/documentation/Overridable">overridable</a> <code>function convertViewUrlToViewId(url):string</code> - Converts a view url into a view id.</li>
+<li><a href="/documentation/Overridable">overridable</a> <code>function convertViewIdToRequirePath(viewId):string</code> - Converts a view id into a full RequireJS path.</li>
+<li><a href="/documentation/Overridable">overridable</a> <code>function parseMarkup(markup):domElement</code> - Parses some markup and turns it into a dom element.</li>
+<li><a href="/documentation/Overridable">overridable</a> <code>function createView(viewId):promise</code> - Returns a promise for a dom element identified by the <em>viewId</em> parameter.</li>
 </ul>
 <blockquote>
 <p><strong>Note:</strong> View engines are expected to be written as RequireJS loader plugins so that the view &quot;compilation&quot; can be done both in the browser at debug time, and as part of the optimization process. To create a custom view engine, you implement it according to RequireJS specifications for a loader plugin, then in your main module you require the <em>viewEngine</em> module and set it&#39;s <em>viewExtension</em> and <em>pluginPath</em> variables to point to your implementation. By default, the <em>text</em> plugin is used to load standard html views.</p>
