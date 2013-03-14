@@ -212,10 +212,10 @@
 <ul>
 <li><p><code>function navigateBack()</code> - Causes the router to move backwards in page history.</p>
 </li>
-<li><p><code>function navigateTo(url [, mode])</code> - Causes the router to navigate to a specific url. If you include the <em>mode</em> value of &#39;skip&#39; then the url history entry will be added, but the route will not be activated. 
-If you include the <em>mode</em> value of &#39;replace&#39; then the url will be replaced and no history or route activation will happen. By default, both history and route activation are processed.</p>
+<li><p><code>function navigateTo(url [, mode])</code> - Causes the router to navigate to a specific url. If you include the <em>mode</em> value of &#39;skip&#39; then a new history entry will be added, but the corresponding route will not be activated. 
+If you include the <em>mode</em> value of &#39;replace&#39; then the current history will be replaced and the route will be activated. By default, a new history entry is added and route activation is processed.</p>
 </li>
-<li><p><code>function replaceLocation(url)</code> - Causes navigation without history tracking. This is just a wrapper for <code>navigateTo(url, &#39;replace&#39;);</code>.</p>
+<li><p><code>function replaceLocation(url)</code> - This is just a wrapper for <code>navigateTo(url, &#39;replace&#39;);</code>.</p>
 </li>
 </ul>
 
