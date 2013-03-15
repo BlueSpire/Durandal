@@ -32,6 +32,7 @@
             } else {
                 var $previousView = $(settings.activeView);
                 var duration = settings.duration || 500;
+                var fadeOnly = !!settings.fadeOnly;
 
                 function startTransition() {
                     scrollIfNeeded();
@@ -46,8 +47,8 @@
                     }
 
                     var startValues = {
-                        marginLeft: '20px',
-                        marginRight: '-20px',
+                        marginLeft: fadeOnly ? '0' : '20px',
+                        marginRight: fadeOnly ? '0' : '-20px',
                         opacity: 0,
                         display: 'block'
                     };
