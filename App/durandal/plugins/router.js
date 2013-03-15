@@ -159,9 +159,11 @@
                 return;
             }
 
+            var routeName = router.convertRouteToName(route);
             routeInfo = {
                 moduleId: router.autoConvertRouteToModuleId(route, params),
-                name: router.convertRouteToName(route)
+                name: routeName,
+                caption: routeName
             };
         }
 
