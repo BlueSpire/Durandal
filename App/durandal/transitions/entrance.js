@@ -32,7 +32,7 @@
             } else {
                 var $previousView = $(settings.activeView);
                 var duration = settings.duration || 500;
-				var fadeOnly = !!settings.fadeOnly;
+                var fadeOnly = !!settings.fadeOnly;
 
                 function startTransition() {
                     scrollIfNeeded();
