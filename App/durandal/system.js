@@ -71,6 +71,10 @@
         } catch(ignore) {}
     };
 
+    var logError = function(error) {
+        throw error;
+    };
+
     system = {
         version:"1.2.0",
         noop: noop,
@@ -110,10 +114,12 @@
                 isDebugging = enable;
                 if (isDebugging) {
                     this.log = log;
+                    this.logError = logError;
                     this.log('Debug mode enabled.');
                 } else {
                     this.log('Debug mode disabled.');
                     this.log = noop;
+                    this.logError = noop;
                 }
             } else {
                 return isDebugging;
@@ -123,6 +129,7 @@
             return toString.call(obj) === '[object Array]';
         },
         log: noop,
+        logError: noop,
         defer: function(action) {
             return $.Deferred(action);
         },
