@@ -111,7 +111,7 @@ A useful example of what can be done is <a href="https://github.com/rniemeyer/kn
 <h4>getView</h4>
 <p>When the composition engine uses the view locator to find the view for an object, one of the first things the view locator does is check to see if the object has a <code>getView():DOMElement</code> function.
 This function allows the object to manually construct a view, wiring any events and doing whatever it desires before handing it back to the locator.
-This is the earliest event that can be hooked and provides complete control over the view. Usually, conventional location of HTML files is sufficient, but this hook provides a very paowerful alternative.
+This is the earliest event that can be hooked and provides complete control over the view. Usually, conventional location of HTML files is sufficient, but this hook provides a very powerful alternative.
 See the <a href="/documentation/View-Locator">view locator docs</a> for more information.</p>
 <h4>beforeBind &amp; afterBind</h4>
 <p>When the composition engine takes your view and object, and uses the <a href="/documentation/View-Model-Binder">view model binder</a> to bind them together, two other callbacks are executed before and after the binding takes place.

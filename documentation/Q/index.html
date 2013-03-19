@@ -107,8 +107,13 @@ To integrate the Q library, follow these steps:</p>
   return deferred;
 };</pre>
 <blockquote>
-<p><strong>Note:</strong> This will not change promises returned from the <em>http module</em> since that uses jQuery&#39;s ajax API directly.
-If you are using the <em>http module</em>, then you may want to consider patching that manually.</p>
+<p><strong>Note:</strong> When working with Breeze or any other library which depends on Q, you should make the above patch.</p>
+<p><strong>Note:</strong> The above patch will not change promises returned from the <em>http module</em> since that uses jQuery&#39;s ajax API directly.
+If you are using the <em>http module</em>, then you may want to consider patching that manually. Something like this:</p>
+<pre class="prettyprint linenums">http.get = function(url, query) {
+  return Q.when($.ajax(url, { data: query }));
+}</pre>
+<p>Essentially, you need to wrap the jQuery ajax calls with a call to Q.when.</p>
 </blockquote>
 
 </section>
