@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Durandal</id>
-        <version>1.0.0</version>
+        <version>1.2.0</version>
         <title>Durandal</title>
         <authors>Rob Eisenberg</authors>
         <owners>EisenbergEffect</owners>
@@ -28,8 +28,8 @@ Features
         <copyright>Copyright (c) 2012 Blue Spire Consulting, Inc.</copyright>
         <tags>JavaScript JS Durandal HTML CSS MVC MVVM MVP Web SPA RIA Knockout RequireJS jQuery</tags>
         <dependencies>
-            <dependency id="knockoutjs" version="2.2.0" />
             <dependency id="jQuery" version="1.6.0" />
+            <dependency id="knockoutjs" version="2.2.1" />
         </dependencies>
     </metadata>
     <files>
@@ -51,5 +51,6 @@ Features
         <file src="content\App\durandal\viewModel.js" target="content\App\durandal\viewModel.js" />
         <file src="content\App\durandal\viewModelBinder.js" target="content\App\durandal\viewModelBinder.js" />
         <file src="content\App\durandal\widget.js" target="content\App\durandal\widget.js" />
+        <file src="content\Content\durandal.css" target="content\Content\durandal.css" />
     </files>
 </package>

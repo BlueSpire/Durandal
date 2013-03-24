@@ -1,6 +1,7 @@
-﻿define(function(require) {
-    var system = require('../system'),
-        viewModel = require('../viewModel');
+﻿define(['../system', '../viewModel', '../app'], function (system, viewModel, app) {
+
+    //NOTE: Sammy.js is not required by the core of Durandal. 
+    //However, this plugin leverages it to enable navigation.
 
     var routesByPath = {},
         allRoutes = ko.observableArray([]),
@@ -13,54 +14,141 @@
         previousModule,
         cancelling = false,
         activeItem = viewModel.activator(),
-        navigationDefaultRoute;
+        activeRoute = ko.observable(),
+        navigationDefaultRoute,
+        queue = [],
+        skipRouteUrl;
 
-    //NOTE: Sammy.js is not required by the core of Durandal. 
-    //However, this plugin leverages it to enable navigation.
+    var tryActivateRouter = function () {
+        tryActivateRouter = system.noop;
+        ready(true);
+        router.dfd.resolve();
+        delete router.dfd;
+    };
 
-    activeItem.settings.areSameItem = function(currentItem, newItem, activationData) {
+    activeItem.settings.areSameItem = function (currentItem, newItem, activationData) {
         return false;
     };
 
-    function activateRoute(routeInfo, params, module, forceStopNavigation) {
-        params.routeInfo = routeInfo;
-        params.router = router;
+    function redirect(url) {
+        isNavigating(false);
+        system.log('Redirecting');
+        router.navigateTo(url);
+    }
 
+    function cancelNavigation() {
+        cancelling = true;
+        system.log('Cancelling Navigation');
+
+        if (previousRoute) {
+            sammy.setLocation(previousRoute);
+        }
+
+        cancelling = false;
+        isNavigating(false);
+
+        var routeAttempted = sammy.last_location[1].split('#/')[1];
+
+        if (previousRoute || !routeAttempted) {
+            tryActivateRouter();
+        } else if (routeAttempted != navigationDefaultRoute) {
+            window.location.replace("#/" + navigationDefaultRoute);
+        } else {
+            tryActivateRouter();
+        }
+    }
+
+    function completeNavigation(routeInfo, params, module) {
+        activeRoute(routeInfo);
+        router.onNavigationComplete(routeInfo, params, module);
+        previousModule = module;
+        previousRoute = sammy.last_location[1].replace('/', '');
+        tryActivateRouter();
+    }
+
+    function activateRoute(routeInfo, params, module) {
         system.log('Activating Route', routeInfo, module, params);
 
-        activeItem.activateItem(module, params).then(function(succeeded) {
+        activeItem.activateItem(module, params).then(function (succeeded) {
             if (succeeded) {
-                document.title = routeInfo.name;
-                previousModule = module;
-                previousRoute = sammy.last_location[1].replace('/', '');
-
-                if (forceStopNavigation) {
-                    isNavigating(false);
-                }
+                completeNavigation(routeInfo, params, module);
             } else {
-                cancelling = true;
-                system.log('Cancelling Navigation');
-                sammy.setLocation(previousRoute);
-                cancelling = false;
-                isNavigating(false);
-            }
-
-            if (router.dfd) {
-                ready(true);
-                router.dfd.resolve();
-
-                delete router.dfd;
+                cancelNavigation();
             }
         });
     }
-    
+
     function shouldStopNavigation() {
         return cancelling || (sammy.last_location[1].replace('/', '') == previousRoute);
     }
 
+    function handleGuardedRoute(routeInfo, params, instance) {
+        var resultOrPromise = router.guardRoute(routeInfo, params, instance);
+        if (resultOrPromise) {
+            if (resultOrPromise.then) {
+                resultOrPromise.then(function(result) {
+                    if (result) {
+                        if (typeof result == 'string') {
+                            redirect(result);
+                        } else {
+                            activateRoute(routeInfo, params, instance);
+                        }
+                    } else {
+                        cancelNavigation();
+                    }
+                });
+            } else {
+                if (typeof resultOrPromise == 'string') {
+                    redirect(resultOrPromise);
+                } else {
+                    activateRoute(routeInfo, params, instance);
+                }
+            }
+        } else {
+            cancelNavigation();
+        }
+    }
+
+    function dequeueRoute() {
+        if (isNavigating()) {
+            return;
+        }
+
+        var next = queue.shift();
+        queue = [];
+
+        if (!next) {
+            return;
+        }
+
+        isNavigating(true);
+
+        system.acquire(next.routeInfo.moduleId).then(function(module) {
+            next.params.routeInfo = next.routeInfo;
+            next.params.router = router;
+
+            var instance = router.getActivatableInstance(next.routeInfo, next.params, module);
+
+            if (router.guardRoute) {
+                handleGuardedRoute(next.routeInfo, next.params, instance);
+            } else {
+                activateRoute(next.routeInfo, next.params, instance);
+            }
+        });
+    }
+
+    function queueRoute(routeInfo, params) {
+        queue.unshift({
+            routeInfo: routeInfo,
+            params: params
+        });
+
+        dequeueRoute();
+    }
+
     function ensureRoute(route, params) {
         var routeInfo = routesByPath[route];
-        
+
         if (shouldStopNavigation()) {
             return;
         }
@@ -71,27 +159,21 @@
                 return;
             }
 
+            var routeName = router.convertRouteToName(route);
             routeInfo = {
                 moduleId: router.autoConvertRouteToModuleId(route, params),
-                name: router.convertRouteToName(route)
+                name: routeName,
+                caption: routeName
             };
         }
-        
-        isNavigating(true);
 
-        system.acquire(routeInfo.moduleId).then(function(module) {
-            if (typeof module == 'function') {
-                activateRoute(routeInfo, params, new module());
-            } else {
-                activateRoute(routeInfo, params, module, previousModule == module);
-            }
-        });
+        queueRoute(routeInfo, params);
     }
 
     function handleDefaultRoute() {
         ensureRoute(navigationDefaultRoute, this.params || {});
     }
-    
+
     function handleMappedRoute() {
         ensureRoute(this.app.last_route.path.toString(), this.params || {});
     }
@@ -105,10 +187,7 @@
             if (fragment.length == 2) {
                 var parts = fragment[1].split('/');
                 route = parts[0];
-                var splat = parts.splice(1);
-                if (splat.length > 0) {
-                    params.splat = splat;
-                }
+                params.splat = parts.splice(1);
                 ensureRoute(route, params);
                 return;
             }
@@ -120,11 +199,11 @@
     function configureRoute(routeInfo) {
         router.prepareRouteInfo(routeInfo);
 
-        routesByPath[routeInfo.url] = routeInfo;
+        routesByPath[routeInfo.url.toString()] = routeInfo;
         allRoutes.push(routeInfo);
 
         if (routeInfo.visible) {
-            routeInfo.isActive = ko.computed(function() {
+            routeInfo.isActive = ko.computed(function () {
                 return ready() && activeItem() && activeItem().__moduleId__ == routeInfo.moduleId;
             });
 
@@ -140,41 +219,78 @@
         visibleRoutes: visibleRoutes,
         isNavigating: isNavigating,
         activeItem: activeItem,
-        afterCompose: function() {
-            isNavigating(false);
+        activeRoute: activeRoute,
+        afterCompose: function () {
+            setTimeout(function () {
+                isNavigating(false);
+                dequeueRoute();
+            }, 10);
+        },
+        getActivatableInstance: function (routeInfo, params, module) {
+            if (typeof module == 'function') {
+                return new module();
+            } else {
+                return module;
+            }
         },
         useConvention: function (rootPath) {
             rootPath = rootPath == null ? 'viewmodels' : rootPath;
-            if (rootPath) rootPath += '/';
-            router.convertRouteToModuleId = function(url) {
+            if (rootPath) {
+                rootPath += '/';
+            }
+            router.convertRouteToModuleId = function (url) {
                 return rootPath + router.stripParameter(url);
             };
         },
-        stripParameter: function(val) {
+        stripParameter: function (val) {
             var colonIndex = val.indexOf(':');
             var length = colonIndex > 0 ? colonIndex - 1 : val.length;
             return val.substring(0, length);
         },
-        handleInvalidRoute: function(route, params) {
+        handleInvalidRoute: function (route, params) {
             system.log('No Route Found', route, params);
         },
-        navigateBack: function() {
+        onNavigationComplete: function (routeInfo, params, module) {
+            if (app.title) {
+                document.title = routeInfo.caption + " | " + app.title;
+            } else {
+                document.title = routeInfo.caption;
+            }
+        },
+        navigateBack: function () {
             window.history.back();
         },
-        navigateTo: function(url) {
-            sammy.setLocation(url);
+        navigateTo: function (url, option) {
+            option = option || 'trigger';
+
+            switch (option.toLowerCase()) {
+                case 'skip':
+                    skipRouteUrl = url;
+                    sammy.setLocation(url);
+                    break;
+                case 'replace':
+                    window.location.replace(url);
+                    break;
+                default:
+                    if (sammy.lookupRoute('get', url)) {
+                        sammy.setLocation(url);
+                    } else {
+                        window.location.href = url;
+                    }
+                    break;
+            }
         },
-        replaceLocation: function(url) {
-            window.location.replace(url);
+        replaceLocation: function (url) {
+            this.navigateTo(url, 'replace');
         },
-        convertRouteToName: function(route) {
+        convertRouteToName: function (route) {
             var value = router.stripParameter(route);
             return value.substring(0, 1).toUpperCase() + value.substring(1);
         },
-        convertRouteToModuleId: function(url) {
-            return router.stripParameter(url);
+        convertRouteToModuleId: function (route) {
+            return router.stripParameter(route);
         },
-        prepareRouteInfo: function(info) {
+        prepareRouteInfo: function (info) {
             if (!(info.url instanceof RegExp)) {
                 info.name = info.name || router.convertRouteToName(info.url);
                 info.moduleId = info.moduleId || router.convertRouteToModuleId(info.url);
@@ -184,47 +300,55 @@
             info.caption = info.caption || info.name;
             info.settings = info.settings || {};
         },
-        mapAuto: function(path) {
+        mapAuto: function (path) {
             path = path || 'viewmodels';
             path += '/';
 
-            router.autoConvertRouteToModuleId = function(url) {
+            router.autoConvertRouteToModuleId = function (url, params) {
                 return path + router.stripParameter(url);
             };
         },
-        mapNav: function(url, moduleId, name) {
-            return this.mapRoute(url, moduleId, name, true);
-        },
-        mapRoute: function(url, moduleId, name, visible) {
-            var routeInfo = {
-                url: url,
-                moduleId: moduleId,
-                name: name,
-                visible: visible
-            };
+        mapNav: function (urlOrConfig, moduleId, name) {
+            if (typeof urlOrConfig == "string") {
+                return this.mapRoute(urlOrConfig, moduleId, name, true);
+            }
 
-            return configureRoute(routeInfo);
+            urlOrConfig.visible = true;
+            return configureRoute(urlOrConfig);
         },
-        map: function(routeOrRouteArray) {
+        mapRoute: function (urlOrConfig, moduleId, name, visible) {
+            if (typeof urlOrConfig == "string") {
+                return configureRoute({
+                    url: urlOrConfig,
+                    moduleId: moduleId,
+                    name: name,
+                    visible: visible
+                });
+            } else {
+                return configureRoute(urlOrConfig);
+            }
+        },
+        map: function (routeOrRouteArray) {
             if (!system.isArray(routeOrRouteArray)) {
-                configureRoute(routeOrRouteArray);
-                return;
+                return configureRoute(routeOrRouteArray);
             }
 
+            var configured = [];
             for (var i = 0; i < routeOrRouteArray.length; i++) {
-                configureRoute(routeOrRouteArray[i]);
+                configured.push(configureRoute(routeOrRouteArray[i]));
             }
+            return configured;
         },
-        activate: function(defaultRoute) {
-            return system.defer(function(dfd) {
+        activate: function (defaultRoute) {
+            return system.defer(function (dfd) {
                 var processedRoute;
-                
+
                 router.dfd = dfd;
                 navigationDefaultRoute = defaultRoute;
 
-                sammy = Sammy(function(route) {
+                sammy = Sammy(function (route) {
                     var unwrapped = allRoutes();
-                    
+
                     for (var i = 0; i < unwrapped.length; i++) {
                         var current = unwrapped[i];
                         route.get(current.url, handleMappedRoute);
@@ -232,21 +356,32 @@
                         routesByPath[processedRoute.path.toString()] = current;
                     }
 
+                    route.get('#/', handleDefaultRoute);
                     route.get(/\#\/(.*)/, handleWildCardRoute);
-                    route.get('', handleDefaultRoute);
                 });
 
-                sammy._checkFormSubmission = function() {
+                sammy._checkFormSubmission = function () {
                     return false;
                 };
 
-                sammy.log = function() {
+                sammy.before(null, function(context) {
+                    if (!skipRouteUrl) {
+                        return true;
+                    } else if (context.path === "/" + skipRouteUrl) {
+                        skipRouteUrl = null;
+                        return false;
+                    } else {
+                        throw new Error("Expected to skip url '" + skipRouteUrl + "', but found url '" + context.path + "'");
+                    }
+                });
+
+                sammy.log = function () {
                     var args = Array.prototype.slice.call(arguments, 0);
                     args.unshift('Sammy');
                     system.log.apply(system, args);
                 };
 
-                sammy.run();
+                sammy.run('#/');
             }).promise();
         }
     };

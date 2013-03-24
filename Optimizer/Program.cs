@@ -13,7 +13,7 @@ namespace Optimizer {
         }
 
         var options = new Options();
-        if(CommandLineParser.Default.ParseArguments(args, options)) {
+        if(Parser.Default.ParseArguments(args, options)) {
 #if DEBUG
         options.Verbose = true;
 #endif
@@ -21,11 +21,9 @@ namespace Optimizer {
           var configBuilder = new RJSConfigBuilder(options);
           var config = configBuilder.Build();
 
-          if(options.Build || options.Generate) {
-            IO.WriteConfiguration(config, options);
-          }
+          IO.WriteConfiguration(config, options);
 
-          if(options.Build && !options.Generate) {
+          if(options.Mode == Options.ModeOptions.Build) {
             var runner = new RJSRunner(config, options);
             runner.Run();
           }

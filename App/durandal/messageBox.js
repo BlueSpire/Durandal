@@ -9,6 +9,14 @@
         this.modal.close(dialogResult);
     };
 
+    MessageBox.prototype.activate = function(config) {
+        if (config) {
+            this.message = config.message;
+            this.title = config.title || MessageBox.defaultTitle;
+            this.options = config.options || MessageBox.defaultOptions;
+        }
+    };
+
     MessageBox.defaultTitle = 'Application';
     MessageBox.defaultOptions = ['Ok'];
 

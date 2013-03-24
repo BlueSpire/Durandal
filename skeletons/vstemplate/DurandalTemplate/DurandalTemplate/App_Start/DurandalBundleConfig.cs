@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Optimization;
 
-namespace DurandalTemplate.App_Start {
+namespace DurandalTemplate {
   public class DurandalBundleConfig {
     public static void RegisterBundles(BundleCollection bundles) {
       bundles.IgnoreList.Clear();
@@ -9,9 +9,9 @@ namespace DurandalTemplate.App_Start {
 
       bundles.Add(
         new ScriptBundle("~/scripts/vendor")
-          .Include("~/Scripts/jquery-1.9.0.min.js")
-          .Include("~/Scripts/knockout-2.2.1.js")
-          .Include("~/Scripts/sammy-0.7.4.min.js")
+          .Include("~/Scripts/jquery-{version}.js")
+          .Include("~/Scripts/knockout-{version}.js")
+          .Include("~/Scripts/sammy-{version}.js")
           .Include("~/Scripts/bootstrap.min.js")
         );
 
@@ -21,6 +21,7 @@ namespace DurandalTemplate.App_Start {
           .Include("~/Content/bootstrap.min.css")
           .Include("~/Content/bootstrap-responsive.min.css")
           .Include("~/Content/font-awesome.min.css")
+          .Include("~/Content/durandal.css")
           .Include("~/Content/app.css")
         );
     }

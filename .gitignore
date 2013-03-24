@@ -29,3 +29,5 @@ MSSCCPRJ.SCC
 Packages/
 *.db
 
+!skeletons/vsix/DurandalMvcSpaTemplateVsix/packages/
+!build.bat

@@ -14,7 +14,6 @@
     "main",
     "durandal/app",
     "durandal/composition",
-    "durandal/dom",
     "durandal/events",
     "durandal/http",
     "text!durandal/messageBox.html",

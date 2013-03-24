@@ -1,5 +1,4 @@
-﻿define(function(require) {
-    var system = require('./system');
+﻿define(['./system'], function (system) {
     var viewModel;
 
     function ensureSettings(settings) {
@@ -30,24 +29,34 @@
         return settings;
     }
 
-    function deactivate(item, close, settings, dfd) {
+    function deactivate(item, close, settings, dfd, setter) {
         if (item && item.deactivate) {
             system.log('Deactivating', item);
 
-            var promise = item.deactivate(close);
+            var result;
+            try {
+                result = item.deactivate(close);
+            } catch(error) {
+                system.log(error);
+                dfd.resolve(false);
+                return;
+            }
 
-            if (promise && promise.then) {
-                promise.then(function() {
-                    settings.afterDeactivate(item, close);
+            if (result && result.then) {
+                result.then(function() {
+                    settings.afterDeactivate(item, close, setter);
                     dfd.resolve(true);
+                }, function(reason) {
+                    system.log(reason);
+                    dfd.resolve(false);
                 });
             } else {
-                settings.afterDeactivate(item, close);
+                settings.afterDeactivate(item, close, setter);
                 dfd.resolve(true);
             }
         } else {
             if (item) {
-                settings.afterDeactivate(item, close);
+                settings.afterDeactivate(item, close, setter);
             }
 
             dfd.resolve(true);
@@ -59,12 +68,22 @@
             if (newItem.activate) {
                 system.log('Activating', newItem);
 
-                var promise = newItem.activate(activationData);
+                var result;
+                try {
+                    result = newItem.activate(activationData);
+                } catch (error) {
+                    system.log(error);
+                    callback(false);
+                    return;
+                }
 
-                if (promise && promise.then) {
-                    promise.then(function() {
+                if (result && result.then) {
+                    result.then(function() {
                         activeItem(newItem);
                         callback(true);
+                    }, function(reason) {
+                        system.log(reason);
+                        callback(false);
                     });
                 } else {
                     activeItem(newItem);
@@ -80,13 +99,23 @@
     }
 
     function canDeactivateItem(item, close, settings) {
-        return system.defer(function(dfd) {
+        return system.defer(function (dfd) {
             if (item && item.canDeactivate) {
-                var resultOrPromise = item.canDeactivate(close);
+                var resultOrPromise;
+                try {
+                    resultOrPromise = item.canDeactivate(close);
+                } catch(error) {
+                    system.log(error);
+                    dfd.resolve(false);
+                    return;
+                }
 
                 if (resultOrPromise.then) {
                     resultOrPromise.then(function(result) {
                         dfd.resolve(settings.interpretResponse(result));
+                    }, function(reason) {
+                        system.log(reason);
+                        dfd.resolve(false);
                     });
                 } else {
                     dfd.resolve(settings.interpretResponse(resultOrPromise));
@@ -98,17 +127,28 @@
     };
 
     function canActivateItem(newItem, activeItem, settings, activationData) {
-        return system.defer(function(dfd) {
+        return system.defer(function (dfd) {
             if (newItem == activeItem()) {
                 dfd.resolve(true);
                 return;
             }
 
             if (newItem && newItem.canActivate) {
-                var resultOrPromise = newItem.canActivate(activationData);
+                var resultOrPromise;
+                try {
+                    resultOrPromise = newItem.canActivate(activationData);
+                } catch (error) {
+                    system.log(error);
+                    dfd.resolve(false);
+                    return;
+                }
+
                 if (resultOrPromise.then) {
                     resultOrPromise.then(function(result) {
                         dfd.resolve(settings.interpretResponse(result));
+                    }, function(reason) {
+                        system.log(reason);
+                        dfd.resolve(false);
                     });
                 } else {
                     dfd.resolve(settings.interpretResponse(resultOrPromise));
@@ -125,44 +165,46 @@
         settings = ensureSettings(settings);
 
         var computed = ko.computed({
-            read: function() {
+            read: function () {
                 return activeItem();
             },
-            write: function(newValue) {
+            write: function (newValue) {
                 computed.viaSetter = true;
                 computed.activateItem(newValue);
             }
         });
 
         computed.settings = settings;
+        settings.activator = computed;
+
         computed.isActivating = ko.observable(false);
 
-        computed.canDeactivateItem = function(item, close) {
+        computed.canDeactivateItem = function (item, close) {
             return canDeactivateItem(item, close, settings);
         };
 
-        computed.deactivateItem = function(item, close) {
+        computed.deactivateItem = function (item, close) {
             return system.defer(function(dfd) {
                 computed.canDeactivateItem(item, close).then(function(canDeactivate) {
                     if (canDeactivate) {
-                        deactivate(item, close, settings, dfd);
+                        deactivate(item, close, settings, dfd, activeItem);
                     } else {
                         computed.notifySubscribers();
                         dfd.resolve(false);
                     }
                 });
-            });
+            }).promise();
         };
 
-        computed.canActivateItem = function(newItem, activationData) {
+        computed.canActivateItem = function (newItem, activationData) {
             return canActivateItem(newItem, activeItem, settings, activationData);
         };
 
-        computed.activateItem = function(newItem, activationData) {
+        computed.activateItem = function (newItem, activationData) {
             var viaSetter = computed.viaSetter;
             computed.viaSetter = false;
 
-            return system.defer(function(dfd) {
+            return system.defer(function (dfd) {
                 if (computed.isActivating()) {
                     dfd.resolve(false);
                     return;
@@ -177,15 +219,15 @@
                     return;
                 }
 
-                computed.canDeactivateItem(currentItem, settings.closeOnDeactivate).then(function(canDeactivate) {
+                computed.canDeactivateItem(currentItem, settings.closeOnDeactivate).then(function (canDeactivate) {
                     if (canDeactivate) {
-                        computed.canActivateItem(newItem, activationData).then(function(canActivate) {
+                        computed.canActivateItem(newItem, activationData).then(function (canActivate) {
                             if (canActivate) {
-                                system.defer(function(dfd2) {
+                                system.defer(function (dfd2) {
                                     deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2);
-                                }).promise().then(function() {
-                                    newItem = settings.beforeActivate(newItem);
-                                    activate(newItem, activeItem, function(result) {
+                                }).promise().then(function () {
+                                    newItem = settings.beforeActivate(newItem, activationData);
+                                    activate(newItem, activeItem, function (result) {
                                         computed.isActivating(false);
                                         dfd.resolve(result);
                                     }, activationData);
@@ -211,7 +253,7 @@
             }).promise();
         };
 
-        computed.canActivate = function() {
+        computed.canActivate = function () {
             var toCheck;
 
             if (initialActiveItem) {
@@ -224,7 +266,7 @@
             return computed.canActivateItem(toCheck);
         };
 
-        computed.activate = function() {
+        computed.activate = function () {
             var toActivate;
 
             if (initialActiveItem) {
@@ -237,28 +279,28 @@
             return computed.activateItem(toActivate);
         };
 
-        computed.canDeactivate = function(close) {
+        computed.canDeactivate = function (close) {
             return computed.canDeactivateItem(computed(), close);
         };
 
-        computed.deactivate = function(close) {
+        computed.deactivate = function (close) {
             return computed.deactivateItem(computed(), close);
         };
 
-        computed.includeIn = function(includeIn) {
-            includeIn.canActivate = function() {
+        computed.includeIn = function (includeIn) {
+            includeIn.canActivate = function () {
                 return computed.canActivate();
             };
 
-            includeIn.activate = function() {
+            includeIn.activate = function () {
                 return computed.activate();
             };
 
-            includeIn.canDeactivate = function(close) {
+            includeIn.canDeactivate = function (close) {
                 return computed.canDeactivate(close);
             };
 
-            includeIn.deactivate = function(close) {
+            includeIn.deactivate = function (close) {
                 return computed.deactivate(close);
             };
         };
@@ -269,10 +311,10 @@
             computed.activate();
         }
 
-        computed.forItems = function(items) {
+        computed.forItems = function (items) {
             settings.closeOnDeactivate = false;
 
-            settings.determineNextItemToActivate = function(list, lastIndex) {
+            settings.determineNextItemToActivate = function (list, lastIndex) {
                 var toRemoveAt = lastIndex - 1;
 
                 if (toRemoveAt == -1 && list.length > 1) {
@@ -286,7 +328,7 @@
                 return null;
             };
 
-            settings.beforeActivate = function(newItem) {
+            settings.beforeActivate = function (newItem) {
                 var currentItem = computed();
 
                 if (!newItem) {
@@ -304,16 +346,16 @@
                 return newItem;
             };
 
-            settings.afterDeactivate = function(oldItem, close) {
+            settings.afterDeactivate = function (oldItem, close) {
                 if (close) {
                     items.remove(oldItem);
                 }
             };
 
             var originalCanDeactivate = computed.canDeactivate;
-            computed.canDeactivate = function(close) {
+            computed.canDeactivate = function (close) {
                 if (close) {
-                    return system.defer(function(dfd) {
+                    return system.defer(function (dfd) {
                         var list = items();
                         var results = [];
 
@@ -329,7 +371,7 @@
                         }
 
                         for (var i = 0; i < list.length; i++) {
-                            computed.canDeactivateItem(list[i], close).then(function(result) {
+                            computed.canDeactivateItem(list[i], close).then(function (result) {
                                 results.push(result);
                                 if (results.length == list.length) {
                                     finish();
@@ -338,20 +380,20 @@
                         }
                     }).promise();
                 } else {
-                    return originalCanDeactivate;
+                    return originalCanDeactivate();
                 }
             };
 
             var originalDeactivate = computed.deactivate;
-            computed.deactivate = function(close) {
+            computed.deactivate = function (close) {
                 if (close) {
-                    return system.defer(function(dfd) {
+                    return system.defer(function (dfd) {
                         var list = items();
                         var results = 0;
                         var listLength = list.length;
 
                         function doDeactivate(item) {
-                            computed.deactivateItem(item, close).then(function() {
+                            computed.deactivateItem(item, close).then(function () {
                                 results++;
                                 items.remove(item);
                                 if (results == listLength) {
@@ -365,7 +407,7 @@
                         }
                     }).promise();
                 } else {
-                    return originalDeactivate;
+                    return originalDeactivate();
                 }
             };
 
@@ -378,7 +420,7 @@
     return viewModel = {
         defaults: {
             closeOnDeactivate: true,
-            interpretResponse: function(value) {
+            interpretResponse: function (value) {
                 if (typeof value == 'string') {
                     var lowered = value.toLowerCase();
                     return lowered == 'yes' || lowered == 'ok';
@@ -386,13 +428,17 @@
 
                 return value;
             },
-            areSameItem: function(currentItem, newItem, activationData) {
+            areSameItem: function (currentItem, newItem, activationData) {
                 return currentItem == newItem;
             },
-            beforeActivate: function(newItem) {
+            beforeActivate: function (newItem) {
                 return newItem;
             },
-            afterDeactivate: function() { }
+            afterDeactivate: function (item, close, setter) {
+                if (close && setter) {
+                    setter(null);
+                }
+            }
         },
         activator: createActivator
     };

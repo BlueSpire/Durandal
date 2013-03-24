@@ -1,6 +1,4 @@
-﻿define(function(require) {
-    var router = require('durandal/plugins/router'),
-        app = require('durandal/app');
+﻿define(['durandal/plugins/router', 'durandal/app'], function (router, app) {
 
     return {
         router: router,

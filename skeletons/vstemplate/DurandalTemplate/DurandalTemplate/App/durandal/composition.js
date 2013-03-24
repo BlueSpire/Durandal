@@ -1,9 +1,5 @@
-﻿define(function (require) {
-    var viewLocator = require('./viewLocator'),
-        viewModelBinder = require('./viewModelBinder'),
-        viewEngine = require('./viewEngine'),
-        system = require('./system'),
-        viewModel = require('./viewModel');
+﻿define(['./viewLocator', './viewModelBinder', './viewEngine', './system', './viewModel'],
+    function (viewLocator, viewModelBinder, viewEngine, system, viewModel) {
 
     var dummyModel = {},
         activeViewAttributeName = 'data-active-view';
@@ -54,8 +50,8 @@
         }
 
         if (newChild) {
-            if (settings.model) {
-                if (settings.model.viewAttached) {
+            if (settings.model && settings.model.viewAttached) {
+                if (settings.composingNewView || settings.alwaysAttachView) {
                     settings.model.viewAttached(newChild);
                 }
             }
@@ -68,6 +64,30 @@
         }
     }
 
+    function shouldTransition(newChild, settings) {
+        if (typeof settings.transition == 'string') {
+            if (settings.activeView) {
+                if (settings.activeView == newChild) {
+                    return false;
+                }
+
+                if (!newChild) {
+                    return true;
+                }
+
+                if (settings.skipTransitionOnSameViewId) {
+                    var currentViewId = settings.activeView.getAttribute('data-view');
+                    var newViewId = newChild.getAttribute('data-view');
+                    return currentViewId != newViewId;
+                }
+            }
+            
+            return true;
+        }
+        
+        return false;
+    }
+
     var composition = {
         activateDuringComposition: false,
         convertTransitionToModuleId: function (name) {
@@ -76,7 +96,7 @@
         switchContent: function (parent, newChild, settings) {
             settings.transition = settings.transition || this.defaultTransitionName;
 
-            if (typeof settings.transition == 'string' && newChild) {
+            if (shouldTransition(newChild, settings)) {
                 var transitionModuleId = this.convertTransitionToModuleId(settings.transition);
                 system.acquire(transitionModuleId).then(function (transition) {
                     settings.transition = transition;
@@ -85,25 +105,27 @@
                     });
                 });
             } else {
-                if (settings.cacheViews && settings.activeView) {
-                    $(settings.activeView).css('display', 'none');
-                }
-
-                if (!newChild) {
-                    if (!settings.cacheViews) {
-                        ko.virtualElements.emptyNode(parent);
+                if (newChild != settings.activeView) {
+                    if (settings.cacheViews && settings.activeView) {
+                        $(settings.activeView).css('display', 'none');
                     }
-                } else {
-                    if (settings.cacheViews) {
-                        if (settings.composingNewView) {
-                            settings.viewElements.push(newChild);
-                            ko.virtualElements.prepend(parent, newChild);
-                        } else {
-                            $(newChild).css('display', '');
+
+                    if (!newChild) {
+                        if (!settings.cacheViews) {
+                            ko.virtualElements.emptyNode(parent);
                         }
                     } else {
-                        ko.virtualElements.emptyNode(parent);
-                        ko.virtualElements.prepend(parent, newChild);
+                        if (settings.cacheViews) {
+                            if (settings.composingNewView) {
+                                settings.viewElements.push(newChild);
+                                ko.virtualElements.prepend(parent, newChild);
+                            } else {
+                                $(newChild).css('display', '');
+                            }
+                        } else {
+                            ko.virtualElements.emptyNode(parent);
+                            ko.virtualElements.prepend(parent, newChild);
+                        }
                     }
                 }
 
@@ -112,7 +134,7 @@
         },
         bindAndShow: function (element, view, settings) {
             if (settings.cacheViews) {
-                settings.composingNewView = (settings.viewElements.indexOf(view) == -1);
+                settings.composingNewView = (ko.utils.arrayIndexOf(settings.viewElements, view) == -1);
             } else {
                 settings.composingNewView = true;
             }
@@ -123,16 +145,21 @@
                 }
 
                 if (settings.preserveContext && settings.bindingContext) {
-                    viewModelBinder.bindContext(settings.bindingContext, view, settings.model);
+                    if (settings.composingNewView) {
+                        viewModelBinder.bindContext(settings.bindingContext, view, settings.model);
+                    }
                 } else if (view) {
                     var modelToBind = settings.model || dummyModel;
                     var currentModel = ko.dataFor(view);
 
                     if (currentModel != modelToBind) {
                         if (!settings.composingNewView) {
-                            console.log('Warning...composing an existing view against a different model may go badly for you.');
+                            $(view).remove();
+                            viewEngine.createView(view.getAttribute('data-view')).then(function(recreatedView) {
+                                composition.bindAndShow(element, recreatedView, settings);
+                            });
+                            return;
                         }
-
                         viewModelBinder.bind(modelToBind, view);
                     }
                 }
@@ -144,8 +171,7 @@
             return viewLocator.locateViewForObject(settings.model, settings.viewElements);
         },
         getSettings: function (valueAccessor, element) {
-            var settings = {},
-                value = ko.utils.unwrapObservable(valueAccessor()) || {};
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
 
             if (typeof value == 'string') {
                 return value;
@@ -159,13 +185,10 @@
             }
 
             for (var attrName in value) {
-                if (typeof attrName == 'string') {
-                    var attrValue = ko.utils.unwrapObservable(value[attrName]);
-                    settings[attrName] = attrValue;
-                }
+                value[attrName] = ko.utils.unwrapObservable(value[attrName]);
             }
 
-            return settings;
+            return value;
         },
         executeStrategy: function (element, settings) {
             settings.strategy(settings).then(function (view) {
@@ -204,7 +227,7 @@
         },
         compose: function (element, settings, bindingContext) {
             if (typeof settings == 'string') {
-                if (settings.indexOf(viewEngine.viewExtension, settings.length - viewEngine.viewExtension.length) !== -1) {
+                if (viewEngine.isViewUrl(settings)) {
                     settings = {
                         view: settings
                     };
@@ -230,14 +253,14 @@
             if (settings.cacheViews && !settings.viewElements) {
                 settings.viewElements = hostState.childElements;
             }
-            
+
             if (!settings.model) {
                 if (!settings.view) {
                     this.bindAndShow(element, null, settings);
                 } else {
                     settings.area = settings.area || 'partial';
                     settings.preserveContext = true;
-                    
+
                     viewLocator.locateView(settings.view, settings.area, settings.viewElements).then(function (view) {
                         composition.bindAndShow(element, view, settings);
                     });

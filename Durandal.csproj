@@ -77,19 +77,22 @@
     <Content Include="App\durandal\transitions\entrance.js" />
     <Content Include="App\samples\eventAggregator\publisher.html" />
     <Content Include="App\samples\eventAggregator\publisher.js" />
-    <Content Include="App\samples\eventAggregator\shell.html" />
-    <Content Include="App\samples\eventAggregator\shell.js" />
+    <Content Include="App\samples\eventAggregator\index.html" />
+    <Content Include="App\samples\eventAggregator\index.js" />
     <Content Include="App\samples\eventAggregator\subscriber.html" />
     <Content Include="App\samples\eventAggregator\subscriber.js" />
     <Content Include="App\samples\modal\customModal.html" />
     <Content Include="App\samples\modal\customModal.js" />
-    <Content Include="App\samples\modal\shell.html" />
-    <Content Include="App\samples\modal\shell.js" />
+    <Content Include="App\samples\modal\index.html" />
+    <Content Include="App\samples\modal\index.js" />
+    <Content Include="App\samples\shell.js" />
+    <Content Include="Changes.txt" />
     <Content Include="Content\app.css" />
     <Content Include="Content\bootstrap-responsive.css" />
     <Content Include="Content\bootstrap-responsive.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\durandal.css" />
     <Content Include="Content\font-awesome-ie7.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
@@ -112,58 +115,58 @@
     <Content Include="App\durandal\viewLocator.js" />
     <Content Include="App\durandal\viewModelBinder.js" />
     <Content Include="App\durandal\widget.js" />
-    <Content Include="App\samples\navigation\views\first.html" />
-    <Content Include="App\samples\navigation\viewmodels\first.js" />
-    <Content Include="App\samples\navigation\views\second.html" />
-    <Content Include="App\samples\navigation\viewmodels\second.js" />
-    <Content Include="App\samples\navigation\shell.html" />
-    <Content Include="App\samples\navigation\shell.js" />
+    <Content Include="App\samples\shell.html" />
     <Content Include="App\durandal\amd\almond-custom.js" />
     <Content Include="App\durandal\amd\require.js" />
     <Content Include="App\durandal\amd\text.js" />
     <Content Include="App\main.js" />
     <Content Include="App\durandal\amd\r.js" />
-    <Content Include="App\samples\hello\shell.html" />
-    <Content Include="App\samples\hello\shell.js" />
+    <Content Include="App\samples\hello\index.html" />
+    <Content Include="App\samples\hello\index.js" />
     <Content Include="App\samples\masterDetail\project.html" />
     <Content Include="App\samples\masterDetail\project.js" />
-    <Content Include="App\samples\masterDetail\shell.html" />
-    <Content Include="App\samples\masterDetail\shell.js" />
+    <Content Include="App\samples\masterDetail\index.html" />
+    <Content Include="App\samples\masterDetail\index.js" />
     <Content Include="App\views\childView1.html" />
     <Content Include="App\views\childView2.html" />
-    <Content Include="App\samples\viewComposition\shell.html" />
-    <Content Include="App\samples\viewComposition\shell.js" />
+    <Content Include="App\samples\viewComposition\index.html" />
+    <Content Include="App\samples\viewComposition\index.js" />
     <Content Include="App\samples\widgets\project.html" />
     <Content Include="App\samples\widgets\project.js" />
-    <Content Include="App\samples\widgets\shell.html" />
-    <Content Include="App\samples\widgets\shell.js" />
+    <Content Include="App\samples\widgets\index.html" />
+    <Content Include="App\samples\widgets\index.js" />
     <Content Include="App\durandal\widgets\expander\view.html" />
     <Content Include="App\durandal\widgets\expander\controller.js" />
     <Content Include="index.html" />
     <Content Include="License.txt" />
     <Content Include="packages.config" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="App\durandal\widgets\Readme.md" />
     <Content Include="Content\font\fontawesome-webfont.woff" />
     <Content Include="Content\font\fontawesome-webfont.ttf" />
     <Content Include="Content\font\fontawesome-webfont.eot" />
     <Content Include="Content\font\FontAwesome.otf" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-1.6-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.6.js" />
-    <Content Include="Scripts\jquery-1.6.min.js" />
-    <Content Include="Scripts\knockout-2.2.0.debug.js" />
-    <Content Include="Scripts\knockout-2.2.0.js" />
-    <Content Include="Scripts\sammy-0.7.2.js" />
-    <Content Include="Scripts\sammy-0.7.2.min.js" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\knockout-2.2.1.debug.js" />
+    <Content Include="Scripts\knockout-2.2.1.js" />
+    <Content Include="Scripts\sammy-0.7.4.js" />
+    <Content Include="Scripts\sammy-0.7.4.min.js" />
     <Content Include="test\spec.js" />
     <Content Include="test\jasmine.console_reporter.js" />
     <Content Include="test\jasmine-1.2.0.js" />
     <Content Include="test\phantomjs.exe" />
     <Content Include="test\spec.html" />
     <Content Include="test\specs\system.spec.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <Content Include="test\README.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <Content Include="test\specs\viewEngine.spec.js" />
+    <Content Include="test\specs\viewModelBinder.spec.js" />
     <Content Include="web.config" />
     <Content Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -210,11 +213,15 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\nuget\Durandal\content\App\durandal\" /s /i /y
+xcopy "$(SolutionDir)Content\durandal.css" "$(SolutionDir)skeletons\nuget\Durandal\content\Content" /s /i /y
+
 xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\nuget\Durandal.Router\content\App\durandal\" /s /i /y
+
 xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\nuget\Durandal.Transitions\content\App\durandal" /s /i /y
 
 xcopy "$(SolutionDir)App\durandal" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\App\durandal\" /s /i /y
-xcopy "$(SolutionDir)Content\images" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\images\" /s /i /y</PostBuildEvent>
+xcopy "$(SolutionDir)Content\images" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\images\" /s /i /y
+xcopy "$(SolutionDir)Content\durandal.css" "$(SolutionDir)skeletons\vstemplate\DurandalTemplate\DurandalTemplate\Content\" /s /i /y</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

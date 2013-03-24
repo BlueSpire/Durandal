@@ -1,4 +1,4 @@
-﻿define(function(require) {
+﻿define(['require'], function (require) {
     var isDebugging = false,
         nativeKeys = Object.keys,
         hasOwnProperty = Object.prototype.hasOwnProperty,
@@ -19,61 +19,91 @@
         }
     }
 
-    requirejs.onResourceLoad = function(context, map, depArray) {
-        var module = context.defined[map.id];
-        if (!module) {
-            return;
-        }
+    // callback for dojo's loader 
+    // note: if you wish to use Durandal with dojo's AMD loader,
+    // currently you must fork the dojo source with the following
+    // dojo/dojo.js, line 1187, the last line of the finishExec() function: 
+    //  (add) signal("moduleLoaded", [module.result, module.mid]);
+    // an enhancement request has been submitted to dojo to make this
+    // a permanent change. To view the status of this request, visit:
+    // http://bugs.dojotoolkit.org/ticket/16727
 
-        if (typeof module == 'function') {
-            module.prototype.__moduleId__ = map.id;
-            return;
-        }
+    if (require.on) {
+        require.on("moduleLoaded", function (module, mid) {
+            system.setModuleId(module, mid);
+        });
+    }
 
-        if (typeof module == 'string') {
-            return;
-        }
-
-        module.__moduleId__ = map.id;
-    };
+    // callback for require.js loader
+    if (typeof requirejs !== 'undefined') {
+        requirejs.onResourceLoad = function (context, map, depArray) {
+            system.setModuleId(context.defined[map.id], map.id);
+        };
+    }
 
     var noop = function() { };
 
     var log = function() {
-        // Modern browsers
-        if (typeof console != 'undefined' && typeof console.log == 'function') {
-            // Opera 11
-            if (window.opera) {
-                var i = 0;
-                while (i < arguments.length) {
-                    console.log('Item ' + (i + 1) + ': ' + arguments[i]);
-                    i++;
+        try {
+            // Modern browsers
+            if (typeof console != 'undefined' && typeof console.log == 'function') {
+                // Opera 11
+                if (window.opera) {
+                    var i = 0;
+                    while (i < arguments.length) {
+                        console.log('Item ' + (i + 1) + ': ' + arguments[i]);
+                        i++;
+                    }
+                }
+                    // All other modern browsers
+                else if ((Array.prototype.slice.call(arguments)).length == 1 && typeof Array.prototype.slice.call(arguments)[0] == 'string') {
+                    console.log((Array.prototype.slice.call(arguments)).toString());
+                } else {
+                    console.log(Array.prototype.slice.call(arguments));
                 }
             }
-            // All other modern browsers
-            else if ((Array.prototype.slice.call(arguments)).length == 1 && typeof Array.prototype.slice.call(arguments)[0] == 'string') {
-                console.log((Array.prototype.slice.call(arguments)).toString());
-            } else {
-                console.log(Array.prototype.slice.call(arguments));
+                // IE8
+            else if ((!Function.prototype.bind || treatAsIE8) && typeof console != 'undefined' && typeof console.log == 'object') {
+                Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
             }
-        }
-        // IE8
-        else if ((!Function.prototype.bind || treatAsIE8) && typeof console != 'undefined' && typeof console.log == 'object') {
-            Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
-        }
-        
-        // IE7 and lower, and other old browsers
+
+            // IE7 and lower, and other old browsers
+        } catch(ignore) {}
     };
 
     system = {
-        version:"1.0.1",
+        version:"1.2.0",
         noop: noop,
         getModuleId: function(obj) {
             if (!obj) {
                 return null;
             }
+            
+            if (typeof obj == 'function') {
+                return obj.prototype.__moduleId__;
+            }
+
+            if (typeof obj == 'string') {
+                return null;
+            }
 
             return obj.__moduleId__;
+        },
+        setModuleId: function (obj, id) {
+            if (!obj) {
+                return;
+            }
+
+            if (typeof obj == 'function') {
+                obj.prototype.__moduleId__ = id;
+                return;
+            }
+
+            if (typeof obj == 'string') {
+                return;
+            }
+
+            obj.__moduleId__ = id;
         },
         debug: function(enable) {
             if (arguments.length == 1) {

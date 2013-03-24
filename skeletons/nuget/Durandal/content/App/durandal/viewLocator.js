@@ -1,6 +1,5 @@
-﻿define(function(require) {
-    var system = require('./system'),
-        viewEngine = require('./viewEngine');
+﻿define(['./system', './viewEngine'],
+    function (system, viewEngine) {
 
     function findInElements(nodes, url) {
         for (var i = 0; i < nodes.length; i++) {
@@ -17,22 +16,26 @@
     }
 
     return {
-        useConvention: function (modulesPath, viewsPath, partialsPath) {
+        useConvention: function(modulesPath, viewsPath, areasPath) {
             modulesPath = modulesPath || 'viewmodels';
             viewsPath = viewsPath || 'views';
-            partialsPath = partialsPath || viewsPath;
-            
+            areasPath = areasPath || viewsPath;
+
             var reg = new RegExp(escape(modulesPath), 'gi');
-            
-            this.convertModuleIdToViewUrl = function(moduleId) {
+
+            this.convertModuleIdToViewId = function (moduleId) {
                 return moduleId.replace(reg, viewsPath);
             };
 
-            this.convertViewUrlToAreaUrl = function(area, viewUrl) {
-                return partialsPath + '/' + viewUrl;
+            this.translateViewIdToArea = function (viewId, area) {
+                if (!area || area == 'partial') {
+                    return areasPath + '/' + viewId;
+                }
+                
+                return areasPath + '/' + area + '/' + viewId;
             };
         },
-        locateViewForObject: function (obj, elementsToSearch) {
+        locateViewForObject: function(obj, elementsToSearch) {
             var view;
 
             if (obj.getView) {
@@ -48,52 +51,52 @@
 
             var id = system.getModuleId(obj);
             if (id) {
-                return this.locateView(this.convertModuleIdToViewUrl(id), null, elementsToSearch);
+                return this.locateView(this.convertModuleIdToViewId(id), null, elementsToSearch);
             }
 
-            return this.locateView(this.determineFallbackViewUrl(obj), null, elementsToSearch);
+            return this.locateView(this.determineFallbackViewId(obj), null, elementsToSearch);
         },
-        convertModuleIdToViewUrl: function(moduleId) {
+        convertModuleIdToViewId: function(moduleId) {
             return moduleId;
         },
-        determineFallbackViewUrl: function(obj) {
+        determineFallbackViewId: function (obj) {
             var funcNameRegex = /function (.{1,})\(/;
             var results = (funcNameRegex).exec((obj).constructor.toString());
             var typeName = (results && results.length > 1) ? results[1] : "";
 
             return 'views/' + typeName;
         },
-        convertViewUrlToAreaUrl: function(area, viewUrl) {
-            return viewUrl;
+        translateViewIdToArea: function (viewId, area) {
+            return viewId;
         },
-        locateView: function(viewOrUrl, area, elementsToSearch) {
-            var that = this;
-            return system.defer(function(dfd) {
-                if (typeof viewOrUrl === 'string') {
-                    if (viewOrUrl.indexOf(viewEngine.viewExtension) != -1) {
-                        viewOrUrl = viewOrUrl.substring(0, viewOrUrl.length - viewEngine.viewExtension.length);
-                    }
+        locateView: function(viewOrUrlOrId, area, elementsToSearch) {
+            if (typeof viewOrUrlOrId === 'string') {
+                var viewId;
 
-                    if (area) {
-                        viewOrUrl = that.convertViewUrlToAreaUrl(area, viewOrUrl);
-                    }
-
-                    if (elementsToSearch) {
-                        var existing = findInElements(elementsToSearch, viewOrUrl);
-                        if (existing) {
-                            dfd.resolve(existing);
-                            return;
-                        }
-                    }
-
-                    var requirePath = viewEngine.pluginPath + '!' + viewOrUrl + viewEngine.viewExtension;
-
-                    system.acquire(requirePath).then(function (result) {
-                        dfd.resolve(viewEngine.createView(viewOrUrl, result));
-                    });
+                if (viewEngine.isViewUrl(viewOrUrlOrId)) {
+                    viewId = viewEngine.convertViewUrlToViewId(viewOrUrlOrId);
                 } else {
-                    dfd.resolve(viewOrUrl);
+                    viewId = viewOrUrlOrId;
                 }
+
+                if (area) {
+                    viewId = this.translateViewIdToArea(viewId, area);
+                }
+
+                if (elementsToSearch) {
+                    var existing = findInElements(elementsToSearch, viewId);
+                    if (existing) {
+                        return system.defer(function(dfd) {
+                            dfd.resolve(existing);
+                        }).promise();
+                    }
+                }
+
+                return viewEngine.createView(viewId);
+            }
+
+            return system.defer(function(dfd) {
+                dfd.resolve(viewOrUrlOrId);
             }).promise();
         }
     };

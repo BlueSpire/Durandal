@@ -2,7 +2,7 @@
     return {
         defaultJSONPCallbackParam:'callback',
         get:function(url, query) {
-            return $.ajax(url, query);
+            return $.ajax(url, { data: query });
         },
         jsonp: function (url, query, callbackParam) {
             if (url.indexOf('=?') == -1) {
@@ -19,17 +19,17 @@
 
             return $.ajax({
                 url: url,
-                dataType: 'jsonp',
+                dataType:'jsonp',
                 data:query
             });
         },
         post:function(url, data) {
             return $.ajax({
-                url:url,
-                data:JSON.stringify(data),
-                type:'POST',
-                contentType:'application/json',
-                dataType:'json'
+                url: url,
+                data: ko.toJSON(data),
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json'
             });
         }
     };

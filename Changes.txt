@@ -1,0 +1,31 @@
+﻿1.2.0
+
+-Fixed bugs in .NET's optimizer. Added a 'loader' options to specify 'almond' or 'require'.
+-Prevent popping when transitioning with the 'entrance' transition.
+-Passing activation data through the puggable beforeActivate function of the activator.
+-Added throwOnErrors to the view model binder. Errors will be thrown instead of logged when true.
+-Major fix in widgets which prevented proper databinding and broken/excessive rendering.
+-Improved settings construction for composition and widget binding handlers.
+-Upped the starting z index for modals to play better with bootstrap.
+-Added beforeBind and afterBind hooks to the view model binder.
+-Fixed the .NET optimizer config file generation for the 'require' loader option.
+-View engine now removes empty text nodes when parsing views.
+-Fixed a bug in the router which cuased non-hashed routes to malfunction.
+-Added a guardRoute hook to the router to allow, deny or redirect based on the route.
+-Fixed bugs in the implementation of app.adaptToDevice
+-Added a missing call to the deferred's promise() function in the view model module which caused issues with Q.
+-Made all the Durandal samples into a single app.
+-Switched Durandal over to dependency array module syntax to enable easier use with other AMD loaders.
+-Added hooks for the Dojo AMD loader.
+-Router navigateTo is only used for defined routes now.
+-Updated the .NET command line parser dependency to the latest version and fixed breaking changes.
+-Enabled modal dialogs to return multiple values to a promise.
+-Implemented route queuing for the router.
+-More unit tests added.
+-Fixed some invalid html generation in the view engine.
+-Styled the widget demo.
+-Fixed transitions so that they run even if there is no new child. 
+-Router now uses route.caption for document title.
+-Router navigateTo now accepts a second parameter of 'skip' to skip the route handler or 'replace' to replace the url.
+-Removed the app module's startup dependency on the message box module.
+-Removed the setView hook that the view model binder called. Replaced it with beforeBind and afterBind hooks.

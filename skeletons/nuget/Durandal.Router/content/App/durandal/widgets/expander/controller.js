@@ -1,6 +1,5 @@
-﻿define(function(require) {
-    var widget = require('durandal/widget');
-
+﻿define(['durandal/widget'], function (widget) {
+    
     var ctor = function(element, settings) {
         this.settings = settings;
     };

@@ -1,5 +1,8 @@
 Welcome to the Durandal project!
 
+[![Build Status](https://travis-ci.org/BlueSpire/Durandal.png?branch=master)](https://travis-ci.org/BlueSpire/Durandal)
+
+
 Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain. We've used it to build apps for PC, Mac, Linux, iOS and Android...and now it's your turn...
 
 ## Features
@@ -18,7 +21,7 @@ Durandal is a cross-device, cross-platform client framework written in JavaScrip
 
 ## Documentation
 
-All the documentation is located in the [wiki](https://github.com/BlueSpire/Durandal/wiki), so have a look there for help on how to get started, read tutorials, view sample descriptions and peruse the module reference docs.
+All the documentation is located on [the official site](http://durandaljs.com/pages/docs), so have a look there for help on how to get started, read tutorials, view sample descriptions and peruse the module reference docs.
 If you want to keep up to date with the activity that is happening on the master branch, you can [subscribe to the commit feed](https://github.com/BlueSpire/durandal/commits/master.atom).
 
 ## Community

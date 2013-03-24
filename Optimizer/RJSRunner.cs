@@ -30,7 +30,7 @@ namespace Optimizer {
         }
       }
 
-      if(options.Almond) {
+      if(options.Loader == Options.LoaderOptions.Almond) {
         if(!File.Exists(config.AlmondPath)) {
           using(var stream = IO.ReadFromResource("almond-custom.js"))
           using(var file = File.OpenWrite(config.AlmondPath)) {

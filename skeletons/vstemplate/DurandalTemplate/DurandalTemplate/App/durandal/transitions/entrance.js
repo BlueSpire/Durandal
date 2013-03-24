@@ -1,5 +1,4 @@
-﻿define(function(require) {
-    var system = require('../system');
+﻿define(['../system'], function(system) {
     var fadeOutDuration = 100;
 
     var entrance = function(parent, newChild, settings) {
@@ -8,11 +7,15 @@
                 dfd.resolve();
             }
 
-            if (!settings.keepScrollPosition) {
-                $(document).scrollTop(0);
+            function scrollIfNeeded() {
+                if (!settings.keepScrollPosition) {
+                    $(document).scrollTop(0);
+                }
             }
 
             if (!newChild) {
+                scrollIfNeeded();
+
                 if (settings.activeView) {
                     $(settings.activeView).fadeOut(fadeOutDuration, function () {
                         if (!settings.cacheViews) {
@@ -29,8 +32,11 @@
             } else {
                 var $previousView = $(settings.activeView);
                 var duration = settings.duration || 500;
+                var fadeOnly = !!settings.fadeOnly;
 
                 function startTransition() {
+                    scrollIfNeeded();
+
                     if (settings.cacheViews) {
                         if (settings.composingNewView) {
                             ko.virtualElements.prepend(parent, newChild);
@@ -41,8 +47,8 @@
                     }
 
                     var startValues = {
-                        marginLeft: '20px',
-                        marginRight: '-20px',
+                        marginLeft: fadeOnly ? '0' : '20px',
+                        marginRight: fadeOnly ? '0' : '-20px',
                         opacity: 0,
                         display: 'block'
                     };
