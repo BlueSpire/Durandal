@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+      <meta name="format-detection" content="telephone=no"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Docs - Router | Durandal</title>
+        <meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+        <meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
+        <meta name="author" content="EisenbergEffect" />
+        
+        <meta http-equiv="X-Powered-By" content="DocPad"/>
+
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+      <link rel="apple-touch-icon" href="images/icon.png"/>
+
+        <!-- Shims: IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Styles -->
+        <link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+         <script type="text/javascript">
+                if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                    var msViewportStyle = document.createElement("style");
+                    var mq = "@@-ms-viewport{width:auto!important}";
+                    msViewportStyle.appendChild(document.createTextNode(mq));
+                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+                }
+          </script>
+
+          <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+          <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+            <a class="brand" href="/">
+                <span>&nbsp;&nbsp;Durandal</span>
+            </a>
+            <ul class="nav">
+                        
+                            <li typeof="sioc:Page" about="/pages/get-started" class="">
+                                <a href="/pages/get-started" property="dc:title">Get Started</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/docs" class="">
+                                <a href="/pages/docs" property="dc:title">Docs</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/videos" class="">
+                                <a href="/pages/videos" property="dc:title">Videos</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/training" class="">
+                                <a href="/pages/training" property="dc:title">Training</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/support" class="">
+                                <a href="/pages/support" property="dc:title">Support</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/merchandise" class="">
+                                <a href="/pages/merchandise" property="dc:title">Merchandise</a>
+                            </li>
+                        
+                    </ul>
+
+                    <ul class="nav pull-right">
+                        <li>
+                            <a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+
+        <section class="container content docs">
+  <h1>Router</h1>
+<h4> </h4>
+<blockquote>
+<p>Durandal provides a router plugin, currently based on <a href="http://sammyjs.org/">SammyJS</a>. The router abstracts away the core configuration of Sammy and re-interprets it in terms of durandal&#39;s composition and activation mechanism. To use the router, you must require it, configure it and bind it in the UI.</p>
+</blockquote>
+<h3>Configuration</h3>
+<p>The router is a singleton module. There is only one per application and it can be thought of as a &quot;front controller&quot; which maps route patterns to modules. Therefore, it is important to configure the routes correctly. There are several ways to do it:</p>
+<blockquote>
+<p><strong>Note:</strong> Regardless of how you map routes (as described below), you must map them from most specific to least specific. If you need your nav order to be different from the order you need to map in, you can add a settings object onto your route info, then create a computed observable against the router&#39;s visibleRoutes collection, which sorts by your custom setting. Bind to that in the UI to create your properly ordered navigation structure.</p>
+</blockquote>
+<h4>mapAuto</h4>
+<p>Once the router is required, you can call <code>router.mapAuto()</code>. This is the most basic configuration option. When you call this function (with no parameters) it tells the router to directly correlate route parameters to module names in the <em>viewmodels</em> folder. For example, a route of <code>#/customers</code> would automatically map to <code>viewmodels/customers</code> Any additional parts of the path are captured as an array and pushed into your module&#39;s <em>activate</em> function (if it has one) as a splat parameter. So, <code>#/customers/1</code> will map to <code>viewmodels/customers</code> and if that module has an <em>activate</em> function, it will be called with the following argument:</p>
+<pre class="prettyprint linenums">{
+    splat:[&#39;1&#39;],
+    routeInfo:{ ...the original route info object... },
+    router:{ ...the router itself... }
+}</pre>
+<p>If you wish to place your auto-mapped modules into a different location, simply specify a path relative to the app root as a parameter to <em>mapAuto</em> like this <code>mapAuto(&#39;controllers&#39;)</code> Now, if we get the route <code>#/customers</code> it will map to <code>controllers/customers</code>.</p>
+<blockquote>
+<p><strong>Note:</strong> <em>mapAuto</em> is useful to get up and going quickly and works well for small applications, especially where there are little to no router parameters. If  you are using parameters frequently, it&#39;s advisable to use one or more map* configuration options below. It&#39;s also important to note that <em>mapAuto</em> can be used in combination with explicitly mapped routes (as described below) so that you can map routes with parameters explicitly and then let everything else fallback to automapping.</p>
+</blockquote>
+<h4>map*</h4>
+<p>Besides <em>mapAuto</em> there are several other APIs which begin with <em>map</em>, here referenced collectively by the term <em>map*</em>. These functions are used to explicitly register routes. Below is a list of these functions along with explanations and examples.</p>
+<ul>
+<li><p><code>function map(routeOrRouteArray) : routeInfo/rounteInfo[]</code> - This function takes an array of <em>routeInfo</em> objects or a single <em>routeInfo</em> object and uses it to configure the router. The finalized <em>routeInfo</em> (or array of infos) is returned.</p>
+</li>
+<li><p><code>function mapRoute(urlOrConfig, moduleId, name, visible) : routeInfo</code> - You can pass a single routeInfo to this function, or you can pass the basic configuration parameters. <em>url</em> is your url pattern, <em>moduleId</em> is the module path this pattern will map to, <em>name</em> is used as the document title and <em>visible</em> determines whether or not to include it in the router&#39;s <em>visibleRoutes</em> array for easy navigation UI binding.</p>
+</li>
+<li><p><code>function mapNav(urlOrConfig, moduleId, name) : routeInfo</code> - Works the same as <em>mapRoute</em> except that routes are automatically added to the <em>visibleRoutes</em> array.</p>
+</li>
+</ul>
+<p>So, what is a <em>routeInfo</em> object? Here&#39;s a json sample to show you:</p>
+<pre class="prettyprint linenums">{
+    url:&#39;url/pattern&#39;, //the only required parameter,
+    name: &#39;Used For Title&#39;, //if not supplied, router.convertRouteToName derives it
+    moduleId: &#39;module/path&#39;, //if not supplied, router.convertRouteToModuleId derives it
+    caption: &#39;Optional Caption&#39;, //derived from name if not present
+    settings: {}, //your custom info, set to empty object if not provided
+}</pre>
+<p>As you can see, the only required parameter is <em>url</em> the rest can be derived. The derivation happens by stripping parameters from the url and casing where appropriate. So a call to <code>mapNav(&#39;flickr&#39;)</code> will result in:</p>
+<pre class="prettyprint linenums">{
+    url:&#39;flickr&#39;, //you provided this
+    name: &#39;Flickr&#39;, //derived
+    moduleId: &#39;flickr&#39;, //derived
+    caption: &#39;Flickr&#39;, //derived (uses to set the document title)
+    settings: {}, //default,
+    hash: &#39;#/flickr&#39;, //calculated
+    visible: true, //from calling mapNav instead of mapRoute
+    isActive: ko.computed //only present on visible routes to track if they are active in the nav
+}</pre>
+<p>You can always explicitly provide url, name, moduleId, caption, settings, hash and visible. In 99% of situations, you should not need to provide hash; it&#39;s just there to simplify databinding for you. Most of the time you may want to teach the router how to properly derive the moduleId and name based on a url. If you want to do that, overwrite <code>function convertRouteToName(url):name</code> and/or <code>function convertRouteToModuleId(url):moduleId</code>.</p>
+<p>For information on route url patterns, see the <a href="http://sammyjs.org/">SammyJS documentation</a>. But basically, you can have simple routes <code>my/route/</code>, parameterized routes <code>customers/:id</code> or Regex routes. If you have a parameter in your route, then the activation data passed to your module&#39;s activate function will have a property for every parameter in the route (rather than the splat array, which is only present for automapped routes).</p>
+<h3>Activation</h3>
+<p>After you&#39;ve configured the router, you need to activate it. This is usually done in your shell. Here&#39;s what your shell might look like:</p>
+<pre class="prettyprint linenums">define(function(require) {
+    var router = require(&#39;durandal/plugins/router&#39;);
+
+    return {
+        router: router,
+        activate: function() {
+            router.mapAuto();
+            return router.activate(&#39;first&#39;);
+        }
+    };
+});</pre>
+<p>As you can see, the shell configures the route with the most basic configuration by using mapAuto. It then calls the router&#39;s <em>activate</em> function, passing in the default route. The activate function of the router returns a promise that resolves when the router is ready to start. To use the router, you should add an activate function to your shell and return the result from that. The application startup infrastructure of Durandal will detect your shell&#39;s activate function and call it at the appropriate time, waiting for it&#39;s promise to resolve. This allows Durandal to properly orchestrate the timing of composition and databinding along with animations and splash screen display. </p>
+<h3>Binding</h3>
+<p>Once you&#39;ve configured and activated your router, you won&#39;t be able to see the effects of page navigation, unless you have properly bound it to your shell&#39;s view. The router exposes a number of observable properties which are useful for binding:</p>
+<ul>
+<li><code>allRoutes</code> - An observable array containing all route info objects.</li>
+<li><code>visibleRoutes</code> - An observable array containing route info objects configured with <code>visible:true</code> (or by calling the <code>mapNav</code> function).</li>
+<li><code>isNavigating</code> - An observable boolean which is true while navigation is in process; false otherwise.</li>
+<li><code>activeItem</code> - An observable whose value is the currently active item/module/page.</li>
+</ul>
+<p>Additionally, each <em>routeInfo</em> in the <em>visibleRoutes</em> array has an <em>isActive</em> observable which indicates whether the module associated with that route is currently active.</p>
+<p>Here&#39;s an example of how you might use a number of those properties to create your shell&#39;s view:</p>
+<pre class="prettyprint linenums">&lt;div&gt;
+    &lt;div class=&quot;navbar navbar-fixed-top&quot;&gt;
+        &lt;div class=&quot;navbar-inner&quot;&gt;
+            &lt;a class=&quot;brand&quot; data-bind=&quot;attr: { href: router.visibleRoutes()[0].hash }&quot;&gt;
+                &lt;i class=&quot;icon-home&quot;&gt;&lt;/i&gt;
+                &lt;span&gt;Durandal&lt;/span&gt;
+            &lt;/a&gt;
+            &lt;ul class=&quot;nav&quot; data-bind=&quot;foreach: router.visibleRoutes&quot;&gt;
+                &lt;li data-bind=&quot;css: { active: isActive }&quot;&gt;
+                    &lt;a data-bind=&quot;attr: { href: hash }, html: name&quot;&gt;&lt;/a&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;div class=&quot;loader pull-right&quot; data-bind=&quot;css: { active: router.isNavigating }&quot;&gt;
+                &lt;i class=&quot;icon-spinner icon-2x icon-spin&quot;&gt;&lt;/i&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;container-fluid page-host&quot;&gt;
+        &lt;!--ko compose: { 
+            model: router.activeItem,
+            afterCompose: router.afterCompose
+        }--&gt;&lt;!--/ko--&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+<p>This example is taken from the starter template and shows how a full navigation bar, including active highlighting and loading spinner can be created by binding to the router. The most important part to observe is how the <em>compose</em> binding is set up. You must wire both the <em>model</em> and the <em>afterCompose</em> callback to the router in order for everything to work properly.</p>
+<h3>Customization</h3>
+<p>We&#39;ve already seen a couple ways to customize the router, but there are a few more:</p>
+<ul>
+<li><p><code>function useConvention(rootPath)</code> - As mentioned above, if you configure a route with only the url, the router can try to determine the moduleId. It does this my simply stripping out any parameters which may be a part of the url pattern. However, a common convention is to have all page view models in a particular path. You can establish that convention by calling this function. If you pass no <em>rootPath</em> then it will be <em>viewmodels</em>. As an example, without calling <em>useConvention</em> a call to <code>mapRoute(&#39;myPage/:id&#39;)</code> will yield a moduleId of &#39;myPage&#39;. But if you call <code>useConvention(&#39;pages&#39;)</code> before you do your mapping, then the same call to <em>mapRoute</em> will result in a moduleId of &#39;pages/myPage&#39;.</p>
+</li>
+<li><p><a href="/documentation/Overridable">overridable</a> <code>function handleInvalidRoute(route, params)</code> - This is called any time the router cannot locate an appropriate route based on the url. The default implementation logs the information. You can override this function to handle this scenario in your own way.</p>
+</li>
+<li><p><a href="/documentation/Overridable">overridable</a> <code>function onNavigationComplete(routeInfo, params, module)</code> - When the router successfully completes a navigation to a screen, this function is called. The default implementation uses the <em>routeInfo</em> to set the document&#39;s title. You can override this function to set the title yourself or to add any code you wish to execute when a navigation completes.</p>
+</li>
+<li><p><a href="/documentation/Overridable">overridable</a> <code>function convertRouteToName(route):string</code> - Takes a route in and returns a calculated name.</p>
+</li>
+<li><p><a href="/documentation/Overridable">overridable</a> <code>function convertRouteToModuleId(route):string</code> - Takes a route in and returns a calculated moduleId. Simple transformations of this can be done via the <em>useConvention</em> function above. For more advanced transformations, you can override this function.</p>
+</li>
+<li><p><a href="/documentation/Overridable">overridable</a> <code>function prepareRouteInfo(info)</code> - This should not normally be overwritten. But advanced users can override this to completely transform the developer&#39;s routeInfo input into the final version used to configure the router.</p>
+</li>
+<li><p><a href="/documentation/Overridable">overridable</a> <code>function autoConvertRouteToModuleId(route, params)</code> - This can be overwritten to provide your own convention for automatically converting routes to module ids.</p>
+</li>
+<li><p><a href="/documentation/Overridable">overridable</a> <code>function getActivatableInstance(routeInfo, params, module) : object</code> - Translates the module into the object instance that should be activated by the router. The default implementation returns the module if it is an object or uses new to invoke it if it is a function, returning the result.</p>
+</li>
+<li><p><a href="/documentation/Overridable">overridable</a> <code>function guardRoute(routeInfo, params, instance) : object</code> - Before any route is activated, the <em>guardRoute</em> funtion is called. You can plug into this function to add custom logic to allow, deny or redirect based on the requested route. To allow, return <em>true</em>. To deny, return <em>false</em>. To redirect, return a string with the hash or url. You may also return a promise for any of these values.</p>
+</li>
+</ul>
+<h3>Other APIs</h3>
+<p>In addition to configuration, binding and customization, there are some basic APIs you may find useful in your application:</p>
+<ul>
+<li><p><code>function navigateBack()</code> - Causes the router to move backwards in page history.</p>
+</li>
+<li><p><code>function navigateTo(url [, mode])</code> - Causes the router to navigate to a specific url. If you include the <em>mode</em> value of &#39;skip&#39; then a new history entry will be added, but the corresponding route will not be activated. 
+If you include the <em>mode</em> value of &#39;replace&#39; then the current history will be replaced and the route will be activated. By default, a new history entry is added and route activation is processed.</p>
+</li>
+<li><p><code>function replaceLocation(url)</code> - This is just a wrapper for <code>navigateTo(url, &#39;replace&#39;);</code>.</p>
+</li>
+</ul>
+
+</section>
+
+        <footer class="footer">
+          <div class="container">
+            <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+            <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
+            <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+          </div>
+        </footer>
+
+        <script src="/vendor/jquery.js"></script>
+        <script src="/vendor/modernizr.js"></script>
+        <script src="/vendor/prettify.js"></script>
+        <script src="/vendor/knockout-2.2.1.js"></script>
+        <script src="/scripts/behavior.js"></script>
+
+        
+
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-38441871-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+      <meta name="format-detection" content="telephone=no"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Docs - Widget Reference | Durandal</title>
+        <meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+        <meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
+        <meta name="author" content="EisenbergEffect" />
+        
+        <meta http-equiv="X-Powered-By" content="DocPad"/>
+
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+      <link rel="apple-touch-icon" href="images/icon.png"/>
+
+        <!-- Shims: IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Styles -->
+        <link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+         <script type="text/javascript">
+                if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                    var msViewportStyle = document.createElement("style");
+                    var mq = "@@-ms-viewport{width:auto!important}";
+                    msViewportStyle.appendChild(document.createTextNode(mq));
+                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+                }
+          </script>
+
+          <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+          <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+            <a class="brand" href="/">
+                <span>&nbsp;&nbsp;Durandal</span>
+            </a>
+            <ul class="nav">
+                        
+                            <li typeof="sioc:Page" about="/pages/get-started" class="">
+                                <a href="/pages/get-started" property="dc:title">Get Started</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/docs" class="">
+                                <a href="/pages/docs" property="dc:title">Docs</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/videos" class="">
+                                <a href="/pages/videos" property="dc:title">Videos</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/training" class="">
+                                <a href="/pages/training" property="dc:title">Training</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/support" class="">
+                                <a href="/pages/support" property="dc:title">Support</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/merchandise" class="">
+                                <a href="/pages/merchandise" property="dc:title">Merchandise</a>
+                            </li>
+                        
+                    </ul>
+
+                    <ul class="nav pull-right">
+                        <li>
+                            <a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+
+        <section class="container content docs">
+  <h1>Widget</h1>
+<h4> </h4>
+<blockquote>
+<p>The widget module encapsulates the functionality which enables bindable, skinnable and templatable widgets. It&#39;s capabilities are normally leveraged via the knockout widget binding. </p>
+</blockquote>
+<p>There are some APIs which are worth mentioning independent of creating and binding:</p>
+<ul>
+<li><p><code>function create(element, settings [, bindingContext])</code> - Use this function to create a widget through code. The <em>element</em> should reference a dom element that the widget will be created on. The <em>settings</em> can be either a string or an object. If it&#39;s a string, it should specify the widget kind. If it&#39;s an object, it represents settings that will be passed along to the widget. This object should have a <em>kind</em> property used to identify the widget kind to create. Optionally, you can specify a <em>bindingContext</em> of which you want the widget&#39;s binding context to be created as a child.</p>
+</li>
+<li><p><code>function registerKind(kind)</code> - By default, you can create widgets in html by using the <em>widget</em> binding extension. Calling <em>registerKind</em> allows you to easily create a custom binding handler for your widget kind. Without calling <em>registerKind</em> you might declare a widget binding for an expander control with <code>data-bind=&quot;widget:{kind:&#39;expander&#39;, items: myItems}&quot;</code> But if you make the following call <code>widget.registerKind(&#39;expander&#39;)</code> then you can write the binding expression as <code>data-bind=&quot;expander:{items: myItems}&quot;</code></p>
+</li>
+<li><p><code>function mapKind(kind [, viewId, moduleId])</code> - Use this to re-map a widget kind identifier to a new viewId or moduleId representing the &#39;skin&#39; and &#39;behavior&#39; respectively.</p>
+</li>
+<li><p><code>function getParts(elements) : object</code> - Developers implementing widgets may wish to use this function to acquire the resolved template parts for a widget. Pass a single dom element or an array of elements and get back an object keyed by part name whose values are the dom elements corresponding to each part in that scope.</p>
+</li>
+</ul>
+<p>The widget module follows a very simple convention for mapping widget kinds to modules and views. It assumes the presence of a widgets folder at the root of your project and that there is a single folder per widget, named according to the kind. Inside that folder, it assumes the presence of a controller.js module that should be bound to a view.html file. The widget module allows you to easily change this convention, by replacing any of two functions that control this behavior:</p>
+<ul>
+<li><p><a href="/documentation/Overridable">overridable</a> <code>function convertKindToModuleId(kind) : string</code> - Replace this to re-interpret the kind id as a module path. By default it does a lookup for any custom maps added through <em>mapKind</em> and then falls back to the path <code>&quot;durandal/widgets/{kind}/controller&quot;</code>.</p>
+</li>
+<li><p><a href="/documentation/Overridable">overridable</a> <code>function convertKindToViewId(kind) : string</code> - Replace this to re-interpret the kind id as a view id. The default does a lookup for any custom maps added through <em>mapKind</em> and then falls back to the path <code>&quot;durandal/widgets/{kind}/view&quot;</code>.</p>
+</li>
+</ul>
+
+</section>
+
+        <footer class="footer">
+          <div class="container">
+            <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+            <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
+            <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+          </div>
+        </footer>
+
+        <script src="/vendor/jquery.js"></script>
+        <script src="/vendor/modernizr.js"></script>
+        <script src="/vendor/prettify.js"></script>
+        <script src="/vendor/knockout-2.2.1.js"></script>
+        <script src="/scripts/behavior.js"></script>
+
+        
+
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-38441871-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+      <meta name="format-detection" content="telephone=no"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Docs - KendoUI | Durandal</title>
+        <meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+        <meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
+        <meta name="author" content="EisenbergEffect" />
+        
+        <meta http-equiv="X-Powered-By" content="DocPad"/>
+
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+      <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+      <link rel="apple-touch-icon" href="images/icon.png"/>
+
+        <!-- Shims: IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Styles -->
+        <link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+         <script type="text/javascript">
+                if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                    var msViewportStyle = document.createElement("style");
+                    var mq = "@@-ms-viewport{width:auto!important}";
+                    msViewportStyle.appendChild(document.createTextNode(mq));
+                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+                }
+          </script>
+
+          <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+          <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+            <a class="brand" href="/">
+                <span>&nbsp;&nbsp;Durandal</span>
+            </a>
+            <ul class="nav">
+                        
+                            <li typeof="sioc:Page" about="/pages/get-started" class="">
+                                <a href="/pages/get-started" property="dc:title">Get Started</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/docs" class="">
+                                <a href="/pages/docs" property="dc:title">Docs</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/videos" class="">
+                                <a href="/pages/videos" property="dc:title">Videos</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/training" class="">
+                                <a href="/pages/training" property="dc:title">Training</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/support" class="">
+                                <a href="/pages/support" property="dc:title">Support</a>
+                            </li>
+                        
+                            <li typeof="sioc:Page" about="/pages/merchandise" class="">
+                                <a href="/pages/merchandise" property="dc:title">Merchandise</a>
+                            </li>
+                        
+                    </ul>
+
+                    <ul class="nav pull-right">
+                        <li>
+                            <a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+
+        <section class="container content docs">
+  <h1>KendoUI</h1>
+<h4> </h4>
+<p>Here&#39;s how <a href="http://www.kendoui.com/">KendoUI</a> describes itself:</p>
+<blockquote>
+<p>Kendo UI is everything professional developers need to build HTML5 sites and mobile apps. Today, productivity of an average HTML/jQuery developer is hampered by assembling a Frankenstein framework of disparate JavaScript libraries 
+and plug-ins. Kendo UI has it all: rich jQuery-based widgets, a simple and consistent programming interface, a rock-solid DataSource, validation, internationalization, a MVVM framework, themes, templates and the list goes on.</p>
+</blockquote>
+<p>Since KenoUI has its own databinding framework, we need to do a little configuration to enable it to integrate into Durandal as well as Knockout does.
+Here&#39;s what you need to do:</p>
+<ol>
+<li><p>In your main.js, before calling <em>setRoot</em>, add this line of code: </p>
+<pre class="prettyprint linenums">kendo.ns = &quot;kendo-&quot;;</pre>
+<p>Doing this will allow Knockout to distinguish its bindings as <code>data-bind</code> and KendoUI to distinguish its bindings as <code>data-kendo-bind</code>.</p>
+</li>
+<li><p>Immediately after that, add the following configuration for the view model binder:</p>
+<pre class="prettyprint linenums">viewModelBinder.beforeBind = function (obj, view) {
+  kendo.bind(view, obj.viewModel || obj);
+};</pre>
+<p>This bit of code automatically applies KenoUI bindings any time Durandal&#39;s binder is called.</p>
+</li>
+</ol>
+
+</section>
+
+        <footer class="footer">
+          <div class="container">
+            <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+            <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
+            <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+          </div>
+        </footer>
+
+        <script src="/vendor/jquery.js"></script>
+        <script src="/vendor/modernizr.js"></script>
+        <script src="/vendor/prettify.js"></script>
+        <script src="/vendor/knockout-2.2.1.js"></script>
+        <script src="/scripts/behavior.js"></script>
+
+        
+
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-38441871-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+    </body>
+</html>
