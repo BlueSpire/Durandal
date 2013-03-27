@@ -122,6 +122,10 @@
         isArray: function(obj) {
             return toString.call(obj) === '[object Array]';
         },
+        isFunction: function(obj) {
+            var getType = {};
+            return obj && getType.toString.call(obj) === '[object Function]';
+        },
         log: noop,
         defer: function(action) {
             return $.Deferred(action);

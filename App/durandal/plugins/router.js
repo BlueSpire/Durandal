@@ -17,7 +17,8 @@
         activeRoute = ko.observable(),
         navigationDefaultRoute,
         queue = [],
-        skipRouteUrl;
+        skipRouteUrl,
+        captionSubscription;
 
     var tryActivateRouter = function () {
         tryActivateRouter = system.noop;
@@ -213,6 +214,14 @@
         return routeInfo;
     }
 
+    function updateTitle(caption) {
+        if (app.title) {
+            document.title = caption + " | " + app.title;
+        } else {
+            document.title = caption;
+        }
+    }
+
     return router = {
         ready: ready,
         allRoutes: allRoutes,
@@ -251,11 +260,9 @@
             system.log('No Route Found', route, params);
         },
         onNavigationComplete: function (routeInfo, params, module) {
-            if (app.title) {
-                document.title = routeInfo.caption + " | " + app.title;
-            } else {
-                document.title = routeInfo.caption;
-            }
+            captionSubscription && captionSubscription.dispose();
+            captionSubscription = routeInfo.caption.subscribe(updateTitle);
+            updateTitle(routeInfo.caption());
         },
         navigateBack: function () {
             window.history.back();
@@ -297,7 +304,9 @@
                 info.hash = info.hash || '#/' + info.url;
             }
 
-            info.caption = info.caption || info.name;
+            var caption = info.caption || info.name;
+
+            info.caption = ko.computed(system.isFunction(caption) ? caption : function() { return caption; });
             info.settings = info.settings || {};
         },
         mapAuto: function (path) {
