@@ -114,12 +114,12 @@
                 isDebugging = enable;
                 if (isDebugging) {
                     this.log = log;
-                    this.logError = logError;
+                    this.error = logError;
                     this.log('Debug mode enabled.');
                 } else {
                     this.log('Debug mode disabled.');
                     this.log = noop;
-                    this.logError = noop;
+                    this.error = noop;
                 }
             } else {
                 return isDebugging;
@@ -129,7 +129,7 @@
             return toString.call(obj) === '[object Array]';
         },
         log: noop,
-        logError: noop,
+        error: noop,
         defer: function(action) {
             return $.Deferred(action);
         },

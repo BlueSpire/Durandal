@@ -371,7 +371,7 @@
                         skipRouteUrl = null;
                         return false;
                     } else {
-                        throw new Error("Expected to skip url '" + skipRouteUrl + "', but found url '" + context.path + "'");
+                        system.error(new Error("Expected to skip url '" + skipRouteUrl + "', but found url '" + context.path + "'"));
                     }
                 });
 

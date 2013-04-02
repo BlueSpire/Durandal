@@ -37,7 +37,7 @@
             try {
                 result = item.deactivate(close);
             } catch(error) {
-                system.log(error);
+                system.error(error);
                 dfd.resolve(false);
                 return;
             }
@@ -72,7 +72,7 @@
                 try {
                     result = newItem.activate(activationData);
                 } catch (error) {
-                    system.log(error);
+                    system.error(error);
                     callback(false);
                     return;
                 }
@@ -105,7 +105,7 @@
                 try {
                     resultOrPromise = item.canDeactivate(close);
                 } catch(error) {
-                    system.log(error);
+                    system.error(error);
                     dfd.resolve(false);
                     return;
                 }
@@ -138,7 +138,7 @@
                 try {
                     resultOrPromise = newItem.canActivate(activationData);
                 } catch (error) {
-                    system.log(error);
+                    system.error(error);
                     dfd.resolve(false);
                     return;
                 }

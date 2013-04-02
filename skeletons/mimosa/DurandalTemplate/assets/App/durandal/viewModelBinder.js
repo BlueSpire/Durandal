@@ -6,7 +6,7 @@
     function doBind(obj, view, action) {
         if (!view || !obj) {
             if (viewModelBinder.throwOnErrors) {
-                throw new Error(insufficientInfoMessage);
+                system.error(new Error(insufficientInfoMessage));
             } else {
                 system.log(insufficientInfoMessage, view, obj);
             }
@@ -15,7 +15,7 @@
 
         if (!view.getAttribute) {
             if (viewModelBinder.throwOnErrors) {
-                throw new Error(unexpectedViewMessage);
+                system.error(new Error(unexpectedViewMessage));
             } else {
                 system.log(unexpectedViewMessage, view, obj);
             }
@@ -32,7 +32,7 @@
             viewModelBinder.afterBind(obj, view);
         } catch (e) {
             if (viewModelBinder.throwOnErrors) {
-                throw new Error(e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(obj));
+                system.error(new Error(e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(obj)));
             } else {
                 system.log(e.message, viewName, obj);
             }
