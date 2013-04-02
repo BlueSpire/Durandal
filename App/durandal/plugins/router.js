@@ -224,6 +224,7 @@
             setTimeout(function () {
                 isNavigating(false);
                 dequeueRoute();
+                router.onRouteComposed && router.onRouteComposed(router.activeRoute());
             }, 10);
         },
         getActivatableInstance: function (routeInfo, params, module) {
