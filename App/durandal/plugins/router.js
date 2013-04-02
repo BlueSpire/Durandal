@@ -280,6 +280,32 @@
                     break;
             }
         },
+        navigateToRoute: function (url, data) {
+
+            var newUrl = url;
+            // find the hash using the url with parameters stripped 
+            for (var route in routesByPath) {
+                if (router.stripParameter(routesByPath[route].url) == url) {
+                    newUrl = routesByPath[route].hash;
+                    break;
+                }
+            }
+
+            // if this is an url with parameters, add data.property for these parameters to the url
+            var colonIndex = newUrl.indexOf(':');
+            if (colonIndex > 0) {
+                var paramstring = newUrl.substring(colonIndex - 1, newUrl.length);
+                var params = paramstring.split('/:');
+                newUrl = router.stripParameter(newUrl);
+                for (var i = 0; i < params.length; i++) {
+                    if (params[i]) {
+                        newUrl += '/' + data[params[i]];
+                    }
+                }
+            }
+
+            sammy.setLocation(newUrl);
+        },
         replaceLocation: function (url) {
             this.navigateTo(url, 'replace');
         },
