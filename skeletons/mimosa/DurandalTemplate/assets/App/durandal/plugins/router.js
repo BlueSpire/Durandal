@@ -272,7 +272,7 @@
                     window.location.replace(url);
                     break;
                 default:
-                    if (sammy.lookupRoute('get', url)) {
+                    if (sammy.lookupRoute('get', url) && url.indexOf("http") !== 0) {
                         sammy.setLocation(url);
                     } else {
                         window.location.href = url;
