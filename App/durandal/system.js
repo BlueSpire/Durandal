@@ -59,7 +59,7 @@
                 else if ((Array.prototype.slice.call(arguments)).length == 1 && typeof Array.prototype.slice.call(arguments)[0] == 'string') {
                     console.log((Array.prototype.slice.call(arguments)).toString());
                 } else {
-                    console.log(Array.prototype.slice.call(arguments));
+                    console.log(ko.toJSON(Array.prototype.slice.call(arguments)));
                 }
             }
                 // IE8
