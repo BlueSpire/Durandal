@@ -366,6 +366,11 @@
             }
             return configured;
         },
+        deactivate: function () {
+            router.allRoutes.removeAll();
+            router.visibleRoutes.removeAll();
+            sammy && sammy.destroy();
+        },
         activate: function (defaultRoute) {
             return system.defer(function (dfd) {
                 var processedRoute;
