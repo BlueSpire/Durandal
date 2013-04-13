@@ -1,0 +1,16 @@
+﻿<div class="container-fluid knockout-samples">
+  <div class="row-fluid">
+    <div class="span2 well">
+        <ul class="nav nav-list">
+            <li class="nav-header">Samples</li>
+            
+            <!--ko foreach: samples-->
+            <li data-bind="css: {active:$parent.activeSample().__moduleId__ == $data.moduleId}">
+                <a data-bind="attr: { href: hash }, text: name"></a>
+            </li>
+            <!--/ko-->
+        </ul>
+    </div>
+    <div class="span10" data-bind="compose: activeSample"></div>
+  </div>
+</div>

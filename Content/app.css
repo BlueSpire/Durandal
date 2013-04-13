@@ -12,6 +12,10 @@
     font-size: 18px
 }
 
+.well {
+    padding: 8px 0;
+}
+
 .loader {
     margin: 6px 8px 4px 8px;
     visibility: hidden;
@@ -19,6 +23,10 @@
 
 .loader.active {
     visibility: visible;
+}
+
+.knockout-samples {
+    margin: 20px;
 }
 
 @media (max-width: 979px) {

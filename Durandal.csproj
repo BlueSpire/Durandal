@@ -81,6 +81,12 @@
     <Content Include="App\samples\eventAggregator\index.js" />
     <Content Include="App\samples\eventAggregator\subscriber.html" />
     <Content Include="App\samples\eventAggregator\subscriber.js" />
+    <Content Include="App\samples\knockout\index.html" />
+    <Content Include="App\samples\knockout\index.js" />
+    <Content Include="App\samples\knockout\pagedGrid\index.html" />
+    <Content Include="App\samples\knockout\pagedGrid\index.js" />
+    <Content Include="App\samples\knockout\pagedGrid\simpleGrid.html" />
+    <Content Include="App\samples\knockout\pagedGrid\simpleGrid.js" />
     <Content Include="App\samples\modal\customModal.html" />
     <Content Include="App\samples\modal\customModal.js" />
     <Content Include="App\samples\modal\index.html" />
