@@ -85,6 +85,8 @@
     <Content Include="App\samples\knockout\animatedTrans\index.js" />
     <Content Include="App\samples\knockout\betterList\index.html" />
     <Content Include="App\samples\knockout\betterList\index.js" />
+    <Content Include="App\samples\knockout\shoppingCart\index.html" />
+    <Content Include="App\samples\knockout\shoppingCart\index.js" />
     <Content Include="App\samples\knockout\helloWorld\index.html" />
     <Content Include="App\samples\knockout\helloWorld\index.js" />
     <Content Include="App\samples\knockout\index.html" />
@@ -95,6 +97,7 @@
     <Content Include="App\samples\knockout\pagedGrid\index.js" />
     <Content Include="App\samples\knockout\pagedGrid\simpleGrid.html" />
     <Content Include="App\samples\knockout\pagedGrid\simpleGrid.js" />
+    <Content Include="App\samples\knockout\shoppingCart\sampleProductCategories.js" />
     <Content Include="App\samples\knockout\simpleList\index.html" />
     <Content Include="App\samples\knockout\simpleList\index.js" />
     <Content Include="App\samples\knockout\twitterClient\index.html" />
