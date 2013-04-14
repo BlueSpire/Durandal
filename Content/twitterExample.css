@@ -1,6 +1,6 @@
 ﻿﻿.configuration, .tweets, .tweets td { font-size: 14px; }
-.configuration { background-color: #DEDEDE; border: 2px solid gray; float:left; height: 35em; padding: 0.5em; border-right-width:0; }
-.tweets { width: 55%; border: 2px solid gray; height: 35em; overflow: scroll; overflow-x: hidden; background-color: Black; color: White; padding: 0.5em; position: relative; }
+.configuration { background-color: #DEDEDE; border: 2px solid gray; float:left; height: 31em; padding: 0.5em; border-right-width:0; }
+.tweets { width: 55%; border: 2px solid gray; height: 31em; overflow: scroll; overflow-x: hidden; background-color: Black; color: White; padding: 0.5em; position: relative; }
 .tweets table { border-width: 0;}
 .tweets tr { vertical-align: top; }
 .tweets td { padding: 0.4em 0.3em .8em 0.4em; border-width: 0; }
@@ -13,7 +13,7 @@ input.invalid { border: 1px solid red !important; background-color: #FFAAAA !imp
 .listChooser select { width: 60%; font-size:1.2em; height:1.4em; }
 .listChooser button { width: 19%; height:1.68em; float:right; }
 
-.currentUsers { height: 27em; overflow-y: auto; overflow-x: hidden; }
+.currentUsers { height: 24em; overflow-y: auto; overflow-x: hidden; }
 .currentUsers button { float: right; height: 2.5em; margin-top: 0.4em; margin-right: 0.2em; padding-left: 1em; padding-right: 1em; }
 .currentUsers ul, .configuration li { list-style: none; margin: 0; padding: 0 }
 .currentUsers li { height: 2.4em; font-size: 1.2em; background-color: #A7D0E3; border: 1px solid gray; margin-bottom: 0.3em; -webkit-border-radius: 5px; -moz-border-radius: 5px; -webkit-box-shadow: 0 0.2em 0.5em gray; -moz-box-shadow: 0 0.2em 0.5em gray; }

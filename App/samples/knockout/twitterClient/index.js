@@ -1,6 +1,7 @@
 ﻿define(['durandal/system','durandal/app'], function (system,app) {
 
-        this.initialLists = [
+    this.initialLists = [
+            { name: "SPA Advocates", userNames: ['DurandalJS','John_Papa','EisenbergEffect','wardbell','DanWahlin', 'mikekidder',] },
             { name: "Celebrities", userNames: ['JohnCleese', 'MCHammer', 'StephenFry', 'algore', 'StevenSanderson'] },
             { name: "Microsoft people", userNames: ['BillGates', 'shanselman', 'ScottGu'] },
             { name: "Tech pundits", userNames: ['Scobleizer', 'LeoLaporte', 'techcrunch', 'BoingBoing', 'timoreilly', 'codinghorror'] }
