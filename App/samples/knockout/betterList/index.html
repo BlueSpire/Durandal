@@ -4,9 +4,10 @@
         <form data-bind="submit: addItem">
             <label>Add item:</label>
             <div class="input-append">
-                <input class="span2" type="text" data-bind='value: itemToAdd, valueUpdate: "afterkeydown"' />
+                <input class="span3" data-bind='value: itemToAdd, valueUpdate: "afterkeydown"' />
                 <button class="btn"  type="submit" data-bind="enable: itemToAdd().length > 0">Add</button>
             </div>
+            <br />
             <div>
                 <p>Your values:</p>
                 <select class="span3" multiple="multiple" size="6" data-bind="options: allItems, selectedOptions: selectedItems"></select>
