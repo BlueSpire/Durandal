@@ -26,7 +26,11 @@
 }
 
 .knockout-samples {
-    margin: 20px;
+    margin-top: 20px;
+}
+
+.knockout-samples .liveExample {
+    padding: 20px;
 }
 
 @media (max-width: 979px) {

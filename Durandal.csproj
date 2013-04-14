@@ -99,6 +99,7 @@
     <Content Include="App\samples\knockout\simpleList\index.js" />
     <Content Include="App\samples\knockout\twitterClient\index.html" />
     <Content Include="App\samples\knockout\twitterClient\index.js" />
+    <Content Include="Content\twitterExample.css" />
     <Content Include="App\samples\modal\customModal.html" />
     <Content Include="App\samples\modal\customModal.js" />
     <Content Include="App\samples\modal\index.html" />
