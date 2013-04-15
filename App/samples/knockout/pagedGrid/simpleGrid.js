@@ -1,5 +1,6 @@
 ﻿define(['durandal/app'], function(app) {
-    var SimpleGrid = function(configuration) {
+
+    var SimpleGrid = function (configuration) {
         this.data = configuration.data;
         this.currentPageIndex = ko.observable(0);
         this.pageSize = configuration.pageSize || 5;

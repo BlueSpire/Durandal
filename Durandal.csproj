@@ -81,12 +81,36 @@
     <Content Include="App\samples\eventAggregator\index.js" />
     <Content Include="App\samples\eventAggregator\subscriber.html" />
     <Content Include="App\samples\eventAggregator\subscriber.js" />
+    <Content Include="App\samples\knockout\animatedTrans\index.html" />
+    <Content Include="App\samples\knockout\animatedTrans\index.js" />
+    <Content Include="App\samples\knockout\betterList\index.html" />
+    <Content Include="App\samples\knockout\betterList\index.js" />
+    <Content Include="App\samples\knockout\contactsEditor\index.html" />
+    <Content Include="App\samples\knockout\contactsEditor\index.js" />
+    <Content Include="App\samples\knockout\controlTypes\index.html" />
+    <Content Include="App\samples\knockout\controlTypes\index.js" />
+    <Content Include="App\samples\knockout\collections\index.html" />
+    <Content Include="App\samples\knockout\collections\index.js" />
+    <Content Include="App\samples\knockout\gridEditor\index.html" />
+    <Content Include="App\samples\knockout\gridEditor\index.js" />
+    <Content Include="App\samples\knockout\shoppingCart\index.html" />
+    <Content Include="App\samples\knockout\shoppingCart\index.js" />
+    <Content Include="App\samples\knockout\helloWorld\index.html" />
+    <Content Include="App\samples\knockout\helloWorld\index.js" />
     <Content Include="App\samples\knockout\index.html" />
     <Content Include="App\samples\knockout\index.js" />
+    <Content Include="App\samples\knockout\clickCounter\index.html" />
+    <Content Include="App\samples\knockout\clickCounter\index.js" />
     <Content Include="App\samples\knockout\pagedGrid\index.html" />
     <Content Include="App\samples\knockout\pagedGrid\index.js" />
     <Content Include="App\samples\knockout\pagedGrid\simpleGrid.html" />
     <Content Include="App\samples\knockout\pagedGrid\simpleGrid.js" />
+    <Content Include="App\samples\knockout\shoppingCart\sampleProductCategories.js" />
+    <Content Include="App\samples\knockout\simpleList\index.html" />
+    <Content Include="App\samples\knockout\simpleList\index.js" />
+    <Content Include="App\samples\knockout\twitterClient\index.html" />
+    <Content Include="App\samples\knockout\twitterClient\index.js" />
+    <Content Include="Content\twitterExample.css" />
     <Content Include="App\samples\modal\customModal.html" />
     <Content Include="App\samples\modal\customModal.js" />
     <Content Include="App\samples\modal\index.html" />
@@ -202,17 +226,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>38920</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

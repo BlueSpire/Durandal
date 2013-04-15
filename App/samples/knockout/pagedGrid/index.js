@@ -1,4 +1,5 @@
 ﻿define(['durandal/system', 'durandal/app', './simpleGrid'], function(system, app, SimpleGrid) {
+
     var initialData = [
         { name: "Well-Travelled Kitten", sales: 352, price: 75.95 },
         { name: "Speedy Coyote", sales: 89, price: 190.00 },
