@@ -2,10 +2,18 @@
   <div class="row-fluid">
     <div class="span2 well">
         <ul class="nav nav-list">
-            <li class="nav-header">Samples</li>
+            <li class="nav-header">Basic Examples</li>
             
-            <!--ko foreach: samples-->
+            <!--ko foreach: introSamples-->
             <li data-bind="css: {active:$parent.activeSample().__moduleId__ == $data.moduleId}">
+                <a data-bind="attr: { href: hash }, text: name"></a>
+            </li>
+            <!--/ko-->
+
+            <li class="nav-header">Detailed Examples</li>
+            
+            <!--ko foreach: detailedSamples-->
+            <li data-bind="css: { active: $parent.activeSample().__moduleId__ == $data.moduleId }">
                 <a data-bind="attr: { href: hash }, text: name"></a>
             </li>
             <!--/ko-->
