@@ -30,6 +30,10 @@
             moduleId: 'samples/knockout/animatedTrans/index'
         }],
         detailedSamples: [{
+            name: 'Contacts Editor',
+            hash: '#/knockout-samples/contactsEditor',
+            moduleId: 'samples/knockout/contactsEditor/index'
+        },{
             name: 'Grid Editor',
             hash: '#/knockout-samples/gridEditor',
             moduleId: 'samples/knockout/gridEditor/index'
