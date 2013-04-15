@@ -21,6 +21,14 @@
             hash: '#/knockout-samples/betterList',
             moduleId: 'samples/knockout/betterList/index'
         },{
+            name: 'Control Types',
+            hash: '#/knockout-samples/controlTypes',
+            moduleId: 'samples/knockout/controlTypes/index'
+        },{
+            name: 'Collection',
+            hash: '#/knockout-samples/collections',
+            moduleId: 'samples/knockout/collections/index'
+        },{
             name: 'Paged Grid',
             hash: '#/knockout-samples/pagedGrid',
             moduleId: 'samples/knockout/pagedGrid/index'

@@ -87,6 +87,10 @@
     <Content Include="App\samples\knockout\betterList\index.js" />
     <Content Include="App\samples\knockout\contactsEditor\index.html" />
     <Content Include="App\samples\knockout\contactsEditor\index.js" />
+    <Content Include="App\samples\knockout\controlTypes\index.html" />
+    <Content Include="App\samples\knockout\controlTypes\index.js" />
+    <Content Include="App\samples\knockout\collections\index.html" />
+    <Content Include="App\samples\knockout\collections\index.js" />
     <Content Include="App\samples\knockout\gridEditor\index.html" />
     <Content Include="App\samples\knockout\gridEditor\index.js" />
     <Content Include="App\samples\knockout\shoppingCart\index.html" />
