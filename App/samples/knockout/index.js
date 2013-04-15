@@ -30,10 +30,14 @@
             moduleId: 'samples/knockout/animatedTrans/index'
         }],
         detailedSamples: [{
+            name: 'Grid Editor',
+            hash: '#/knockout-samples/gridEditor',
+            moduleId: 'samples/knockout/gridEditor/index'
+        },{
             name: 'Shopping Cart',
             hash: '#/knockout-samples/shoppingCart',
             moduleId: 'samples/knockout/shoppingCart/index'
-        }, {
+        },{
             name: 'Twitter Client',
             hash: '#/knockout-samples/twitterClient',
             moduleId: 'samples/knockout/twitterClient/index'
