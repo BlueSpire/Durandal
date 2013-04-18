@@ -2,16 +2,23 @@
     var nonObservableTypes = ['[object Function]', '[object String]', '[object Boolean]', '[object Number]', '[object Date]', '[object RegExp]'];
     var ignoredProperties = ['__moduleId__', '__observable__'];
     var toString = Object.prototype.toString;
+    var observableArrayMethods = ["remove", "removeAll", "destroy", "destroyAll", "replace"];
+    var arrayMethods = ["pop", "push", "reverse", "shift", "sort", "splice", "unshift"];
+    var arrayProto = Array.prototype;
+    var observableArrayFunctions = ko.observableArray.fn;
 
     function canConvert(value) {
-        if(!value) {
+        if (!value) {
+            return false;
+        }
+
+        if (value.ko == ko) {
             return false;
         }
 
         var type = toString.call(value);
 
-        return ko.utils.arrayIndexOf(nonObservableTypes, type) == -1
-            && !(value === true || value === false);
+        return nonObservableTypes.indexOf(type) == -1 && !(value === true || value === false);
     }
 
     function isConverted(obj) {
@@ -21,16 +28,14 @@
     function makeObservableArray(original, observable, deep) {
         original.__observable__ = true;
 
-        //add observableArray specific methods
-        ko.utils.arrayForEach(["remove", "removeAll", "destroy", "destroyAll", "replace"], function(methodName) {
-            original[methodName] = ko.observableArray.fn[methodName].bind(observable);
+        observableArrayMethods.forEach(function(methodName) {
+            original[methodName] = observableArrayFunctions[methodName].bind(observable);
         });
 
-        //call observableArray notifications and apply native array methods (since they are being replaced)
-        ko.utils.arrayForEach(["pop", "push", "reverse", "shift", "sort", "splice", "unshift"], function(methodName) {
+        arrayMethods.forEach(function(methodName) {
             original[methodName] = function() {
                 observable.valueWillMutate();
-                var methodCallResult = [][methodName].apply(original, arguments);
+                var methodCallResult = arrayProto[methodName].apply(original, arguments);
                 observable.valueHasMutated();
                 return methodCallResult;
             };
@@ -38,16 +43,13 @@
 
         if (deep) {
             for (var i = 0; i < original.length; i++) {
-                var current = original[i];
-                if (canConvert(current)) {
-                    convert(current, true);
-                }
+                convert(original[i], true);
             }
         }
     }
 
     function convert(original, deep) {
-        if (!original || isConverted(original)) {
+        if (isConverted(original) || !canConvert(original)) {
             return;
         }
 
@@ -70,7 +72,7 @@
             isArray,
             original = obj[property];
 
-        if (ko.utils.arrayIndexOf(ignoredProperties, property) != -1) {
+        if (ignoredProperties.indexOf(property) != -1) {
             return;
         }
 
@@ -83,7 +85,7 @@
         } else {
             observable = ko.observable(original);
 
-            if (deep && canConvert(original)) {
+            if (deep) {
                 convert(original, true);
             }
         }
@@ -108,7 +110,7 @@
 
                         makeObservableArray(val, observable, deep);
                     }
-                } else if (deep && canConvert(val)) {
+                } else if (deep) {
                     convert(val, true);
                 }
             }
