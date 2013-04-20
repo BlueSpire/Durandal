@@ -90,6 +90,13 @@
 
     var composition = {
         activateDuringComposition: false,
+        getActivatableInstance: function (element, settings, module) {
+            if (typeof (module) == 'function') {
+                return new module(element, settings);
+            } else {
+                return module;
+            }
+        },
         convertTransitionToModuleId: function (name) {
             return 'durandal/transitions/' + name;
         },
@@ -267,11 +274,7 @@
                 }
             } else if (typeof settings.model == 'string') {
                 system.acquire(settings.model).then(function (module) {
-                    if (typeof (module) == 'function') {
-                        settings.model = new module(element, settings);
-                    } else {
-                        settings.model = module;
-                    }
+                    settings.model = composition.getActivatableInstance(element, settings, module);
 
                     composition.inject(element, settings);
                 });
