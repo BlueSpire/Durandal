@@ -3,7 +3,7 @@
     var ignoredProperties = ['__moduleId__', '__observable__'];
     var toString = Object.prototype.toString;
     var observableArrayMethods = ["remove", "removeAll", "destroy", "destroyAll", "replace"];
-    var arrayMethods = ["pop", "push", "reverse", "shift", "sort", "splice", "unshift"];
+    var arrayMethods = ["pop", "reverse", "shift", "sort", "splice", "unshift"];
     var arrayProto = Array.prototype;
     var observableArrayFunctions = ko.observableArray.fn;
 
@@ -36,6 +36,19 @@
                 return methodCallResult;
             };
         });
+
+        original['push'] = function() {
+            if (deep) {
+                for(var i = 0; i < arguments.length; i++) {
+                    convert(arguments[i], true);
+                }
+            }
+
+            observable.valueWillMutate();
+            var methodCallResult = arrayProto['push'].apply(original, arguments);
+            observable.valueHasMutated();
+            return methodCallResult;
+        };
 
         if (deep) {
             for (var i = 0; i < original.length; i++) {
