@@ -23,8 +23,9 @@
         convertViewIdToRequirePath: function (viewId) {
             return this.viewPlugin + '!' + viewId + this.viewExtension;
         },
+        parseMarkupCore: parseMarkupCore,
         parseMarkup: function (markup) {
-            var allElements = parseMarkupCore(markup);
+            var allElements = this.parseMarkupCore(markup);
             if (allElements.length == 1) {
                 return allElements[0];
             }
