@@ -25,7 +25,7 @@
         },
         parseMarkup: parseMarkup,
         processMarkup: function (markup) {
-            var allElements = viewEngine.parseMarkup(markup);
+            var allElements = this.parseMarkup(markup);
             if (allElements.length == 1) {
                 return allElements[0];
             }

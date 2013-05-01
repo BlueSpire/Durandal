@@ -1,5 +1,4 @@
 ﻿define(['./system'], function (system) {
-    var viewEngine;
     var parseMarkup;
 
     if ($.parseHTML) {
@@ -12,8 +11,7 @@
         };
     }
 
-
-    return viewEngine = {
+    return {
         viewExtension: '.html',
         viewPlugin: 'text',
         isViewUrl: function (url) {
@@ -27,7 +25,7 @@
         },
         parseMarkup: parseMarkup,
         processMarkup: function (markup) {
-            var allElements = viewEngine.parseMarkup(markup);
+            var allElements = this.parseMarkup(markup);
             if (allElements.length == 1) {
                 return allElements[0];
             }
