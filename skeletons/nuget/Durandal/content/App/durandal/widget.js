@@ -75,13 +75,19 @@
                 kindModuleMaps[kind] = moduleId;
             }
         },
-        convertKindToModuleId: function(kind) {
-            return kindModuleMaps[kind] || 'durandal/widgets/' + kind + '/controller';
+        convertKindToModuleId: function (kind) {
+            return kindModuleMaps[kind] || widget.mapKindToModuleId(kind);
+        },
+        mapKindToModuleId: function (kind) {
+            return 'durandal/widgets/' + kind + '/controller'
         },
         convertKindToViewId: function (kind) {
-            return kindViewMaps[kind] || 'durandal/widgets/' + kind + '/view';
+            return kindViewMaps[kind] || widget.mapKindToView(kind);
         },
-        beforeBind: function(element, view, settings) {
+        mapKindToView: function (kind) {
+            return 'durandal/widgets/' + kind + '/view'
+        },
+        beforeBind: function (element, view, settings) {
             var replacementParts = widget.getParts(element);
             var standardParts = widget.getParts(view);
 
