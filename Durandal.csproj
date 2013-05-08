@@ -75,6 +75,10 @@
   <ItemGroup>
     <Content Include="App\durandal\plugins\router.js" />
     <Content Include="App\durandal\transitions\entrance.js" />
+    <Content Include="App\experimental\history.js" />
+    <Content Include="App\experimental\observable.js" />
+    <Content Include="App\experimental\router.js" />
+    <Content Include="App\experimental\serializer.js" />
     <Content Include="App\samples\eventAggregator\publisher.html" />
     <Content Include="App\samples\eventAggregator\publisher.js" />
     <Content Include="App\samples\eventAggregator\index.html" />
@@ -177,6 +181,7 @@
     <Content Include="Content\font\fontawesome-webfont.ttf" />
     <Content Include="Content\font\fontawesome-webfont.eot" />
     <Content Include="Content\font\FontAwesome.otf" />
+    <Content Include="App\experimental\README.md" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
