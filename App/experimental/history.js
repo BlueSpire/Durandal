@@ -242,5 +242,5 @@
         }
     };
 
-    return History;
+    return new History();
 });

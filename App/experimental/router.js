@@ -1,4 +1,4 @@
-﻿define(function (require) {
+﻿define(['../durandal/app', './history'], function (app, history) {
     function result() {}
     function keys(){}
     function isRegExp() {}
@@ -82,20 +82,22 @@
 
         var router = this;
 
-        Backbone.history.route(route, function(fragment) {
+        history.route(route, function(fragment) {
             var args = extractParameters(route, fragment);
             callback && callback.apply(router, args);
             router.trigger.apply(router, ['route:' + name].concat(args));
             router.trigger('route', name, args);
-            Backbone.history.trigger('route', router, name, args);
+            history.trigger('route', router, name, args);
         });
 
         return this;
     };
     
-    // Simple proxy to `Backbone.history` to save a fragment into the history.
+    // Simple proxy to `history` to save a fragment into the history.
     Router.prototype.navigate = function (fragment, options) {
-        Backbone.history.navigate(fragment, options);
+        history.navigate(fragment, options);
         return this;
     };
+
+    return Router;
 });

@@ -1,4 +1,4 @@
-﻿define(['../system'], function(system) {
+﻿define(['../durandal/system'], function(system) {
     var removedKeys = ['__moduleId__', '__observable__'];
 
     return {
