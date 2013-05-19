@@ -4,6 +4,18 @@
     // [onhashchange](https://developer.mozilla.org/en-US/docs/DOM/window.onhashchange)
     // and URL fragments. If the browser supports neither (old IE, natch),
     // falls back to polling.
+    
+    // Cached regex for stripping a leading hash/slash and trailing space.
+    var routeStripper = /^[#\/]|\s+$/g;
+
+    // Cached regex for stripping leading and trailing slashes.
+    var rootStripper = /^\/+|\/+$/g;
+
+    // Cached regex for detecting MSIE.
+    var isExplorer = /msie [\w.]+/;
+
+    // Cached regex for removing a trailing slash.
+    var trailingSlash = /\/$/;
 
     function extend(obj) {
         var rest = Array.prototype.slice.call(arguments, 1);
@@ -31,17 +43,17 @@
         return false;
     }
 
-    // Cached regex for stripping a leading hash/slash and trailing space.
-    var routeStripper = /^[#\/]|\s+$/g;
-
-    // Cached regex for stripping leading and trailing slashes.
-    var rootStripper = /^\/+|\/+$/g;
-
-    // Cached regex for detecting MSIE.
-    var isExplorer = /msie [\w.]+/;
-
-    // Cached regex for removing a trailing slash.
-    var trailingSlash = /\/$/;
+    // Update the hash location, either replacing the current entry, or adding
+    // a new one to the browser history.
+    function updateHash(location, fragment, replace) {
+        if (replace) {
+            var href = location.href.replace(/(javascript:|#).*$/, '');
+            location.replace(href + '#' + fragment);
+        } else {
+            // Some browsers require that `hash` contains a leading #.
+            location.hash = '#' + fragment;
+        }
+    };
 
     var history = {
         handlers: [],
@@ -191,18 +203,6 @@
         });
         
         return matched;
-    };
-    
-    // Update the hash location, either replacing the current entry, or adding
-    // a new one to the browser history.
-    function updateHash(location, fragment, replace) {
-        if (replace) {
-            var href = location.href.replace(/(javascript:|#).*$/, '');
-            location.replace(href + '#' + fragment);
-        } else {
-            // Some browsers require that `hash` contains a leading #.
-            location.hash = '#' + fragment;
-        }
     };
     
     // Save a fragment into the hash history, or replace the URL state if the
