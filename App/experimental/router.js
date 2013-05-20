@@ -6,8 +6,6 @@
     var splatParam = /\*\w+/g;
     var escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
 
-    function map() {}
-
     // Convert a route string into a regular expression, suitable for matching
     // against the current location hash.
     function routeToRegExp(route) {
@@ -26,41 +24,40 @@
     // treated as `null` to normalize cross-browser behavior.
     function extractParameters(route, fragment) {
         var params = route.exec(fragment).slice(1);
-        return map(params, function (param) {
-            return param ? decodeURIComponent(param) : null;
-        });
+
+        for (var i = 0; i < params.length; i++) {
+            var current = params[i];
+            params[i] = current ? decodeURIComponent(current) : null;
+        }
+
+        return params;
     }
 
     // Routers map faux-URLs to actions, and fire events when routes are
-    // matched. Creating a new one sets its `routes` hash, if not set statically.
+    // matched. Creating a new one sets its `routes` hash.
     var router = {
         routes: {}
     };
     
-    // Manually bind a single named route to a callback. For example:
+    // Manually bind a single named route to a module. For example:
     //
-    //     this.route('search/:query/p:num', 'search', function(query, num) {
-    //       ...
-    //     });
+    //     router.route('search/:query/p:num', 'viewmodels/search');
     //
-    router.route = function (route, name, callback) {
+    router.route = function (route, options) {
         if (!system.isRegExp(route)) {
             route = routeToRegExp(route);
         }
         
-        if (system.isFunction(name)) {
-            callback = name;
-            name = '';
+        if (system.isString(options)) {
+            options = {
+                moduleId:options
+            };
         }
         
-        if (!callback) {
-            callback = router[name];
-        }
-
         history.route(route, function(fragment) {
-            var args = extractParameters(route, fragment);
-            callback && callback.apply(router, args);
-            app.trigger('route', router, name, args);
+            //var args = extractParameters(route, fragment);
+            //activate the module
+            //app.trigger('route', router, route, options, args);
         });
 
         return router;
