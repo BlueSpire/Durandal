@@ -1,4 +1,4 @@
-﻿define(['../durandal/app', './history'], function (app, history) {
+﻿define(['../durandal/system', '../durandal/app', './history'], function (system, app, history) {
     // Cached regular expressions for matching named param parts and splatted
     // parts of route strings.
     var optionalParam = /\((.*?)\)/g;
@@ -6,9 +6,6 @@
     var splatParam = /\*\w+/g;
     var escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
 
-    function keys(){}
-    function isRegExp() {}
-    function isFunction() {}
     function map() {}
 
     // Convert a route string into a regular expression, suitable for matching
@@ -36,7 +33,9 @@
 
     // Routers map faux-URLs to actions, and fire events when routes are
     // matched. Creating a new one sets its `routes` hash, if not set statically.
-    var router = {};
+    var router = {
+        routes: {}
+    };
     
     // Manually bind a single named route to a callback. For example:
     //
@@ -45,11 +44,11 @@
     //     });
     //
     router.route = function (route, name, callback) {
-        if (!isRegExp(route)) {
+        if (!system.isRegExp(route)) {
             route = routeToRegExp(route);
         }
         
-        if (isFunction(name)) {
+        if (system.isFunction(name)) {
             callback = name;
             name = '';
         }
@@ -61,9 +60,7 @@
         history.route(route, function(fragment) {
             var args = extractParameters(route, fragment);
             callback && callback.apply(router, args);
-            router.trigger.apply(router, ['route:' + name].concat(args));
-            router.trigger('route', name, args);
-            history.trigger('route', router, name, args);
+            app.trigger('route', router, name, args);
         });
 
         return router;
@@ -76,17 +73,10 @@
     };
 
     router.configure = function (options) {
-        options || (options = {});
+        router.options = options || {};
+        router.routes = system.extend({}, router.routes, router.options.routes);
 
-        if (options.routes) {
-            router.routes = options.routes;
-        }
-
-        if (!router.routes) {
-            return router;
-        }
-
-        var route, routes = keys(router.routes);
+        var route, routes = system.keys(router.routes);
 
         // Bind all defined routes to history. We have to reverse the
         // order of the routes here to support behavior where the most general
@@ -100,7 +90,7 @@
     };
 
     router.activate = function () {
-        history.start();
+        history.start(router.options);
         return router;
     };
 

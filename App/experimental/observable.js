@@ -8,7 +8,7 @@
     var observableArrayFunctions = ko.observableArray.fn;
 
     function canConvert(value) {
-        if (!value || value.nodeType === 1 || value.ko === ko) {
+        if (!value || system.isElement(value) || value.ko === ko) {
             return false;
         }
 

@@ -1,4 +1,4 @@
-﻿define(function(require) {
+﻿define(['../durandal/system'], function (system) {
     // Handles cross-browser history management, based on either
     // [pushState](http://diveintohtml5.info/history.html) and real URLs, or
     // [onhashchange](https://developer.mozilla.org/en-US/docs/DOM/window.onhashchange)
@@ -16,22 +16,6 @@
 
     // Cached regex for removing a trailing slash.
     var trailingSlash = /\/$/;
-
-    function extend(obj) {
-        var rest = Array.prototype.slice.call(arguments, 1);
-
-        for (var i = 0; i < rest.length; i++) {
-            var source = rest[i];
-            
-            if (source) {
-                for (var prop in source) {
-                    obj[prop] = source[prop];
-                }
-            }
-        }
-
-        return obj;
-    }
     
     function any(items, check) {
         for (var i = 0; i < items.length; i++) {
@@ -103,7 +87,7 @@
 
         // Figure out the initial configuration. Do we need an iframe?
         // Is pushState desired ... is it available?
-        history.options = extend({}, { root: '/' }, history.options, options);
+        history.options = system.extend({}, { root: '/' }, history.options, options);
         history.root = history.options.root;
         history._wantsHashChange = history.options.hashChange !== false;
         history._wantsPushState = !!history.options.pushState;

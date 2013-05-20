@@ -4,7 +4,8 @@
         hasOwnProperty = Object.prototype.hasOwnProperty,
         toString = Object.prototype.toString,
         system,
-        treatAsIE8 = false;
+        treatAsIE8 = false,
+        nativeIsArray = Array.isArray;
 
     //see http://patik.com/blog/complete-cross-browser-console-log/
     // Tell IE9 to use its built-in console
@@ -76,13 +77,13 @@
     };
 
     system = {
-        version:"1.2.0",
+        version: "1.3.0",
         noop: noop,
         getModuleId: function(obj) {
             if (!obj) {
                 return null;
             }
-            
+
             if (typeof obj == 'function') {
                 return obj.prototype.__moduleId__;
             }
@@ -93,7 +94,7 @@
 
             return obj.__moduleId__;
         },
-        setModuleId: function (obj, id) {
+        setModuleId: function(obj, id) {
             if (!obj) {
                 return;
             }
@@ -125,9 +126,6 @@
                 return isDebugging;
             }
         },
-        isArray: function(obj) {
-            return toString.call(obj) === '[object Array]';
-        },
         log: noop,
         error: noop,
         defer: function(action) {
@@ -149,6 +147,21 @@
                     }, 1);
                 });
             }).promise();
+        },
+        extend: function(obj) {
+            var rest = Array.prototype.slice.call(arguments, 1);
+
+            for (var i = 0; i < rest.length; i++) {
+                var source = rest[i];
+
+                if (source) {
+                    for (var prop in source) {
+                        obj[prop] = source[prop];
+                    }
+                }
+            }
+
+            return obj;
         }
     };
 
@@ -167,6 +180,32 @@
 
         return keys;
     };
+    
+    system.isElement = function (obj) {
+        return !!(obj && obj.nodeType === 1);
+    };
+
+    system.isArray = nativeIsArray || function (obj) {
+        return toString.call(obj) == '[object Array]';
+    };
+
+    system.isObject = function(obj) {
+        return obj === Object(obj);
+    };
+
+    //isArguments, isFunction, isString, isNumber, isDate, isRegExp.
+    var isChecks = ['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp'];
+
+    function makeIsFunction(name) {
+        var value = '[object ' + name + ']';
+        system['is' + name] = function (obj) {
+            return toString.call(obj) == value;
+        };
+    }
+
+    for (var i = 0; i < isChecks.length; i++) {
+        makeIsFunction(isChecks[i]);
+    }
 
     return system;
 });

@@ -267,7 +267,7 @@
                 }
             } else if (typeof settings.model == 'string') {
                 system.acquire(settings.model).then(function (module) {
-                    if (typeof (module) == 'function') {
+                    if (system.isFunction(module)) {
                         settings.model = new module(element, settings);
                     } else {
                         settings.model = module;
