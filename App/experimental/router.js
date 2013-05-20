@@ -43,7 +43,7 @@
     //
     //     router.route('search/:query/p:num', 'viewmodels/search');
     //
-    router.route = function (route, options) {
+    router.map = function (route, options) {
         if (!system.isRegExp(route)) {
             route = routeToRegExp(route);
         }
@@ -55,9 +55,9 @@
         }
         
         history.route(route, function(fragment) {
-            //var args = extractParameters(route, fragment);
+            var args = extractParameters(route, fragment);
             //activate the module
-            //app.trigger('route', router, route, options, args);
+            app.trigger('router:route', route, args);
         });
 
         return router;
@@ -80,15 +80,25 @@
         // routes can be defined at the bottom of the route map.
 
         while ((route = routes.pop()) != null) {
-            router.route(route, router.routes[route]);
+            router.map(route, router.routes[route]);
         }
         
         return router;
     };
 
-    router.activate = function () {
+    router.start = function () {
+        //TODO: order visible routes
         history.start(router.options);
         return router;
+    };
+
+    router.stop = function () {
+        history.stop();
+        return router;
+    };
+    
+    router.reset = function () {
+        
     };
 
     return router;
