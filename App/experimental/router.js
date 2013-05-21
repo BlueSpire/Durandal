@@ -171,6 +171,12 @@ function (system, app, viewModel, history) {
             return activeItem() && activeItem().__moduleId__ == config.moduleId;
         });
     }
+    
+    function stripParametersFromRoute(route) {
+        var colonIndex = route.indexOf(':');
+        var length = colonIndex > 0 ? colonIndex - 1 : route.length;
+        return route.substring(0, length);
+    };
         
     router.updateDocumentTitle = function (instance, instruction) {
         if (instruction.config.title) {
@@ -191,19 +197,30 @@ function (system, app, viewModel, history) {
             return module;
         }
     };
+    
+    router.navigate = function (fragment, options) {
+        history.navigate(fragment, options);
+        return router;
+    };
 
-    router.stripParametersFromRoute = function(route) {
-        var colonIndex = route.indexOf(':');
-        var length = colonIndex > 0 ? colonIndex - 1 : route.length;
-        return route.substring(0, length);
+    router.navigateBack = function () {
+        history.history.back();
+    };
+
+    router.afterCompose = function () {
+        setTimeout(function () {
+            isNavigating(false);
+            router.events.trigger('router:navigation-composed', currentActivation, currentInstruction);
+            dequeueRoute();
+        }, 10);
     };
 
     router.convertRouteToModuleId = function (route) {
-        return router.stripParametersFromRoute(route);
+        return stripParametersFromRoute(route);
     };
         
     router.convertRouteToTitle = function (route) {
-        var value = router.stripParametersFromRoute(route);
+        var value = stripParametersFromRoute(route);
         return value.substring(0, 1).toUpperCase() + value.substring(1);
     };
 
@@ -213,13 +230,8 @@ function (system, app, viewModel, history) {
     //
     router.map = function (route, config) {
         if (system.isArray(route)) {
-            // We have to reverse the
-            // order of the routes here to support behavior where the most general
-            // routes can be defined at the bottom of the route array.
-            var current;
-            
-            while ((current = route.pop()) != null) {
-                router.map(current);
+            for (var i = 0; i < route.length; i++) {
+                router.map(route[i]);
             }
 
             return router;
@@ -241,23 +253,6 @@ function (system, app, viewModel, history) {
 
         return mapRoute(config);
     };
-    
-    router.navigate = function (fragment, options) {
-        history.navigate(fragment, options);
-        return router;
-    };
-
-    router.navigateBack = function() {
-        history.history.back();
-    };
-
-    router.afterCompose = function() {
-        setTimeout(function() {
-            isNavigating(false);
-            router.events.trigger('router:navigation-composed', currentActivation, currentInstruction);
-            dequeueRoute();
-        }, 10);
-    };
 
     router.buildNavigationModel = function() {
         var nav = [], routes = router.routes;
@@ -271,7 +266,7 @@ function (system, app, viewModel, history) {
             }
         }
 
-        nav.sort(function(a, b) { return a - b; });
+        nav.sort(function(a, b) { return a.nav - b.nav; });
         router.navigationModel(nav);
 
         return router;

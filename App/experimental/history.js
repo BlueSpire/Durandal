@@ -16,16 +16,6 @@
 
     // Cached regex for removing a trailing slash.
     var trailingSlash = /\/$/;
-    
-    function any(items, check) {
-        for (var i = 0; i < items.length; i++) {
-            if (check(items[i])) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     // Update the hash location, either replacing the current entry, or adding
     // a new one to the browser history.
@@ -179,14 +169,17 @@
     // returns `false`.
     history.loadUrl = function(fragmentOverride) {
         var fragment = history.fragment = history.getFragment(fragmentOverride);
-        var matched = any(history.handlers, function(handler) {
-            if (handler.route.test(fragment)) {
-                handler.callback(fragment);
+        var handlers = history.handlers;
+
+        for (var i = 0; i < handlers.length; i++) {
+            var current = handlers[i];
+            if (current.route.test(fragment)) {
+                current.callback(fragment);
                 return true;
             }
-        });
-        
-        return matched;
+        }
+
+        return false;
     };
     
     // Save a fragment into the hash history, or replace the URL state if the
