@@ -10,11 +10,11 @@ function (system, app, viewModel, history) {
         isNavigating = ko.observable(false),
         currentActivation,
         currentInstruction,
-        activeItem = viewModel.activator(),
-        isConfigured = false;
+        activeItem = viewModel.activator();
 
     var router = {
-        routes:[],
+        routes: [],
+        navigationModel: ko.observableArray([]),
         activeItem: activeItem,
         isNavigating: isNavigating,
         events: app
@@ -165,6 +165,12 @@ function (system, app, viewModel, history) {
 
         return router;
     }
+    
+    function addActiveFlag(config) {
+        config.isActive = ko.computed(function () {
+            return activeItem() && activeItem().__moduleId__ == config.moduleId;
+        });
+    }
         
     router.updateDocumentTitle = function (instance, instruction) {
         if (instruction.config.title) {
@@ -236,10 +242,13 @@ function (system, app, viewModel, history) {
         return mapRoute(config);
     };
     
-    // Simple proxy to `history` to save a fragment into the history.
     router.navigate = function (fragment, options) {
         history.navigate(fragment, options);
         return router;
+    };
+
+    router.navigateBack = function() {
+        history.history.back();
     };
 
     router.afterCompose = function() {
@@ -250,33 +259,27 @@ function (system, app, viewModel, history) {
         }, 10);
     };
 
-    router.buildNavigation = function () {
-        //if (config.nav) {
-        //    config.isActive = ko.computed(function () {
-        //        return activeItem() && activeItem().__moduleId__ == config.moduleId;
-        //    });
-        //}
-    };
+    router.buildNavigationModel = function() {
+        var nav = [], routes = router.routes;
 
-    router.configure = function(options) {
-        if (isConfigured) {
-            return router;
+        for (var i = 0; i < routes.length; i++) {
+            var current = routes[i];
+
+            if (current.nav != undefined) {
+                addActiveFlag(current);
+                nav.push(current);
+            }
         }
 
-        router.options = options || {};
-        router.buildNavigation();
-        isConfigured = true;
+        nav.sort(function(a, b) { return a - b; });
+        router.navigationModel(nav);
 
         return router;
     };
 
-    router.start = function () {
-        if (!isConfigured) {
-            throw new Error('You must call "configure" before you can start the router.');
-        }
-
+    router.start = function (options) {
+        router.options = options || router.options || {};
         history.start(router.options);
-        
         return router;
     };
 
@@ -286,11 +289,8 @@ function (system, app, viewModel, history) {
     };
     
     router.reset = function () {
-        isConfigured = false;
-
         history.handlers = [];
         router.routes = [];
-
         return router;
     };
 
