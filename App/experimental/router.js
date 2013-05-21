@@ -1,8 +1,6 @@
 ﻿define(['../durandal/system', '../durandal/app', '../durandal/viewModel', './history'],
     function (system, app, viewModel, history) {
         
-    // Cached regular expressions for matching named param parts and splatted
-    // parts of route strings.
     var optionalParam = /\((.*?)\)/g;
     var namedParam = /(\(\?)?:\w+/g;
     var splatParam = /\*\w+/g;
@@ -13,18 +11,22 @@
         currentActivation,
         currentInstruction,
         activeItem = viewModel.activator();
+        
+    var router = {
+        routes: {},
+        activeItem: activeItem,
+        isNavigating: isNavigating
+    };
 
-    // Convert a route string into a regular expression, suitable for matching
-    // against the current location hash.
-    function routeToRegExp(route) {
-        route = route.replace(escapeRegExp, '\\$&')
+    function routeStringToRegExp(routeString) {
+        routeString = routeString.replace(escapeRegExp, '\\$&')
             .replace(optionalParam, '(?:$1)?')
             .replace(namedParam, function(match, optional) {
                 return optional ? match : '([^\/]+)';
             })
             .replace(splatParam, '(.*?)');
 
-        return new RegExp('^' + route + '$');
+        return new RegExp('^' + routeString + '$');
     }
 
     // Given a route, and a URL fragment that it matches, return the array of
@@ -41,12 +43,6 @@
         return params;
     }
 
-    // Routers map faux-URLs to actions, and fire events when routes are
-    // matched. Creating a new one sets its `routes` hash.
-    var router = {
-        routes: {}
-    };
-    
     function completeNavigation(instance, instruction) {
         system.log('Navigation Complete', instance, instruction);
 
@@ -139,6 +135,29 @@
         });
     }
         
+    function queueRoute(instruction) {
+        queue.unshift(instruction);
+        dequeueRoute();
+    }
+        
+    function mapRoute(options) {
+        //title, isActive, hash, caption?, settings?
+
+        if (!system.isRegExp(options.route)) {
+            options.route = routeStringToRegExp(options.route);
+        }
+
+        history.route(options.route, function (fragment) {
+            queueRoute({
+                fragment: fragment,
+                options: options,
+                params: extractParameters(options.route, fragment)
+            });
+        });
+
+        return router;
+    }
+        
     router.updateDocumentTitle = function (instance, instruction) {
         if (instruction.options.title) {
             if (app.title) {
@@ -158,27 +177,6 @@
             return module;
         }
     };
-    
-    function queueRoute(instruction) {
-        queue.unshift(instruction);
-        dequeueRoute();
-    }
-    
-    function mapRoute(options) {
-        if (!system.isRegExp(options.route)) {
-            options.route = routeToRegExp(options.route);
-        }
-
-        history.route(options.route, function(fragment) {
-            queueRoute({
-                fragment: fragment,
-                options: options,
-                params: extractParameters(options.route, fragment)
-            });
-        });
-
-        return router;
-    }
 
     router.convertRouteToModuleId = function (route) {
         var colonIndex = route.indexOf(':');
@@ -190,18 +188,34 @@
     //
     //     router.map('search/:query/p:num', 'viewmodels/search');
     //
-    router.map = function(route, options) {
-        if (!options) {
-            options = {
-                moduleId: router.convertRouteToModuleId(route)
-            };
-        } else if (system.isString(options)) {
-            options = {
-                moduleId: options
-            };
+    router.map = function (route, options) {
+        if (system.isArray(route)) {
+            for (var i = 0; i < route.length; i++) {
+                router.map(route[i]);
+            }
+
+            return router;
         }
 
-        options.route = route;
+        if (system.isString(route) || system.isRegExp(route)) {
+            if (!options) {
+                options = {
+                    moduleId: router.convertRouteToModuleId(route)
+                };
+            } else if (system.isString(options)) {
+                options = {
+                    moduleId: options
+                };
+            }
+
+            options.route = route;
+        } else {
+            options = route;
+
+            if (!options.moduleId) {
+                options.moduleId = router.convertRouteToModuleId(options.route);
+            }
+        }
 
         return mapRoute(options);
     };
@@ -210,6 +224,14 @@
     router.navigate = function (fragment, options) {
         history.navigate(fragment, options);
         return router;
+    };
+
+    router.afterCompose = function() {
+        setTimeout(function() {
+            isNavigating(false);
+            app.trigger('router:navigation-composed', currentActivation, currentInstruction);
+            dequeueRoute();
+        }, 10);
     };
 
     router.configure = function (options) {
@@ -230,7 +252,7 @@
     };
 
     router.start = function () {
-        //TODO: order visible routes
+        //TODO: order visible routes???
         history.start(router.options);
         return router;
     };
