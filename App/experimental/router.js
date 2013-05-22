@@ -53,7 +53,7 @@ function (system, app, viewModel, history) {
         
         router.updateDocumentTitle(instance, instruction);
         
-        router.events.trigger('router:navigation-complete', instance, instruction);
+        router.events.trigger('router:navigation:complete', instance, instruction);
     }
         
     function cancelNavigation(instance, instruction) {
@@ -65,7 +65,7 @@ function (system, app, viewModel, history) {
 
         isNavigating(false);
         
-        router.events.trigger('router:navigation-cancelled', instance, instruction);
+        router.events.trigger('router:navigation:cancelled', instance, instruction);
     }
         
     function redirect(url) {
@@ -152,7 +152,8 @@ function (system, app, viewModel, history) {
         
         config.caption = config.caption || config.title;
         config.settings = config.settings || {};
-
+        
+        router.events.trigger('router:route:mapping', config);
         router.routes.push(config);
 
         history.route(config.route, function (fragment) {
@@ -210,7 +211,7 @@ function (system, app, viewModel, history) {
     router.afterCompose = function () {
         setTimeout(function () {
             isNavigating(false);
-            router.events.trigger('router:navigation-composed', currentActivation, currentInstruction);
+            router.events.trigger('router:navigation:composed', currentActivation, currentInstruction);
             dequeueRoute();
         }, 10);
     };
@@ -272,6 +273,39 @@ function (system, app, viewModel, history) {
         return router;
     };
 
+    router.mapUnknownRoutes = function(config) {
+        var route = routeStringToRegExp("*catchall");
+
+        history.route(route, function(fragment) {
+            var instruction = {
+                fragment: fragment,
+                config: { route:route },
+                params: extractParameters(route, fragment)
+            };
+
+            if (!config) {
+                instruction.config.moduleId = fragment;
+            } else if (system.isString(config)) {
+                instruction.config.moduleId = config;
+            } else if (system.isFunction(config)) {
+                var result = config(instruction);
+                if (result && result.then) {
+                    result.then(function() {
+                        router.events.trigger('router:route:mapping', instruction.config);
+                        queueRoute(instruction);
+                    });
+                    return;
+                }
+            } else {
+                instruction.config = config;
+                instruction.config.route = route;
+            }
+            
+            router.events.trigger('router:route:mapping', instruction.config);
+            queueRoute(instruction);
+        });
+    };
+
     router.start = function (options) {
         router.options = options || router.options || {};
         history.start(router.options);
@@ -286,6 +320,7 @@ function (system, app, viewModel, history) {
     router.reset = function () {
         history.handlers = [];
         router.routes = [];
+        delete router.options;
         return router;
     };
 
