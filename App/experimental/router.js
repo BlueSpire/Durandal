@@ -129,7 +129,7 @@ function (system, app, viewModel, history) {
             && currentInstruction.config.moduleId == instruction.config.moduleId
             && currentActivation
             && currentActivation.canReuseForRoute
-            && currentActivation.canReuseForRoute(instruction.params);
+            && currentActivation.canReuseForRoute.apply(currentActivation, instruction.params);
     }
 
     function dequeueRoute() {
