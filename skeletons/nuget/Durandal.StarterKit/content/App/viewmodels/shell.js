@@ -8,7 +8,12 @@
             app.showMessage('Search not yet implemented...');
         },
         activate: function () {
-            return router.activate('welcome');
+            router.map([
+                { route: '', title:'Welcome', moduleId: 'viewmodels/welcome', nav: true },
+                { route: 'flickr', moduleId: 'viewmodels/flickr', nav: true }
+            ])
+            .buildNavigationModel()
+            .start();
         }
     };
 });

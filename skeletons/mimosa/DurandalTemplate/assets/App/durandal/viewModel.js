@@ -29,6 +29,14 @@
         return settings;
     }
 
+    function invoke(target, method, data) {
+        if (system.isArray(data)) {
+            return target[method].apply(target, data);
+        }
+
+        return target[method](data);
+    }
+
     function deactivate(item, close, settings, dfd, setter) {
         if (item && item.deactivate) {
             system.log('Deactivating', item);
@@ -70,7 +78,7 @@
 
                 var result;
                 try {
-                    result = newItem.activate(activationData);
+                    result = invoke(newItem, 'activate', activationData);
                 } catch (error) {
                     system.error(error);
                     callback(false);
@@ -136,7 +144,7 @@
             if (newItem && newItem.canActivate) {
                 var resultOrPromise;
                 try {
-                    resultOrPromise = newItem.canActivate(activationData);
+                    resultOrPromise = invoke(newItem, 'canActivate', activationData);
                 } catch (error) {
                     system.error(error);
                     dfd.resolve(false);

@@ -54,16 +54,16 @@
             hash: '#/knockout-samples/twitterClient',
             moduleId: 'samples/knockout/twitterClient/index'
         }],
-        activate: function (args) {
+        activate: function (name) {
             var that = this;
+            name = name || 'helloWorld';
 
-            if (!args.name) {
-                args.name = 'helloWorld';
-            }
-
-            return system.acquire('samples/knockout/' + args.name + '/index').then(function(sample) {
+            return system.acquire('samples/knockout/' + name + '/index').then(function(sample) {
                 that.activeSample(sample);
             });
+        },
+        canReuseForRoute: function () {
+            return true;
         }
     };
 });

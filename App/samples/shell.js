@@ -4,17 +4,17 @@
         router: router,
         activate: function () {
             router.map([
-                { url: 'hello', moduleId: 'samples/hello/index', name: 'Hello World', visible: true },
-                { url: 'view-composition', moduleId: 'samples/viewComposition/index', name: 'View Composition', visible: true },
-                { url: 'modal', moduleId: 'samples/modal/index', name: 'Modal Dialogs', visible: true },
-                { url: 'event-aggregator', moduleId: 'samples/eventAggregator/index', name: 'Events', visible: true },
-                { url: 'widgets', moduleId: 'samples/widgets/index', name: 'Widgets', visible: true },
-                { url: 'master-detail', moduleId: 'samples/masterDetail/index', name: 'Master Detail', visible: true },
-                { url: 'knockout-samples/:name', moduleId: 'samples/knockout/index', name: 'Knockout Samples' },
-                { url: 'knockout-samples', moduleId: 'samples/knockout/index', name: 'Knockout Samples', visible: true }
-            ]);
-            
-            return router.activate('hello');
+                { route: '', moduleId: 'samples/hello/index', title: 'Hello World', nav: true },
+                { route: 'view-composition', moduleId: 'samples/viewComposition/index', title: 'View Composition', nav: true },
+                { route: 'modal', moduleId: 'samples/modal/index', title: 'Modal Dialogs', nav: true },
+                { route: 'event-aggregator', moduleId: 'samples/eventAggregator/index', title: 'Events', nav: true },
+                { route: 'widgets', moduleId: 'samples/widgets/index', title: 'Widgets', nav: true },
+                { route: 'master-detail', moduleId: 'samples/masterDetail/index', title: 'Master Detail', nav: true },
+                { route: 'knockout-samples/:name', moduleId: 'samples/knockout/index', title: 'Knockout Samples' },
+                { route: 'knockout-samples', moduleId: 'samples/knockout/index', title: 'Knockout Samples', nav: true }
+            ])
+            .buildNavigationModel()
+            .start();
         }
     };
 });
