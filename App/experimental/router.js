@@ -261,9 +261,7 @@ function (system, app, viewModel, history) {
             if (!config) {
                 config = {};
             } else if (system.isString(config)) {
-                config = {
-                    moduleId: config
-                };
+                config = { moduleId: config };
             }
 
             config.route = route;
@@ -274,13 +272,18 @@ function (system, app, viewModel, history) {
         return mapRoute(config);
     };
 
-    router.buildNavigationModel = function() {
+    router.buildNavigationModel = function(defaultOrder) {
         var nav = [], routes = router.routes;
+        defaultOrder = defaultOrder || 100;
 
         for (var i = 0; i < routes.length; i++) {
             var current = routes[i];
 
             if (current.nav != undefined) {
+                if (!system.isNumber(current.nav)) {
+                    current.nav = defaultOrder;
+                }
+
                 addActiveFlag(current);
                 nav.push(current);
             }
