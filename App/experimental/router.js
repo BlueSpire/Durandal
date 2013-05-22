@@ -75,8 +75,8 @@ function (system, app, viewModel, history) {
         router.navigate(url, { trigger: true, replace: true });
     }
     
-    function activateRoute(instance, instruction) {
-        activeItem.activateItem(instance, instruction.params).then(function (succeeded) {
+    function activateRoute(activator, instance, instruction) {
+        activator.activateItem(instance, instruction.params).then(function (succeeded) {
             if (succeeded) {
                 completeNavigation(instance, instruction);
             } else {
@@ -85,7 +85,7 @@ function (system, app, viewModel, history) {
         });
     }
     
-    function handleGuardedRoute(instance, instruction) {
+    function handleGuardedRoute(activator, instance, instruction) {
         var resultOrPromise = router.guardRoute(instance, instruction);
         if (resultOrPromise) {
             if (resultOrPromise.then) {
@@ -94,7 +94,7 @@ function (system, app, viewModel, history) {
                         if (system.isString(result)) {
                             redirect(result);
                         } else {
-                            activateRoute(instance, instruction);
+                            activateRoute(activator, instance, instruction);
                         }
                     } else {
                         cancelNavigation(instance, instruction);
@@ -104,7 +104,7 @@ function (system, app, viewModel, history) {
                 if (system.isString(resultOrPromise)) {
                     redirect(resultOrPromise);
                 } else {
-                    activateRoute(instance, instruction);
+                    activateRoute(activator, instance, instruction);
                 }
             }
         } else {
@@ -112,6 +112,20 @@ function (system, app, viewModel, history) {
         }
     }
     
+    function ensureActivation(activator, instance, instruction) {
+        if (router.guardRoute) {
+            handleGuardedRoute(activator, instance, instruction);
+        } else {
+            activateRoute(activator, instance, instruction);
+        }
+    }
+
+    function shouldPreserveCurrentActivation(instruction) {
+        return currentInstruction
+            && currentInstruction.config.moduleId == instruction.config.moduleId
+            && (instruction.config.preserve || currentInstruction.config.preserve);
+    }
+
     function dequeueRoute() {
         if (isNavigating()) {
             return;
@@ -126,15 +140,14 @@ function (system, app, viewModel, history) {
 
         isNavigating(true);
 
-        system.acquire(instruction.config.moduleId).then(function (module) {
-            var instance = router.getActivatableInstance(module, instruction);
-
-            if (router.guardRoute) {
-                handleGuardedRoute(instance, instruction);
-            } else {
-                activateRoute(instance, instruction);
-            }
-        });
+        if (shouldPreserveCurrentActivation(instruction)) {
+            ensureActivation(viewModel.activator(), currentActivation, instruction);
+        } else {
+            system.acquire(instruction.config.moduleId).then(function(module) {
+                var instance = router.getActivatableInstance(module, instruction);
+                ensureActivation(activeItem, instance, instruction);
+            });
+        }
     }
         
     function queueRoute(instruction) {
