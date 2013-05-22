@@ -79,6 +79,10 @@ function (system, app, viewModel, history) {
         activator.activateItem(instance, instruction.params).then(function (succeeded) {
             if (succeeded) {
                 completeNavigation(instance, instruction);
+
+                if (activator !== activeItem) {
+                    router.afterCompose();
+                }
             } else {
                 cancelNavigation(instance, instruction);
             }
@@ -120,10 +124,12 @@ function (system, app, viewModel, history) {
         }
     }
 
-    function shouldPreserveCurrentActivation(instruction) {
+    function canReuseCurrentActivation(instruction) {
         return currentInstruction
             && currentInstruction.config.moduleId == instruction.config.moduleId
-            && (instruction.config.preserve || currentInstruction.config.preserve);
+            && currentActivation
+            && currentActivation.canReuseForRoute
+            && currentActivation.canReuseForRoute(instruction.params);
     }
 
     function dequeueRoute() {
@@ -140,7 +146,7 @@ function (system, app, viewModel, history) {
 
         isNavigating(true);
 
-        if (shouldPreserveCurrentActivation(instruction)) {
+        if (canReuseCurrentActivation(instruction)) {
             ensureActivation(viewModel.activator(), currentActivation, instruction);
         } else {
             system.acquire(instruction.config.moduleId).then(function(module) {
