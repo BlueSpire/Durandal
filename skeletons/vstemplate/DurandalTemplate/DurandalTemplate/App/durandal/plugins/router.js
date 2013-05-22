@@ -165,7 +165,7 @@ function (system, app, viewModel, history) {
         if (!system.isRegExp(config.route)) {
             config.title = config.title || router.convertRouteToTitle(config.route);
             config.moduleId = config.moduleId || router.convertRouteToModuleId(config.url);
-            config.hash = config.hash || '#/' + config.route;
+            config.hash = config.hash || '#' + config.route;
             config.route = routeStringToRegExp(config.route);
         }
         

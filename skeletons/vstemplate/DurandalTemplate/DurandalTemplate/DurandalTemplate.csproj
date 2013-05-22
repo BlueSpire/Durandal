@@ -266,7 +266,6 @@ xcopy "$(SolutionDir)DurandalTemplate\Content\ie10mobile.css" "..\..\..\..\mimos
 xcopy "$(SolutionDir)DurandalTemplate\Scripts\bootstrap.js" "..\..\..\..\mimosa\DurandalTemplate\assets\Scripts\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\Scripts\jQuery-1.9.1.js" "..\..\..\..\mimosa\DurandalTemplate\assets\Scripts\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\Scripts\knockout-2.2.1.js" "..\..\..\..\mimosa\DurandalTemplate\assets\Scripts\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Scripts\sammy-0.7.4.js" "..\..\..\..\mimosa\DurandalTemplate\assets\Scripts\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\almond-custom.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\r.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\require.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
