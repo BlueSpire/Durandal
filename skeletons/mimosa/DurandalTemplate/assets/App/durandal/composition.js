@@ -65,7 +65,7 @@
     }
 
     function shouldTransition(newChild, settings) {
-        if (typeof settings.transition == 'string') {
+        if (system.isString(settings.transition)) {
             if (settings.activeView) {
                 if (settings.activeView == newChild) {
                     return false;
@@ -173,7 +173,7 @@
         getSettings: function (valueAccessor, element) {
             var value = ko.utils.unwrapObservable(valueAccessor()) || {};
 
-            if (typeof value == 'string') {
+            if (system.isString(value)) {
                 return value;
             }
 
@@ -216,7 +216,7 @@
                 settings.strategy = this.defaultStrategy;
             }
 
-            if (typeof settings.strategy == 'string') {
+            if (system.isString(settings.strategy)) {
                 system.acquire(settings.strategy).then(function (strategy) {
                     settings.strategy = strategy;
                     composition.executeStrategy(element, settings);
@@ -226,7 +226,7 @@
             }
         },
         compose: function (element, settings, bindingContext) {
-            if (typeof settings == 'string') {
+            if (system.isString(settings)) {
                 if (viewEngine.isViewUrl(settings)) {
                     settings = {
                         view: settings
@@ -265,14 +265,9 @@
                         composition.bindAndShow(element, view, settings);
                     });
                 }
-            } else if (typeof settings.model == 'string') {
+            } else if (system.isString(settings.model)) {
                 system.acquire(settings.model).then(function (module) {
-                    if (system.isFunction(module)) {
-                        settings.model = new module(element, settings);
-                    } else {
-                        settings.model = module;
-                    }
-
+                    settings.model = new (system.getObjectResolver(module))(element, settings);
                     composition.inject(element, settings);
                 });
             } else {

@@ -24,7 +24,8 @@
                         parts[id] = element;
                     }
 
-                    var childParts = $(widgetPartSelector, element);
+                    var childParts = $(widgetPartSelector, element)
+                                        .not($('[data-bind^="widget:"] ' + widgetPartSelector, element)); 
 
                     for (var j = 0; j < childParts.length; j++) {
                         var part = childParts.get(j);
