@@ -76,13 +76,19 @@
                 kindModuleMaps[kind] = moduleId;
             }
         },
-        convertKindToModuleId: function(kind) {
-            return kindModuleMaps[kind] || 'durandal/widgets/' + kind + '/controller';
+        mapKindToModuleId: function (kind) {
+            return kindModuleMaps[kind] || widget.convertKindToModulePath(kind);
         },
-        convertKindToViewId: function (kind) {
-            return kindViewMaps[kind] || 'durandal/widgets/' + kind + '/view';
+        convertKindToModulePath: function (kind) {
+            return 'durandal/widgets/' + kind + '/controller';
         },
-        beforeBind: function(element, view, settings) {
+        mapKindToViewId: function (kind) {
+            return kindViewMaps[kind] || widget.convertKindToViewPath(kind);
+        },
+        convertKindToViewPath: function (kind) {
+            return 'durandal/widgets/' + kind + '/view';
+        },
+        beforeBind: function (element, view, settings) {
             var replacementParts = widget.getParts(element);
             var standardParts = widget.getParts(view);
 
@@ -92,11 +98,11 @@
         },
         createCompositionSettings: function(settings) {
             if (!settings.model) {
-                settings.model = this.convertKindToModuleId(settings.kind);
+                settings.model = this.mapKindToModuleId(settings.kind);
             }
 
             if (!settings.view) {
-                settings.view = this.convertKindToViewId(settings.kind);
+                settings.view = this.mapKindToViewId(settings.kind);
             }
 
             settings.preserveContext = true;
