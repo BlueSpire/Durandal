@@ -155,8 +155,8 @@ function (system, app, viewModel, history) {
         if (canReuseCurrentActivation(instruction)) {
             ensureActivation(viewModel.activator(), currentActivation, instruction);
         } else {
-            system.acquire(instruction.config.moduleId).then(function(module) {
-                var instance = router.getActivatableInstance(module, instruction);
+            system.acquire(instruction.config.moduleId).then(function (module) {
+                var instance = new (system.getObjectResolver(module))();
                 ensureActivation(activeItem, instance, instruction);
             });
         }
@@ -213,14 +213,6 @@ function (system, app, viewModel, history) {
             }
         } else if (app.title) {
             document.title = app.title;
-        }
-    };
-
-    router.getActivatableInstance = function (module, instruction) {
-        if (system.isFunction(module)) {
-            return new module();
-        } else {
-            return module;
         }
     };
     

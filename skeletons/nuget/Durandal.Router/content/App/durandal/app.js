@@ -30,13 +30,13 @@
         setRoot: function(root, transition, applicationHost) {
             var hostElement, settings = { activate: true, transition: transition };
 
-            if (!applicationHost || typeof applicationHost == "string") {
+            if (!applicationHost || system.isString(applicationHost)) {
                 hostElement = document.getElementById(applicationHost || 'applicationHost');
             } else {
                 hostElement = applicationHost;
             }
 
-            if (typeof root === 'string') {
+            if (system.isString(root)) {
                 if (viewEngine.isViewUrl(root)) {
                     settings.view = root;
                 } else {

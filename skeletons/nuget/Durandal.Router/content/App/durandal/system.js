@@ -110,6 +110,13 @@
 
             obj.__moduleId__ = id;
         },
+        getObjectResolver: function (module) {
+            if (system.isFunction(module)) {
+                return module;
+            } else {
+                return (function () { return module; });
+            }
+        },
         debug: function(enable) {
             if (arguments.length == 1) {
                 isDebugging = enable;
