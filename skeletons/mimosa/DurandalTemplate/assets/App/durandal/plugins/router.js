@@ -10,7 +10,8 @@ function (system, app, viewModel, history) {
         isNavigating = ko.observable(false),
         currentActivation,
         currentInstruction,
-        activeItem = viewModel.activator();
+        activeItem = viewModel.activator(),
+        startDeferred;
 
     var router = {
         routes: [],
@@ -85,6 +86,11 @@ function (system, app, viewModel, history) {
                 }
             } else {
                 cancelNavigation(instance, instruction);
+            }
+
+            if (startDeferred) {
+                startDeferred.resolve();
+                startDeferred = null;
             }
         });
     }
@@ -220,7 +226,6 @@ function (system, app, viewModel, history) {
     
     router.navigate = function (fragment, options) {
         history.navigate(fragment, options);
-        return router;
     };
 
     router.navigateBack = function () {
@@ -326,24 +331,26 @@ function (system, app, viewModel, history) {
             router.events.trigger('router:route:mapping', instruction.config);
             queueRoute(instruction);
         });
-    };
 
-    router.start = function (options) {
-        router.options = options || router.options || {};
-        history.start(router.options);
         return router;
     };
 
-    router.stop = function () {
-        history.stop();
-        return router;
+    router.activate = function (options) {
+        return system.defer(function (dfd) {
+            startDeferred = dfd;
+            router.options = options || router.options || {};
+            history.activate(router.options);
+        }).promise();
+    };
+
+    router.deactivate = function () {
+        history.deactivate();
     };
     
     router.reset = function () {
         history.handlers = [];
         router.routes = [];
         delete router.options;
-        return router;
     };
 
     return router;

@@ -12,9 +12,9 @@
                 { route: 'master-detail', moduleId: 'samples/masterDetail/index', title: 'Master Detail', nav: true },
                 { route: 'knockout-samples/:name', moduleId: 'samples/knockout/index', title: 'Knockout Samples' },
                 { route: 'knockout-samples', moduleId: 'samples/knockout/index', title: 'Knockout Samples', nav: true }
-            ])
-            .buildNavigationModel()
-            .start();
+            ]).buildNavigationModel();
+            
+            return router.activate();
         }
     };
 });

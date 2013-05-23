@@ -32,7 +32,7 @@
     var history = {
         handlers: [],
         interval: 50,
-        started: false
+        active: false
     };
     
     // Ensure that `History` can be used outside of the browser.
@@ -66,14 +66,14 @@
         return fragment.replace(routeStripper, '');
     };
 
-    // Start the hash change handling, returning `true` if the current URL matches
+    // Activate the hash change handling, returning `true` if the current URL matches
     // an existing route, and `false` otherwise.
-    history.start = function(options) {
-        if (history.started) {
-            throw new Error("History has already been started.");
+    history.activate = function(options) {
+        if (history.active) {
+            throw new Error("History has already been activated.");
         }
 
-        history.started = true;
+        history.active = true;
 
         // Figure out the initial configuration. Do we need an iframe?
         // Is pushState desired ... is it available?
@@ -133,10 +133,10 @@
     
     // Disable history, perhaps temporarily. Not useful in a real app,
     // but possibly useful for unit testing Routers.
-    history.stop = function() {
+    history.deactivate = function() {
         $(window).off('popstate', history.checkUrl).off('hashchange', history.checkUrl);
         clearInterval(history._checkUrlInterval);
-        history.started = false;
+        history.active = false;
     };
     
     // Add a route to be tested when the fragment changes. Routes added later
@@ -190,7 +190,7 @@
     // route callback be fired (not usually desirable), or `replace: true`, if
     // you wish to modify the current URL without adding an entry to the history.
     history.navigate = function(fragment, options) {
-        if (!history.started) {
+        if (!history.active) {
             return false;
         }
 

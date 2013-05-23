@@ -1,5 +1,4 @@
 ﻿define(['durandal/plugins/router', 'durandal/app'], function (router, app) {
-
     return {
         router: router,
         search: function() {
@@ -11,9 +10,9 @@
             router.map([
                 { route: '', title:'Welcome', moduleId: 'viewmodels/welcome', nav: true },
                 { route: 'flickr', moduleId: 'viewmodels/flickr', nav: true }
-            ])
-            .buildNavigationModel()
-            .start();
+            ]).buildNavigationModel();
+            
+            return router.start();
         }
     };
 });
