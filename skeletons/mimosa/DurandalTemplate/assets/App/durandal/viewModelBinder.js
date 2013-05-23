@@ -41,7 +41,8 @@
 
     return viewModelBinder = {
         beforeBind: system.noop,
-        afterBind:system.noop,
+        afterBind: system.noop,
+        throwOnErrors: false,
         bindContext: function(bindingContext, view, obj) {
             if (obj) {
                 bindingContext = bindingContext.createChildContext(obj);
