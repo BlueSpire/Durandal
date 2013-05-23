@@ -170,8 +170,8 @@ function (system, app, viewModel, history) {
     function mapRoute(config) {
         if (!system.isRegExp(config.route)) {
             config.title = config.title || router.convertRouteToTitle(config.route);
-            config.moduleId = config.moduleId || router.convertRouteToModuleId(config.url);
-            config.hash = config.hash || '#' + config.route;
+            config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
+            config.hash = config.hash || router.convertRouteToHash(config.route);
             config.route = routeStringToRegExp(config.route);
         }
         
@@ -230,6 +230,10 @@ function (system, app, viewModel, history) {
             router.events.trigger('router:navigation:composed', currentActivation, currentInstruction);
             dequeueRoute();
         }, 10);
+    };
+
+    router.convertRouteToHash = function(route) {
+        return "#" + route;
     };
 
     router.convertRouteToModuleId = function (route) {
