@@ -30,10 +30,10 @@ define(['durandal/viewEngine', 'durandal/system'], function (sut, system) {
         });
     });
 
-    describe('parseMarkup', function () {
+    describe('processMarkup', function () {
         describe('with single node', function () {
             it('returns dom element', function () {
-                var markup = sut.parseMarkup('<div>test</div>');
+                var markup = sut.processMarkup('<div>test</div>');
 
                 expect(markup.nodeType).toBe(1);
                 expect(markup.innerText).toBe('test');
@@ -43,7 +43,7 @@ define(['durandal/viewEngine', 'durandal/system'], function (sut, system) {
 
         describe('with multiple nodes', function () {
             it('returns wrapped dom element', function () {
-                var markup = sut.parseMarkup('<div>test</div><div>test</div>');
+                var markup = sut.processMarkup('<div>test</div><div>test</div>');
 
                 expect(markup.className).toBe('durandal-wrapper');
                 expect(markup.childNodes.length).toBe(2);
@@ -52,8 +52,64 @@ define(['durandal/viewEngine', 'durandal/system'], function (sut, system) {
 
         describe('with comments', function () {
             it('returns dom element with comments removed', function () {
-                var markup = sut.parseMarkup('<!-- this is a comment --><div>test</div>');
+                var markup = sut.processMarkup('<!-- this is a comment --><div>test</div>');
 
+                expect(markup.nodeType).toBe(1);
+                expect(markup.innerText).toBe('test');
+                expect(markup.childNodes[0].nodeType).toBe(3);
+            });
+        });
+    });
+
+    describe('processMarkup with alternate parseMarkup', function () {
+
+        var oldParseMarkup = null;
+        var spyable = null;
+
+        beforeEach(function () {
+            spyable = {
+                parseIt: function (markup) {
+                    return $.parseHTML(markup);
+                }
+            };
+
+            oldParseMarkup = sut.parseMarkup;
+            var spied = spyOn(spyable, 'parseIt').andCallThrough();
+            sut.parseMarkup = spied;
+        });
+
+        afterEach(function () {
+            sut.parseMarkup = oldParseMarkup;
+            oldParseMarkup = null;
+            spyable = null;
+        });
+
+        describe('with single node', function () {
+            it('returns dom element', function () {
+                var markup = sut.processMarkup('<div>test</div>');
+
+                expect(spyable.parseIt).toHaveBeenCalled();
+                expect(markup.nodeType).toBe(1);
+                expect(markup.innerText).toBe('test');
+                expect(markup.childNodes[0].nodeType).toBe(3);
+            });
+        });
+
+        describe('with multiple nodes', function () {
+            it('returns wrapped dom element', function () {
+                var markup = sut.processMarkup('<div>test</div><div>test</div>');
+
+                expect(spyable.parseIt).toHaveBeenCalled();
+                expect(markup.className).toBe('durandal-wrapper');
+                expect(markup.childNodes.length).toBe(2);
+            });
+        });
+
+        describe('with comments', function () {
+            it('returns dom element with comments removed', function () {
+                var markup = sut.processMarkup('<!-- this is a comment --><div>test</div>');
+
+                expect(spyable.parseIt).toHaveBeenCalled();
                 expect(markup.nodeType).toBe(1);
                 expect(markup.innerText).toBe('test');
                 expect(markup.childNodes[0].nodeType).toBe(3);

@@ -1,12 +1,12 @@
 ﻿define(['./system'], function (system) {
-    var parseMarkupCore;
+    var parseMarkup;
 
     if ($.parseHTML) {
-        parseMarkupCore = function(html) {
+        parseMarkup = function (html) {
             return $.parseHTML(html);
         };
     } else {
-        parseMarkupCore = function(html) {
+        parseMarkup = function (html) {
             return $(html).get();
         };
     }
@@ -23,14 +23,15 @@
         convertViewIdToRequirePath: function (viewId) {
             return this.viewPlugin + '!' + viewId + this.viewExtension;
         },
-        parseMarkup: function (markup) {
-            var allElements = parseMarkupCore(markup);
+        parseMarkup: parseMarkup,
+        processMarkup: function (markup) {
+            var allElements = this.parseMarkup(markup);
             if (allElements.length == 1) {
                 return allElements[0];
             }
 
             var withoutCommentsOrEmptyText = [];
-            
+
             for (var i = 0; i < allElements.length; i++) {
                 var current = allElements[i];
                 if (current.nodeType != 8) {
@@ -57,7 +58,7 @@
 
             return system.defer(function(dfd) {
                 system.acquire(requirePath).then(function(markup) {
-                    var element = that.parseMarkup(markup);
+                    var element = that.processMarkup(markup);
                     element.setAttribute('data-view', viewId);
                     dfd.resolve(element);
                 });
