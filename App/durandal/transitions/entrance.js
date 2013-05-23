@@ -1,5 +1,16 @@
 ﻿define(['../system'], function(system) {
     var fadeOutDuration = 100;
+    var endValues = {
+        marginRight: 0,
+        marginLeft: 0,
+        opacity: 1
+    };
+    var clearValues = {
+        marginLeft: '',
+        marginRight: '',
+        opacity: '',
+        display: ''
+    };
 
     var entrance = function(parent, newChild, settings) {
         return system.defer(function(dfd) {
@@ -53,14 +64,13 @@
                         display: 'block'
                     };
 
-                    var endValues = {
-                        marginRight: 0,
-                        marginLeft: 0,
-                        opacity: 1
-                    };
+                    var $newChild = $(newChild);
 
-                    $(newChild).css(startValues);
-                    $(newChild).animate(endValues, duration, 'swing', endTransition);
+                    $newChild.css(startValues);
+                    $newChild.animate(endValues, duration, 'swing', function () {
+                        $newChild.css(clearValues);
+                        endTransition();
+                    });
                 }
 
                 if ($previousView.length) {
