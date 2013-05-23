@@ -49,17 +49,21 @@ namespace Optimizer {
           Arguments = command,
           UseShellExecute = false,
           CreateNoWindow = true,
-          RedirectStandardOutput = true
+          RedirectStandardOutput = true,
+          RedirectStandardError = true,
         },
         EnableRaisingEvents = true
       };
 
       process.OutputDataReceived += (s, e) => Console.WriteLine(e.Data);
+      process.ErrorDataReceived += (s, e) => Console.Error.WriteLine(e.Data);
 
       process.Start();
       process.BeginOutputReadLine();
+      process.BeginErrorReadLine();
       process.WaitForExit();
       process.CancelOutputRead();
+      process.CancelErrorRead();
     }
   }
 }
