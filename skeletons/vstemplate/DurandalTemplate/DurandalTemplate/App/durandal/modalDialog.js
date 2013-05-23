@@ -115,7 +115,6 @@
                 var newBodyOuterWidth = $("body").outerWidth(true);
                 body.css("margin-right", (newBodyOuterWidth - oldBodyOuterWidth + parseInt(modal.oldBodyMarginRight)) + "px");
                 html.scrollTop(oldScrollTop); // necessary for Firefox
-                $("#simplemodal-overlay").css("width", newBodyOuterWidth + "px");
             }
         },
         removeHost: function(modal) {
