@@ -5,20 +5,28 @@
             <li class="nav-header">Basic Examples</li>
             
             <!--ko foreach: introSamples-->
-            <li data-bind="css: {active:$parent.activeSample().__moduleId__ == $data.moduleId}">
-                <a data-bind="attr: { href: hash }, text: name"></a>
+            <li data-bind="css: { active: isActive }">
+                <a data-bind="attr: { href: hash }, text: title"></a>
             </li>
             <!--/ko-->
 
             <li class="nav-header">Detailed Examples</li>
             
+
             <!--ko foreach: detailedSamples-->
-            <li data-bind="css: { active: $parent.activeSample().__moduleId__ == $data.moduleId }">
-                <a data-bind="attr: { href: hash }, text: name"></a>
+            <li data-bind="css: { active: isActive }">
+                <a data-bind="attr: { href: hash }, text: title"></a>
             </li>
             <!--/ko-->
         </ul>
     </div>
-    <div class="span10" data-bind="compose: activeSample"></div>
+      <div class="span10">
+            <!--ko compose: { 
+                model: router.activeItem, //wiring the router
+                afterCompose: router.afterCompose, //wiring the router
+                transition:'entrance', //use the 'entrance' transition when switching views
+                cacheViews:true //telling composition to keep views in the dom, and reuse them (only a good idea with singleton view models)
+            }--><!--/ko-->
+      </div>
   </div>
 </div>
