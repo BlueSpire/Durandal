@@ -223,7 +223,7 @@
                 var currentItem = activeItem();
                 if (settings.areSameItem(currentItem, newItem, activationData)) {
                     computed.isActivating(false);
-                    dfd.resolve(true);
+                    dfd.resolve(false);
                     return;
                 }
 
