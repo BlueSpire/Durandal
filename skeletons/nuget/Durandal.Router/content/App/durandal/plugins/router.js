@@ -39,12 +39,12 @@ function(system, app, viewModel, events, history) {
     }
 
     function hasChildRouter(instance) {
-        return instance && instance.router && instance.router.loadUrl;
+        return instance.router && instance.router.loadUrl;
     }
 
     var createRouter = function() {
         var queue = [],
-            isNavigating = ko.observable(false),
+            isProcessing = ko.observable(false),
             currentActivation,
             currentInstruction,
             activeItem = viewModel.activator();
@@ -54,7 +54,10 @@ function(system, app, viewModel, events, history) {
             routes: [],
             navigationModel: ko.observableArray([]),
             activeItem: activeItem,
-            isNavigating: isNavigating
+            isNavigating: ko.computed(function() {
+                var current = activeItem();
+                return isProcessing() || (current && current.router && current.router.isNavigating());
+            })
         };
 
         events.includeIn(router);
@@ -79,14 +82,14 @@ function(system, app, viewModel, events, history) {
                 router.navigate(currentInstruction.fragment, { replace: true });
             }
 
-            isNavigating(false);
+            isProcessing(false);
             router.trigger('router:navigation:cancelled', instance, instruction, router);
         }
 
         function redirect(url) {
             system.log('Navigation Redirecting');
 
-            isNavigating(false);
+            isProcessing(false);
             router.navigate(url, { trigger: true, replace: true });
         }
 
@@ -97,12 +100,14 @@ function(system, app, viewModel, events, history) {
                     completeNavigation(instance, instruction);
 
                     if (hasChildRouter(instance)) {
-                        queueRoute({
+                        queueInstruction({
                             router: instance.router,
                             fragment: instruction.fragment
                         });
-                    } else if (previousActivation == instance) {
-                        router.afterCompose(true);
+                    }
+
+                    if (previousActivation == instance) {
+                        router.afterCompose();
                     }
                 } else {
                     cancelNavigation(instance, instruction);
@@ -158,8 +163,8 @@ function(system, app, viewModel, events, history) {
                     || (currentActivation.router && currentActivation.router.loadUrl));
         }
 
-        function dequeueRoute() {
-            if (isNavigating()) {
+        function dequeueInstruction() {
+            if (isProcessing()) {
                 return;
             }
 
@@ -175,7 +180,7 @@ function(system, app, viewModel, events, history) {
                 return;
             }
 
-            isNavigating(true);
+            isProcessing(true);
 
             if (canReuseCurrentActivation(instruction)) {
                 ensureActivation(viewModel.activator(), currentActivation, instruction);
@@ -187,9 +192,9 @@ function(system, app, viewModel, events, history) {
             }
         }
 
-        function queueRoute(instruction) {
+        function queueInstruction(instruction) {
             queue.unshift(instruction);
-            dequeueRoute();
+            dequeueInstruction();
         }
 
         function mapRoute(config) {
@@ -204,7 +209,7 @@ function(system, app, viewModel, events, history) {
             router.routes.push(config);
 
             router.route(config.route, function(fragment) {
-                queueRoute({
+                queueInstruction({
                     fragment: fragment,
                     config: config,
                     params: extractParameters(config.route, fragment)
@@ -263,18 +268,11 @@ function(system, app, viewModel, events, history) {
             history.history.back();
         };
 
-        router.afterCompose = function(force) {
+        router.afterCompose = function() {
             setTimeout(function() {
-                if (!hasChildRouter(currentActivation) || (system.isBoolean(force) && force)) {
-                    isNavigating(false);
-                    router.trigger('router:navigation:composed', currentActivation, currentInstruction, router);
-
-                    if(router.parent) {
-                        router.parent.afterCompose(true);
-                    }
-                }
-
-                dequeueRoute();
+                isProcessing(false);
+                router.trigger('router:navigation:composed', currentActivation, currentInstruction, router);
+                dequeueInstruction();
             }, 100);
         };
 
@@ -361,7 +359,7 @@ function(system, app, viewModel, events, history) {
                     if (result && result.then) {
                         result.then(function() {
                             router.trigger('router:route:mapping', instruction.config, router);
-                            queueRoute(instruction);
+                            queueInstruction(instruction);
                         });
                         return;
                     }
@@ -371,7 +369,7 @@ function(system, app, viewModel, events, history) {
                 }
 
                 router.trigger('router:route:mapping', instruction.config, router);
-                queueRoute(instruction);
+                queueInstruction(instruction);
             });
 
             return router;

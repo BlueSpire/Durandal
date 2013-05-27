@@ -44,7 +44,7 @@ function(system, app, viewModel, events, history) {
 
     var createRouter = function() {
         var queue = [],
-            isNavigating = ko.observable(false),
+            isProcessing = ko.observable(false),
             currentActivation,
             currentInstruction,
             activeItem = viewModel.activator();
@@ -54,7 +54,10 @@ function(system, app, viewModel, events, history) {
             routes: [],
             navigationModel: ko.observableArray([]),
             activeItem: activeItem,
-            isNavigating: isNavigating
+            isNavigating: ko.computed(function() {
+                var current = activeItem();
+                return isProcessing() || (current && current.router && current.router.isNavigating());
+            })
         };
 
         events.includeIn(router);
@@ -79,14 +82,14 @@ function(system, app, viewModel, events, history) {
                 router.navigate(currentInstruction.fragment, { replace: true });
             }
 
-            isNavigating(false);
+            isProcessing(false);
             router.trigger('router:navigation:cancelled', instance, instruction, router);
         }
 
         function redirect(url) {
             system.log('Navigation Redirecting');
 
-            isNavigating(false);
+            isProcessing(false);
             router.navigate(url, { trigger: true, replace: true });
         }
 
@@ -102,7 +105,7 @@ function(system, app, viewModel, events, history) {
                             fragment: instruction.fragment
                         });
                     }
-                    
+
                     if (previousActivation == instance) {
                         router.afterCompose();
                     }
@@ -161,7 +164,7 @@ function(system, app, viewModel, events, history) {
         }
 
         function dequeueInstruction() {
-            if (isNavigating()) {
+            if (isProcessing()) {
                 return;
             }
 
@@ -177,7 +180,7 @@ function(system, app, viewModel, events, history) {
                 return;
             }
 
-            isNavigating(true);
+            isProcessing(true);
 
             if (canReuseCurrentActivation(instruction)) {
                 ensureActivation(viewModel.activator(), currentActivation, instruction);
@@ -267,7 +270,7 @@ function(system, app, viewModel, events, history) {
 
         router.afterCompose = function() {
             setTimeout(function() {
-                isNavigating(false);
+                isProcessing(false);
                 router.trigger('router:navigation:composed', currentActivation, currentInstruction, router);
                 dequeueInstruction();
             }, 100);
