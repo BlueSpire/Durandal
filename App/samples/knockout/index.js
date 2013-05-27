@@ -3,6 +3,12 @@
 
     childRouter.map([{
         type: 'intro',
+        route: 'knockout-samples',
+        moduleId: 'samples/knockout/helloWorld/index',
+        title: 'Hello World'
+    },
+    {
+        type: 'intro',
         route: 'knockout-samples/helloWorld',
         moduleId: 'samples/knockout/helloWorld/index',
         title: 'Hello World',
@@ -74,12 +80,7 @@
         title: 'Twitter Client',
         nav: true
     }])
-    .buildNavigationModel()
-    .mapUnknownRoutes({
-        route: 'knockout-samples/helloWorld',
-        moduleId: 'samples/knockout/helloWorld/index',
-        title: 'Hello World'
-    });
+    .buildNavigationModel();
 
     return {
         router: childRouter,

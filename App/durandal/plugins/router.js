@@ -194,9 +194,6 @@ function(system, app, viewModel, history) {
                 config.route = routeStringToRegExp(config.route);
             }
 
-            config.caption = config.caption || config.title;
-            config.settings = config.settings || { };
-
             router.events.trigger('router:route:mapping', config, router);
             router.routes.push(config);
 
