@@ -1,10 +1,11 @@
-﻿define(['../system', '../app', '../viewModel', './history'],
-function(system, app, viewModel, history) {
+﻿define(['../system', '../app', '../viewModel', '../events', './history'],
+function(system, app, viewModel, events, history) {
 
-    var optionalParam = /\((.*?)\)/g ;
-    var namedParam = /(\(\?)?:\w+/g ;
-    var splatParam = /\*\w+/g ;
-    var escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g ;
+    var optionalParam = /\((.*?)\)/g;
+    var namedParam = /(\(\?)?:\w+/g;
+    var splatParam = /\*\w+/g;
+    var escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
+    var startDeferred, rootRouter;
 
     function routeStringToRegExp(routeString) {
         routeString = routeString.replace(escapeRegExp, '\\$&')
@@ -20,11 +21,10 @@ function(system, app, viewModel, history) {
     // Given a route, and a URL fragment that it matches, return the array of
     // extracted decoded parameters. Empty or unmatched parameters will be
     // treated as `null` to normalize cross-browser behavior.
-
     function extractParameters(route, fragment) {
         var params = route.exec(fragment).slice(1);
 
-        for(var i = 0; i < params.length; i++) {
+        for (var i = 0; i < params.length; i++) {
             var current = params[i];
             params[i] = current ? decodeURIComponent(current) : null;
         }
@@ -38,22 +38,26 @@ function(system, app, viewModel, history) {
         return route.substring(0, length);
     }
 
+    function hasChildRouter(instance) {
+        return instance && instance.router && instance.router.loadUrl;
+    }
+
     var createRouter = function() {
         var queue = [],
             isNavigating = ko.observable(false),
             currentActivation,
             currentInstruction,
-            activeItem = viewModel.activator(),
-            startDeferred;
+            activeItem = viewModel.activator();
 
         var router = {
-            handlers:[],
-            routes:[],
-            navigationModel:ko.observableArray([]),
-            activeItem:activeItem,
-            isNavigating:isNavigating,
-            events:app
+            handlers: [],
+            routes: [],
+            navigationModel: ko.observableArray([]),
+            activeItem: activeItem,
+            isNavigating: isNavigating
         };
+
+        events.includeIn(router);
 
         function completeNavigation(instance, instruction) {
             system.log('Navigation Complete', instance, instruction);
@@ -61,48 +65,50 @@ function(system, app, viewModel, history) {
             currentActivation = instance;
             currentInstruction = instruction;
 
-            router.updateDocumentTitle(instance, instruction);
-            router.events.trigger('router:navigation:complete', instance, instruction, router);
+            if (!hasChildRouter(instance)) {
+                router.updateDocumentTitle(instance, instruction);
+            }
+
+            router.trigger('router:navigation:complete', instance, instruction, router);
         }
 
         function cancelNavigation(instance, instruction) {
             system.log('Navigation Cancelled');
 
-            if(currentInstruction) {
-                router.navigate(currentInstruction.fragment, { replace:true });
+            if (currentInstruction) {
+                router.navigate(currentInstruction.fragment, { replace: true });
             }
 
             isNavigating(false);
-            router.events.trigger('router:navigation:cancelled', instance, instruction, router);
+            router.trigger('router:navigation:cancelled', instance, instruction, router);
         }
 
         function redirect(url) {
             system.log('Navigation Redirecting');
 
             isNavigating(false);
-            router.navigate(url, { trigger:true, replace:true });
+            router.navigate(url, { trigger: true, replace: true });
         }
 
         function activateRoute(activator, instance, instruction) {
             activator.activateItem(instance, instruction.params).then(function(succeeded) {
-                if(succeeded) {
+                if (succeeded) {
+                    var previousActivation = currentActivation;
                     completeNavigation(instance, instruction);
 
-                    if(instance.router && instance.router.loadUrl) {
+                    if (hasChildRouter(instance)) {
                         queueRoute({
-                            childRouter:instance.router,
-                            fragment:instruction.fragment
+                            router: instance.router,
+                            fragment: instruction.fragment
                         });
-                    }
-
-                    if(activator !== activeItem) {
-                        router.afterCompose();
+                    } else if (previousActivation == instance) {
+                        router.afterCompose(true);
                     }
                 } else {
                     cancelNavigation(instance, instruction);
                 }
 
-                if(startDeferred) {
+                if (startDeferred) {
                     startDeferred.resolve();
                     startDeferred = null;
                 }
@@ -111,11 +117,11 @@ function(system, app, viewModel, history) {
 
         function handleGuardedRoute(activator, instance, instruction) {
             var resultOrPromise = router.guardRoute(instance, instruction);
-            if(resultOrPromise) {
-                if(resultOrPromise.then) {
+            if (resultOrPromise) {
+                if (resultOrPromise.then) {
                     resultOrPromise.then(function(result) {
-                        if(result) {
-                            if(system.isString(result)) {
+                        if (result) {
+                            if (system.isString(result)) {
                                 redirect(result);
                             } else {
                                 activateRoute(activator, instance, instruction);
@@ -125,7 +131,7 @@ function(system, app, viewModel, history) {
                         }
                     });
                 } else {
-                    if(system.isString(resultOrPromise)) {
+                    if (system.isString(resultOrPromise)) {
                         redirect(resultOrPromise);
                     } else {
                         activateRoute(activator, instance, instruction);
@@ -137,7 +143,7 @@ function(system, app, viewModel, history) {
         }
 
         function ensureActivation(activator, instance, instruction) {
-            if(router.guardRoute) {
+            if (router.guardRoute) {
                 handleGuardedRoute(activator, instance, instruction);
             } else {
                 activateRoute(activator, instance, instruction);
@@ -149,29 +155,29 @@ function(system, app, viewModel, history) {
                 && currentInstruction.config.moduleId == instruction.config.moduleId
                 && currentActivation
                 && ((currentActivation.canReuseForRoute && currentActivation.canReuseForRoute.apply(currentActivation, instruction.params))
-                || (currentActivation.router && currentActivation.router.loadUrl));
+                    || (currentActivation.router && currentActivation.router.loadUrl));
         }
 
         function dequeueRoute() {
-            if(isNavigating()) {
+            if (isNavigating()) {
                 return;
             }
 
             var instruction = queue.shift();
             queue = [];
 
-            if(!instruction) {
+            if (!instruction) {
                 return;
             }
 
-            if(instruction.childRouter) {
-                instruction.childRouter.loadUrl(instruction.fragment);
+            if (instruction.router) {
+                instruction.router.loadUrl(instruction.fragment);
                 return;
             }
 
             isNavigating(true);
 
-            if(canReuseCurrentActivation(instruction)) {
+            if (canReuseCurrentActivation(instruction)) {
                 ensureActivation(viewModel.activator(), currentActivation, instruction);
             } else {
                 system.acquire(instruction.config.moduleId).then(function(module) {
@@ -187,24 +193,21 @@ function(system, app, viewModel, history) {
         }
 
         function mapRoute(config) {
-            if(!system.isRegExp(config.route)) {
+            if (!system.isRegExp(config.route)) {
                 config.title = config.title || router.convertRouteToTitle(config.route);
                 config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
                 config.hash = config.hash || router.convertRouteToHash(config.route);
                 config.route = routeStringToRegExp(config.route);
             }
 
-            config.caption = config.caption || config.title;
-            config.settings = config.settings || { };
-
-            router.events.trigger('router:route:mapping', config, router);
+            router.trigger('router:route:mapping', config, router);
             router.routes.push(config);
 
             router.route(config.route, function(fragment) {
                 queueRoute({
-                    fragment:fragment,
-                    config:config,
-                    params:extractParameters(config.route, fragment)
+                    fragment: fragment,
+                    config: config,
+                    params: extractParameters(config.route, fragment)
                 });
             });
 
@@ -220,7 +223,7 @@ function(system, app, viewModel, history) {
         // Add a route to be tested when the fragment changes. Routes added later
         // may override previous routes.
         router.route = function(route, callback) {
-            router.handlers.push({ route:route, callback:callback });
+            router.handlers.push({ route: route, callback: callback });
         };
 
         // Attempt to load the current URL fragment. If a route succeeds with a
@@ -229,9 +232,9 @@ function(system, app, viewModel, history) {
         router.loadUrl = function(fragment) {
             var handlers = router.handlers;
 
-            for(var i = 0; i < handlers.length; i++) {
+            for (var i = 0; i < handlers.length; i++) {
                 var current = handlers[i];
-                if(current.route.test(fragment)) {
+                if (current.route.test(fragment)) {
                     current.callback(fragment);
                     return true;
                 }
@@ -241,13 +244,13 @@ function(system, app, viewModel, history) {
         };
 
         router.updateDocumentTitle = function(instance, instruction) {
-            if(instruction.config.title) {
-                if(app.title) {
+            if (instruction.config.title) {
+                if (app.title) {
                     document.title = instruction.config.title + " | " + app.title;
                 } else {
                     document.title = instruction.config.title;
                 }
-            } else if(app.title) {
+            } else if (app.title) {
                 document.title = app.title;
             }
         };
@@ -260,10 +263,17 @@ function(system, app, viewModel, history) {
             history.history.back();
         };
 
-        router.afterCompose = function() {
+        router.afterCompose = function(force) {
             setTimeout(function() {
-                isNavigating(false);
-                router.events.trigger('router:navigation:composed', currentActivation, currentInstruction, router);
+                if (!hasChildRouter(currentActivation) || (system.isBoolean(force) && force)) {
+                    isNavigating(false);
+                    router.trigger('router:navigation:composed', currentActivation, currentInstruction, router);
+
+                    if(router.parent) {
+                        router.parent.afterCompose(true);
+                    }
+                }
+
                 dequeueRoute();
             }, 100);
         };
@@ -286,19 +296,19 @@ function(system, app, viewModel, history) {
         //     router.map('search/:query/p:num', 'viewmodels/search');
         //
         router.map = function(route, config) {
-            if(system.isArray(route)) {
-                for(var i = 0; i < route.length; i++) {
+            if (system.isArray(route)) {
+                for (var i = 0; i < route.length; i++) {
                     router.map(route[i]);
                 }
 
                 return router;
             }
 
-            if(system.isString(route) || system.isRegExp(route)) {
-                if(!config) {
-                    config = { };
-                } else if(system.isString(config)) {
-                    config = { moduleId:config };
+            if (system.isString(route) || system.isRegExp(route)) {
+                if (!config) {
+                    config = {};
+                } else if (system.isString(config)) {
+                    config = { moduleId: config };
                 }
 
                 config.route = route;
@@ -313,11 +323,11 @@ function(system, app, viewModel, history) {
             var nav = [], routes = router.routes;
             defaultOrder = defaultOrder || 100;
 
-            for(var i = 0; i < routes.length; i++) {
+            for (var i = 0; i < routes.length; i++) {
                 var current = routes[i];
 
-                if(current.nav != undefined) {
-                    if(!system.isNumber(current.nav)) {
+                if (current.nav != undefined) {
+                    if (!system.isNumber(current.nav)) {
                         current.nav = defaultOrder;
                     }
 
@@ -337,20 +347,20 @@ function(system, app, viewModel, history) {
 
             router.route(route, function(fragment) {
                 var instruction = {
-                    fragment:fragment,
-                    config:{ route:route },
-                    params:extractParameters(route, fragment)
+                    fragment: fragment,
+                    config: { route: route },
+                    params: extractParameters(route, fragment)
                 };
 
-                if(!config) {
+                if (!config) {
                     instruction.config.moduleId = fragment;
-                } else if(system.isString(config)) {
+                } else if (system.isString(config)) {
                     instruction.config.moduleId = config;
-                } else if(system.isFunction(config)) {
+                } else if (system.isFunction(config)) {
                     var result = config(instruction);
-                    if(result && result.then) {
+                    if (result && result.then) {
                         result.then(function() {
-                            router.events.trigger('router:route:mapping', instruction.config, router);
+                            router.trigger('router:route:mapping', instruction.config, router);
                             queueRoute(instruction);
                         });
                         return;
@@ -360,24 +370,11 @@ function(system, app, viewModel, history) {
                     instruction.config.route = route;
                 }
 
-                router.events.trigger('router:route:mapping', instruction.config, router);
+                router.trigger('router:route:mapping', instruction.config, router);
                 queueRoute(instruction);
             });
 
             return router;
-        };
-
-        router.activate = function(options) {
-            return system.defer(function(dfd) {
-                startDeferred = dfd;
-                router.options = options || router.options || { };
-                router.options.routeHandler = router.loadUrl;
-                history.activate(router.options);
-            }).promise();
-        };
-
-        router.deactivate = function() {
-            history.deactivate();
         };
 
         router.reset = function() {
@@ -395,6 +392,19 @@ function(system, app, viewModel, history) {
         return router;
     };
 
-    // return a singleton, root router
-    return createRouter();
+    rootRouter = createRouter();
+
+    rootRouter.activate = function(options) {
+        return system.defer(function(dfd) {
+            startDeferred = dfd;
+            rootRouter.options = system.extend({ routeHandler: rootRouter.loadUrl }, rootRouter.options, options);
+            history.activate(rootRouter.options);
+        }).promise();
+    };
+
+    rootRouter.deactivate = function() {
+        history.deactivate();
+    };
+
+    return rootRouter;
 });

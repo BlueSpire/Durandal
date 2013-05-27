@@ -1,4 +1,4 @@
-﻿define(['require'], function (require) {
+﻿define(['require'], function(require) {
     var isDebugging = false,
         nativeKeys = Object.keys,
         hasOwnProperty = Object.prototype.hasOwnProperty,
@@ -30,14 +30,14 @@
     // http://bugs.dojotoolkit.org/ticket/16727
 
     if (require.on) {
-        require.on("moduleLoaded", function (module, mid) {
+        require.on("moduleLoaded", function(module, mid) {
             system.setModuleId(module, mid);
         });
     }
 
     // callback for require.js loader
     if (typeof requirejs !== 'undefined') {
-        requirejs.onResourceLoad = function (context, map, depArray) {
+        requirejs.onResourceLoad = function(context, map, depArray) {
             system.setModuleId(context.defined[map.id], map.id);
         };
     }
@@ -56,20 +56,20 @@
                         i++;
                     }
                 }
-                    // All other modern browsers
+                // All other modern browsers
                 else if ((Array.prototype.slice.call(arguments)).length == 1 && typeof Array.prototype.slice.call(arguments)[0] == 'string') {
                     console.log((Array.prototype.slice.call(arguments)).toString());
                 } else {
                     console.log(Array.prototype.slice.call(arguments));
                 }
             }
-                // IE8
+            // IE8
             else if ((!Function.prototype.bind || treatAsIE8) && typeof console != 'undefined' && typeof console.log == 'object') {
                 Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
             }
 
             // IE7 and lower, and other old browsers
-        } catch(ignore) {}
+        } catch (ignore) { }
     };
 
     var logError = function(error) {
@@ -110,11 +110,11 @@
 
             obj.__moduleId__ = id;
         },
-        getObjectResolver: function (module) {
+        getObjectResolver: function(module) {
             if (system.isFunction(module)) {
                 return module;
             } else {
-                return (function () { return module; });
+                return (function() { return module; });
             }
         },
         debug: function(enable) {
@@ -187,12 +187,12 @@
 
         return keys;
     };
-    
-    system.isElement = function (obj) {
+
+    system.isElement = function(obj) {
         return !!(obj && obj.nodeType === 1);
     };
 
-    system.isArray = nativeIsArray || function (obj) {
+    system.isArray = nativeIsArray || function(obj) {
         return toString.call(obj) == '[object Array]';
     };
 
@@ -200,12 +200,16 @@
         return obj === Object(obj);
     };
 
+    system.isBoolean = function(obj) {
+        return typeof(obj) === "boolean";
+    };
+
     //isArguments, isFunction, isString, isNumber, isDate, isRegExp.
     var isChecks = ['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp'];
 
     function makeIsFunction(name) {
         var value = '[object ' + name + ']';
-        system['is' + name] = function (obj) {
+        system['is' + name] = function(obj) {
             return toString.call(obj) == value;
         };
     }

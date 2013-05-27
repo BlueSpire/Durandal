@@ -5,7 +5,7 @@ function(system, app, viewModel, events, history) {
     var namedParam = /(\(\?)?:\w+/g;
     var splatParam = /\*\w+/g;
     var escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
-    var startDeferred;
+    var startDeferred, rootRouter;
 
     function routeStringToRegExp(routeString) {
         routeString = routeString.replace(escapeRegExp, '\\$&')
@@ -97,12 +97,12 @@ function(system, app, viewModel, events, history) {
                     completeNavigation(instance, instruction);
 
                     if (hasChildRouter(instance)) {
-                        queueRoute({
+                        queueInstruction({
                             router: instance.router,
                             fragment: instruction.fragment
                         });
                     }
-
+                    
                     if (previousActivation == instance) {
                         router.afterCompose();
                     }
@@ -160,7 +160,7 @@ function(system, app, viewModel, events, history) {
                     || (currentActivation.router && currentActivation.router.loadUrl));
         }
 
-        function dequeueRoute() {
+        function dequeueInstruction() {
             if (isNavigating()) {
                 return;
             }
@@ -189,9 +189,9 @@ function(system, app, viewModel, events, history) {
             }
         }
 
-        function queueRoute(instruction) {
+        function queueInstruction(instruction) {
             queue.unshift(instruction);
-            dequeueRoute();
+            dequeueInstruction();
         }
 
         function mapRoute(config) {
@@ -206,7 +206,7 @@ function(system, app, viewModel, events, history) {
             router.routes.push(config);
 
             router.route(config.route, function(fragment) {
-                queueRoute({
+                queueInstruction({
                     fragment: fragment,
                     config: config,
                     params: extractParameters(config.route, fragment)
@@ -269,7 +269,7 @@ function(system, app, viewModel, events, history) {
             setTimeout(function() {
                 isNavigating(false);
                 router.trigger('router:navigation:composed', currentActivation, currentInstruction, router);
-                dequeueRoute();
+                dequeueInstruction();
             }, 100);
         };
 
@@ -356,7 +356,7 @@ function(system, app, viewModel, events, history) {
                     if (result && result.then) {
                         result.then(function() {
                             router.trigger('router:route:mapping', instruction.config, router);
-                            queueRoute(instruction);
+                            queueInstruction(instruction);
                         });
                         return;
                     }
@@ -366,7 +366,7 @@ function(system, app, viewModel, events, history) {
                 }
 
                 router.trigger('router:route:mapping', instruction.config, router);
-                queueRoute(instruction);
+                queueInstruction(instruction);
             });
 
             return router;
@@ -387,12 +387,12 @@ function(system, app, viewModel, events, history) {
         return router;
     };
 
-    var rootRouter = createRouter();
+    rootRouter = createRouter();
 
     rootRouter.activate = function(options) {
         return system.defer(function(dfd) {
             startDeferred = dfd;
-            rootRouter.options = system.extend({ routeHandler:rootRouter.loadUrl }, rootRouter.options, options);
+            rootRouter.options = system.extend({ routeHandler: rootRouter.loadUrl }, rootRouter.options, options);
             history.activate(rootRouter.options);
         }).promise();
     };
