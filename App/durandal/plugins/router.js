@@ -68,7 +68,7 @@ function(system, app, viewModel, events, history) {
             if (!hasChildRouter(instance)) {
                 router.updateDocumentTitle(instance, instruction);
             }
-            
+
             router.trigger('router:navigation:complete', instance, instruction, router);
         }
 
@@ -98,7 +98,7 @@ function(system, app, viewModel, events, history) {
 
                     if (hasChildRouter(instance)) {
                         queueRoute({
-                            childRouter: instance.router,
+                            router: instance.router,
                             fragment: instruction.fragment
                         });
                     }
@@ -172,8 +172,8 @@ function(system, app, viewModel, events, history) {
                 return;
             }
 
-            if (instruction.childRouter) {
-                instruction.childRouter.loadUrl(instruction.fragment);
+            if (instruction.router) {
+                instruction.router.loadUrl(instruction.fragment);
                 return;
             }
 
@@ -392,8 +392,7 @@ function(system, app, viewModel, events, history) {
     rootRouter.activate = function(options) {
         return system.defer(function(dfd) {
             startDeferred = dfd;
-            rootRouter.options = options || rootRouter.options || {};
-            rootRouter.options.routeHandler = rootRouter.loadUrl;
+            rootRouter.options = system.extend({ routeHandler:rootRouter.loadUrl }, rootRouter.options, options);
             history.activate(rootRouter.options);
         }).promise();
     };
