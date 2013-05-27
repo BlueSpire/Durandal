@@ -38,6 +38,10 @@ function(system, app, viewModel, events, history) {
         return route.substring(0, length);
     }
 
+    function hasChildRouter(instance) {
+        return instance.router && instance.router.loadUrl;
+    }
+
     var createRouter = function() {
         var queue = [],
             isNavigating = ko.observable(false),
@@ -61,7 +65,10 @@ function(system, app, viewModel, events, history) {
             currentActivation = instance;
             currentInstruction = instruction;
 
-            router.updateDocumentTitle(instance, instruction);
+            if (!hasChildRouter(instance)) {
+                router.updateDocumentTitle(instance, instruction);
+            }
+            
             router.trigger('router:navigation:complete', instance, instruction, router);
         }
 
@@ -87,10 +94,9 @@ function(system, app, viewModel, events, history) {
             activator.activateItem(instance, instruction.params).then(function(succeeded) {
                 if (succeeded) {
                     var previousActivation = currentActivation;
-
                     completeNavigation(instance, instruction);
 
-                    if (instance.router && instance.router.loadUrl) {
+                    if (hasChildRouter(instance)) {
                         queueRoute({
                             childRouter: instance.router,
                             fragment: instruction.fragment
