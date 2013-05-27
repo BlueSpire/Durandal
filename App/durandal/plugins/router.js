@@ -86,6 +86,8 @@ function(system, app, viewModel, events, history) {
         function activateRoute(activator, instance, instruction) {
             activator.activateItem(instance, instruction.params).then(function(succeeded) {
                 if (succeeded) {
+                    var previousActivation = currentActivation;
+
                     completeNavigation(instance, instruction);
 
                     if (instance.router && instance.router.loadUrl) {
@@ -95,7 +97,7 @@ function(system, app, viewModel, events, history) {
                         });
                     }
 
-                    if (activator !== activeItem) {
+                    if (previousActivation == instance) {
                         router.afterCompose();
                     }
                 } else {
