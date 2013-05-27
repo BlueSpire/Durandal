@@ -157,7 +157,7 @@
         history.loadUrl() || history.loadUrl(history.getHash());
     };
     
-    // Attempt to load the current URL fragment. pass it to options.routeHandler
+    // Attempt to load the current URL fragment. Pass it to options.routeHandler
     history.loadUrl = function(fragmentOverride) {
         var fragment = history.fragment = history.getFragment(fragmentOverride);
 

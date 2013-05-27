@@ -1,7 +1,6 @@
-﻿define(function () {
-    var router = require('durandal/plugins/router');
+﻿define(['durandal/plugins/router'], function(router) {
+    var childRouter = router.createChildRouter();
 
-    var childRouter = router.create();
     childRouter.map([{
         type: 'intro',
         route: 'knockout-samples/helloWorld',
@@ -74,26 +73,25 @@
         moduleId: 'samples/knockout/twitterClient/index',
         title: 'Twitter Client',
         nav: true
-    }
-    ]).buildNavigationModel();
-
+    }])
+    .buildNavigationModel()
+    .mapUnknownRoutes({
+        route: 'knockout-samples/helloWorld',
+        moduleId: 'samples/knockout/helloWorld/index',
+        title: 'Hello World'
+    });
 
     return {
         router: childRouter,
-        introSamples: ko.computed(function () {
-            return ko.utils.arrayFilter(childRouter.navigationModel(), function (route) {
+        introSamples: ko.computed(function() {
+            return ko.utils.arrayFilter(childRouter.navigationModel(), function(route) {
                 return route.type == 'intro';
             });
         }),
-        detailedSamples: ko.computed(function () {
-            return ko.utils.arrayFilter(childRouter.navigationModel(), function (route) {
+        detailedSamples: ko.computed(function() {
+            return ko.utils.arrayFilter(childRouter.navigationModel(), function(route) {
                 return route.type == 'detailed';
             });
-        }),
-        activate: function () {
-        },
-        canReuseForRoute: function () {
-            return true;
-        }
+        })
     };
 });

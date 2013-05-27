@@ -10,8 +10,7 @@
                 { route: 'event-aggregator', moduleId: 'samples/eventAggregator/index', title: 'Events', nav: true },
                 { route: 'widgets', moduleId: 'samples/widgets/index', title: 'Widgets', nav: true },
                 { route: 'master-detail', moduleId: 'samples/masterDetail/index', title: 'Master Detail', nav: true },
-                { route: 'knockout-samples/:name', moduleId: 'samples/knockout/index', title: 'Knockout Samples' },
-                { route: 'knockout-samples', moduleId: 'samples/knockout/index', title: 'Knockout Samples', nav: true }
+                { route: 'knockout-samples*details', hash: '#knockout-samples', moduleId: 'samples/knockout/index', title: 'Knockout Samples', nav: true }
             ]).buildNavigationModel();
             
             return router.activate();
