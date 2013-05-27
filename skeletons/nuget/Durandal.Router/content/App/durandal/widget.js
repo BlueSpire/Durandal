@@ -39,7 +39,7 @@
         getSettings: function(valueAccessor) {
             var value = ko.utils.unwrapObservable(valueAccessor()) || {};
 
-            if (typeof value == 'string') {
+            if (system.isString(value)) {
                 return value;
             } else {
                 for (var attrName in value) {
@@ -111,7 +111,7 @@
             return settings;
         },
         create: function (element, settings, bindingContext) {
-            if (typeof settings == 'string') {
+            if (system.isString(settings)) {
                 settings = {
                     kind: settings
                 };
