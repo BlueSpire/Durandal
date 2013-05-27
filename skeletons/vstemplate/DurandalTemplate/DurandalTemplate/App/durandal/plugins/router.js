@@ -273,7 +273,7 @@ function(system, app, viewModel, events, history) {
                 isProcessing(false);
                 router.trigger('router:navigation:composed', currentActivation, currentInstruction, router);
                 dequeueInstruction();
-            }, 100);
+            }, 10);
         };
 
         router.convertRouteToHash = function(route) {
