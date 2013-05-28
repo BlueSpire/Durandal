@@ -6,12 +6,12 @@
 
     function shouldPerformActivation(settings) {
         return settings.model && settings.model.activate
-            && ((composition.activateDuringComposition && settings.activate == undefined) || settings.activate);
+            && ((composition.activateDuringComposition && settings.activate == undefined) || settings.activate || settings.activationData);
     }
 
     function tryActivate(settings, successCallback) {
         if (shouldPerformActivation(settings)) {
-            viewModel.activator().activateItem(settings.model).then(function (success) {
+            viewModel.activator().activateItem(settings.model, settings.activationData).then(function (success) {
                 if (success) {
                     successCallback();
                 }
@@ -208,10 +208,6 @@
                 return;
             }
 
-            if (settings.view !== undefined && !settings.view) {
-                return;
-            }
-
             if (!settings.strategy) {
                 settings.strategy = this.defaultStrategy;
             }
@@ -267,7 +263,7 @@
                 }
             } else if (system.isString(settings.model)) {
                 system.acquire(settings.model).then(function (module) {
-                    settings.model = new (system.getObjectResolver(module))(element, settings);
+                    settings.model = new (system.getObjectResolver(module))();
                     composition.inject(element, settings);
                 });
             } else {
