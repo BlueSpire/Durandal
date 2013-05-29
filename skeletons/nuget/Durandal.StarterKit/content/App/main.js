@@ -17,8 +17,6 @@ function(app, viewLocator, system) {
         //Look for partial views in a 'views' folder in the root.
         viewLocator.useConvention();
 
-        app.adaptToDevice();
-
         //Show the app by setting the root view model for our application with a transition.
         app.setRoot('viewmodels/shell', 'entrance');
     });

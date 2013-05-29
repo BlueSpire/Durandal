@@ -30,7 +30,6 @@
     };
 
     var history = {
-        handlers: [],
         interval: 50,
         active: false
     };
@@ -139,12 +138,6 @@
         history.active = false;
     };
     
-    // Add a route to be tested when the fragment changes. Routes added later
-    // may override previous routes.
-    history.route = function(route, callback) {
-        history.handlers.unshift({ route: route, callback: callback });
-    };
-    
     // Checks the current URL to see if it has changed, and if it has,
     // calls `loadUrl`, normalizing across the hidden iframe.
     history.checkUrl = function(e) {
@@ -164,22 +157,13 @@
         history.loadUrl() || history.loadUrl(history.getHash());
     };
     
-    // Attempt to load the current URL fragment. If a route succeeds with a
-    // match, returns `true`. If no defined routes matches the fragment,
-    // returns `false`.
+    // Attempt to load the current URL fragment. Pass it to options.routeHandler
     history.loadUrl = function(fragmentOverride) {
         var fragment = history.fragment = history.getFragment(fragmentOverride);
-        var handlers = history.handlers;
 
-        for (var i = 0; i < handlers.length; i++) {
-            var current = handlers[i];
-            if (current.route.test(fragment)) {
-                current.callback(fragment);
-                return true;
-            }
-        }
-
-        return false;
+        return history.options.routeHandler ?
+            history.options.routeHandler(fragment) :
+            false;
     };
     
     // Save a fragment into the hash history, or replace the URL state if the

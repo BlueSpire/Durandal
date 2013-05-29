@@ -1,11 +1,11 @@
-﻿define(['./system', './composition'], function (system, composition) {
+﻿define(['./system', './composition'], function(system, composition) {
 
     var widgetPartAttribute = 'data-part',
         widgetPartSelector = '[' + widgetPartAttribute + ']';
 
     var kindModuleMaps = {},
         kindViewMaps = {},
-        bindableSettings = ['model','view','kind'];
+        bindableSettings = ['model', 'view', 'kind'];
 
     var widget = {
         getParts: function(elements) {
@@ -25,7 +25,7 @@
                     }
 
                     var childParts = $(widgetPartSelector, element)
-                                        .not($('[data-bind^="widget:"] ' + widgetPartSelector, element)); 
+                                        .not($('[data-bind^="widget:"] ' + widgetPartSelector, element));
 
                     for (var j = 0; j < childParts.length; j++) {
                         var part = childParts.get(j);
@@ -39,7 +39,7 @@
         getSettings: function(valueAccessor) {
             var value = ko.utils.unwrapObservable(valueAccessor()) || {};
 
-            if (typeof value == 'string') {
+            if (system.isString(value)) {
                 return value;
             } else {
                 for (var attrName in value) {
@@ -76,19 +76,19 @@
                 kindModuleMaps[kind] = moduleId;
             }
         },
-        mapKindToModuleId: function (kind) {
+        mapKindToModuleId: function(kind) {
             return kindModuleMaps[kind] || widget.convertKindToModulePath(kind);
         },
-        convertKindToModulePath: function (kind) {
+        convertKindToModulePath: function(kind) {
             return 'durandal/widgets/' + kind + '/controller';
         },
-        mapKindToViewId: function (kind) {
+        mapKindToViewId: function(kind) {
             return kindViewMaps[kind] || widget.convertKindToViewPath(kind);
         },
-        convertKindToViewPath: function (kind) {
+        convertKindToViewPath: function(kind) {
             return 'durandal/widgets/' + kind + '/view';
         },
-        beforeBind: function (element, view, settings) {
+        beforeBind: function(element, view, settings) {
             var replacementParts = widget.getParts(element);
             var standardParts = widget.getParts(view);
 
@@ -96,7 +96,7 @@
                 $(standardParts[partId]).replaceWith(replacementParts[partId]);
             }
         },
-        createCompositionSettings: function(settings) {
+        createCompositionSettings: function(element, settings) {
             if (!settings.model) {
                 settings.model = this.mapKindToModuleId(settings.kind);
             }
@@ -107,17 +107,25 @@
 
             settings.preserveContext = true;
             settings.beforeBind = this.beforeBind;
+            settings.activate = true;
+            settings.activationData = settings;
+            settings.afterCompose = function() {
+                if(settings.model.deactivate) {
+                    ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+                        settings.model.deactivate();
+                    });
+                }
+            };
 
             return settings;
         },
-        create: function (element, settings, bindingContext) {
-            if (typeof settings == 'string') {
-                settings = {
-                    kind: settings
-                };
+        create: function(element, settings, bindingContext) {
+            if (system.isString(settings)) {
+                settings = { kind: settings };
             }
 
-            var compositionSettings = widget.createCompositionSettings(settings);
+            var compositionSettings = widget.createCompositionSettings(element, settings);
+
             composition.compose(element, compositionSettings, bindingContext);
         }
     };
