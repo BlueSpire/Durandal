@@ -18,20 +18,6 @@ function(system, app, viewModel, events, history) {
         return new RegExp('^' + routeString + '$');
     }
 
-    // Given a route, and a URL fragment that it matches, return the array of
-    // extracted decoded parameters. Empty or unmatched parameters will be
-    // treated as `null` to normalize cross-browser behavior.
-    function extractParameters(route, fragment) {
-        var params = route.exec(fragment).slice(1);
-
-        for (var i = 0; i < params.length; i++) {
-            var current = params[i];
-            params[i] = current ? decodeURIComponent(current) : null;
-        }
-
-        return params;
-    }
-
     function stripParametersFromRoute(route) {
         var colonIndex = route.indexOf(':');
         var length = colonIndex > 0 ? colonIndex - 1 : route.length;
@@ -102,7 +88,8 @@ function(system, app, viewModel, events, history) {
                     if (hasChildRouter(instance)) {
                         queueInstruction({
                             router: instance.router,
-                            fragment: instruction.fragment
+                            fragment: instruction.fragment,
+                            queryString: instruction.queryString
                         });
                     }
 
@@ -176,7 +163,12 @@ function(system, app, viewModel, events, history) {
             }
 
             if (instruction.router) {
-                instruction.router.loadUrl(instruction.fragment);
+                var fullFragment = instruction.fragment;
+                if (instruction.queryString) {
+                    fullFragment += "?" + instruction.queryString;
+                }
+                
+                instruction.router.loadUrl(fullFragment);
                 return;
             }
 
@@ -196,6 +188,25 @@ function(system, app, viewModel, events, history) {
             queue.unshift(instruction);
             dequeueInstruction();
         }
+        
+        // Given a route, and a URL fragment that it matches, return the array of
+        // extracted decoded parameters. Empty or unmatched parameters will be
+        // treated as `null` to normalize cross-browser behavior.
+        function createParams(route, fragment, queryString) {
+            var params = route.exec(fragment).slice(1);
+
+            for (var i = 0; i < params.length; i++) {
+                var current = params[i];
+                params[i] = current ? decodeURIComponent(current) : null;
+            }
+
+            var queryObject = router.parseQueryString(queryString);
+            if (queryObject) {
+                params.push(queryObject);
+            }
+
+            return params;
+        }
 
         function mapRoute(config) {
             if (!system.isRegExp(config.route)) {
@@ -208,11 +219,12 @@ function(system, app, viewModel, events, history) {
             router.trigger('router:route:mapping', config, router);
             router.routes.push(config);
 
-            router.route(config.route, function(fragment) {
+            router.route(config.route, function(fragment, queryString) {
                 queueInstruction({
                     fragment: fragment,
+                    queryString:queryString,
                     config: config,
-                    params: extractParameters(config.route, fragment)
+                    params: createParams(config.route, fragment, queryString)
                 });
             });
 
@@ -225,6 +237,34 @@ function(system, app, viewModel, events, history) {
             });
         }
 
+        router.parseQueryString = function (queryString) {
+            var queryObject, pairs;
+
+            if (!queryString) {
+                return null;
+            }
+            
+            pairs = queryString.split('&');
+
+            if (pairs.length == 0) {
+                return null;
+            }
+
+            queryObject = {};
+
+            for (var i = 0; i < pairs.length; i++) {
+                var pair = pairs[i];
+                if (pair === '') {
+                    continue;
+                }
+
+                var parts = pair.split('=');
+                queryObject[parts[0]] = parts[1] && decodeURIComponent(parts[1].replace(/\+/g, ' '));
+            }
+
+            return queryObject;
+        };
+
         // Add a route to be tested when the fragment changes. Routes added later
         // may override previous routes.
         router.route = function(route, callback) {
@@ -235,12 +275,20 @@ function(system, app, viewModel, events, history) {
         // match, returns `true`. If no defined routes matches the fragment,
         // returns `false`.
         router.loadUrl = function(fragment) {
-            var handlers = router.handlers;
+            var handlers = router.handlers,
+                queryString = null,
+                coreFragment = fragment,
+                queryIndex = fragment.indexOf('?');
+
+            if (queryIndex != -1) {
+                coreFragment = fragment.substring(0, queryIndex);
+                queryString = fragment.substr(queryIndex + 1);
+            }
 
             for (var i = 0; i < handlers.length; i++) {
                 var current = handlers[i];
-                if (current.route.test(fragment)) {
-                    current.callback(fragment);
+                if (current.route.test(coreFragment)) {
+                    current.callback(coreFragment, queryString);
                     return true;
                 }
             }
@@ -342,12 +390,13 @@ function(system, app, viewModel, events, history) {
 
         router.mapUnknownRoutes = function(config) {
             var route = routeStringToRegExp("*catchall");
-
-            router.route(route, function(fragment) {
+            
+            router.route(route, function (fragment, queryString) {
                 var instruction = {
                     fragment: fragment,
+                    queryString: queryString,
                     config: { route: route },
-                    params: extractParameters(route, fragment)
+                    params: createParams(route, fragment, queryString)
                 };
 
                 if (!config) {
