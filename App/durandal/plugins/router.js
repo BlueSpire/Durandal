@@ -73,7 +73,7 @@ function(system, app, viewModel, events, history) {
             system.log('Navigation Cancelled');
 
             if (currentInstruction) {
-                router.navigate(currentInstruction.fragment, { replace: true });
+                router.navigate(currentInstruction.fragment, { trigger: false });
             }
 
             isProcessing(false);

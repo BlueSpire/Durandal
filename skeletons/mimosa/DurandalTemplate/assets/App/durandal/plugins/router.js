@@ -51,8 +51,16 @@ function(system, app, viewModel, events, history) {
         function completeNavigation(instance, instruction) {
             system.log('Navigation Complete', instance, instruction);
 
+            if (currentActivation && currentActivation.__moduleId__) {
+                router.trigger('router:navigatedFrom:' + currentActivation.__moduleId__);
+            }
+
             currentActivation = instance;
             currentInstruction = instruction;
+
+            if (currentActivation && currentActivation.__moduleId__) {
+                router.trigger('router:navigatedTo:' + currentActivation.__moduleId__);
+            }
 
             if (!hasChildRouter(instance)) {
                 router.updateDocumentTitle(instance, instruction);
@@ -65,7 +73,7 @@ function(system, app, viewModel, events, history) {
             system.log('Navigation Cancelled');
 
             if (currentInstruction) {
-                router.navigate(currentInstruction.fragment, { replace: true });
+                router.navigate(currentInstruction.fragment, { trigger: false });
             }
 
             isProcessing(false);
