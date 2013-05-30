@@ -1,5 +1,5 @@
 ﻿/*global define*/
-define(['durandal/viewEngine', 'durandal/system'], function (sut, system) {
+define(['durandal/viewEngine', 'durandal/system', 'jquery'], function (sut, system, $) {
     describe('isViewUrl', function () {
         it('returns false when view extension not found', function () {
             var isViewUrl = sut.isViewUrl('test');

@@ -1,4 +1,4 @@
-﻿define(['durandal/app'], function (app) {
+﻿define(['durandal/app', 'knockout'], function (app, ko) {
         
         var firstName = ko.observable("Planet");
         var lastName = ko.observable("Earth");

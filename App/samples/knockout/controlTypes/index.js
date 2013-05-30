@@ -1,4 +1,4 @@
-﻿define(['durandal/app'], function (app) {
+﻿define(['durandal/app', 'knockout'], function (app, ko) {
 
     return {
         stringValue: ko.observable("Hello"),

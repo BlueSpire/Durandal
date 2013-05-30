@@ -1,4 +1,4 @@
-﻿define(['../system'], function (system) {
+﻿define(['../system', 'jquery'], function (system, $) {
     // Handles cross-browser history management, based on either
     // [pushState](http://diveintohtml5.info/history.html) and real URLs, or
     // [onhashchange](https://developer.mozilla.org/en-US/docs/DOM/window.onhashchange)

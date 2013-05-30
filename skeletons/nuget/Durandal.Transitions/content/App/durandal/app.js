@@ -1,5 +1,6 @@
-﻿define(['./system', './viewEngine', './composition', './widget', './modalDialog', './events'], 
-    function(system, viewEngine, composition, widget, modalDialog, Events) {
+﻿
+define(['./system', './viewEngine', './composition', './widget', './modalDialog', './events', 'jquery'],
+    function(system, viewEngine, composition, widget, modalDialog, Events, $) {
 
     var app = {
         title: 'Application',

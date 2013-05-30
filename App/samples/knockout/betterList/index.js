@@ -1,4 +1,4 @@
-﻿define(['durandal/app'], function (app) {
+﻿define(['durandal/app', 'knockout'], function (app, ko) {
 
         var itemToAdd = ko.observable("");
         var allItems = ko.observableArray(["Fries", "Eggs Benedict", "Ham", "Cheese"]); // Initial items

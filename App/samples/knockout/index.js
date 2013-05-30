@@ -1,4 +1,4 @@
-﻿define(['durandal/plugins/router'], function(router) {
+﻿define(['durandal/plugins/router', 'knockout'], function (router, ko) {
     var childRouter = router.createChildRouter();
 
     childRouter.map([{

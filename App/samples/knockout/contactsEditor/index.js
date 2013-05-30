@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'durandal/app'], function(system, app) {
+﻿define(['durandal/system', 'durandal/app', 'jquery', 'knockout'], function(system, app, $, ko) {
 
     var initialData = [
       {

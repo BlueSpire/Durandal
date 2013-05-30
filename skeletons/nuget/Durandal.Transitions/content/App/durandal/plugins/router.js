@@ -1,5 +1,5 @@
-﻿define(['../system', '../app', '../viewModel', '../events', './history'],
-function(system, app, viewModel, events, history) {
+﻿define(['../system', '../app', '../viewModel', '../events', './history', 'knockout'],
+function(system, app, viewModel, events, history, ko) {
 
     var optionalParam = /\((.*?)\)/g;
     var namedParam = /(\(\?)?:\w+/g;

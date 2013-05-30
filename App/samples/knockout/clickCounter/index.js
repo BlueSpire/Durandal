@@ -1,6 +1,5 @@
-﻿define(['durandal/app'],
-
-    function (app) {
+﻿define(['durandal/app', 'knockout'],
+    function (app, ko) {
 
         var counter = ko.observable(0);
         var limiter = ko.computed(function () {

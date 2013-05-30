@@ -1,4 +1,4 @@
-﻿define(['require'], function(require) {
+﻿define(['require', 'jquery'], function(require, $) {
     var isDebugging = false,
         nativeKeys = Object.keys,
         hasOwnProperty = Object.prototype.hasOwnProperty,

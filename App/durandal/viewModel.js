@@ -1,4 +1,4 @@
-﻿define(['./system'], function (system) {
+﻿define(['./system', 'knockout'], function (system, ko) {
     var viewModel;
 
     function ensureSettings(settings) {

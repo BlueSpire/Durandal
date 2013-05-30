@@ -1,4 +1,4 @@
-﻿define(['durandal/widget', 'durandal/system'], function(widget, system) {
+﻿define(['durandal/widget', 'durandal/system', 'jquery'], function(widget, system, $) {
 
     var ctor = function() { };
 

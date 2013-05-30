@@ -1,5 +1,5 @@
-﻿define(['./viewLocator', './viewModelBinder', './viewEngine', './system', './viewModel'],
-    function (viewLocator, viewModelBinder, viewEngine, system, viewModel) {
+﻿define(['./viewLocator', './viewModelBinder', './viewEngine', './system', './viewModel', 'jquery', 'knockout'],
+    function (viewLocator, viewModelBinder, viewEngine, system, viewModel, $, ko) {
 
     var dummyModel = {},
         activeViewAttributeName = 'data-active-view';

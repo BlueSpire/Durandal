@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'durandal/app', './simpleGrid'], function(system, app, SimpleGrid) {
+﻿define(['durandal/system', 'durandal/app', './simpleGrid', 'knockout'], function (system, app, SimpleGrid, ko) {
 
     var initialData = [
         { name: "Well-Travelled Kitten", sales: 352, price: 75.95 },

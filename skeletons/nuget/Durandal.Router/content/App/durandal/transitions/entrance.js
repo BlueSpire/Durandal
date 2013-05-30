@@ -1,4 +1,4 @@
-﻿define(['../system'], function(system) {
+﻿define(['../system', 'jquery', 'knockout'], function(system, $, ko) {
     var fadeOutDuration = 100;
     var endValues = {
         marginRight: 0,

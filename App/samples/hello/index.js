@@ -1,4 +1,4 @@
-﻿define(['durandal/app'], function (app) {
+﻿define(['durandal/app', 'knockout'], function (app, ko) {
     
     var name = ko.observable();
     var canSayHello = ko.computed(function () {
