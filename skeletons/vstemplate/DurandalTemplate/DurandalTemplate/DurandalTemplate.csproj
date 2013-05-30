@@ -126,6 +126,7 @@
   <ItemGroup>
     <None Include="App_Start\DurandalBundleConfig.cs.pp" />
     <Compile Include="App_Start\DurandalBundleConfig.cs" />
+    <Content Include="App\durandal\plugins\history.js" />
     <Content Include="Content\durandal.css" />
     <Content Include="Content\font\fontawesome-webfont.woff" />
     <Content Include="Content\font\fontawesome-webfont.ttf" />
@@ -195,8 +196,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\knockout-2.2.1.debug.js" />
     <Content Include="Scripts\knockout-2.2.1.js" />
-    <Content Include="Scripts\sammy-0.7.4.js" />
-    <Content Include="Scripts\sammy-0.7.4.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -267,7 +266,6 @@ xcopy "$(SolutionDir)DurandalTemplate\Content\ie10mobile.css" "..\..\..\..\mimos
 xcopy "$(SolutionDir)DurandalTemplate\Scripts\bootstrap.js" "..\..\..\..\mimosa\DurandalTemplate\assets\Scripts\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\Scripts\jQuery-1.9.1.js" "..\..\..\..\mimosa\DurandalTemplate\assets\Scripts\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\Scripts\knockout-2.2.1.js" "..\..\..\..\mimosa\DurandalTemplate\assets\Scripts\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Scripts\sammy-0.7.4.js" "..\..\..\..\mimosa\DurandalTemplate\assets\Scripts\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\almond-custom.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\r.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
 xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\require.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y

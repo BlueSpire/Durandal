@@ -1,6 +1,8 @@
-﻿define(['durandal/widget'], function (widget) {
-    
-    var ctor = function(element, settings) {
+﻿define(['durandal/widget', 'durandal/system'], function(widget, system) {
+
+    var ctor = function() { };
+
+    ctor.prototype.activate = function(settings) {
         this.settings = settings;
     };
 
@@ -21,6 +23,10 @@
         $(parts.headerContainer).bind('click', function() {
             $itemContainer.toggle('fast');
         });
+    };
+
+    ctor.prototype.deactivate = function() {
+        system.log('Deactivating Widget'); //to see this called, set cacheViews:false on the shell's router composition binding
     };
 
     return ctor;

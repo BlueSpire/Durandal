@@ -6,13 +6,9 @@
 
     function ensureModalInstance(objOrModuleId) {
         return system.defer(function(dfd) {
-            if (typeof objOrModuleId == "string") {
-                system.acquire(objOrModuleId).then(function(module) {
-                    if (typeof(module) == 'function') {
-                        dfd.resolve(new module());
-                    } else {
-                        dfd.resolve(module);
-                    }
+            if (system.isString(objOrModuleId)) {
+                system.acquire(objOrModuleId).then(function (module) {
+                    dfd.resolve(new (system.getObjectResolver(module))());
                 });
             } else {
                 dfd.resolve(objOrModuleId);
@@ -119,7 +115,6 @@
                 var newBodyOuterWidth = $("body").outerWidth(true);
                 body.css("margin-right", (newBodyOuterWidth - oldBodyOuterWidth + parseInt(modal.oldBodyMarginRight)) + "px");
                 html.scrollTop(oldScrollTop); // necessary for Firefox
-                $("#simplemodal-overlay").css("width", newBodyOuterWidth + "px");
             }
         },
         removeHost: function(modal) {

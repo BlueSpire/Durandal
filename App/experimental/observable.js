@@ -1,4 +1,4 @@
-﻿define(['../system', '../viewModelBinder'], function(system, viewModelBinder) {
+﻿define(['../durandal/system', '../durandal/viewModelBinder'], function(system, viewModelBinder) {
     var nonObservableTypes = ['[object Function]', '[object String]', '[object Boolean]', '[object Number]', '[object Date]', '[object RegExp]'];
     var ignoredProperties = ['__moduleId__', '__observable__'];
     var toString = Object.prototype.toString;
@@ -8,7 +8,7 @@
     var observableArrayFunctions = ko.observableArray.fn;
 
     function canConvert(value) {
-        if (!value || value.nodeType === 1 || value.ko === ko) {
+        if (!value || system.isElement(value) || value.ko === ko) {
             return false;
         }
 

@@ -1,13 +1,13 @@
 ﻿<div>
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
-            <a class="brand" data-bind="attr: { href: router.visibleRoutes()[0].hash }">
+            <a class="brand" data-bind="attr: { href: router.navigationModel()[0].hash }">
                 <i class="icon-home"></i>
                 <span>Durandal</span>
             </a>
-            <ul class="nav" data-bind="foreach: router.visibleRoutes">
+            <ul class="nav" data-bind="foreach: router.navigationModel">
                 <li data-bind="css: { active: isActive }">
-                    <a data-bind="attr: { href: hash }, html: name"></a>
+                    <a data-bind="attr: { href: hash }, html: title"></a>
                 </li>
             </ul>
             <div class="loader pull-right" data-bind="css: { active: router.isNavigating }">

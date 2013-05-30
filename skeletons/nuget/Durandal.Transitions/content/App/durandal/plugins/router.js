@@ -1,420 +1,457 @@
-﻿define(['../system', '../viewModel', '../app'], function (system, viewModel, app) {
+﻿define(['../system', '../app', '../viewModel', '../events', './history'],
+function(system, app, viewModel, events, history) {
 
-    //NOTE: Sammy.js is not required by the core of Durandal. 
-    //However, this plugin leverages it to enable navigation.
+    var optionalParam = /\((.*?)\)/g;
+    var namedParam = /(\(\?)?:\w+/g;
+    var splatParam = /\*\w+/g;
+    var escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
+    var startDeferred, rootRouter;
 
-    var routesByPath = {},
-        allRoutes = ko.observableArray([]),
-        visibleRoutes = ko.observableArray([]),
-        ready = ko.observable(false),
-        isNavigating = ko.observable(false),
-        sammy,
-        router,
-        previousRoute,
-        previousModule,
-        cancelling = false,
-        activeItem = viewModel.activator(),
-        activeRoute = ko.observable(),
-        navigationDefaultRoute,
-        queue = [],
-        skipRouteUrl;
+    function routeStringToRegExp(routeString) {
+        routeString = routeString.replace(escapeRegExp, '\\$&')
+            .replace(optionalParam, '(?:$1)?')
+            .replace(namedParam, function(match, optional) {
+                return optional ? match : '([^\/]+)';
+            })
+            .replace(splatParam, '(.*?)');
 
-    var tryActivateRouter = function () {
-        tryActivateRouter = system.noop;
-        ready(true);
-        router.dfd.resolve();
-        delete router.dfd;
-    };
-
-    activeItem.settings.areSameItem = function (currentItem, newItem, activationData) {
-        return false;
-    };
-
-    function redirect(url) {
-        isNavigating(false);
-        system.log('Redirecting');
-        router.navigateTo(url);
+        return new RegExp('^' + routeString + '$');
     }
 
-    function cancelNavigation() {
-        cancelling = true;
-        system.log('Cancelling Navigation');
-
-        if (previousRoute) {
-            sammy.setLocation(previousRoute);
-        }
-
-        cancelling = false;
-        isNavigating(false);
-
-        var routeAttempted = sammy.last_location[1].split('#/')[1];
-
-        if (previousRoute || !routeAttempted) {
-            tryActivateRouter();
-        } else if (routeAttempted != navigationDefaultRoute) {
-            window.location.replace("#/" + navigationDefaultRoute);
-        } else {
-            tryActivateRouter();
-        }
+    function stripParametersFromRoute(route) {
+        var colonIndex = route.indexOf(':');
+        var length = colonIndex > 0 ? colonIndex - 1 : route.length;
+        return route.substring(0, length);
     }
 
-    function completeNavigation(routeInfo, params, module) {
-        activeRoute(routeInfo);
-        router.onNavigationComplete(routeInfo, params, module);
-        previousModule = module;
-        previousRoute = sammy.last_location[1].replace('/', '');
-        tryActivateRouter();
+    function hasChildRouter(instance) {
+        return instance.router && instance.router.loadUrl;
     }
 
-    function activateRoute(routeInfo, params, module) {
-        system.log('Activating Route', routeInfo, module, params);
+    var createRouter = function() {
+        var queue = [],
+            isProcessing = ko.observable(false),
+            currentActivation,
+            currentInstruction,
+            activeItem = viewModel.activator();
 
-        activeItem.activateItem(module, params).then(function (succeeded) {
-            if (succeeded) {
-                completeNavigation(routeInfo, params, module);
-            } else {
-                cancelNavigation();
+        var router = {
+            handlers: [],
+            routes: [],
+            navigationModel: ko.observableArray([]),
+            activeItem: activeItem,
+            isNavigating: ko.computed(function() {
+                var current = activeItem();
+                return isProcessing() || (current && current.router && current.router.isNavigating());
+            })
+        };
+
+        events.includeIn(router);
+
+        function completeNavigation(instance, instruction) {
+            system.log('Navigation Complete', instance, instruction);
+
+            currentActivation = instance;
+            currentInstruction = instruction;
+
+            if (!hasChildRouter(instance)) {
+                router.updateDocumentTitle(instance, instruction);
             }
-        });
-    }
 
-    function shouldStopNavigation() {
-        return cancelling || (sammy.last_location[1].replace('/', '') == previousRoute);
-    }
+            router.trigger('router:navigation:complete', instance, instruction, router);
+        }
 
-    function handleGuardedRoute(routeInfo, params, instance) {
-        var resultOrPromise = router.guardRoute(routeInfo, params, instance);
-        if (resultOrPromise) {
-            if (resultOrPromise.then) {
-                resultOrPromise.then(function(result) {
-                    if (result) {
-                        if (typeof result == 'string') {
-                            redirect(result);
-                        } else {
-                            activateRoute(routeInfo, params, instance);
-                        }
-                    } else {
-                        cancelNavigation();
+        function cancelNavigation(instance, instruction) {
+            system.log('Navigation Cancelled');
+
+            if (currentInstruction) {
+                router.navigate(currentInstruction.fragment, { replace: true });
+            }
+
+            isProcessing(false);
+            router.trigger('router:navigation:cancelled', instance, instruction, router);
+        }
+
+        function redirect(url) {
+            system.log('Navigation Redirecting');
+
+            isProcessing(false);
+            router.navigate(url, { trigger: true, replace: true });
+        }
+
+        function activateRoute(activator, instance, instruction) {
+            activator.activateItem(instance, instruction.params).then(function(succeeded) {
+                if (succeeded) {
+                    var previousActivation = currentActivation;
+                    completeNavigation(instance, instruction);
+
+                    if (hasChildRouter(instance)) {
+                        queueInstruction({
+                            router: instance.router,
+                            fragment: instruction.fragment,
+                            queryString: instruction.queryString
+                        });
                     }
-                });
-            } else {
-                if (typeof resultOrPromise == 'string') {
-                    redirect(resultOrPromise);
+
+                    if (previousActivation == instance) {
+                        router.afterCompose();
+                    }
                 } else {
-                    activateRoute(routeInfo, params, instance);
+                    cancelNavigation(instance, instruction);
                 }
-            }
-        } else {
-            cancelNavigation();
-        }
-    }
 
-    function dequeueRoute() {
-        if (isNavigating()) {
-            return;
+                if (startDeferred) {
+                    startDeferred.resolve();
+                    startDeferred = null;
+                }
+            });
         }
 
-        var next = queue.shift();
-        queue = [];
-
-        if (!next) {
-            return;
-        }
-
-        isNavigating(true);
-
-        system.acquire(next.routeInfo.moduleId).then(function(module) {
-            next.params.routeInfo = next.routeInfo;
-            next.params.router = router;
-
-            var instance = router.getActivatableInstance(next.routeInfo, next.params, module);
-
-            if (router.guardRoute) {
-                handleGuardedRoute(next.routeInfo, next.params, instance);
+        function handleGuardedRoute(activator, instance, instruction) {
+            var resultOrPromise = router.guardRoute(instance, instruction);
+            if (resultOrPromise) {
+                if (resultOrPromise.then) {
+                    resultOrPromise.then(function(result) {
+                        if (result) {
+                            if (system.isString(result)) {
+                                redirect(result);
+                            } else {
+                                activateRoute(activator, instance, instruction);
+                            }
+                        } else {
+                            cancelNavigation(instance, instruction);
+                        }
+                    });
+                } else {
+                    if (system.isString(resultOrPromise)) {
+                        redirect(resultOrPromise);
+                    } else {
+                        activateRoute(activator, instance, instruction);
+                    }
+                }
             } else {
-                activateRoute(next.routeInfo, next.params, instance);
+                cancelNavigation(instance, instruction);
             }
-        });
-    }
-
-    function queueRoute(routeInfo, params) {
-        queue.unshift({
-            routeInfo: routeInfo,
-            params: params
-        });
-
-        dequeueRoute();
-    }
-
-    function ensureRoute(route, params) {
-        var routeInfo = routesByPath[route];
-
-        if (shouldStopNavigation()) {
-            return;
         }
 
-        if (!routeInfo) {
-            if (!router.autoConvertRouteToModuleId) {
-                router.handleInvalidRoute(route, params);
+        function ensureActivation(activator, instance, instruction) {
+            if (router.guardRoute) {
+                handleGuardedRoute(activator, instance, instruction);
+            } else {
+                activateRoute(activator, instance, instruction);
+            }
+        }
+
+        function canReuseCurrentActivation(instruction) {
+            return currentInstruction
+                && currentInstruction.config.moduleId == instruction.config.moduleId
+                && currentActivation
+                && ((currentActivation.canReuseForRoute && currentActivation.canReuseForRoute.apply(currentActivation, instruction.params))
+                    || (currentActivation.router && currentActivation.router.loadUrl));
+        }
+
+        function dequeueInstruction() {
+            if (isProcessing()) {
                 return;
             }
 
-            var routeName = router.convertRouteToName(route);
-            routeInfo = {
-                moduleId: router.autoConvertRouteToModuleId(route, params),
-                name: routeName,
-                caption: routeName
-            };
-        }
+            var instruction = queue.shift();
+            queue = [];
 
-        queueRoute(routeInfo, params);
-    }
-
-    function handleDefaultRoute() {
-        ensureRoute(navigationDefaultRoute, this.params || {});
-    }
-
-    function handleMappedRoute() {
-        ensureRoute(this.app.last_route.path.toString(), this.params || {});
-    }
-
-    function handleWildCardRoute() {
-        var params = this.params || {}, route;
-
-        if (router.autoConvertRouteToModuleId) {
-            var fragment = this.path.split('#/');
-
-            if (fragment.length == 2) {
-                var parts = fragment[1].split('/');
-                route = parts[0];
-                params.splat = parts.splice(1);
-                ensureRoute(route, params);
+            if (!instruction) {
                 return;
+            }
+
+            if (instruction.router) {
+                var fullFragment = instruction.fragment;
+                if (instruction.queryString) {
+                    fullFragment += "?" + instruction.queryString;
+                }
+                
+                instruction.router.loadUrl(fullFragment);
+                return;
+            }
+
+            isProcessing(true);
+
+            if (canReuseCurrentActivation(instruction)) {
+                ensureActivation(viewModel.activator(), currentActivation, instruction);
+            } else {
+                system.acquire(instruction.config.moduleId).then(function(module) {
+                    var instance = new (system.getObjectResolver(module))();
+                    ensureActivation(activeItem, instance, instruction);
+                });
             }
         }
 
-        router.handleInvalidRoute(this.app.last_location[1], params);
-    }
+        function queueInstruction(instruction) {
+            queue.unshift(instruction);
+            dequeueInstruction();
+        }
+        
+        // Given a route, and a URL fragment that it matches, return the array of
+        // extracted decoded parameters. Empty or unmatched parameters will be
+        // treated as `null` to normalize cross-browser behavior.
+        function createParams(route, fragment, queryString) {
+            var params = route.exec(fragment).slice(1);
 
-    function configureRoute(routeInfo) {
-        router.prepareRouteInfo(routeInfo);
+            for (var i = 0; i < params.length; i++) {
+                var current = params[i];
+                params[i] = current ? decodeURIComponent(current) : null;
+            }
 
-        routesByPath[routeInfo.url.toString()] = routeInfo;
-        allRoutes.push(routeInfo);
+            var queryObject = router.parseQueryString(queryString);
+            if (queryObject) {
+                params.push(queryObject);
+            }
 
-        if (routeInfo.visible) {
-            routeInfo.isActive = ko.computed(function () {
-                return ready() && activeItem() && activeItem().__moduleId__ == routeInfo.moduleId;
+            return params;
+        }
+
+        function mapRoute(config) {
+            if (!system.isRegExp(config.route)) {
+                config.title = config.title || router.convertRouteToTitle(config.route);
+                config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
+                config.hash = config.hash || router.convertRouteToHash(config.route);
+                config.route = routeStringToRegExp(config.route);
+            }
+
+            router.trigger('router:route:mapping', config, router);
+            router.routes.push(config);
+
+            router.route(config.route, function(fragment, queryString) {
+                queueInstruction({
+                    fragment: fragment,
+                    queryString:queryString,
+                    config: config,
+                    params: createParams(config.route, fragment, queryString)
+                });
             });
 
-            visibleRoutes.push(routeInfo);
+            return router;
         }
 
-        return routeInfo;
-    }
+        function addActiveFlag(config) {
+            config.isActive = ko.computed(function() {
+                return activeItem() && activeItem().__moduleId__ == config.moduleId;
+            });
+        }
 
-    return router = {
-        ready: ready,
-        allRoutes: allRoutes,
-        visibleRoutes: visibleRoutes,
-        isNavigating: isNavigating,
-        activeItem: activeItem,
-        activeRoute: activeRoute,
-        afterCompose: function () {
-            setTimeout(function () {
-                isNavigating(false);
-                dequeueRoute();
-                router.onRouteComposed && router.onRouteComposed(router.activeRoute());
+        router.parseQueryString = function (queryString) {
+            var queryObject, pairs;
+
+            if (!queryString) {
+                return null;
+            }
+            
+            pairs = queryString.split('&');
+
+            if (pairs.length == 0) {
+                return null;
+            }
+
+            queryObject = {};
+
+            for (var i = 0; i < pairs.length; i++) {
+                var pair = pairs[i];
+                if (pair === '') {
+                    continue;
+                }
+
+                var parts = pair.split('=');
+                queryObject[parts[0]] = parts[1] && decodeURIComponent(parts[1].replace(/\+/g, ' '));
+            }
+
+            return queryObject;
+        };
+
+        // Add a route to be tested when the fragment changes. Routes added later
+        // may override previous routes.
+        router.route = function(route, callback) {
+            router.handlers.push({ route: route, callback: callback });
+        };
+
+        // Attempt to load the current URL fragment. If a route succeeds with a
+        // match, returns `true`. If no defined routes matches the fragment,
+        // returns `false`.
+        router.loadUrl = function(fragment) {
+            var handlers = router.handlers,
+                queryString = null,
+                coreFragment = fragment,
+                queryIndex = fragment.indexOf('?');
+
+            if (queryIndex != -1) {
+                coreFragment = fragment.substring(0, queryIndex);
+                queryString = fragment.substr(queryIndex + 1);
+            }
+
+            for (var i = 0; i < handlers.length; i++) {
+                var current = handlers[i];
+                if (current.route.test(coreFragment)) {
+                    current.callback(coreFragment, queryString);
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
+        router.updateDocumentTitle = function(instance, instruction) {
+            if (instruction.config.title) {
+                if (app.title) {
+                    document.title = instruction.config.title + " | " + app.title;
+                } else {
+                    document.title = instruction.config.title;
+                }
+            } else if (app.title) {
+                document.title = app.title;
+            }
+        };
+
+        router.navigate = function(fragment, options) {
+            history.navigate(fragment, options);
+        };
+
+        router.navigateBack = function() {
+            history.history.back();
+        };
+
+        router.afterCompose = function() {
+            setTimeout(function() {
+                isProcessing(false);
+                router.trigger('router:navigation:composed', currentActivation, currentInstruction, router);
+                dequeueInstruction();
             }, 10);
-        },
-        getActivatableInstance: function (routeInfo, params, module) {
-            if (typeof module == 'function') {
-                return new module();
-            } else {
-                return module;
-            }
-        },
-        useConvention: function (rootPath) {
-            rootPath = rootPath == null ? 'viewmodels' : rootPath;
-            if (rootPath) {
-                rootPath += '/';
-            }
-            router.convertRouteToModuleId = function (url) {
-                return rootPath + router.stripParameter(url);
-            };
-        },
-        stripParameter: function (val) {
-            var colonIndex = val.indexOf(':');
-            var length = colonIndex > 0 ? colonIndex - 1 : val.length;
-            return val.substring(0, length);
-        },
-        handleInvalidRoute: function (route, params) {
-            system.log('No Route Found', route, params);
-        },
-        onNavigationComplete: function (routeInfo, params, module) {
-            if (app.title) {
-                document.title = routeInfo.caption + " | " + app.title;
-            } else {
-                document.title = routeInfo.caption;
-            }
-        },
-        navigateBack: function () {
-            window.history.back();
-        },
-        navigateTo: function (url, option) {
-            option = option || 'trigger';
+        };
 
-            switch (option.toLowerCase()) {
-                case 'skip':
-                    skipRouteUrl = url;
-                    sammy.setLocation(url);
-                    break;
-                case 'replace':
-                    window.location.replace(url);
-                    break;
-                default:
-                    if (sammy.lookupRoute('get', url) && url.indexOf("http") !== 0) {
-                        sammy.setLocation(url);
-                    } else {
-                        window.location.href = url;
-                    }
-                    break;
-            }
-        },
-        navigateToRoute: function (url, data) {
+        router.convertRouteToHash = function(route) {
+            return "#" + route;
+        };
 
-            var newUrl = url;
-            // find the hash using the url with parameters stripped 
-            for (var route in routesByPath) {
-                if (router.stripParameter(routesByPath[route].url) == url) {
-                    newUrl = routesByPath[route].hash;
-                    break;
-                }
-            }
+        router.convertRouteToModuleId = function(route) {
+            return stripParametersFromRoute(route);
+        };
 
-            // if this is an url with parameters, add data.property for these parameters to the url
-            var colonIndex = newUrl.indexOf(':');
-            if (colonIndex > 0) {
-                var paramstring = newUrl.substring(colonIndex - 1, newUrl.length);
-                var params = paramstring.split('/:');
-                newUrl = router.stripParameter(newUrl);
-                for (var i = 0; i < params.length; i++) {
-                    if (params[i]) {
-                        newUrl += '/' + data[params[i]];
-                    }
-                }
-            }
-
-            sammy.setLocation(newUrl);
-        },
-        replaceLocation: function (url) {
-            this.navigateTo(url, 'replace');
-        },
-        convertRouteToName: function (route) {
-            var value = router.stripParameter(route);
+        router.convertRouteToTitle = function(route) {
+            var value = stripParametersFromRoute(route);
             return value.substring(0, 1).toUpperCase() + value.substring(1);
-        },
-        convertRouteToModuleId: function (route) {
-            return router.stripParameter(route);
-        },
-        prepareRouteInfo: function (info) {
-            if (!(info.url instanceof RegExp)) {
-                info.name = info.name || router.convertRouteToName(info.url);
-                info.moduleId = info.moduleId || router.convertRouteToModuleId(info.url);
-                info.hash = info.hash || '#/' + info.url;
+        };
+
+        // Manually bind a single named route to a module. For example:
+        //
+        //     router.map('search/:query/p:num', 'viewmodels/search');
+        //
+        router.map = function(route, config) {
+            if (system.isArray(route)) {
+                for (var i = 0; i < route.length; i++) {
+                    router.map(route[i]);
+                }
+
+                return router;
             }
 
-            info.caption = info.caption || info.name;
-            info.settings = info.settings || {};
-        },
-        mapAuto: function (path) {
-            path = path || 'viewmodels';
-            path += '/';
+            if (system.isString(route) || system.isRegExp(route)) {
+                if (!config) {
+                    config = {};
+                } else if (system.isString(config)) {
+                    config = { moduleId: config };
+                }
 
-            router.autoConvertRouteToModuleId = function (url, params) {
-                return path + router.stripParameter(url);
-            };
-        },
-        mapNav: function (urlOrConfig, moduleId, name) {
-            if (typeof urlOrConfig == "string") {
-                return this.mapRoute(urlOrConfig, moduleId, name, true);
-            }
-
-            urlOrConfig.visible = true;
-            return configureRoute(urlOrConfig);
-        },
-        mapRoute: function (urlOrConfig, moduleId, name, visible) {
-            if (typeof urlOrConfig == "string") {
-                return configureRoute({
-                    url: urlOrConfig,
-                    moduleId: moduleId,
-                    name: name,
-                    visible: visible
-                });
+                config.route = route;
             } else {
-                return configureRoute(urlOrConfig);
-            }
-        },
-        map: function (routeOrRouteArray) {
-            if (!system.isArray(routeOrRouteArray)) {
-                return configureRoute(routeOrRouteArray);
+                config = route;
             }
 
-            var configured = [];
-            for (var i = 0; i < routeOrRouteArray.length; i++) {
-                configured.push(configureRoute(routeOrRouteArray[i]));
-            }
-            return configured;
-        },
-        deactivate: function () {
-            router.allRoutes.removeAll();
-            router.visibleRoutes.removeAll();
-            sammy && sammy.destroy();
-        },
-        activate: function (defaultRoute) {
-            return system.defer(function (dfd) {
-                var processedRoute;
+            return mapRoute(config);
+        };
 
-                router.dfd = dfd;
-                navigationDefaultRoute = defaultRoute;
+        router.buildNavigationModel = function(defaultOrder) {
+            var nav = [], routes = router.routes;
+            defaultOrder = defaultOrder || 100;
 
-                sammy = Sammy(function (route) {
-                    var unwrapped = allRoutes();
+            for (var i = 0; i < routes.length; i++) {
+                var current = routes[i];
 
-                    for (var i = 0; i < unwrapped.length; i++) {
-                        var current = unwrapped[i];
-                        route.get(current.url, handleMappedRoute);
-                        processedRoute = this.routes.get[i];
-                        routesByPath[processedRoute.path.toString()] = current;
+                if (current.nav != undefined) {
+                    if (!system.isNumber(current.nav)) {
+                        current.nav = defaultOrder;
                     }
 
-                    route.get('#/', handleDefaultRoute);
-                    route.get(/\#\/(.*)/, handleWildCardRoute);
-                });
+                    addActiveFlag(current);
+                    nav.push(current);
+                }
+            }
 
-                sammy._checkFormSubmission = function () {
-                    return false;
+            nav.sort(function(a, b) { return a.nav - b.nav; });
+            router.navigationModel(nav);
+
+            return router;
+        };
+
+        router.mapUnknownRoutes = function(config) {
+            var route = routeStringToRegExp("*catchall");
+            
+            router.route(route, function (fragment, queryString) {
+                var instruction = {
+                    fragment: fragment,
+                    queryString: queryString,
+                    config: { route: route },
+                    params: createParams(route, fragment, queryString)
                 };
 
-                sammy.before(null, function(context) {
-                    if (!skipRouteUrl) {
-                        return true;
-                    } else if (context.path === "/" + skipRouteUrl) {
-                        skipRouteUrl = null;
-                        return false;
-                    } else {
-                        system.error(new Error("Expected to skip url '" + skipRouteUrl + "', but found url '" + context.path + "'"));
+                if (!config) {
+                    instruction.config.moduleId = fragment;
+                } else if (system.isString(config)) {
+                    instruction.config.moduleId = config;
+                } else if (system.isFunction(config)) {
+                    var result = config(instruction);
+                    if (result && result.then) {
+                        result.then(function() {
+                            router.trigger('router:route:mapping', instruction.config, router);
+                            queueInstruction(instruction);
+                        });
+                        return;
                     }
-                });
+                } else {
+                    instruction.config = config;
+                    instruction.config.route = route;
+                }
 
-                sammy.log = function () {
-                    var args = Array.prototype.slice.call(arguments, 0);
-                    args.unshift('Sammy');
-                    system.log.apply(system, args);
-                };
+                router.trigger('router:route:mapping', instruction.config, router);
+                queueInstruction(instruction);
+            });
 
-                sammy.run('#/');
-            }).promise();
-        }
+            return router;
+        };
+
+        router.reset = function() {
+            router.handlers = [];
+            router.routes = [];
+            delete router.options;
+        };
+
+        router.createChildRouter = function() {
+            var childRouter = createRouter();
+            childRouter.parent = router;
+            return childRouter;
+        };
+
+        return router;
     };
+
+    rootRouter = createRouter();
+
+    rootRouter.activate = function(options) {
+        return system.defer(function(dfd) {
+            startDeferred = dfd;
+            rootRouter.options = system.extend({ routeHandler: rootRouter.loadUrl }, rootRouter.options, options);
+            history.activate(rootRouter.options);
+        }).promise();
+    };
+
+    rootRouter.deactivate = function() {
+        history.deactivate();
+    };
+
+    return rootRouter;
 });

@@ -6,12 +6,12 @@
 
     function shouldPerformActivation(settings) {
         return settings.model && settings.model.activate
-            && ((composition.activateDuringComposition && settings.activate == undefined) || settings.activate);
+            && ((composition.activateDuringComposition && settings.activate == undefined) || settings.activate || settings.activationData);
     }
 
     function tryActivate(settings, successCallback) {
         if (shouldPerformActivation(settings)) {
-            viewModel.activator().activateItem(settings.model).then(function (success) {
+            viewModel.activator().activateItem(settings.model, settings.activationData).then(function (success) {
                 if (success) {
                     successCallback();
                 }
@@ -65,7 +65,7 @@
     }
 
     function shouldTransition(newChild, settings) {
-        if (typeof settings.transition == 'string') {
+        if (system.isString(settings.transition)) {
             if (settings.activeView) {
                 if (settings.activeView == newChild) {
                     return false;
@@ -173,7 +173,7 @@
         getSettings: function (valueAccessor, element) {
             var value = ko.utils.unwrapObservable(valueAccessor()) || {};
 
-            if (typeof value == 'string') {
+            if (system.isString(value)) {
                 return value;
             }
 
@@ -208,15 +208,11 @@
                 return;
             }
 
-            if (settings.view !== undefined && !settings.view) {
-                return;
-            }
-
             if (!settings.strategy) {
                 settings.strategy = this.defaultStrategy;
             }
 
-            if (typeof settings.strategy == 'string') {
+            if (system.isString(settings.strategy)) {
                 system.acquire(settings.strategy).then(function (strategy) {
                     settings.strategy = strategy;
                     composition.executeStrategy(element, settings);
@@ -226,7 +222,7 @@
             }
         },
         compose: function (element, settings, bindingContext) {
-            if (typeof settings == 'string') {
+            if (system.isString(settings)) {
                 if (viewEngine.isViewUrl(settings)) {
                     settings = {
                         view: settings
@@ -265,14 +261,9 @@
                         composition.bindAndShow(element, view, settings);
                     });
                 }
-            } else if (typeof settings.model == 'string') {
+            } else if (system.isString(settings.model)) {
                 system.acquire(settings.model).then(function (module) {
-                    if (typeof (module) == 'function') {
-                        settings.model = new module(element, settings);
-                    } else {
-                        settings.model = module;
-                    }
-
+                    settings.model = new (system.getObjectResolver(module))();
                     composition.inject(element, settings);
                 });
             } else {

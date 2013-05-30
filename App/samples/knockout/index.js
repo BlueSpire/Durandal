@@ -1,69 +1,98 @@
-﻿define(function () {
-    var system = require('durandal/system'),
-        viewModel = require('durandal/viewModel');
-    
+﻿define(['durandal/plugins/router'], function(router) {
+    var childRouter = router.createChildRouter();
+
+    childRouter.map([{
+        type: 'intro',
+        route: 'knockout-samples',
+        moduleId: 'samples/knockout/helloWorld/index',
+        title: 'Hello World'
+    },
+    {
+        type: 'intro',
+        route: 'knockout-samples/helloWorld',
+        moduleId: 'samples/knockout/helloWorld/index',
+        title: 'Hello World',
+        nav: true
+    }, {
+        type: 'intro',
+        route: 'knockout-samples/clickCounter',
+        moduleId: 'samples/knockout/clickCounter/index',
+        title: 'Click Counter',
+        nav: true
+    }, {
+        type: 'intro',
+        route: 'knockout-samples/simpleList',
+        moduleId: 'samples/knockout/simpleList/index',
+        title: 'Simple List',
+        nav: true
+    }, {
+        type: 'intro',
+        route: 'knockout-samples/betterList',
+        moduleId: 'samples/knockout/betterList/index',
+        title: 'Better List',
+        nav: true
+    }, {
+        type: 'intro',
+        route: 'knockout-samples/controlTypes',
+        moduleId: 'samples/knockout/controlTypes/index',
+        title: 'Control Types',
+        nav: true
+    }, {
+        type: 'intro',
+        route: 'knockout-samples/collections',
+        moduleId: 'samples/knockout/collections/index',
+        title: 'Collection',
+        nav: true
+    }, {
+        type: 'intro',
+        route: 'knockout-samples/pagedGrid',
+        moduleId: 'samples/knockout/pagedGrid/index',
+        title: 'Paged Grid',
+        nav: true
+    }, {
+        type: 'intro',
+        route: 'knockout-samples/animatedTrans',
+        moduleId: 'samples/knockout/animatedTrans/index',
+        title: 'Animated Transition',
+        nav: true
+    }, {
+        type: 'detailed',
+        route: 'knockout-samples/contactsEditor',
+        moduleId: 'samples/knockout/contactsEditor/index',
+        title: 'Contacts Editor',
+        nav: true
+    }, {
+        type: 'detailed',
+        route: 'knockout-samples/gridEditor',
+        moduleId: 'samples/knockout/gridEditor/index',
+        title: 'Grid Editor',
+        nav: true
+    }, {
+        type: 'detailed',
+        route: 'knockout-samples/shoppingCart',
+        moduleId: 'samples/knockout/shoppingCart/index',
+        title: 'Shopping Cart',
+        nav: true
+    }, {
+        type: 'detailed',
+        route: 'knockout-samples/twitterClient',
+        moduleId: 'samples/knockout/twitterClient/index',
+        title: 'Twitter Client',
+        nav: true
+    }])
+    .buildNavigationModel();
+
     return {
-        activeSample:viewModel.activator(),
-        introSamples: [{
-            name: 'Hello World',
-            hash: '#/knockout-samples/helloWorld',
-            moduleId: 'samples/knockout/helloWorld/index'
-        },{
-            name: 'Click Counter',
-            hash: '#/knockout-samples/clickCounter',
-            moduleId: 'samples/knockout/clickCounter/index'
-        },{
-            name: 'Simple List',
-            hash: '#/knockout-samples/simpleList',
-            moduleId: 'samples/knockout/simpleList/index'
-        },{
-            name: 'Better List',
-            hash: '#/knockout-samples/betterList',
-            moduleId: 'samples/knockout/betterList/index'
-        },{
-            name: 'Control Types',
-            hash: '#/knockout-samples/controlTypes',
-            moduleId: 'samples/knockout/controlTypes/index'
-        },{
-            name: 'Collection',
-            hash: '#/knockout-samples/collections',
-            moduleId: 'samples/knockout/collections/index'
-        },{
-            name: 'Paged Grid',
-            hash: '#/knockout-samples/pagedGrid',
-            moduleId: 'samples/knockout/pagedGrid/index'
-        },{
-            name: 'Animated Transition',
-            hash: '#/knockout-samples/animatedTrans',
-            moduleId: 'samples/knockout/animatedTrans/index'
-        }],
-        detailedSamples: [{
-            name: 'Contacts Editor',
-            hash: '#/knockout-samples/contactsEditor',
-            moduleId: 'samples/knockout/contactsEditor/index'
-        },{
-            name: 'Grid Editor',
-            hash: '#/knockout-samples/gridEditor',
-            moduleId: 'samples/knockout/gridEditor/index'
-        },{
-            name: 'Shopping Cart',
-            hash: '#/knockout-samples/shoppingCart',
-            moduleId: 'samples/knockout/shoppingCart/index'
-        },{
-            name: 'Twitter Client',
-            hash: '#/knockout-samples/twitterClient',
-            moduleId: 'samples/knockout/twitterClient/index'
-        }],
-        activate: function (args) {
-            var that = this;
-
-            if (!args.name) {
-                args.name = 'helloWorld';
-            }
-
-            return system.acquire('samples/knockout/' + args.name + '/index').then(function(sample) {
-                that.activeSample(sample);
+        router: childRouter,
+        introSamples: ko.computed(function() {
+            return ko.utils.arrayFilter(childRouter.navigationModel(), function(route) {
+                return route.type == 'intro';
             });
-        }
+        }),
+        detailedSamples: ko.computed(function() {
+            return ko.utils.arrayFilter(childRouter.navigationModel(), function(route) {
+                return route.type == 'detailed';
+            });
+        })
     };
 });
