@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	  <meta name="apple-mobile-web-app-capable" content="yes" />
+	  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	  <meta name="format-detection" content="telephone=no"/>
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>Docs - dFiddle | Durandal</title>
+		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
+		<meta name="author" content="EisenbergEffect" />
+		
+		<meta http-equiv="X-Powered-By" content="DocPad v6.36.2"/>
+
+	  <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+	  <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+	  <link rel="apple-touch-icon" href="images/icon.png"/>
+
+		<!-- Shims: IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Styles -->
+		<link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+		 <script type="text/javascript">
+	            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+	                var msViewportStyle = document.createElement("style");
+	                var mq = "@@-ms-viewport{width:auto!important}";
+	                msViewportStyle.appendChild(document.createTextNode(mq));
+	                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+	            }
+		  </script>
+
+		  <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+		  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+		    <div class="navbar-inner">
+	        <a class="brand" href="/">
+	            <span>&nbsp;&nbsp;Durandal</span>
+	        </a>
+	        <ul class="nav">
+						
+							<li typeof="sioc:Page" about="/pages/get-started" class="">
+								<a href="/pages/get-started" property="dc:title">Get Started</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/downloads" class="">
+								<a href="/pages/downloads" property="dc:title">Downloads</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/docs" class="">
+								<a href="/pages/docs" property="dc:title">Docs</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/videos" class="">
+								<a href="/pages/videos" property="dc:title">Videos</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/training" class="">
+								<a href="/pages/training" property="dc:title">Training</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/support" class="">
+								<a href="/pages/support" property="dc:title">Support</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/merchandise" class="">
+								<a href="/pages/merchandise" property="dc:title">Merchandise</a>
+							</li>
+						
+					</ul>
+
+					<ul class="nav pull-right">
+						<li>
+							<a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+						</li>
+					</ul>
+		    </div>
+		</div>
+
+		<section class="container content docs">
+  <h1>dFiddle</h1>
+<h4> </h4>
+<p>JSFiddle et al. are all great when there&#39;s a need to fiddle with CSS/JavaScript/HTML snippets or
+share code during discussions on stackoverflow or newsgroups. Unfortunately, due to the nature of Durandal which encourages you to break down apps into many smaller modules and then use 
+<a href="/documentation/Using-Composition">composition</a> to stitch them back together, those apps are no longer at their sweet spot. There&#39;s no easy
+ way to deal with multiple smaller external files in tools like JSFiddle. <a href="http://dfiddle.github.io/dFiddle-1.2/">dFiddle</a> to the rescue!</p>
+<h3>What is it?</h3>
+<p>A cut down version of [Durandal], hosted as a Github repo with only one gh-pages branch. By cutting things down to the bare
+minimum, dFiddle allows bringing up live Durandal <em>fiddles</em> in minutes.</p>
+<h3>Basic Usage</h3>
+<ol>
+<li>Fork <a href="http://dfiddle.github.io/dFiddle-1.2/">dFiddle</a> on GitHub (hint: there&#39;s a fork button in the upper right) and optionally
+clone it to your local machine</li>
+<li>For each example in the Durandal Starter Kit you&#39;ll find a <em>fiddle</em> version that can be used as a starting
+point for your own code.</li>
+<li>You&#39;re in the mood for creating more examples? Great! Simply create sub-folders in a samples sub-category
+folders e.g. <code>samples/viewCompostion</code> and add it to <code>sampleGroups</code> in <code>index.js</code>. Check out
+<a href="https://github.com/dFiddle/dFiddle-1.2/blob/gh-pages/App/samples/viewComposition/index.js#L9">https://github.com/dFiddle/dFiddle-1.2/blob/gh-pages/App/samples/viewComposition/index.js#L9</a> for the exact syntax.</li>
+</ol>
+<h3>Advanced Usage</h3>
+<ol>
+<li>See above.</li>
+<li>Go free style by replacing every bit in the solution with your own code.</li>
+</ol>
+<blockquote>
+<p><strong>Note</strong>: If your are trying to get a BreezeJS application up and running you might be better off by
+hosting your solution on Microsoft Azure, as this would allow you to work with the ASP.NET Web API,
+which you would have to mock up on GitHub otherwise. The same goes for fiddles that leverage other data technologies.</p>
+</blockquote>
+<h3>Sharing the Fiddle</h3>
+<p>Once you make your first commit the live version will become available at an URL like
+<code>http://Your_User_Name.github.io/dFiddle-1.2</code>. The published Url can be found under Repo | Settings | GitHub
+Pages.
+According to GitHub, it may take up to <strong>ten minutes</strong> for changes to be visible.</p>
+<ul>
+<li>Share links to the the live version e.g. <a href="http://dfiddle.github.io/dFiddle-1.2/#/view-composition/wizard">http://dfiddle.github.io/dFiddle-1.2/#/view-composition/wizard</a></li>
+<li>Share links right down to a specific code line e.g.
+<a href="https://github.com/dFiddle/dFiddle-1.2/blob/gh-pages/App/samples/viewComposition/wizard/index.js#L3">https://github.com/dFiddle/dFiddle-1.2/blob/gh-pages/App/samples/viewComposition/wizard/index.js#L3</a></li>
+</ul>
+<p>Totally optional: Whenever you find a solution for a specific issue, send a pull request so that it can be integrated.</p>
+
+</section>
+
+		<footer class="footer">
+		  <div class="container">
+		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
+		    <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		  </div>
+		</footer>
+
+		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/modernizr.js"></script>
+		<script src="/vendor/prettify.js"></script>
+		<script src="/scripts/behavior.js"></script>
+
+		
+
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-38441871-1']);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
+	</body>
+</html>

@@ -1,88 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-      <meta name="format-detection" content="telephone=no"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	  <meta name="apple-mobile-web-app-capable" content="yes" />
+	  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	  <meta name="format-detection" content="telephone=no"/>
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title>Docs - Using Composition | Durandal</title>
-        <meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
-        <meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
-        <meta name="author" content="EisenbergEffect" />
-        
-        <meta http-equiv="X-Powered-By" content="DocPad"/>
+		<title>Docs - Using Composition | Durandal</title>
+		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
+		<meta name="author" content="EisenbergEffect" />
+		
+		<meta http-equiv="X-Powered-By" content="DocPad v6.36.2"/>
 
-      <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
-      <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
-      <link rel="apple-touch-icon" href="images/icon.png"/>
+	  <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+	  <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+	  <link rel="apple-touch-icon" href="images/icon.png"/>
 
-        <!-- Shims: IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-            <script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+		<!-- Shims: IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
 
-        <!-- Styles -->
-        <link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+		<!-- Styles -->
+		<link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
 
-         <script type="text/javascript">
-                if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-                    var msViewportStyle = document.createElement("style");
-                    var mq = "@@-ms-viewport{width:auto!important}";
-                    msViewportStyle.appendChild(document.createTextNode(mq));
-                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
-                }
-          </script>
+		 <script type="text/javascript">
+	            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+	                var msViewportStyle = document.createElement("style");
+	                var mq = "@@-ms-viewport{width:auto!important}";
+	                msViewportStyle.appendChild(document.createTextNode(mq));
+	                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+	            }
+		  </script>
 
-          <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
-          <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-    </head>
-    <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-            <a class="brand" href="/">
-                <span>&nbsp;&nbsp;Durandal</span>
-            </a>
-            <ul class="nav">
-                        
-                            <li typeof="sioc:Page" about="/pages/get-started" class="">
-                                <a href="/pages/get-started" property="dc:title">Get Started</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/docs" class="">
-                                <a href="/pages/docs" property="dc:title">Docs</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/videos" class="">
-                                <a href="/pages/videos" property="dc:title">Videos</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/training" class="">
-                                <a href="/pages/training" property="dc:title">Training</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/support" class="">
-                                <a href="/pages/support" property="dc:title">Support</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/merchandise" class="">
-                                <a href="/pages/merchandise" property="dc:title">Merchandise</a>
-                            </li>
-                        
-                    </ul>
+		  <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+		  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+		    <div class="navbar-inner">
+	        <a class="brand" href="/">
+	            <span>&nbsp;&nbsp;Durandal</span>
+	        </a>
+	        <ul class="nav">
+						
+							<li typeof="sioc:Page" about="/pages/get-started" class="">
+								<a href="/pages/get-started" property="dc:title">Get Started</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/downloads" class="">
+								<a href="/pages/downloads" property="dc:title">Downloads</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/docs" class="">
+								<a href="/pages/docs" property="dc:title">Docs</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/videos" class="">
+								<a href="/pages/videos" property="dc:title">Videos</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/training" class="">
+								<a href="/pages/training" property="dc:title">Training</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/support" class="">
+								<a href="/pages/support" property="dc:title">Support</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/merchandise" class="">
+								<a href="/pages/merchandise" property="dc:title">Merchandise</a>
+							</li>
+						
+					</ul>
 
-                    <ul class="nav pull-right">
-                        <li>
-                            <a href="https://bluespire.zendesk.com" class="support">Support Login</a>
-                        </li>
-                    </ul>
-            </div>
-        </div>
+					<ul class="nav pull-right">
+						<li>
+							<a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+						</li>
+					</ul>
+		    </div>
+		</div>
 
-        <section class="container content docs">
+		<section class="container content docs">
   <h1>Using Composition</h1>
 <h4> </h4>
 <blockquote>
@@ -121,8 +125,7 @@ If you create widgets or use modal dialogs, you will also be leveraging it indir
         app.adaptToDevice();
         app.setRoot(&#39;shell&#39;, &#39;entrance&#39;);
     });
-});</pre>
-<p>Notice the call to <em>setRoot</em>. This actually invokes the composition engine. What is the result?</p>
+});</pre><p>Notice the call to <em>setRoot</em>. This actually invokes the composition engine. What is the result?</p>
 <ol>
 <li>RequireJS is used to find the module with id <em>shell</em> (shell.js on the file system).</li>
 <li>The view locator is used to locate the appropriate view for <em>shell</em>. The defult configuration will find <em>shell.html</em>.</li>
@@ -135,28 +138,24 @@ If you create widgets or use modal dialogs, you will also be leveraging it indir
 Now lets take a look at how we can do some basic visual composition inside of the shell view. Have a look at this markup:</p>
 <pre class="prettyprint linenums">&lt;div&gt;
     &lt;div data-bind=&quot;compose:&#39;views/header.html&#39;&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;</pre>
-<p>Here we are using the <em>compose</em> binding to inject a view. The composition system will locate &#39;views/header.html&#39; and inject it into the DOM inside the div.
+&lt;/div&gt;</pre><p>Here we are using the <em>compose</em> binding to inject a view. The composition system will locate &#39;views/header.html&#39; and inject it into the DOM inside the div.
 The header html view will be data-bound against the existing context (the shell module) since it&#39;s an explicit view composition, without a module.
 So, how do we specify that header actually has it&#39;s own view and module? Like this:</p>
 <pre class="prettyprint linenums">&lt;div&gt;
     &lt;div data-bind=&quot;compose:&#39;viewmodels/header&#39;&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;</pre>
-<p>When there is no view extension (according to the view engine) then the composition engine interprets this as a module Id.
+&lt;/div&gt;</pre><p>When there is no view extension (according to the view engine) then the composition engine interprets this as a module Id.
 In this case, it will require the &#39;viewmodels/header&#39; module and then locate it&#39;s view (according to convention).
 The module and the view will be bound and the view will be injected into the div.</p>
 <p>This is all fine for construction of static components, but what about dynamic composition?
 Well, the compose binding can take an observable, like so:</p>
 <pre class="prettyprint linenums">&lt;div&gt;
     &lt;div data-bind=&quot;compose:activeScreen&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;</pre>
-<p>Imagine that your shell module looks like this:</p>
+&lt;/div&gt;</pre><p>Imagine that your shell module looks like this:</p>
 <pre class="prettyprint linenums">define(function(require) {
     return {
         activeScreen:ko.observable()
     };
-});</pre>
-<p>Now, the compose binding queries the observable for its value. Here&#39;s a few things that could happen, depending on the value of the observable:</p>
+});</pre><p>Now, the compose binding queries the observable for its value. Here&#39;s a few things that could happen, depending on the value of the observable:</p>
 <ul>
 <li>If it&#39;s a string value:<ul>
 <li>If it has a view extension:<ul>
@@ -184,32 +183,31 @@ There&#39;s lots more the composition engine can do. To dig in deeper have a loo
 
 </section>
 
-        <footer class="footer">
-          <div class="container">
-            <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
-            <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
-            <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
-          </div>
-        </footer>
+		<footer class="footer">
+		  <div class="container">
+		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
+		    <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		  </div>
+		</footer>
 
-        <script src="/vendor/jquery.js"></script>
-        <script src="/vendor/modernizr.js"></script>
-        <script src="/vendor/prettify.js"></script>
-        <script src="/vendor/knockout-2.2.1.js"></script>
-        <script src="/scripts/behavior.js"></script>
+		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/modernizr.js"></script>
+		<script src="/vendor/prettify.js"></script>
+		<script src="/scripts/behavior.js"></script>
 
-        
+		
 
-        <script type="text/javascript">
-          var _gaq = _gaq || [];
-          _gaq.push(['_setAccount', 'UA-38441871-1']);
-          _gaq.push(['_trackPageview']);
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-38441871-1']);
+		  _gaq.push(['_trackPageview']);
 
-          (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-          })();
-        </script>
-    </body>
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
+	</body>
 </html>

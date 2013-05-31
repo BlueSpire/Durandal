@@ -1,88 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-      <meta name="format-detection" content="telephone=no"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	  <meta name="apple-mobile-web-app-capable" content="yes" />
+	  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	  <meta name="format-detection" content="telephone=no"/>
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title>Docs - Understanding the Starter Kit | Durandal</title>
-        <meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
-        <meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
-        <meta name="author" content="EisenbergEffect" />
-        
-        <meta http-equiv="X-Powered-By" content="DocPad"/>
+		<title>Docs - Understanding the Starter Kit | Durandal</title>
+		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
+		<meta name="author" content="EisenbergEffect" />
+		
+		<meta http-equiv="X-Powered-By" content="DocPad v6.36.2"/>
 
-      <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
-      <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
-      <link rel="apple-touch-icon" href="images/icon.png"/>
+	  <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+	  <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+	  <link rel="apple-touch-icon" href="images/icon.png"/>
 
-        <!-- Shims: IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-            <script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+		<!-- Shims: IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
 
-        <!-- Styles -->
-        <link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+		<!-- Styles -->
+		<link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
 
-         <script type="text/javascript">
-                if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-                    var msViewportStyle = document.createElement("style");
-                    var mq = "@@-ms-viewport{width:auto!important}";
-                    msViewportStyle.appendChild(document.createTextNode(mq));
-                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
-                }
-          </script>
+		 <script type="text/javascript">
+	            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+	                var msViewportStyle = document.createElement("style");
+	                var mq = "@@-ms-viewport{width:auto!important}";
+	                msViewportStyle.appendChild(document.createTextNode(mq));
+	                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+	            }
+		  </script>
 
-          <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
-          <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-    </head>
-    <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-            <a class="brand" href="/">
-                <span>&nbsp;&nbsp;Durandal</span>
-            </a>
-            <ul class="nav">
-                        
-                            <li typeof="sioc:Page" about="/pages/get-started" class="">
-                                <a href="/pages/get-started" property="dc:title">Get Started</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/docs" class="">
-                                <a href="/pages/docs" property="dc:title">Docs</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/videos" class="">
-                                <a href="/pages/videos" property="dc:title">Videos</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/training" class="">
-                                <a href="/pages/training" property="dc:title">Training</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/support" class="">
-                                <a href="/pages/support" property="dc:title">Support</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/merchandise" class="">
-                                <a href="/pages/merchandise" property="dc:title">Merchandise</a>
-                            </li>
-                        
-                    </ul>
+		  <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+		  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+		    <div class="navbar-inner">
+	        <a class="brand" href="/">
+	            <span>&nbsp;&nbsp;Durandal</span>
+	        </a>
+	        <ul class="nav">
+						
+							<li typeof="sioc:Page" about="/pages/get-started" class="">
+								<a href="/pages/get-started" property="dc:title">Get Started</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/downloads" class="">
+								<a href="/pages/downloads" property="dc:title">Downloads</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/docs" class="">
+								<a href="/pages/docs" property="dc:title">Docs</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/videos" class="">
+								<a href="/pages/videos" property="dc:title">Videos</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/training" class="">
+								<a href="/pages/training" property="dc:title">Training</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/support" class="">
+								<a href="/pages/support" property="dc:title">Support</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/merchandise" class="">
+								<a href="/pages/merchandise" property="dc:title">Merchandise</a>
+							</li>
+						
+					</ul>
 
-                    <ul class="nav pull-right">
-                        <li>
-                            <a href="https://bluespire.zendesk.com" class="support">Support Login</a>
-                        </li>
-                    </ul>
-            </div>
-        </div>
+					<ul class="nav pull-right">
+						<li>
+							<a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+						</li>
+					</ul>
+		    </div>
+		</div>
 
-        <section class="container content docs">
+		<section class="container content docs">
   <h1>Understanding the Starter Kit</h1>
 <h4> </h4>
 <blockquote>
@@ -105,8 +109,7 @@
 <pre class="prettyprint linenums">&lt;body&gt;
     &lt;div id=&quot;applicationHost&quot;&gt;&lt;/div&gt;
     &lt;script type=&quot;text/javascript&quot; src=&quot;/App/durandal/amd/require.js&quot; data-main=&quot;/App/main&quot;&gt;&lt;/script&gt;
-&lt;/body&gt;</pre>
-<p>The <em>applicationHost</em> is where your app&#39;s views will live. We&#39;ll talk about how that happens a bit more in the next section. Below that is the script tag that references RequireJS. It points to our application&#39;s entry point, declared in the <em>data-main</em> attribute. At runtime, this resolves to the <em>main.js</em> file.</p>
+&lt;/body&gt;</pre><p>The <em>applicationHost</em> is where your app&#39;s views will live. We&#39;ll talk about how that happens a bit more in the next section. Below that is the script tag that references RequireJS. It points to our application&#39;s entry point, declared in the <em>data-main</em> attribute. At runtime, this resolves to the <em>main.js</em> file.</p>
 <h3>main.js</h3>
 <p>The <em>main.js</em> module is where you configure durandal and tell it to start up the app. Let&#39;s look at the main module and see what we can learn:</p>
 <pre class="prettyprint linenums">define(function(require) {
@@ -127,8 +130,7 @@
         app.adaptToDevice();
         app.setRoot(&#39;viewmodels/shell&#39;, &#39;entrance&#39;);
     });
-});</pre>
-<p>The most important thing to learn from this example is that all app-specific code is written as modules. There is one module per file and each module declares itself by calling <code>define</code>. It can then <em>require</em> other modules in the application by referencing their path. In this example, we can see that our <em>main</em> module is dependent on four other modules <em>app</em>, <em>viewLocator</em>, <em>system</em> and <em>router</em>.</p>
+});</pre><p>The most important thing to learn from this example is that all app-specific code is written as modules. There is one module per file and each module declares itself by calling <code>define</code>. It can then <em>require</em> other modules in the application by referencing their path. In this example, we can see that our <em>main</em> module is dependent on four other modules <em>app</em>, <em>viewLocator</em>, <em>system</em> and <em>router</em>.</p>
 <blockquote>
 <p><strong>Note:</strong> When calling <em>define</em> to declare a module, you pass it a function, which returns your module. This is important. The return value of your function is your module and is the same object that will be passed to any consumer that calls <em>require</em>. You can return either an object (singleton modules) or a function (for constructors) from your define call. For further information on creating modules, see the RequireJS documentation.</p>
 </blockquote>
@@ -162,8 +164,7 @@
             return router.activate(&#39;welcome&#39;);
         }
     };
-});</pre>
-<p><em>shell.html</em></p>
+});</pre><p><em>shell.html</em></p>
 <pre class="prettyprint linenums">&lt;div&gt;
     &lt;div class=&quot;navbar navbar-fixed-top&quot;&gt;
         &lt;div class=&quot;navbar-inner&quot;&gt;
@@ -182,8 +183,7 @@
             transition:&#39;entrance&#39;
         }--&gt;&lt;!--/ko--&gt;
     &lt;/div&gt;
-&lt;/div&gt;</pre>
-<p>When you call <code>setRoot</code>, Durandal requires both the module and the html and uses Knockout to databind them together. It then injects them into the dom&#39;s <em>applicationHost</em>. If you look at the module, you will see that we have exposed the router as a property called <em>router</em>. Then, look at the html for the &quot;nav bar&quot; and you will see that we are dynamically generating our navigation structure based on the router&#39;s <em>visibleRoutes</em> array. Below that we have a container where our pages will be switched in and out. How does that work?</p>
+&lt;/div&gt;</pre><p>When you call <code>setRoot</code>, Durandal requires both the module and the html and uses Knockout to databind them together. It then injects them into the dom&#39;s <em>applicationHost</em>. If you look at the module, you will see that we have exposed the router as a property called <em>router</em>. Then, look at the html for the &quot;nav bar&quot; and you will see that we are dynamically generating our navigation structure based on the router&#39;s <em>visibleRoutes</em> array. Below that we have a container where our pages will be switched in and out. How does that work?</p>
 <p>Durandal takes Knockout&#39;s databinding implementation and layers a powerful &quot;composition&quot; system on top of it. In the case of our shell, the router is tracking the current route. It stores the route&#39;s module instance in its <em>activeItem</em> observable property. The router is then bound through Durandal&#39;s <em>compose</em> binding. Now any time the router changes it&#39;s active item, the dom will re-compose with the new view. Here&#39;s how it happens:</p>
 <ol>
 <li>A route is triggered and the router finds the module and sets it as its <em>activeItem</em>.</li>
@@ -212,32 +212,31 @@
 
 </section>
 
-        <footer class="footer">
-          <div class="container">
-            <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
-            <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
-            <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
-          </div>
-        </footer>
+		<footer class="footer">
+		  <div class="container">
+		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
+		    <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		  </div>
+		</footer>
 
-        <script src="/vendor/jquery.js"></script>
-        <script src="/vendor/modernizr.js"></script>
-        <script src="/vendor/prettify.js"></script>
-        <script src="/vendor/knockout-2.2.1.js"></script>
-        <script src="/scripts/behavior.js"></script>
+		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/modernizr.js"></script>
+		<script src="/vendor/prettify.js"></script>
+		<script src="/scripts/behavior.js"></script>
 
-        
+		
 
-        <script type="text/javascript">
-          var _gaq = _gaq || [];
-          _gaq.push(['_setAccount', 'UA-38441871-1']);
-          _gaq.push(['_trackPageview']);
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-38441871-1']);
+		  _gaq.push(['_trackPageview']);
 
-          (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-          })();
-        </script>
-    </body>
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
+	</body>
 </html>

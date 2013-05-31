@@ -1,88 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-      <meta name="format-detection" content="telephone=no"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	  <meta name="apple-mobile-web-app-capable" content="yes" />
+	  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	  <meta name="format-detection" content="telephone=no"/>
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title>Docs - Composition | Durandal</title>
-        <meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
-        <meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
-        <meta name="author" content="EisenbergEffect" />
-        
-        <meta http-equiv="X-Powered-By" content="DocPad"/>
+		<title>Docs - Composition | Durandal</title>
+		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Sammy, Knockout, RequireJS" />
+		<meta name="author" content="EisenbergEffect" />
+		
+		<meta http-equiv="X-Powered-By" content="DocPad v6.36.2"/>
 
-      <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
-      <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
-      <link rel="apple-touch-icon" href="images/icon.png"/>
+	  <link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+	  <link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+	  <link rel="apple-touch-icon" href="images/icon.png"/>
 
-        <!-- Shims: IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-            <script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+		<!-- Shims: IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
 
-        <!-- Styles -->
-        <link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+		<!-- Styles -->
+		<link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
 
-         <script type="text/javascript">
-                if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-                    var msViewportStyle = document.createElement("style");
-                    var mq = "@@-ms-viewport{width:auto!important}";
-                    msViewportStyle.appendChild(document.createTextNode(mq));
-                    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
-                }
-          </script>
+		 <script type="text/javascript">
+	            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+	                var msViewportStyle = document.createElement("style");
+	                var mq = "@@-ms-viewport{width:auto!important}";
+	                msViewportStyle.appendChild(document.createTextNode(mq));
+	                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+	            }
+		  </script>
 
-          <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
-          <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-    </head>
-    <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-            <a class="brand" href="/">
-                <span>&nbsp;&nbsp;Durandal</span>
-            </a>
-            <ul class="nav">
-                        
-                            <li typeof="sioc:Page" about="/pages/get-started" class="">
-                                <a href="/pages/get-started" property="dc:title">Get Started</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/docs" class="">
-                                <a href="/pages/docs" property="dc:title">Docs</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/videos" class="">
-                                <a href="/pages/videos" property="dc:title">Videos</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/training" class="">
-                                <a href="/pages/training" property="dc:title">Training</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/support" class="">
-                                <a href="/pages/support" property="dc:title">Support</a>
-                            </li>
-                        
-                            <li typeof="sioc:Page" about="/pages/merchandise" class="">
-                                <a href="/pages/merchandise" property="dc:title">Merchandise</a>
-                            </li>
-                        
-                    </ul>
+		  <script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+		  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+		    <div class="navbar-inner">
+	        <a class="brand" href="/">
+	            <span>&nbsp;&nbsp;Durandal</span>
+	        </a>
+	        <ul class="nav">
+						
+							<li typeof="sioc:Page" about="/pages/get-started" class="">
+								<a href="/pages/get-started" property="dc:title">Get Started</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/downloads" class="">
+								<a href="/pages/downloads" property="dc:title">Downloads</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/docs" class="">
+								<a href="/pages/docs" property="dc:title">Docs</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/videos" class="">
+								<a href="/pages/videos" property="dc:title">Videos</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/training" class="">
+								<a href="/pages/training" property="dc:title">Training</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/support" class="">
+								<a href="/pages/support" property="dc:title">Support</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/merchandise" class="">
+								<a href="/pages/merchandise" property="dc:title">Merchandise</a>
+							</li>
+						
+					</ul>
 
-                    <ul class="nav pull-right">
-                        <li>
-                            <a href="https://bluespire.zendesk.com" class="support">Support Login</a>
-                        </li>
-                    </ul>
-            </div>
-        </div>
+					<ul class="nav pull-right">
+						<li>
+							<a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+						</li>
+					</ul>
+		    </div>
+		</div>
 
-        <section class="container content docs">
+		<section class="container content docs">
   <h1>Composition</h1>
 <h4> </h4>
 <blockquote>
@@ -163,7 +167,7 @@
 <p><strong>Note:</strong> If you are using the <em>viewModel</em> module&#39;s <em>activate</em> function to create an activator. You should not enable activation on the binding that the activator is bound to since the activator serves the same purpose.</p>
 </blockquote>
 <h4>Preserve Context</h4>
-<p>If you set <em>preserveContext</em> to true on the composition settings, the model will be bound after creating a child binding context of the current context. This is always set to true internally when a view is composed without a model.</p>
+<p>Whenever a compose happens, an isolated binding context is created around that composed view and view model. So, from inside that view, you cannot reach outside to a different model object. We believe this is really important for encapsulation because we&#39;ve seen some really bad architectural things happen when you can &quot;accidentally&quot; reference things outside of the scope. As a result, things are encapsulated by default. If you want, you can set <code>preserveContext:true</code> on the binding to &quot;connect&quot; the new composition to its parent and enable walking up the tree from inside the child composition, but that is not the default. The exceptions to that are when you compose only a view without a module. This is obvious because it must bind to the parent context or else not bind at all. The other exception is inside a widget&#39;s templated parts. These parts can reach the outer scope in which the widget is actually declared, because from a developers point of view, the parts &quot;appear&quot; to actually be in that scope and they often need to access it.</p>
 <h4>Area</h4>
 <p>You can specify an <em>area</em> to pass along with your model to the view locator. This can be used to help further specify sub-group organization of views. For example, you might have a set of readonly views and a set of editing views for models. Setting (or binding) the area property can help the view locator select different views in different scenarios. By default, whenever a view is composed without a model, the composition framework sets <em>area</em> to &quot;partial&quot;.</p>
 <h3>Hooks</h3>
@@ -176,32 +180,31 @@
 
 </section>
 
-        <footer class="footer">
-          <div class="container">
-            <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
-            <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
-            <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
-          </div>
-        </footer>
+		<footer class="footer">
+		  <div class="container">
+		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
+		    <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		  </div>
+		</footer>
 
-        <script src="/vendor/jquery.js"></script>
-        <script src="/vendor/modernizr.js"></script>
-        <script src="/vendor/prettify.js"></script>
-        <script src="/vendor/knockout-2.2.1.js"></script>
-        <script src="/scripts/behavior.js"></script>
+		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/modernizr.js"></script>
+		<script src="/vendor/prettify.js"></script>
+		<script src="/scripts/behavior.js"></script>
 
-        
+		
 
-        <script type="text/javascript">
-          var _gaq = _gaq || [];
-          _gaq.push(['_setAccount', 'UA-38441871-1']);
-          _gaq.push(['_trackPageview']);
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-38441871-1']);
+		  _gaq.push(['_trackPageview']);
 
-          (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-          })();
-        </script>
-    </body>
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
+	</body>
 </html>
