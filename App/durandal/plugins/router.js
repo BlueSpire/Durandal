@@ -440,7 +440,6 @@ function(system, app, viewModel, events, history) {
 
         router.createChildRouter = function() {
             var childRouter = createRouter();
-            childRouter.parent = router;
             return childRouter;
         };
 
