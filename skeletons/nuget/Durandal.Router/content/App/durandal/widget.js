@@ -110,9 +110,9 @@
             settings.activate = true;
             settings.activationData = settings;
             settings.afterCompose = function() {
-                if(settings.model.deactivate) {
+                if(settings.model.domDetached) {
                     ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
-                        settings.model.deactivate();
+                        settings.model.domDetached();
                     });
                 }
             };

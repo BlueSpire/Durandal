@@ -5,7 +5,8 @@
         toString = Object.prototype.toString,
         system,
         treatAsIE8 = false,
-        nativeIsArray = Array.isArray;
+        nativeIsArray = Array.isArray,
+        slice = Array.prototype.slice;
 
     //see http://patik.com/blog/complete-cross-browser-console-log/
     // Tell IE9 to use its built-in console
@@ -57,15 +58,15 @@
                     }
                 }
                 // All other modern browsers
-                else if ((Array.prototype.slice.call(arguments)).length == 1 && typeof Array.prototype.slice.call(arguments)[0] == 'string') {
-                    console.log((Array.prototype.slice.call(arguments)).toString());
+                else if ((slice.call(arguments)).length == 1 && typeof slice.call(arguments)[0] == 'string') {
+                    console.log((slice.call(arguments)).toString());
                 } else {
-                    console.log(Array.prototype.slice.call(arguments));
+                    console.log(slice.call(arguments));
                 }
             }
             // IE8
             else if ((!Function.prototype.bind || treatAsIE8) && typeof console != 'undefined' && typeof console.log == 'object') {
-                Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
+                Function.prototype.call.call(console.log, console, slice.call(arguments));
             }
 
             // IE7 and lower, and other old browsers
@@ -77,7 +78,7 @@
     };
 
     system = {
-        version: "1.3.0",
+        version: "2.0.0",
         noop: noop,
         getModuleId: function(obj) {
             if (!obj) {
@@ -150,7 +151,7 @@
             });
         },
         acquire: function() {
-            var modules = Array.prototype.slice.call(arguments, 0);
+            var modules = slice.call(arguments, 0);
             return this.defer(function(dfd) {
                 require(modules, function() {
                     var args = arguments;
@@ -161,7 +162,7 @@
             }).promise();
         },
         extend: function(obj) {
-            var rest = Array.prototype.slice.call(arguments, 1);
+            var rest = slice.call(arguments, 1);
 
             for (var i = 0; i < rest.length; i++) {
                 var source = rest[i];
