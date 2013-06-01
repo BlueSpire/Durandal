@@ -30,7 +30,7 @@
     };
 
     ctor.prototype.documentAttached = function () {
-        console.log('Attached to document');
+        console.log('Attached to document.');
     };
 
     ctor.prototype.documentDetached = function() {

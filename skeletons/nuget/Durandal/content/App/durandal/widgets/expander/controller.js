@@ -25,8 +25,16 @@
         });
     };
 
-    ctor.prototype.domDetached = function() {
-        system.log('Detached from DOM'); //to see this called, set cacheViews:false on the shell's router composition binding
+    ctor.prototype.viewAttached = function () {
+        console.log('View Attached');
+    };
+
+    ctor.prototype.documentAttached = function () {
+        console.log('Attached to document');
+    };
+
+    ctor.prototype.documentDetached = function() {
+        system.log('Detached from document.'); //to see this called, set cacheViews:false on the shell's router composition binding
     };
 
     return ctor;

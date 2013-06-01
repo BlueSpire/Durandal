@@ -42,8 +42,8 @@
                 activate:false
             };
 
-            if (modalContext.afterCompose) {
-                settings.afterCompose = modalContext.afterCompose;
+            if (modalContext.documentAttached) {
+                settings.documentAttached = modalContext.documentAttached;
             }
 
             return settings;
@@ -133,7 +133,7 @@
                 $("body").css("margin-right", modal.oldBodyMarginRight);
             }
         },
-        afterCompose: function(parent, newChild, settings) {
+        documentAttached: function (newChild, settings) {
             var $child = $(newChild);
             var width = $child.width();
             var height = $child.height();

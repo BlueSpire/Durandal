@@ -80,7 +80,7 @@
             return kindModuleMaps[kind] || widget.convertKindToModulePath(kind);
         },
         convertKindToModulePath: function(kind) {
-            return 'durandal/widgets/' + kind + '/controller';
+            return 'durandal/widgets/' + kind + '/viewmodel';
         },
         mapKindToViewId: function(kind) {
             return kindViewMaps[kind] || widget.convertKindToViewPath(kind);

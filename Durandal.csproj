@@ -169,7 +169,7 @@
     <Content Include="App\samples\widgets\index.html" />
     <Content Include="App\samples\widgets\index.js" />
     <Content Include="App\durandal\widgets\expander\view.html" />
-    <Content Include="App\durandal\widgets\expander\controller.js" />
+    <Content Include="App\durandal\widgets\expander\viewmodel.js" />
     <Content Include="index.html" />
     <Content Include="License.txt" />
     <Content Include="packages.config" />

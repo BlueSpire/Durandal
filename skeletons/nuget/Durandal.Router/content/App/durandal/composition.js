@@ -2,7 +2,10 @@
     function (viewLocator, viewModelBinder, viewEngine, system, viewModel) {
 
     var dummyModel = {},
-        activeViewAttributeName = 'data-active-view';
+        activeViewAttributeName = 'data-active-view',
+        composition,
+        documentAttachedCallbacks = [],
+        compositionCount = 0;
 
     function shouldPerformActivation(settings) {
         return settings.model && settings.model.activate
@@ -58,15 +61,39 @@
 
             newChild.setAttribute(activeViewAttributeName, true);
             
-            if (settings.composingNewView && settings.model.domDetached) {
-                ko.utils.domNodeDisposal.addDisposeCallback(newChild, function () {
-                    settings.model.domDetached();
-                });
+            if (settings.composingNewView && settings.model) {
+                if (settings.model.documentAttached) {
+                    composition.current.completed(function() {
+                        settings.model.documentAttached(newChild, settings);
+                    });
+                }
+
+                if (settings.model.documentDetached) {
+                    composition.documentDetached(newChild, function() {
+                        settings.model.documentDetached(newChild, settings);
+                    });
+                }
             }
         }
-
+        
         if (settings.afterCompose) {
             settings.afterCompose(parent, newChild, settings);
+        }
+
+        if (settings.documentAttached) {
+            composition.current.completed(function() {
+                settings.documentAttached(newChild, settings);
+            });
+        }
+
+        compositionCount--;
+
+        if(compositionCount === 0) {
+            for(var i = 0; i < documentAttachedCallbacks.length; i++) {
+                documentAttachedCallbacks[i]();
+            }
+
+            documentAttachedCallbacks = [];
         }
     }
 
@@ -94,10 +121,18 @@
         return false;
     }
 
-    var composition = {
+    composition = {
         activateDuringComposition: false,
         convertTransitionToModuleId: function (name) {
             return 'durandal/transitions/' + name;
+        },
+        current: {
+            completed: function (callback) {
+                documentAttachedCallbacks.push(callback);
+            }
+        },
+        documentDetached: function (element, callback) {
+            ko.utils.domNodeDisposal.addDisposeCallback(element, callback);
         },
         switchContent: function (parent, newChild, settings) {
             settings.transition = settings.transition || this.defaultTransitionName;
@@ -228,6 +263,8 @@
             }
         },
         compose: function (element, settings, bindingContext) {
+            compositionCount++;
+
             if (system.isString(settings)) {
                 if (viewEngine.isViewUrl(settings)) {
                     settings = {
