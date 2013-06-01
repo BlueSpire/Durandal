@@ -57,6 +57,12 @@
             }
 
             newChild.setAttribute(activeViewAttributeName, true);
+            
+            if (settings.composingNewView && settings.model && settings.model.domDetached) {
+                ko.utils.domNodeDisposal.addDisposeCallback(newChild, function () {
+                    settings.model.domDetached();
+                });
+            }
         }
 
         if (settings.afterCompose) {

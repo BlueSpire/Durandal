@@ -25,8 +25,8 @@
         });
     };
 
-    ctor.prototype.deactivate = function() {
-        system.log('Deactivating Widget'); //to see this called, set cacheViews:false on the shell's router composition binding
+    ctor.prototype.domDetached = function() {
+        system.log('Detached from DOM'); //to see this called, set cacheViews:false on the shell's router composition binding
     };
 
     return ctor;
