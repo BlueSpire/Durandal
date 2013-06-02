@@ -1,5 +1,5 @@
-﻿define(['./viewLocator', './viewModelBinder', './viewEngine', './system', './viewModel'],
-function (viewLocator, viewModelBinder, viewEngine, system, viewModel) {
+﻿define(['./viewLocator', './viewModelBinder', './viewEngine', './system'],
+function (viewLocator, viewModelBinder, viewEngine, system) {
 
     var dummyModel = {},
         activeViewAttributeName = 'data-active-view',
@@ -49,13 +49,21 @@ function (viewLocator, viewModelBinder, viewEngine, system, viewModel) {
 
     function tryActivate(context, successCallback) {
         if (shouldPerformActivation(context)) {
-            viewModel.activator().activateItem(context.model, context.activationData).then(function (success) {
-                if(success) {
-                    successCallback();
-                } else {
-                    endComposition();
-                }
-            });
+            var result;
+
+            if(system.isArray(context.activationData)) {
+                result = context.model.activate.apply(context.model, context.activationData);
+            } else {
+                result = context.model.activate(context.activationData);
+            }
+
+            if(result && result.then) {
+                result.then(successCallback);
+            } else if(result || result === undefined) {
+                successCallback();
+            } else {
+                endComposition();
+            }
         } else {
             successCallback();
         }
