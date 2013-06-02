@@ -279,7 +279,7 @@ function (viewLocator, viewModelBinder, viewEngine, system) {
                 this.executeStrategy(context);
             }
         },
-        compose: function (element, settings) {
+        compose: function (element, settings, bindingContext) {
             compositionCount++;
 
             if (system.isString(settings)) {
@@ -306,6 +306,7 @@ function (viewLocator, viewModelBinder, viewEngine, system) {
             settings.activeView = hostState.activeView;
             settings.parent = element;
             settings.triggerViewAttached = triggerViewAttached;
+            settings.bindingContext = bindingContext;
 
             if (settings.cacheViews && !settings.viewElements) {
                 settings.viewElements = hostState.childElements;
@@ -336,8 +337,7 @@ function (viewLocator, viewModelBinder, viewEngine, system) {
     ko.bindingHandlers.compose = {
         update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var settings = composition.getSettings(valueAccessor);
-            settings.bindingContext = bindingContext;
-            composition.compose(element, settings);
+            composition.compose(element, settings, bindingContext);
         }
     };
 

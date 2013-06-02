@@ -1,5 +1,5 @@
-﻿define(['./composition', './system', './viewModel'],
-    function (composition, system, viewModel) {
+﻿define(['./composition', './system', './activator'],
+    function (composition, system, activator) {
 
     var contexts = {},
         modalCount = 0;
@@ -54,17 +54,17 @@
 
             return system.defer(function(dfd) {
                 ensureModalInstance(obj).then(function(instance) {
-                    var activator = viewModel.activator();
+                    var modalActivator = activator.create();
 
-                    activator.activateItem(instance, activationData).then(function (success) {
+                    modalActivator.activateItem(instance, activationData).then(function (success) {
                         if (success) {
                             var modal = instance.modal = {
                                 owner: instance,
                                 context: modalContext,
-                                activator: activator,
+                                activator: modalActivator,
                                 close: function () {
                                     var args = arguments;
-                                    activator.deactivateItem(instance, true).then(function (closeSuccess) {
+                                    modalActivator.deactivateItem(instance, true).then(function (closeSuccess) {
                                         if (closeSuccess) {
                                             modalCount--;
                                             modalContext.removeHost(modal);

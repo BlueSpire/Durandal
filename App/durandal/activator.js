@@ -1,5 +1,5 @@
 ﻿define(['./system'], function (system) {
-    var viewModel;
+    var activator;
 
     function ensureSettings(settings) {
         if (settings == undefined) {
@@ -7,23 +7,23 @@
         }
 
         if (!settings.closeOnDeactivate) {
-            settings.closeOnDeactivate = viewModel.defaults.closeOnDeactivate;
+            settings.closeOnDeactivate = activator.defaults.closeOnDeactivate;
         }
 
         if (!settings.beforeActivate) {
-            settings.beforeActivate = viewModel.defaults.beforeActivate;
+            settings.beforeActivate = activator.defaults.beforeActivate;
         }
 
         if (!settings.afterDeactivate) {
-            settings.afterDeactivate = viewModel.defaults.afterDeactivate;
+            settings.afterDeactivate = activator.defaults.afterDeactivate;
         }
 
         if (!settings.interpretResponse) {
-            settings.interpretResponse = viewModel.defaults.interpretResponse;
+            settings.interpretResponse = activator.defaults.interpretResponse;
         }
 
         if (!settings.areSameItem) {
-            settings.areSameItem = viewModel.defaults.areSameItem;
+            settings.areSameItem = activator.defaults.areSameItem;
         }
 
         return settings;
@@ -425,7 +425,7 @@
         return computed;
     }
 
-    return viewModel = {
+    return activator = {
         defaults: {
             closeOnDeactivate: true,
             interpretResponse: function (value) {
@@ -448,6 +448,6 @@
                 }
             }
         },
-        activator: createActivator
+        create: createActivator
     };
 });

@@ -1,4 +1,4 @@
-﻿define(['./project', 'durandal/viewModel'], function (Project, viewModel) {
+﻿define(['./project', 'durandal/activator'], function (Project, activator) {
     
     var projects = ko.observableArray([
         new Project('Durandal', 'A cross-device, cross-platform application framework written in JavaScript, Durandal is a very small amount of code built on top of three existing and established Javascript libraries: jQuery, Knockout and RequireJS.'),
@@ -8,6 +8,6 @@
 
     return {
         projects: projects,
-        activeProject: viewModel.activator().forItems(projects)        
+        activeProject: activator.create().forItems(projects)
     };
 });

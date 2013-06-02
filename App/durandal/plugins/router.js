@@ -1,5 +1,5 @@
-﻿define(['../system', '../app', '../viewModel', '../events', './history'],
-function(system, app, viewModel, events, history) {
+﻿define(['../system', '../app', '../activator', '../events', './history'],
+function(system, app, activator, events, history) {
 
     var optionalParam = /\((.*?)\)/g;
     var namedParam = /(\(\?)?:\w+/g;
@@ -33,7 +33,7 @@ function(system, app, viewModel, events, history) {
             isProcessing = ko.observable(false),
             currentActivation,
             currentInstruction,
-            activeItem = viewModel.activator();
+            activeItem = activator.create();
 
         var router = {
             handlers: [],
@@ -183,7 +183,7 @@ function(system, app, viewModel, events, history) {
             isProcessing(true);
 
             if (canReuseCurrentActivation(instruction)) {
-                ensureActivation(viewModel.activator(), currentActivation, instruction);
+                ensureActivation(activator.create(), currentActivation, instruction);
             } else {
                 system.acquire(instruction.config.moduleId).then(function(module) {
                     var instance = new (system.getObjectResolver(module))();

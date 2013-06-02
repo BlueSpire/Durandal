@@ -1,5 +1,5 @@
-﻿define(['./viewLocator', './viewModelBinder', './viewEngine', './system', './viewModel'],
-function (viewLocator, viewModelBinder, viewEngine, system, viewModel) {
+﻿define(['./viewLocator', './viewModelBinder', './viewEngine', './system'],
+function (viewLocator, viewModelBinder, viewEngine, system) {
 
     var dummyModel = {},
         activeViewAttributeName = 'data-active-view',
@@ -49,13 +49,21 @@ function (viewLocator, viewModelBinder, viewEngine, system, viewModel) {
 
     function tryActivate(context, successCallback) {
         if (shouldPerformActivation(context)) {
-            viewModel.activator().activateItem(context.model, context.activationData).then(function (success) {
-                if(success) {
-                    successCallback();
-                } else {
-                    endComposition();
-                }
-            });
+            var result;
+
+            if(system.isArray(context.activationData)) {
+                result = context.model.activate.apply(context.model, context.activationData);
+            } else {
+                result = context.model.activate(context.activationData);
+            }
+
+            if(result && result.then) {
+                result.then(successCallback);
+            } else if(result || result === undefined) {
+                successCallback();
+            } else {
+                endComposition();
+            }
         } else {
             successCallback();
         }
@@ -271,7 +279,7 @@ function (viewLocator, viewModelBinder, viewEngine, system, viewModel) {
                 this.executeStrategy(context);
             }
         },
-        compose: function (element, settings) {
+        compose: function (element, settings, bindingContext) {
             compositionCount++;
 
             if (system.isString(settings)) {
@@ -298,6 +306,7 @@ function (viewLocator, viewModelBinder, viewEngine, system, viewModel) {
             settings.activeView = hostState.activeView;
             settings.parent = element;
             settings.triggerViewAttached = triggerViewAttached;
+            settings.bindingContext = bindingContext;
 
             if (settings.cacheViews && !settings.viewElements) {
                 settings.viewElements = hostState.childElements;
@@ -328,8 +337,7 @@ function (viewLocator, viewModelBinder, viewEngine, system, viewModel) {
     ko.bindingHandlers.compose = {
         update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var settings = composition.getSettings(valueAccessor);
-            settings.bindingContext = bindingContext;
-            composition.compose(element, settings);
+            composition.compose(element, settings, bindingContext);
         }
     };
 

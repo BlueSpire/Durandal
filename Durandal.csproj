@@ -138,7 +138,7 @@
     <Content Include="App\durandal\app.js" />
     <Content Include="App\durandal\composition.js" />
     <Content Include="App\durandal\modalDialog.js" />
-    <Content Include="App\durandal\viewModel.js" />
+    <Content Include="App\durandal\activator.js" />
     <Content Include="App\durandal\events.js" />
     <Content Include="App\durandal\http.js" />
     <Content Include="App\durandal\messageBox.html" />
