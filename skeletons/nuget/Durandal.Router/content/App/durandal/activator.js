@@ -182,6 +182,7 @@
             }
         });
 
+        computed.__activator__ = true;
         computed.settings = settings;
         settings.activator = computed;
 

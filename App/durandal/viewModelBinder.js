@@ -25,10 +25,8 @@
         var viewName = view.getAttribute('data-view');
         
         try {
-            system.log('Binding', viewName, obj);
-            
             viewModelBinder.beforeBind(obj, view);
-            action();
+            action(viewName);
             viewModelBinder.afterBind(obj, view);
         } catch (e) {
             if (viewModelBinder.throwOnErrors) {
@@ -48,11 +46,12 @@
                 bindingContext = bindingContext.createChildContext(obj);
             }
 
-            doBind(bindingContext, view, function () {
+            doBind(bindingContext, view, function (viewName) {
                 if (obj && obj.beforeBind) {
                     obj.beforeBind(view);
                 }
 
+                system.log('Binding', viewName, obj);
                 ko.applyBindings(bindingContext, view);
                 
                 if (obj && obj.afterBind) {
@@ -61,11 +60,12 @@
             });
         },
         bind: function(obj, view) {
-            doBind(obj, view, function () {
+            doBind(obj, view, function (viewName) {
                 if (obj.beforeBind) {
                     obj.beforeBind(view);
                 }
                 
+                system.log('Binding', viewName, obj);
                 ko.applyBindings(obj, view);
                 
                 if (obj.afterBind) {

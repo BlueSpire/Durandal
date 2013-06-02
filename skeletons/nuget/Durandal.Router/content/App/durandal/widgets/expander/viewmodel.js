@@ -1,4 +1,4 @@
-﻿define(['durandal/widget', 'durandal/system'], function(widget, system) {
+﻿define(['durandal/widget'], function(widget) {
 
     var ctor = function() { };
 
@@ -23,18 +23,6 @@
         $(parts.headerContainer).bind('click', function() {
             $itemContainer.toggle('fast');
         });
-    };
-
-    ctor.prototype.viewAttached = function () {
-        console.log('View Attached');
-    };
-
-    ctor.prototype.documentAttached = function () {
-        console.log('Attached to document.');
-    };
-
-    ctor.prototype.documentDetached = function() {
-        system.log('Detached from document.'); //to see this called, set cacheViews:false on the shell's router composition binding
     };
 
     return ctor;
