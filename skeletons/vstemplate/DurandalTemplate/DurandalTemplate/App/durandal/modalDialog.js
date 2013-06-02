@@ -133,8 +133,8 @@
                 $("body").css("margin-right", modal.oldBodyMarginRight);
             }
         },
-        documentAttached: function (newChild, settings) {
-            var $child = $(newChild);
+        documentAttached: function (child, context) {
+            var $child = $(child);
             var width = $child.width();
             var height = $child.height();
 
@@ -143,15 +143,15 @@
                 'margin-left': (-width / 2).toString() + 'px'
             });
 
-            $(settings.model.modal.host).css('opacity', 1);
+            $(context.model.modal.host).css('opacity', 1);
 
-            if ($(newChild).hasClass('autoclose')) {
-                $(settings.model.modal.blockout).click(function() {
-                    settings.model.modal.close();
+            if ($(child).hasClass('autoclose')) {
+                $(context.model.modal.blockout).click(function() {
+                    context.model.modal.close();
                 });
             }
 
-            $('.autofocus', newChild).each(function() {
+            $('.autofocus', child).each(function() {
                 $(this).focus();
             });
         }

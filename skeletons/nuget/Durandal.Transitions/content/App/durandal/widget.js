@@ -1,7 +1,7 @@
 ﻿define(['./system', './composition'], function(system, composition) {
 
-    var widgetPartAttribute = 'data-part',
-        widgetPartSelector = '[' + widgetPartAttribute + ']';
+    var partAttributeName = 'data-part',
+        partAttributeSelector = '[' + partAttributeName + ']';
 
     var kindModuleMaps = {},
         kindViewMaps = {},
@@ -19,17 +19,17 @@
                 var element = elements[i];
 
                 if (element.getAttribute) {
-                    var id = element.getAttribute(widgetPartAttribute);
+                    var id = element.getAttribute(partAttributeName);
                     if (id) {
                         parts[id] = element;
                     }
 
-                    var childParts = $(widgetPartSelector, element)
-                                        .not($('[data-bind^="widget:"] ' + widgetPartSelector, element));
+                    var childParts = $(partAttributeSelector, element)
+                                        .not($('[data-bind^="widget:"] ' + partAttributeSelector, element));
 
                     for (var j = 0; j < childParts.length; j++) {
                         var part = childParts.get(j);
-                        parts[part.getAttribute(widgetPartAttribute)] = part;
+                        parts[part.getAttribute(partAttributeName)] = part;
                     }
                 }
             }
@@ -88,9 +88,9 @@
         convertKindToViewPath: function(kind) {
             return 'durandal/widgets/' + kind + '/view';
         },
-        beforeBind: function(element, view, settings) {
-            var replacementParts = widget.getParts(element);
-            var standardParts = widget.getParts(view);
+        beforeBind: function (child, context) {
+            var replacementParts = widget.getParts(context.parent);
+            var standardParts = widget.getParts(child);
 
             for (var partId in replacementParts) {
                 $(standardParts[partId]).replaceWith(replacementParts[partId]);
