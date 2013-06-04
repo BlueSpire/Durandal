@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="jasmine-1.2.0.js"></script>
+    <script type="text/javascript" src="jasmine.console_reporter.js"></script>
+    <script type="text/javascript" src="../Scripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../Scripts/knockout-2.2.1.js"></script>
+    <script type="text/javascript" src="../App/durandal/amd/require.js"></script>
+    <script type="text/javascript">
+        require.config({
+            baseUrl: '../App/',
+            paths: {
+                'specs': '../test/specs/'
+            }
+        });
+        var runTests = function (specfiles) {
+            require(specfiles, function () {
+                var consoleReporter = new jasmine.ConsoleReporter();
+                jasmine.getEnv().addReporter(consoleReporter);
+                jasmine.getEnv().execute();
+            });
+        };
+    </script>
+</head>
+<body>
+</body>
+</html>
