@@ -1820,13 +1820,13 @@ function(system, composition) {
             return kindModuleMaps[kind] || widget.convertKindToModulePath(kind);
         },
         convertKindToModulePath: function(kind) {
-            return 'durandal/widgets/' + kind + '/viewmodel';
+            return 'widgets/' + kind + '/viewmodel';
         },
         mapKindToViewId: function(kind) {
             return kindViewMaps[kind] || widget.convertKindToViewPath(kind);
         },
         convertKindToViewPath: function(kind) {
-            return 'durandal/widgets/' + kind + '/view';
+            return 'widgets/' + kind + '/view';
         },
         beforeBind: function (child, context) {
             var replacementParts = widget.getParts(context.parent);
