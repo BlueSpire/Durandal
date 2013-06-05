@@ -1,0 +1,41 @@
+﻿<!-- NOTE: KnockoutJS Live Examples adds CSS same way as here -->
+<link href='Content/twitterExample.css' rel='Stylesheet' />
+<div>
+    <h2>Twitter Client</h2>
+    <div class='configuration'>
+        <div class='listChooser'>
+            <button data-bind='click: deleteList, enable: editingList.name'>Delete</button>
+            <button data-bind='click: saveChanges, enable: hasUnsavedChanges'>Save</button>
+            <select data-bind='options: savedLists, optionsValue: "name", value: editingList.name'> </select>
+        </div>
+ 
+        <p>Currently viewing <span data-bind='text: editingList.userNames().length'> </span> user(s):</p>
+        <div class='currentUsers' data-bind='with: editingList'>
+            <ul data-bind='foreach: userNames'>
+                <li>
+                    <button data-bind='click: $root.removeUser'>Remove</button>
+                    <div data-bind="text: $data"> </div>
+                </li>
+            </ul>
+        </div>
+ 
+        <form data-bind='submit: addUser'>
+            <label>Add user:</label>
+            <input data-bind='value: userNameToAdd, valueUpdate: "keyup", css: { invalid: !userNameToAddIsValid() }' />
+            <button data-bind='enable: canAddUserName' type='submit'>Add</button>
+        </form>
+    </div>
+    <div class='tweets'>
+        <div class='loadingIndicator'>Loading...</div>
+        <table width='100%' data-bind="foreach: currentTweets">
+            <tr>
+                <td><img data-bind='attr: { src: profile_image_url }' /></td>
+                <td>
+                    <a class='twitterUser' data-bind='attr: { href: "http://twitter.com/" + from_user }, text: from_user' href='http://twitter.com/${ from_user }' > </a>
+                    <span data-bind="text: text"> </span>
+                    <div class='tweetInfo' data-bind='text: created_at'> </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

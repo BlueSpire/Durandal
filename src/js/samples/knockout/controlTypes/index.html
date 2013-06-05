@@ -1,0 +1,85 @@
+﻿<style type='text/css'>
+    .liveExample h3 { line-height: 30px; }
+    .readout { width: 20em;}
+    .readout td { width: 50%; }
+    .kotable { width: 35em; }
+    tr { vertical-align: top }
+    td { padding: 0.2em 0.2em 0.6em 0.2em; }
+    td.kolabel { text-align: right; padding-right: 0.5em; }
+    input[type=radio] { margin: 0 0.25em 0 0.25em }
+</style>
+<div>
+    <h2>Control Types</h2>
+    <div class="well liveExample">
+        <div class="pull-right">
+            <h3>What's in the model?</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <td class="kolabel">Text value:</td>
+                    <td data-bind="text: stringValue"></td>
+                </tr>
+                <tr>
+                    <td class="kolabel">Password:</td>
+                    <td data-bind="text: passwordValue"></td>
+                </tr>
+                <tr>
+                    <td class="kolabel">Bool value:</td>
+                    <td data-bind='text: booleanValue() ? "True" : "False"'></td>
+                </tr>
+                <tr>
+                    <td class="kolabel">Selected option:</td>
+                    <td data-bind="text: selectedOptionValue"></td>
+                </tr>
+                <tr>
+                    <td class="kolabel">Multi-selected options:</td>
+                    <td data-bind="text: multipleSelectedOptionValues"></td>
+                </tr>
+                <tr>
+                    <td class="kolabel">Radio button selection:</td>
+                    <td data-bind="text: radioSelectedOptionValue"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="kotable">
+            <h3>HTML controls</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <td class="kolabel">Text value (updates on change):</td>
+                    <td><input data-bind="value: stringValue" /></td>
+                </tr>
+                <tr>
+                    <td class="kolabel">Text value (updates on keystroke):</td>
+                    <td><input data-bind='value: stringValue, valueUpdate: "afterkeydown"' /></td>
+                </tr>
+                <tr>
+                    <td class="kolabel">Text value (multi-line):</td>
+                    <td><textarea data-bind="value: stringValue"> </textarea></td>
+                </tr>
+                <tr>
+                    <td class="kolabel">Password:</td>
+                    <td><input type="password" data-bind="value: passwordValue" /></td>
+                </tr>
+                <tr>
+                    <td class="kolabel">Checkbox:</td>
+                    <td><input type="checkbox" data-bind="checked: booleanValue" /></td>
+                </tr>
+                <tr>
+                    <td class="kolabel">Drop-down list:</td>
+                    <td><select data-bind="options: optionValues, value: selectedOptionValue"></select></td>
+                </tr>
+                <tr>
+                    <td class="kolabel">Multi-select drop-down list:</td>
+                    <td><select multiple="multiple" data-bind="options: optionValues, selectedOptions: multipleSelectedOptionValues"></select></td>
+                </tr>
+                <tr>
+                    <td class="kolabel">Radio buttons:</td>
+                    <td>
+                        <label><input type="radio" value="Alpha" data-bind="checked: radioSelectedOptionValue" />Alpha</label>
+                        <label><input type="radio" value="Beta" data-bind="checked: radioSelectedOptionValue" />Beta</label>
+                        <label><input type="radio" value="Gamma" data-bind="checked: radioSelectedOptionValue" />Gamma</label>
+                    </td>
+                </tr>
+            </table>
+        </div> 
+    </div>
+</div>

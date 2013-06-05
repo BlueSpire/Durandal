@@ -1,0 +1,42 @@
+﻿<style type='text/css'>
+    .planet { background-color: #AAEECC; padding: 0.35em; border: 1px solid silver; margin-bottom: 0.5em; font-size: 0.95em; }
+    .planet.rock { background-color: #EECCAA; }
+</style>
+<div>
+    <h2>Planets</h2>
+    <div class="well liveExample">
+      <div class="row-fluid">
+        <div class="span6">
+          <!--Sidebar content-->
+            <div> 
+                <label>
+                    <input type='checkbox' data-bind='checked: displayAdvancedOptions' />
+                    Display advanced options
+                </label>
+            </div>
+            <br />
+            <div data-bind='fadeVisible: displayAdvancedOptions'>
+                <label>Add a Planet:</label>
+                <button class="btn" data-bind='click: addPlanet.bind($data, "rock")'>rocky planet</button>
+                <button class="btn" data-bind='click: addPlanet.bind($data, "gasgiant")'>gas giant</button>
+            </div>
+            <br />
+            <div data-bind='fadeVisible: displayAdvancedOptions'>
+                <label>Show:</label>
+                <label class="radio"><input type='radio' name="type" value='all' data-bind='checked: typeToShow' />All</label>
+                <label class="radio"><input type='radio' name="type" value='rock' data-bind='checked: typeToShow' />Rocky planets</label>
+                <label class="radio"><input type='radio' name="type" value='gasgiant' data-bind='checked: typeToShow' />Gas giants</label>
+            </div>
+        </div>
+        <div class="span6">
+          <!--Body content-->
+            <div data-bind='template: {
+                    foreach: planetsToShow,
+                    beforeRemove: hidePlanetElement,
+                    afterAdd: showPlanetElement   }'>
+                <div data-bind='attr: { "class": "planet " + type }, text: name'> </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

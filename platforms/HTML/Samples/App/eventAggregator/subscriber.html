@@ -1,0 +1,10 @@
+﻿<div>
+    <h3>
+        Subscriber
+        <button class="btn btn-success" data-bind="enable: !subscription(), click: subscribe">Subscribe</button>
+        <button class="btn btn-danger" data-bind="enable: subscription, click: unsubscribe">Unsubscribe</button>
+    </h3>
+    <ul data-bind="foreach: received">
+        <li data-bind="text: $data"></li>
+    </ul>
+</div>

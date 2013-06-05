@@ -1,0 +1,12 @@
+﻿<div>
+    <h1>Widgets Sample</h1>
+    <div data-bind="expander:{items:projects}">
+        <h3 data-part="header">Project: <span data-bind="text: name"></span></h3>
+    </div>
+    <button class="btn" data-bind="click: addNewProject">Add</button>
+
+    <!-- This following syntax can be used without needing to register the widget kind.-->
+    <!--<div data-bind="widget: {kind:'expander',items:projects}">
+            <h2 data-part="header">Project: <span data-bind="text: name"></span></h2>
+        </div>-->
+</div>

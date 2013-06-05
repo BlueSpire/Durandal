@@ -1,0 +1,32 @@
+﻿<style type='text/css'>
+    .liveExample { font-size: 16px; }
+    .liveExample li { line-height: 26px; }
+    .liveExample h3 { line-height: 30px; }
+    .renderTime { color: #777; font-style: italic; font-size: 0.8em; }
+</style>
+<div>
+    <h2>Working with Collections</h2>
+    <div class="well liveExample">
+        <h3>People</h3>
+        <ul data-bind="foreach: people">
+            <li>
+                <div>
+                    <span data-bind="text: name"> </span> has <span data-bind='text: children().length'>&nbsp;</span> children:
+                    <a href='#' data-bind='click: addChild'>Add child</a>
+                    <span class='renderTime' data-bind='visible: $root.showRenderTimes'>
+                        (person rendered at <span data-bind='text: new Date().getSeconds()'> </span>)
+                    </span>
+                </div>
+                <ul data-bind="foreach: children">
+                    <li>
+                        <span data-bind="text: $data"> </span>
+                        <span class='renderTime' data-bind='visible: $root.showRenderTimes'>
+                            (child rendered at <span data-bind='text: new Date().getSeconds()'> </span>)
+                        </span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <label><input data-bind='checked: showRenderTimes' type='checkbox' /> Show render times</label> 
+    </div>
+</div>

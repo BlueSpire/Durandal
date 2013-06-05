@@ -1,0 +1,18 @@
+﻿<div>
+    <h2>Paged Grid</h2>
+    <div class="well liveExample">
+        <div data-bind='compose: gridViewModel'></div>
+ 
+        <button class="btn" data-bind='click: addItem'>
+            Add item
+        </button>
+ 
+        <button class="btn" data-bind='click: sortByName'>
+            Sort by name
+        </button>
+ 
+        <button class="btn" data-bind='click: jumpToFirstPage, enable: gridViewModel.currentPageIndex'>
+            Jump to first page
+        </button> 
+    </div>
+</div>
