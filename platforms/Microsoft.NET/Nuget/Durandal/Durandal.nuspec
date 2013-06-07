@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Durandal</id>
-        <version>1.2.0</version>
+        <version>2.0.0</version>
         <title>Durandal</title>
         <authors>Rob Eisenberg</authors>
         <owners>EisenbergEffect</owners>
@@ -23,34 +23,21 @@ Features
 -Use any Backend Technology
 -Built on top of jQuery, Knockout &amp; RequireJS.
 -Integrates with other libraries such as SammyJS &amp; Bootstrap.
--Make jQuery &amp; Bootstrap widgets templatable and bindable (or build your own widgets).</description>
+-Make Your Own Templatable and Bindable Widgets.</description>
         <summary>Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain.</summary>
         <copyright>Copyright (c) 2012 Blue Spire Consulting, Inc.</copyright>
         <tags>JavaScript JS Durandal HTML CSS MVC MVVM MVP Web SPA RIA Knockout RequireJS jQuery</tags>
         <dependencies>
             <dependency id="jQuery" version="1.6.0" />
             <dependency id="knockoutjs" version="2.2.1" />
+            <dependency id="RequireJS" version="2.1.6" />
         </dependencies>
     </metadata>
     <files>
-        <file src="content\App\durandal\amd\almond-custom.js" target="content\App\durandal\amd\almond-custom.js" />
-        <file src="content\App\durandal\amd\optimizer.exe" target="content\App\durandal\amd\optimizer.exe" />
-        <file src="content\App\durandal\amd\r.js" target="content\App\durandal\amd\r.js" />
-        <file src="content\App\durandal\amd\require.js" target="content\App\durandal\amd\require.js" />
-        <file src="content\App\durandal\amd\text.js" target="content\App\durandal\amd\text.js" />
-        <file src="content\App\durandal\app.js" target="content\App\durandal\app.js" />
-        <file src="content\App\durandal\composition.js" target="content\App\durandal\composition.js" />
-        <file src="content\App\durandal\events.js" target="content\App\durandal\events.js" />
-        <file src="content\App\durandal\http.js" target="content\App\durandal\http.js" />
-        <file src="content\App\durandal\messageBox.html" target="content\App\durandal\messageBox.html" />
-        <file src="content\App\durandal\messageBox.js" target="content\App\durandal\messageBox.js" />
-        <file src="content\App\durandal\modalDialog.js" target="content\App\durandal\modalDialog.js" />
-        <file src="content\App\durandal\system.js" target="content\App\durandal\system.js" />
-        <file src="content\App\durandal\viewEngine.js" target="content\App\durandal\viewEngine.js" />
-        <file src="content\App\durandal\viewLocator.js" target="content\App\durandal\viewLocator.js" />
-        <file src="content\App\durandal\viewModel.js" target="content\App\durandal\viewModel.js" />
-        <file src="content\App\durandal\viewModelBinder.js" target="content\App\durandal\viewModelBinder.js" />
-        <file src="content\App\durandal\widget.js" target="content\App\durandal\widget.js" />
         <file src="content\Content\durandal.css" target="content\Content\durandal.css" />
+        <file src="content\Scripts\durandal\durandal.debug.js" target="content\Scripts\durandal\durandal.debug.js" />
+        <file src="content\Scripts\durandal\durandal.js" target="content\Scripts\durandal\durandal.js" />
+        <file src="content\Scripts\r.js" target="content\Scripts\r.js" />
+        <file src="content\Scripts\text.js" target="content\Scripts\text.js" />
     </files>
 </package>

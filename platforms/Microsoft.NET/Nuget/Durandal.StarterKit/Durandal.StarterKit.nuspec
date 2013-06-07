@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Durandal.StarterKit</id>
-        <version>1.2.0</version>
+        <version>2.0.0</version>
         <title>Durandal StarterKit</title>
         <authors>Rob Eisenberg</authors>
         <owners>EisenbergEffect</owners>
@@ -21,10 +21,10 @@ This is a starter kit for durandal-based projects.</description>
             <dependency id="WebActivator" version="1.5.3" />
             <dependency id="jQuery" version="1.9.1" />
             <dependency id="FontAwesome" version="3.0.2.3" />
-            <dependency id="Durandal" version="1.2.0" />
-            <dependency id="Durandal.Router" version="1.2.0" />
-            <dependency id="Durandal.Transitions" version="1.2.0" />
             <dependency id="Twitter.Bootstrap" version="2.3.1" />
+            <dependency id="Durandal" version="2.0.0" />
+            <dependency id="Durandal.Router" version="2.0.0" />
+            <dependency id="Durandal.Transitions" version="2.0.0" />
         </dependencies>
     </metadata>
     <files>
@@ -35,6 +35,7 @@ This is a starter kit for durandal-based projects.</description>
         <file src="content\App\views\flickr.html" target="content\App\views\flickr.html" />
         <file src="content\App\views\shell.html" target="content\App\views\shell.html" />
         <file src="content\App\views\welcome.html" target="content\App\views\welcome.html" />
+        <file src="content\App\bootstrapper.js" target="content\App\bootstrapper.js" />
         <file src="content\App\main-built.js" target="content\App\main-built.js" />
         <file src="content\App\main.js" target="content\App\main.js" />
         <file src="content\App_Start\DurandalBundleConfig.cs.pp" target="content\App_Start\DurandalBundleConfig.cs.pp" />
@@ -42,8 +43,8 @@ This is a starter kit for durandal-based projects.</description>
         <file src="content\Content\images\icon.png" target="content\Content\images\icon.png" />
         <file src="content\Content\images\ios-startup-image-landscape.png" target="content\Content\images\ios-startup-image-landscape.png" />
         <file src="content\Content\images\ios-startup-image-portrait.png" target="content\Content\images\ios-startup-image-portrait.png" />
-        <file src="content\Content\app.css" target="content\Content\app.css" />
         <file src="content\Content\ie10mobile.css" target="content\Content\ie10mobile.css" />
+        <file src="content\Content\starterkit.css" target="content\Content\starterkit.css" />
         <file src="content\Controllers\DurandalController.cs.pp" target="content\Controllers\DurandalController.cs.pp" />
         <file src="content\Views\Durandal\Index.cshtml" target="content\Views\Durandal\Index.cshtml" />
         <file src="content\Views\Durandal\_splash.cshtml" target="content\Views\Durandal\_splash.cshtml" />

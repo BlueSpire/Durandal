@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Durandal.Router</id>
-        <version>1.2.0</version>
+        <version>2.0.0</version>
         <title>Durandal Router</title>
         <authors>Rob Eisenberg</authors>
         <owners>EisenbergEffect</owners>
@@ -12,16 +12,18 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain. We've used it to build apps for PC, Mac, Linux, iOS and Android...and now it's your turn...
 
-This is a router designed to integrate SammyJS with Durandal. It makes building navigation style applications simple and elegant.</description>
-        <summary>This is a router designed to integrate SammyJS with Durandal. It makes building navigation style applications simple and elegant.</summary>
+This is the official router plugin for Durandal. It makes building navigation style applications simple and elegant.</description>
+        <summary>This is the official router plugin for Durandal. It makes building navigation style applications simple and elegant.</summary>
         <copyright>Copyright (c) 2012 Blue Spire Consulting, Inc.</copyright>
-        <tags>JavaScript JS Durandal HTML CSS MVC MVVM MVP Web SPA RIA Knockout RequireJS jQuery SammyJS Navigation Router</tags>
+        <tags>JavaScript JS Durandal HTML CSS MVC MVVM MVP Web SPA RIA Knockout RequireJS jQuery Navigation Router</tags>
         <dependencies>
-            <dependency id="Sammy.js" version="0.7.4" />
-            <dependency id="Durandal" version="1.2.0" />
+            <dependency id="Durandal" version="2.0.0" />
         </dependencies>
     </metadata>
     <files>
-        <file src="content\App\durandal\plugins\router.js" target="content\App\durandal\plugins\router.js" />
+        <file src="content\Scripts\durandal\plugins\history.debug.js" target="content\Scripts\durandal\plugins\history.debug.js" />
+        <file src="content\Scripts\durandal\plugins\history.js" target="content\Scripts\durandal\plugins\history.js" />
+        <file src="content\Scripts\durandal\plugins\router.debug.js" target="content\Scripts\durandal\plugins\router.debug.js" />
+        <file src="content\Scripts\durandal\plugins\router.js" target="content\Scripts\durandal\plugins\router.js" />
     </files>
 </package>
