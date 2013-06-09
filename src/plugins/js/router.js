@@ -380,7 +380,7 @@ function(system, app, activator, events, history) {
             for (var i = 0; i < routes.length; i++) {
                 var current = routes[i];
 
-                if (current.nav != undefined) {
+                if (current.nav) {
                     if (!system.isNumber(current.nav)) {
                         current.nav = defaultOrder;
                     }
