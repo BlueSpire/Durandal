@@ -21,7 +21,7 @@ namespace $rootnamespace$ {
           .Include("~/Content/bootstrap-responsive.min.css")
           .Include("~/Content/font-awesome.min.css")
 		  .Include("~/Content/durandal.css")
-          .Include("~/Content/app.css")
+          .Include("~/Content/starterkit.css")
         );
     }
 
