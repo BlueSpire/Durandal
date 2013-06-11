@@ -1,24 +1,25 @@
 define('plugins/serializer', ['durandal/system'],
 function(system) {
 
-    var removedKeys = ['__moduleId__', '__observable__'];
-
     return {
-        defaultTypeAttribute: 'type',
-        removedKeys: removedKeys,
+        typeAttribute: 'type',
+        space:undefined,
         replacer: function(key, value) {
-            if (removedKeys.indexOf(key) != -1) {
-                return undefined;
+            if(key){
+                var first = key[0];
+                if(first === '_' || first === '$'){
+                    return undefined;
+                }
             }
 
             return value;
         },
         serialize: function(object, space) {
-            return JSON.stringify(object, this.replacer, space);
+            return JSON.stringify(object, this.replacer, space || this.space);
         },
         getTypeId: function(object) {
             if (object) {
-                return object[this.defaultTypeAttribute];
+                return object[this.typeAttribute];
             }
 
             return undefined;
@@ -28,7 +29,7 @@ function(system) {
             var first = arguments[0];
 
             if (arguments.length == 1) {
-                var id = first[this.defaultTypeAttribute] || system.getModuleId(first);
+                var id = first[this.typeAttribute] || system.getModuleId(first);
                 this.typeMap[id] = first;
             } else {
                 this.typeMap[first] = arguments[1];
