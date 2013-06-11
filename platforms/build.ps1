@@ -98,5 +98,3 @@ copyDurandal "Mimosa/StarterKit/assets/javascripts/vendor/durandal" `
 
 copyStarterKit "Mimosa/StarterKit/assets/javascripts/app" `
 		 	   "Mimosa/StarterKit/assets/stylesheets"
-
-pause
