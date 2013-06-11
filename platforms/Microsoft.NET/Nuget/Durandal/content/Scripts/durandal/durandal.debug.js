@@ -1713,7 +1713,7 @@ function (system) {
                     obj.beforeBind(view);
                 }
 
-                system.log('Binding', viewName, obj);
+                system.log('Binding', viewName, obj || bindingContext);
                 ko.applyBindings(bindingContext, view);
                 
                 if (obj && obj.afterBind) {

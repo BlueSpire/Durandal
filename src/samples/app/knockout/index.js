@@ -1,86 +1,23 @@
 ﻿define(['plugins/router'], function(router) {
-    var childRouter = router.createChildRouter();
-
-    childRouter.map([{
-        type: 'intro',
-        route: 'knockout-samples',
-        moduleId: 'knockout/helloWorld/index',
-        title: 'Hello World'
-    },
-    {
-        type: 'intro',
-        route: 'knockout-samples/helloWorld',
-        moduleId: 'knockout/helloWorld/index',
-        title: 'Hello World',
-        nav: true
-    }, {
-        type: 'intro',
-        route: 'knockout-samples/clickCounter',
-        moduleId: 'knockout/clickCounter/index',
-        title: 'Click Counter',
-        nav: true
-    }, {
-        type: 'intro',
-        route: 'knockout-samples/simpleList',
-        moduleId: 'knockout/simpleList/index',
-        title: 'Simple List',
-        nav: true
-    }, {
-        type: 'intro',
-        route: 'knockout-samples/betterList',
-        moduleId: 'knockout/betterList/index',
-        title: 'Better List',
-        nav: true
-    }, {
-        type: 'intro',
-        route: 'knockout-samples/controlTypes',
-        moduleId: 'knockout/controlTypes/index',
-        title: 'Control Types',
-        nav: true
-    }, {
-        type: 'intro',
-        route: 'knockout-samples/collections',
-        moduleId: 'knockout/collections/index',
-        title: 'Collection',
-        nav: true
-    }, {
-        type: 'intro',
-        route: 'knockout-samples/pagedGrid',
-        moduleId: 'knockout/pagedGrid/index',
-        title: 'Paged Grid',
-        nav: true
-    }, {
-        type: 'intro',
-        route: 'knockout-samples/animatedTrans',
-        moduleId: 'knockout/animatedTrans/index',
-        title: 'Animated Transition',
-        nav: true
-    }, {
-        type: 'detailed',
-        route: 'knockout-samples/contactsEditor',
-        moduleId: 'knockout/contactsEditor/index',
-        title: 'Contacts Editor',
-        nav: true
-    }, {
-        type: 'detailed',
-        route: 'knockout-samples/gridEditor',
-        moduleId: 'knockout/gridEditor/index',
-        title: 'Grid Editor',
-        nav: true
-    }, {
-        type: 'detailed',
-        route: 'knockout-samples/shoppingCart',
-        moduleId: 'knockout/shoppingCart/index',
-        title: 'Shopping Cart',
-        nav: true
-    }, {
-        type: 'detailed',
-        route: 'knockout-samples/twitterClient',
-        moduleId: 'knockout/twitterClient/index',
-        title: 'Twitter Client',
-        nav: true
-    }])
-    .buildNavigationModel();
+    var childRouter = router.createChildRouter()
+        .makeRelative({
+            moduleId:'knockout',
+            route:'knockout-samples'
+        }).map([
+            { route: '',                moduleId: 'helloWorld/index',       title: 'Hello World',           type: 'intro' },
+            { route: 'helloWorld',      moduleId: 'helloWorld/index',       title: 'Hello World',           type: 'intro',      nav: true},
+            { route: 'clickCounter',    moduleId: 'clickCounter/index',     title: 'Click Counter',         type: 'intro',      nav: true},
+            { route: 'simpleList',      moduleId: 'simpleList/index',       title: 'Simple List',           type: 'intro',      nav: true },
+            { route: 'betterList',      moduleId: 'betterList/index',       title: 'Better List',           type: 'intro',      nav: true},
+            { route: 'controlTypes',    moduleId: 'controlTypes/index',     title: 'Control Types',         type: 'intro',      nav: true },
+            { route: 'collections',     moduleId: 'collections/index',      title: 'Collection',            type: 'intro' ,     nav: true },
+            { route: 'pagedGrid',       moduleId: 'pagedGrid/index',        title: 'Paged Grid',            type: 'intro',      nav: true },
+            { route: 'animatedTrans',   moduleId: 'animatedTrans/index',    title: 'Animated Transition',   type: 'intro',      nav: true },
+            { route: 'contactsEditor',  moduleId: 'contactsEditor/index',   title: 'Contacts Editor',       type: 'detailed',   nav: true },
+            { route: 'gridEditor',      moduleId: 'gridEditor/index',       title: 'Grid Editor',           type: 'detailed',   nav: true },
+            { route: 'shoppingCart',    moduleId: 'shoppingCart/index',     title: 'Shopping Cart',         type: 'detailed',   nav: true },
+            { route: 'twitterClient',   moduleId: 'twitterClient/index',    title: 'Twitter Client',        type: 'detailed',   nav: true}
+        ]).buildNavigationModel();
 
     return {
         router: childRouter,

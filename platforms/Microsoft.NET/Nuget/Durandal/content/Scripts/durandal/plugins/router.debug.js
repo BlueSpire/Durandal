@@ -28,6 +28,10 @@ function(system, app, activator, events, history) {
         return instance.router && instance.router.loadUrl;
     }
 
+    function endsWith(str, suffix) {
+        return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    }
+
     var createRouter = function() {
         var queue = [],
             isProcessing = ko.observable(false),
@@ -200,8 +204,8 @@ function(system, app, activator, events, history) {
         // Given a route, and a URL fragment that it matches, return the array of
         // extracted decoded parameters. Empty or unmatched parameters will be
         // treated as `null` to normalize cross-browser behavior.
-        function createParams(route, fragment, queryString) {
-            var params = route.exec(fragment).slice(1);
+        function createParams(routePattern, fragment, queryString) {
+            var params = routePattern.exec(fragment).slice(1);
 
             for (var i = 0; i < params.length; i++) {
                 var current = params[i];
@@ -217,22 +221,27 @@ function(system, app, activator, events, history) {
         }
 
         function mapRoute(config) {
+            router.trigger('router:route:before-config', config, router);
+
             if (!system.isRegExp(config.route)) {
                 config.title = config.title || router.convertRouteToTitle(config.route);
                 config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
                 config.hash = config.hash || router.convertRouteToHash(config.route);
-                config.route = routeStringToRegExp(config.route);
+                config.routePattern = routeStringToRegExp(config.route);
+            }else{
+                config.routePattern = config.route;
             }
 
-            router.trigger('router:route:mapping', config, router);
+            router.trigger('router:route:after-config', config, router);
+
             router.routes.push(config);
 
-            router.route(config.route, function(fragment, queryString) {
+            router.route(config.routePattern, function(fragment, queryString) {
                 queueInstruction({
                     fragment: fragment,
                     queryString:queryString,
                     config: config,
-                    params: createParams(config.route, fragment, queryString)
+                    params: createParams(config.routePattern, fragment, queryString)
                 });
             });
 
@@ -275,8 +284,8 @@ function(system, app, activator, events, history) {
 
         // Add a route to be tested when the fragment changes. Routes added later
         // may override previous routes.
-        router.route = function(route, callback) {
-            router.handlers.push({ route: route, callback: callback });
+        router.route = function(routePattern, callback) {
+            router.handlers.push({ routePattern: routePattern, callback: callback });
         };
 
         // Attempt to load the current URL fragment. If a route succeeds with a
@@ -295,7 +304,7 @@ function(system, app, activator, events, history) {
 
             for (var i = 0; i < handlers.length; i++) {
                 var current = handlers[i];
-                if (current.route.test(coreFragment)) {
+                if (current.routePattern.test(coreFragment)) {
                     current.callback(coreFragment, queryString);
                     return true;
                 }
@@ -380,7 +389,7 @@ function(system, app, activator, events, history) {
             for (var i = 0; i < routes.length; i++) {
                 var current = routes[i];
 
-                if (current.nav != undefined) {
+                if (current.nav) {
                     if (!system.isNumber(current.nav)) {
                         current.nav = defaultOrder;
                     }
@@ -397,14 +406,18 @@ function(system, app, activator, events, history) {
         };
 
         router.mapUnknownRoutes = function(config) {
-            var route = routeStringToRegExp("*catchall");
+            var route = "*catchall";
+            var routePattern = routeStringToRegExp(route);
             
-            router.route(route, function (fragment, queryString) {
+            router.route(routePattern, function (fragment, queryString) {
                 var instruction = {
                     fragment: fragment,
                     queryString: queryString,
-                    config: { route: route },
-                    params: createParams(route, fragment, queryString)
+                    config: {
+                        route: route,
+                        routePattern: routePattern
+                    },
+                    params: createParams(routePattern, fragment, queryString)
                 };
 
                 if (!config) {
@@ -415,7 +428,8 @@ function(system, app, activator, events, history) {
                     var result = config(instruction);
                     if (result && result.then) {
                         result.then(function() {
-                            router.trigger('router:route:mapping', instruction.config, router);
+                            router.trigger('router:route:before-config', instruction.config, router);
+                            router.trigger('router:route:after-config', instruction.config, router);
                             queueInstruction(instruction);
                         });
                         return;
@@ -423,9 +437,11 @@ function(system, app, activator, events, history) {
                 } else {
                     instruction.config = config;
                     instruction.config.route = route;
+                    instruction.config.routePattern = routePattern;
                 }
 
-                router.trigger('router:route:mapping', instruction.config, router);
+                router.trigger('router:route:before-config', instruction.config, router);
+                router.trigger('router:route:after-config', instruction.config, router);
                 queueInstruction(instruction);
             });
 
@@ -436,6 +452,39 @@ function(system, app, activator, events, history) {
             router.handlers = [];
             router.routes = [];
             delete router.options;
+        };
+
+        router.makeRelative = function(settings){
+            if(system.isString(settings)){
+                settings = {
+                    moduleId:settings,
+                    route:settings
+                };
+            }
+
+            if(settings.moduleId && !endsWith(settings.moduleId, '/')){
+                settings.moduleId += '/';
+            }
+
+            if(settings.route && !endsWith(settings.route, '/')){
+                settings.route += '/';
+            }
+
+            this.on('router:route:before-config').then(function(config){
+                if(settings.moduleId){
+                    config.moduleId = settings.moduleId + config.moduleId;
+                }
+
+                if(settings.route){
+                    if(config.route === ''){
+                        config.route = settings.route.substring(0, settings.route.length - 1);
+                    }else{
+                        config.route = settings.route + config.route;
+                    }
+                }
+            });
+
+            return this;
         };
 
         router.createChildRouter = function() {
