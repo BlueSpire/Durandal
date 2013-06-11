@@ -1,14 +1,14 @@
-﻿define('durandal/http',
+define('plugins/http',
 function() {
 
     return {
-        defaultJSONPCallbackParam:'callback',
+        callbackParam:'callback',
         get:function(url, query) {
             return $.ajax(url, { data: query });
         },
         jsonp: function (url, query, callbackParam) {
             if (url.indexOf('=?') == -1) {
-                callbackParam = callbackParam || this.defaultJSONPCallbackParam;
+                callbackParam = callbackParam || this.callbackParam;
 
                 if (url.indexOf('?') == -1) {
                     url += '?';

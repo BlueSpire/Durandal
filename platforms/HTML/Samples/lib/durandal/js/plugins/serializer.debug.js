@@ -14,8 +14,14 @@ function(system) {
 
             return value;
         },
-        serialize: function(object, space) {
-            return JSON.stringify(object, this.replacer, space || this.space);
+        serialize: function(object, settings) {
+            settings = (settings === undefined) ? {} : settings;
+
+            if(system.isString(settings)){
+                settings = { space:settings }
+            }
+
+            return JSON.stringify(object, settings.replacer || this.replacer, settings.space || this.space);
         },
         getTypeId: function(object) {
             if (object) {
@@ -35,10 +41,10 @@ function(system) {
                 this.typeMap[first] = arguments[1];
             }
         },
-        reviver: function(key, value) {
-            var typeId = this.getTypeId(value);
+        reviver: function(key, value, getTypeId, typeMap) {
+            var typeId = getTypeId(value);
             if (typeId) {
-                var registered = this.typeMap[typeId];
+                var registered = typeMap[typeId];
                 if (registered) {
                     if (registered.fromJSON) {
                         return registered.fromJSON(value);
@@ -50,11 +56,15 @@ function(system) {
 
             return value;
         },
-        deserialize: function(string) {
+        deserialize: function(string, settings) {
             var that = this;
-            return JSON.parse(string, function(key, value) {
-                return that.reviver(key, value);
-            });
+            settings = settings || {};
+
+            var getTypeId = settings.getTypeId || function(object) { return that.getTypeId(object); };
+            var typeMap = settings.typeMap || that.typeMap;
+            var reviver = settings.reviver || function(key, value) { return that.reviver(key, value, getTypeId, typeMap); };
+
+            return JSON.parse(string, reviver);
         }
     };
 });

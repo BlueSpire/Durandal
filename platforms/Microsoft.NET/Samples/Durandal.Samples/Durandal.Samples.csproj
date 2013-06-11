@@ -200,6 +200,8 @@
     <Content Include="Scripts\durandal\durandal.js" />
     <Content Include="Scripts\durandal\plugins\history.debug.js" />
     <Content Include="Scripts\durandal\plugins\history.js" />
+    <Content Include="Scripts\durandal\plugins\http.debug.js" />
+    <Content Include="Scripts\durandal\plugins\http.js" />
     <Content Include="Scripts\durandal\plugins\observable.debug.js" />
     <Content Include="Scripts\durandal\plugins\observable.js" />
     <Content Include="Scripts\durandal\plugins\router.debug.js" />
