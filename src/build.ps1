@@ -1,13 +1,9 @@
 $srcDir = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-
-function pause() {
-    Write-Host "Press any key to continue ..."
-    cmd /c pause | out-null
-}
+$distDir = [IO.Path]::GetFullPath( (join-path $srcDir "../dist") )
 
 function buildDurandal(){
-  $outFileNm = "../dist/durandal/js/durandal.debug.js"
-  $outMinFileNm = "../dist/durandal/js/durandal.js"
+  $outFileNm = $distDir + "/durandal/js/durandal.debug.js"
+  $outMinFileNm = $distDir + "/durandal/js/durandal.js"
 
   Write-Host "Building Durandal"
   cat durandal/js/*.js > withBOM.tmp
@@ -19,8 +15,8 @@ function buildDurandal(){
 
   remove-item withBOM.tmp
 
-  Copy-Item "durandal/css/durandal.css"  "../dist/durandal/css/"
-  Copy-Item "durandal/images/*"  "../dist/durandal/images/"
+  Copy-Item "durandal/css/durandal.css" ($distDir + "/durandal/css/")
+  Copy-Item "durandal/images/*" ($distDir + "/durandal/images/")
 }
 
 function buildOptionalModules($folderName){
@@ -30,8 +26,8 @@ function buildOptionalModules($folderName){
   foreach($file in Get-ChildItem $moduleDirectory){
       $filePath = $moduleDirectory + "\" + $file;
       $contents = Get-Content -path $filePath
-      $outFileNm = "../dist/durandal/js/" + $folderName + "/" + $file.BaseName + ".debug.js"
-      $outMinFileNm = "../dist/durandal/js/" + $folderName + "/" + $file.name
+      $outFileNm = $distDir + "/durandal/js/" + $folderName + "/" + $file.BaseName + ".debug.js"
+      $outMinFileNm = $distDir + "/durandal/js/" + $folderName + "/" + $file.name
 
       [System.IO.File]::WriteAllLines($outFileNm, $contents)
       $expr = "uglifyjs " + $outFileNm + " -mt -c -o " + $outMinFileNm
@@ -41,12 +37,12 @@ function buildOptionalModules($folderName){
 
 function buildSamples(){
   Write-Host "Building Samples"
-  Copy-Item "samples/*" "../dist/samples" -recurse -force
+  Copy-Item "samples/*" ($distDir + "/samples") -recurse -force
 }
 
 function buildStarterKit(){
   Write-Host "Building StarterKit"
-  Copy-Item "starterkit/*" "../dist/starterkit" -recurse -force
+  Copy-Item "starterkit/*" ($distDir + "/starterkit") -recurse -force
 }
 
 buildDurandal
@@ -54,5 +50,3 @@ buildOptionalModules "plugins"
 buildOptionalModules "transitions"
 buildSamples
 buildStarterKit
-
-pause
