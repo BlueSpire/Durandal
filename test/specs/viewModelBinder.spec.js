@@ -1,5 +1,4 @@
-﻿/*global define, jasmine, ko*/
-define(['durandal/viewModelBinder', 'durandal/system'], function (sut, system) {
+﻿define(['durandal/viewModelBinder', 'durandal/system', 'knockout'], function (sut, system, ko) {
     describe('durandal/viewModelBinder', function(){
 
         var obj = {

@@ -14,7 +14,17 @@
                 'text': '../lib/require/text',
                 'durandal': 'durandal/js',
                 'plugins' : 'plugins/js',
-                'transitions' : 'transitions/js'
+                'transitions' : 'transitions/js',
+                'knockout': '../lib/knockout/knockout-2.2.1',
+                'jquery': '../lib/jquery/jquery-1.9.1'
+            },
+            shim: {
+                'knockout': {
+                    exports: 'ko'
+                },
+                'jquery': {
+                    exports: '$'
+                }
             }
         });
         var runTests = function (specfiles) {

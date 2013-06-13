@@ -1,5 +1,4 @@
-﻿/*global define*/
-define(['durandal/viewEngine', 'durandal/system'], function (sut, system) {
+﻿define(['durandal/viewEngine', 'durandal/system', 'jquery'], function (sut, system, $) {
     describe('durandal/viewEngine', function(){
 
         describe('isViewUrl', function () {
