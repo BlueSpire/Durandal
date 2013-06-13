@@ -1,5 +1,7 @@
 $srcDir = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
 $distDir = [IO.Path]::GetFullPath( (join-path $srcDir "../dist") )
+Remove-Item $distDir -Force -Recurse
+
 $startFragment = $srcDir + "/start.jsfrag"
 
 function buildDurandal(){
