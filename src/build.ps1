@@ -11,7 +11,12 @@ function buildDurandal(){
     $filePath = $moduleDirectory + "/" + $file;
     $outputPath = $distDir + "/durandal/js/" + $file.name
 
-    cat $startFragment, $filePath > $outputPath
+    cat $startFragment, $filePath > withBOM.tmp
+
+    $contents = Get-Content withBOM.tmp
+    [System.IO.File]::WriteAllLines($outputPath, $contents)
+
+    remove-item withBOM.tmp
   }
 
   Copy-Item "durandal/css/durandal.css" ($distDir + "/durandal/css/")
@@ -27,7 +32,12 @@ function buildOptionalModules($folderName){
       $filePath = $moduleDirectory + "/" + $file;
       $outputPath = $distDir + "/durandal/js/" + $folderName + "/" + $file.name
 
-      cat $startFragment, $filePath > $outputPath
+      cat $startFragment, $filePath > withBOM.tmp
+
+      $contents = Get-Content withBOM.tmp
+      [System.IO.File]::WriteAllLines($outputPath, $contents)
+
+      remove-item withBOM.tmp
   }
 }
 
