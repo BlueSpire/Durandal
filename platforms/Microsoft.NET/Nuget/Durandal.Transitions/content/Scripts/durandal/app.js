@@ -50,11 +50,6 @@ define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'duran
             }
 
             composition.compose(hostElement, settings);
-        },
-        adaptToDevice: function() {
-            document.ontouchmove = function (event) {
-                event.preventDefault();
-            };
         }
     };
 

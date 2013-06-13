@@ -45,11 +45,6 @@
             }
 
             composition.compose(hostElement, settings);
-        },
-        adaptToDevice: function() {
-            document.ontouchmove = function (event) {
-                event.preventDefault();
-            };
         }
     };
 
