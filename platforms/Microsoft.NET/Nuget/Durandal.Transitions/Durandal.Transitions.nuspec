@@ -21,7 +21,6 @@ This is a collection of transitions designed to work with Durandal's composition
         </dependencies>
     </metadata>
     <files>
-        <file src="content\Scripts\durandal\transitions\entrance.debug.js" target="content\Scripts\durandal\transitions\entrance.debug.js" />
         <file src="content\Scripts\durandal\transitions\entrance.js" target="content\Scripts\durandal\transitions\entrance.js" />
     </files>
 </package>

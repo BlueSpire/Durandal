@@ -21,9 +21,7 @@ This is the official router plugin for Durandal. It makes building navigation st
         </dependencies>
     </metadata>
     <files>
-        <file src="content\Scripts\durandal\plugins\history.debug.js" target="content\Scripts\durandal\plugins\history.debug.js" />
         <file src="content\Scripts\durandal\plugins\history.js" target="content\Scripts\durandal\plugins\history.js" />
-        <file src="content\Scripts\durandal\plugins\router.debug.js" target="content\Scripts\durandal\plugins\router.debug.js" />
         <file src="content\Scripts\durandal\plugins\router.js" target="content\Scripts\durandal\plugins\router.js" />
     </files>
 </package>

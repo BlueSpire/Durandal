@@ -35,8 +35,6 @@ This is a starter kit for durandal-based projects.</description>
         <file src="content\App\views\flickr.html" target="content\App\views\flickr.html" />
         <file src="content\App\views\shell.html" target="content\App\views\shell.html" />
         <file src="content\App\views\welcome.html" target="content\App\views\welcome.html" />
-        <file src="content\App\bootstrapper.js" target="content\App\bootstrapper.js" />
-        <file src="content\App\main-built.js" target="content\App\main-built.js" />
         <file src="content\App\main.js" target="content\App\main.js" />
         <file src="content\App_Start\DurandalBundleConfig.cs.pp" target="content\App_Start\DurandalBundleConfig.cs.pp" />
         <file src="content\App_Start\DurandalConfig.cs.pp" target="content\App_Start\DurandalConfig.cs.pp" />
