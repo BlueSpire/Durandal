@@ -1,6 +1,4 @@
-﻿define('plugins/http',
-function() {
-
+﻿define(function() {
     return {
         callbackParam:'callback',
         get:function(url, query) {

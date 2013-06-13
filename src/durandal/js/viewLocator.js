@@ -1,6 +1,4 @@
-﻿define('durandal/viewLocator', ['durandal/system', 'durandal/viewEngine'],
-function (system, viewEngine) {
-
+﻿define(['durandal/system', 'durandal/viewEngine'], function (system, viewEngine) {
     function findInElements(nodes, url) {
         for (var i = 0; i < nodes.length; i++) {
             var current = nodes[i];

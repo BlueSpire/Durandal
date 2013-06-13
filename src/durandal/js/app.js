@@ -1,6 +1,4 @@
-﻿define('durandal/app', ['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'durandal/widget', 'durandal/modalDialog', 'durandal/events'],
-function(system, viewEngine, composition, widget, modalDialog, Events) {
-
+﻿define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'durandal/widget', 'durandal/modalDialog', 'durandal/events'], function(system, viewEngine, composition, widget, modalDialog, Events) {
     var app = {
         title: 'Application',
         showModal: function(obj, activationData, context) {

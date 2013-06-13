@@ -1,6 +1,4 @@
-﻿define('durandal/widget', ['durandal/system', 'durandal/composition'],
-function(system, composition) {
-
+﻿define(['durandal/system', 'durandal/composition'], function(system, composition) {
     var partAttributeName = 'data-part',
         partAttributeSelector = '[' + partAttributeName + ']';
 

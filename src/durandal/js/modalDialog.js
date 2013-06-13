@@ -1,6 +1,4 @@
-﻿define('durandal/modalDialog', ['durandal/composition', 'durandal/system', 'durandal/activator'],
-function (composition, system, activator) {
-
+﻿define(['durandal/composition', 'durandal/system', 'durandal/activator'], function (composition, system, activator) {
     var contexts = {},
         modalCount = 0;
 

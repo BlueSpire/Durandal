@@ -1,6 +1,4 @@
-﻿define('durandal/activator', ['durandal/system'],
-function (system) {
-
+﻿define(['durandal/system'], function (system) {
     var activator;
 
     function ensureSettings(settings) {

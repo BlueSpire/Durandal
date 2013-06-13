@@ -1,6 +1,4 @@
-﻿define('durandal/messageBox', ['durandal/viewEngine'],
-function(viewEngine) {
-
+﻿define(['durandal/viewEngine'], function(viewEngine) {
     var MessageBox = function(message, title, options) {
         this.message = message;
         this.title = title || MessageBox.defaultTitle;

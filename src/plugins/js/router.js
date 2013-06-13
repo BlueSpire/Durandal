@@ -1,6 +1,4 @@
-﻿define('plugins/router', ['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/events', 'plugins/history'],
-function(system, app, activator, events, history) {
-
+﻿define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/events', 'plugins/history'], function(system, app, activator, events, history) {
     var optionalParam = /\((.*?)\)/g;
     var namedParam = /(\(\?)?:\w+/g;
     var splatParam = /\*\w+/g;

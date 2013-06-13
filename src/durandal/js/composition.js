@@ -1,6 +1,4 @@
-﻿define('durandal/composition', ['durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/system'],
-function (viewLocator, viewModelBinder, viewEngine, system) {
-
+﻿define(['durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/system'], function (viewLocator, viewModelBinder, viewEngine, system) {
     var dummyModel = {},
         activeViewAttributeName = 'data-active-view',
         composition,

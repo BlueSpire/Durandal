@@ -1,6 +1,4 @@
-﻿define('plugins/serializer', ['durandal/system'],
-function(system) {
-
+﻿define(['durandal/system'], function(system) {
     return {
         typeAttribute: 'type',
         space:undefined,
@@ -41,16 +39,16 @@ function(system) {
                 this.typeMap[first] = arguments[1];
             }
         },
-        reviver: function(key, value, getTypeId, typeMap) {
+        reviver: function(key, value, getTypeId, getConstructor) {
             var typeId = getTypeId(value);
             if (typeId) {
-                var registered = typeMap[typeId];
-                if (registered) {
-                    if (registered.fromJSON) {
-                        return registered.fromJSON(value);
+                var ctor = getConstructor(typeId);
+                if (ctor) {
+                    if (ctor.fromJSON) {
+                        return ctor.fromJSON(value);
                     }
 
-                    return new registered(value);
+                    return new ctor(value);
                 }
             }
 
@@ -61,8 +59,8 @@ function(system) {
             settings = settings || {};
 
             var getTypeId = settings.getTypeId || function(object) { return that.getTypeId(object); };
-            var typeMap = settings.typeMap || that.typeMap;
-            var reviver = settings.reviver || function(key, value) { return that.reviver(key, value, getTypeId, typeMap); };
+            var getConstructor = settings.getConstructor || function(id) { return that.typeMap[id]; };
+            var reviver = settings.reviver || function(key, value) { return that.reviver(key, value, getTypeId, getConstructor); };
 
             return JSON.parse(string, reviver);
         }

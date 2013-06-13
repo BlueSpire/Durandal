@@ -1,6 +1,4 @@
-﻿define('durandal/viewEngine', ['durandal/system'],
-function (system) {
-
+﻿define(['durandal/system'], function (system) {
     var parseMarkup;
 
     if ($.parseHTML) {

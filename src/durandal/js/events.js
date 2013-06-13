@@ -1,8 +1,4 @@
-﻿//heavily borrowed from backbone events, augmented by signals.js, added a little of my own code
-//cleaned up for better readability and a more fluent api
-define('durandal/events', ['durandal/system'],
-function (system) {
-
+﻿define(['durandal/system'], function (system) {
     var eventSplitter = /\s+/;
     var Events = function() { };
 

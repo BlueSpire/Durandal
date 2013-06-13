@@ -1,6 +1,4 @@
-﻿define('transitions/entrance', ['durandal/system'],
-function(system) {
-
+﻿define(['durandal/system'], function(system) {
     var fadeOutDuration = 100;
     var endValues = {
         marginRight: 0,
