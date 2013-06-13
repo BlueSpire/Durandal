@@ -10,7 +10,7 @@
                 { route: 'event-aggregator',            moduleId: 'eventAggregator/index',  title: 'Events',            nav: true },
                 { route: 'widgets',                     moduleId: 'widgets/index',          title: 'Widgets',           nav: true },
                 { route: 'master-detail',               moduleId: 'masterDetail/index',     title: 'Master Detail',     nav: true },
-                { route: 'knockout-samples*details',    moduleId: 'knockout/index',         title: 'Knockout Samples',  nav: true, hash: '#knockout-samples' }
+                { route: 'knockout-samples*details',    moduleId: 'ko/index',               title: 'Knockout Samples',  nav: true, hash: '#knockout-samples' }
             ]).buildNavigationModel();
             
             return router.activate();

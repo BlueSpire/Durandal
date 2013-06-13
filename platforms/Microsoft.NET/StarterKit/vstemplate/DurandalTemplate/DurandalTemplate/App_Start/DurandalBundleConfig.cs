@@ -8,13 +8,6 @@ namespace DurandalTemplate {
       AddDefaultIgnorePatterns(bundles.IgnoreList);
 
       bundles.Add(
-        new ScriptBundle("~/scripts/vendor")
-          .Include("~/Scripts/jquery-{version}.js")
-          .Include("~/Scripts/knockout-{version}.js")
-          .Include("~/Scripts/bootstrap.min.js")
-        );
-
-      bundles.Add(
         new StyleBundle("~/Content/css")
           .Include("~/Content/ie10mobile.css")
           .Include("~/Content/bootstrap.min.css")

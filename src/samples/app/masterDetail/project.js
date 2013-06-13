@@ -1,5 +1,4 @@
 ﻿define(['durandal/system', 'durandal/app'], function(system, app) {
-    
     var ctor = function(name, description) {
         this.name = name;
         this.description = description;

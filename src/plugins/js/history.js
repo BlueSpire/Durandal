@@ -1,4 +1,4 @@
-﻿define(['durandal/system'], function (system) {
+﻿define(['durandal/system', 'jquery'], function (system, $) {
     // Cached regex for stripping a leading hash/slash and trailing space.
     var routeStripper = /^[#\/]|\s+$/g;
 

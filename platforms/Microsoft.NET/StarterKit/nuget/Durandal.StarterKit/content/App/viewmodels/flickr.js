@@ -1,4 +1,4 @@
-﻿define(['plugins/http', 'durandal/app'], function (http, app) {
+﻿define(['plugins/http', 'durandal/app', 'knockout'], function (http, app, ko) {
     
     return {
         displayName: 'Flickr',

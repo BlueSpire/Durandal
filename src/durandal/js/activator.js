@@ -1,4 +1,4 @@
-﻿define(['durandal/system'], function (system) {
+﻿define(['durandal/system', 'knockout'], function (system, ko) {
     var activator;
 
     function ensureSettings(settings) {

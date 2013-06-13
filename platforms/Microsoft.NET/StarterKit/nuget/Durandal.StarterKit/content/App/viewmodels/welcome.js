@@ -1,5 +1,5 @@
 ﻿define(function() {
-    var welcome = function () {
+    var ctor = function () {
         this.displayName = 'Welcome to the Durandal Starter Kit!';
         this.description = 'Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain.';
         this.features = [
@@ -17,9 +17,10 @@
         ];
     };
 
-    welcome.prototype.viewAttached = function (view) {
-        //you can get the view after it's bound and connected to it's parent dom node if you want
+    ctor.prototype.viewAttached = function (view) {
+        //you can get the view after it's bound and connected to it's parent dom
+        //there are other callbacks as well...
     };
 
-    return welcome;
+    return ctor;
 });

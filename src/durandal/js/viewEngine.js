@@ -1,4 +1,4 @@
-﻿define(['durandal/system'], function (system) {
+﻿define(['durandal/system', 'jquery'], function (system, $) {
     var parseMarkup;
 
     if ($.parseHTML) {

@@ -1,4 +1,4 @@
-﻿define(['durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/system'], function (viewLocator, viewModelBinder, viewEngine, system) {
+﻿define(['durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/system', 'jquery', 'knockout'], function (viewLocator, viewModelBinder, viewEngine, system, $, ko) {
     var dummyModel = {},
         activeViewAttributeName = 'data-active-view',
         composition,

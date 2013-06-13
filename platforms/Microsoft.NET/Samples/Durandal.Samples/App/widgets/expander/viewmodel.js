@@ -1,5 +1,4 @@
-﻿define(['durandal/widget'], function(widget) {
-
+﻿define(['durandal/widget','jquery'], function(widget, $) {
     var ctor = function() { };
 
     ctor.prototype.activate = function(settings) {

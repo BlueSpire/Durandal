@@ -1,4 +1,4 @@
-﻿define(['durandal/system'], function(system) {
+﻿define(['durandal/system', 'jquery', 'knockout'], function(system, $, ko) {
     var fadeOutDuration = 100;
     var endValues = {
         marginRight: 0,

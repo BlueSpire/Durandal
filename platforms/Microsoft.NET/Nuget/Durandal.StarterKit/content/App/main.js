@@ -1,9 +1,24 @@
 ﻿requirejs.config({
     paths: {
         'text': '../Scripts/text',
-        'durandal':'../Scripts/durandal',
+        'durandal': '../Scripts/durandal',
         'plugins': '../Scripts/durandal/plugins',
-        'transitions': '../Scripts/durandal/transitions'
+        'transitions': '../Scripts/durandal/transitions',
+        'knockout': '../Scripts/knockout-2.2.1',
+        'bootstrap': '../Scripts/bootstrap',
+        'jquery': '../Scripts/jquery-1.9.1'
+    },
+    shim: {
+        'knockout': {
+            exports: 'ko'
+        },
+        'jquery': {
+            exports: '$'
+        },
+        'bootstrap': {
+            deps: ['jquery'],
+            exports: '$.support.transition' // just picked one
+        }
     }
 });
 

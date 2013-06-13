@@ -1,4 +1,4 @@
-﻿define(function() {
+﻿define(['jquery', 'knockout'], function($, ko) {
     return {
         callbackParam:'callback',
         get:function(url, query) {

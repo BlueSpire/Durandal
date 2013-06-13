@@ -1,4 +1,4 @@
-﻿define(['./project', 'durandal/widget'], function (Project, widget) {
+﻿define(['./project', 'durandal/widget', 'knockout'], function (Project, widget, ko) {
     
     //The widget registration below is only necessary if you want to enable the short widget syntax.
     //Normally, you would put this widget configuration in your main.js.

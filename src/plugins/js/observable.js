@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'durandal/viewModelBinder'], function(system, viewModelBinder) {
+﻿define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(system, viewModelBinder, ko) {
     var nonObservableTypes = ['[object Function]', '[object String]', '[object Boolean]', '[object Number]', '[object Date]', '[object RegExp]'];
     var ignoredProperties = ['__moduleId__', '__observable__'];
     var toString = Object.prototype.toString;
