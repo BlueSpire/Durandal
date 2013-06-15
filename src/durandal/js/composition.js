@@ -32,9 +32,9 @@
         compositionCount--;
 
         if (compositionCount === 0) {
-            documentAttachedCallbacks.reverse();
+            var i = documentAttachedCallbacks.length;
 
-            for (var i = 0; i < documentAttachedCallbacks.length; i++) {
+            while(i--) {
                 documentAttachedCallbacks[i]();
             }
 

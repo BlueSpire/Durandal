@@ -121,23 +121,17 @@
             composition.compose(element, compositionSettings, bindingContext);
         },
         install:function(config){
-            var bindingName = 'widget';
+            config.bindingName = config.bindingName || 'widget';
 
-            if(system.isObject(config)){
-                if(config.bindingName){
-                    bindingName = config.bindingName;
-                }
+            if(config.kinds){
+                var toRegister = config.kinds;
 
-                if(config.kinds){
-                    var toRegister = config.kinds;
-
-                    for(var i = 0; i < toRegister.length; i++){
-                        widget.registerKind(toRegister[i]);
-                    }
+                for(var i = 0; i < toRegister.length; i++){
+                    widget.registerKind(toRegister[i]);
                 }
             }
 
-            ko.bindingHandlers[bindingName] = {
+            ko.bindingHandlers[config.bindingName] = {
                 init: function() {
                     return { controlsDescendantBindings: true };
                 },
@@ -147,7 +141,7 @@
                 }
             };
 
-            ko.virtualElements.allowedBindings[bindingName] = true;
+            ko.virtualElements.allowedBindings[config.bindingName] = true;
         }
     };
 
