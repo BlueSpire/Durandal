@@ -9,12 +9,6 @@
         'jquery': '../Scripts/jquery-1.9.1'
     },
     shim: {
-        'knockout': {
-            exports: 'ko'
-        },
-        'jquery': {
-            exports: '$'
-        },
         'bootstrap': {
             deps: ['jquery'],
             exports: '$.support.transition' // just picked one
