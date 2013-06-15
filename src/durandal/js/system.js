@@ -124,9 +124,9 @@
                 if (isDebugging) {
                     this.log = log;
                     this.error = logError;
-                    this.log('Debug mode enabled.');
+                    this.log('Debug:Enabled');
                 } else {
-                    this.log('Debug mode disabled.');
+                    this.log('Debug:Disabled');
                     this.log = noop;
                     this.error = noop;
                 }
@@ -138,7 +138,7 @@
         error: noop,
         assert: function (condition, message) {
             if (!condition) {
-                system.error(new Error(message || 'Assertion failed.'));
+                system.error(new Error(message || 'Assert:Failed'));
             }
         },
         defer: function(action) {

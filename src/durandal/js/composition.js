@@ -32,6 +32,8 @@
         compositionCount--;
 
         if (compositionCount === 0) {
+            //TODO: consider reversing the order callback execution
+
             for (var i = 0; i < documentAttachedCallbacks.length; i++) {
                 documentAttachedCallbacks[i]();
             }

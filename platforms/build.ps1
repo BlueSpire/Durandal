@@ -68,10 +68,6 @@ copyDurandal "Microsoft.NET/Nuget/Durandal/content/Scripts/durandal" `
 		 	 "Microsoft.NET/Nuget/Durandal/content/Content" `
 		 	 "Microsoft.NET/Nuget/Durandal/content/Content/images"
 
-copyDurandal "Microsoft.NET/Nuget/Durandal.Router/content/Scripts/durandal" `
-		 	 "Microsoft.NET/Nuget/Durandal.Router/content/Content" `
-		 	 "Microsoft.NET/Nuget/Durandal.Router/content/Content/images"
-
 copyDurandal "Microsoft.NET/Nuget/Durandal.Transitions/content/Scripts/durandal" `
 		 	 "Microsoft.NET/Nuget/Durandal.Transitions/content/Content" `
 		 	 "Microsoft.NET/Nuget/Durandal.Transitions/content/Content/images"

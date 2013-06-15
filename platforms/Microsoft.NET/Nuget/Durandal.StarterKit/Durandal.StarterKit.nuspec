@@ -23,7 +23,6 @@ This is a starter kit for durandal-based projects.</description>
             <dependency id="FontAwesome" version="3.0.2.3" />
             <dependency id="Twitter.Bootstrap" version="2.3.1" />
             <dependency id="Durandal" version="2.0.0" />
-            <dependency id="Durandal.Router" version="2.0.0" />
             <dependency id="Durandal.Transitions" version="2.0.0" />
         </dependencies>
     </metadata>
