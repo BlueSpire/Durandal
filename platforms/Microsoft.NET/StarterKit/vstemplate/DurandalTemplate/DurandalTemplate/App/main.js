@@ -9,12 +9,6 @@
         'jquery': '../Scripts/jquery-1.9.1'
     },
     shim: {
-        'knockout': {
-            exports: 'ko'
-        },
-        'jquery': {
-            exports: '$'
-        },
         'bootstrap': {
             deps: ['jquery'],
             exports: '$.support.transition' // just picked one
@@ -28,6 +22,12 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
     //>>excludeEnd("build");
 
     app.title = 'Durandal Starter Kit';
+    
+    app.plugins = {
+        modal: true,
+        widget: true
+    };
+
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
         //Look for partial views in a 'views' folder in the root.

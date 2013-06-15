@@ -1,6 +1,41 @@
-﻿define(['durandal/composition', 'durandal/system', 'durandal/activator', 'jquery'], function (composition, system, activator, $) {
+/**
+ * Durandal 2.0.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Available via the MIT license.
+ * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
+ */
+define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/activator', 'durandal/viewEngine', 'jquery'], function (system, app, composition, activator, viewEngine, $) {
     var contexts = {},
         modalCount = 0;
+
+    var MessageBox = function(message, title, options) {
+        this.message = message;
+        this.title = title || MessageBox.defaultTitle;
+        this.options = options || MessageBox.defaultOptions;
+    };
+
+    MessageBox.prototype.selectOption = function (dialogResult) {
+        this.modal.close(dialogResult);
+    };
+
+    MessageBox.prototype.getView = function(){
+        return viewEngine.processMarkup(MessageBox.defaultViewMarkup);
+    };
+
+    MessageBox.defaultTitle = app.title || 'Application';
+    MessageBox.defaultOptions = ['Ok'];
+    MessageBox.defaultViewMarkup = [
+        '<div class="messageBox">',
+            '<div class="modal-header">',
+                '<h3 data-bind="text: title"></h3>',
+            '</div>',
+            '<div class="modal-body">',
+                '<p class="message" data-bind="text: message"></p>',
+            '</div>',
+            '<div class="modal-footer" data-bind="foreach: options">',
+                '<button class="btn" data-bind="click: function () { $parent.selectOption($data); }, text: $data, css: { \'btn-primary\': $index() == 0, autofocus: $index() == 0 }"></button>',
+            '</div>',
+        '</div>'
+    ].join('\n');
 
     function ensureModalInstance(objOrModuleId) {
         return system.defer(function(dfd) {
@@ -15,6 +50,7 @@
     }
 
     var modalDialog = {
+        MessageBox:MessageBox,
         currentZIndex: 1050,
         getNextZIndex: function () {
             return ++this.currentZIndex;
@@ -84,6 +120,36 @@
                     });
                 });
             }).promise();
+        },
+        showMessage:function(message, title, options){
+            if(system.isString(this.MessageBox)){
+                return modalDialog.show(this.MessageBox, [
+                    message,
+                    title || MessageBox.defaultTitle,
+                    options || MessageBox.defaultOptions
+                ]);
+            }
+
+            return modalDialog.show(new this.MessageBox(message, title, options));
+        },
+        install:function(config){
+            app.showModal = function(obj, activationData, context) {
+                return modalDialog.show(obj, activationData, context);
+            };
+
+            app.showMessage = function(message, title, options) {
+                return modalDialog.showMessage(message, title, options);
+            };
+
+            if(config.messageBox){
+                modalDialog.MessageBox = config.messageBox;
+            }
+
+            if(config.messageBoxView){
+                modalDialog.MessageBox.prototype.getView = function(){
+                    return config.messageBoxView;
+                };
+            }
         }
     };
 

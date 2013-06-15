@@ -454,6 +454,9 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 }
             }
         },
-        create: createActivator
+        create: createActivator,
+        isActivator:function(object){
+            return object && object.__activator__;
+        }
     };
 });

@@ -24,8 +24,11 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
     app.title = 'Durandal Samples';
 
     //specify which plugins to install and their configuration
-    app.plugins.widget = {
-        kinds: ['expander']
+    app.plugins = {
+        modal: true,
+        widget: {
+            kinds: ['expander']
+        }
     };
 
     app.start().then(function () {

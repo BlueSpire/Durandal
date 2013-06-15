@@ -449,6 +449,9 @@
                 }
             }
         },
-        create: createActivator
+        create: createActivator,
+        isActivator:function(object){
+            return object && object.__activator__;
+        }
     };
 });

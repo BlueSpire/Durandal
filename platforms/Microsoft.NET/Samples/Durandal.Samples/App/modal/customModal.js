@@ -1,5 +1,4 @@
 ﻿define(['durandal/app', 'knockout'], function (app, ko) {
-    
     var CustomModal = function() {
         this.input = ko.observable('');
     };

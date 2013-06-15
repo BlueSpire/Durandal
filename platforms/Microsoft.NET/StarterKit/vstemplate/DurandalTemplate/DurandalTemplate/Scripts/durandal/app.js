@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'durandal/modalDialog', 'durandal/events', 'jquery'], function(system, viewEngine, composition, modalDialog, Events, $) {
+define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'durandal/events', 'jquery'], function(system, viewEngine, composition, Events, $) {
     var app;
 
     function loadPlugins(){
@@ -31,7 +31,12 @@ define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'duran
                     var currentModule = arguments[i];
 
                     if(currentModule.install){
-                        var result = currentModule.install(pluginConfigs[i]);
+                        var config = pluginConfigs[i];
+                        if(!system.isObject(config)){
+                            config = {};
+                        }
+
+                        var result = currentModule.install(config);
                         results.push(result);
                         delete currentModule.install;
                         system.log('Plugin:Installed ' + pluginIds[i].replace('plugins/', ''));
@@ -48,16 +53,6 @@ define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'duran
     app = {
         title: 'Application',
         plugins:{},
-        showModal: function(obj, activationData, context) {
-            return modalDialog.show(obj, activationData, context);
-        },
-        showMessage: function(message, title, options) {
-            return modalDialog.show('./messageBox', {
-                message: message,
-                title: title || this.title,
-                options: options
-            });
-        },
         start: function() {
             system.log('Application:Starting');
 

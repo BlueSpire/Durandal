@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/system', 'jquery', 'knockout'], function (viewLocator, viewModelBinder, viewEngine, system, $, ko) {
+define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/activator', 'jquery', 'knockout'], function (system, viewLocator, viewModelBinder, viewEngine, activator, $, ko) {
     var dummyModel = {},
         activeViewAttributeName = 'data-active-view',
         composition,
@@ -230,7 +230,7 @@ define(['durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine
         getSettings: function (valueAccessor, element) {
             var value = valueAccessor(),
                 settings = ko.utils.unwrapObservable(value) || {},
-                isActivator = value && value.__activator__,
+                activatorPresent = activator.isActivator(value),
                 moduleId;
 
             if (system.isString(settings)) {
@@ -243,8 +243,8 @@ define(['durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine
                     model: settings
                 };
             } else {
-                if(!isActivator && settings.model) {
-                    isActivator = settings.model.__activator__;
+                if(!activatorPresent && settings.model) {
+                    activatorPresent = activator.isActivator(settings.model);
                 }
 
                 for(var attrName in settings) {
@@ -252,7 +252,7 @@ define(['durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine
                 }
             }
 
-            if (isActivator) {
+            if (activatorPresent) {
                 settings.activate = false;
             } else if (settings.activate === undefined) {
                 settings.activate = true;
