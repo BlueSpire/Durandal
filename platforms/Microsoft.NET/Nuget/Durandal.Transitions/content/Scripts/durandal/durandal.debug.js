@@ -1359,7 +1359,7 @@ function(require) {
         error: noop,
         assert: function (condition, message) {
             if (!condition) {
-                system.error(new Error(message || 'Assertion failed.'));
+                system.error(message || 'Assertion failed.');
             }
         },
         defer: function(action) {

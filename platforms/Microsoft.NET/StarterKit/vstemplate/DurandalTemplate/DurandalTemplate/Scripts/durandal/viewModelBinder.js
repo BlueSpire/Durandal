@@ -11,7 +11,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
     function doBind(obj, view, action) {
         if (!view || !obj) {
             if (viewModelBinder.throwOnErrors) {
-                system.error(new Error(insufficientInfoMessage));
+                system.error(insufficientInfoMessage);
             } else {
                 system.log(insufficientInfoMessage, view, obj);
             }
@@ -20,7 +20,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
 
         if (!view.getAttribute) {
             if (viewModelBinder.throwOnErrors) {
-                system.error(new Error(unexpectedViewMessage));
+                system.error(unexpectedViewMessage);
             } else {
                 system.log(unexpectedViewMessage, view, obj);
             }
@@ -35,7 +35,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             viewModelBinder.afterBind(obj, view);
         } catch (e) {
             if (viewModelBinder.throwOnErrors) {
-                system.error(new Error(e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(obj)));
+                system.error(e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(obj));
             } else {
                 system.log(e.message, viewName, obj);
             }

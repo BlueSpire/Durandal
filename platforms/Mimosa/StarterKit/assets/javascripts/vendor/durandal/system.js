@@ -78,8 +78,12 @@ define(['require', 'jquery'], function(require, $) {
         } catch (ignore) { }
     };
 
-    var logError = function(error) {
-        throw error;
+    var logError = function(error, id) {
+        if(error instanceof Error){
+            throw error;
+        }
+
+        throw new Error(error, id);
     };
 
     system = {
@@ -163,6 +167,8 @@ define(['require', 'jquery'], function(require, $) {
                     setTimeout(function() {
                         dfd.resolve.apply(dfd, args);
                     }, 1);
+                }, function(err){
+                    dfd.reject(err);
                 });
             }).promise();
         },
