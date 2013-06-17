@@ -1079,7 +1079,7 @@ function (composition, system, activator) {
         getNextZIndex: function () {
             return ++this.currentZIndex;
         },
-        isModalOpen: function() {
+        isDialogOpen: function() {
             return modalCount > 0;
         },
         getContext: function(name) {
@@ -1163,7 +1163,7 @@ function (composition, system, activator) {
             modal.host = host.get(0);
             modal.blockout = blockout.get(0);
 
-            if (!modalDialog.isModalOpen()) {
+            if (!modalDialog.isDialogOpen()) {
                 modal.oldBodyMarginRight = $("body").css("margin-right");
                 
                 var html = $("html");
@@ -1184,7 +1184,7 @@ function (composition, system, activator) {
                 $(modal.blockout).remove();
             }, this.removeDelay);
             
-            if (!modalDialog.isModalOpen()) {
+            if (!modalDialog.isDialogOpen()) {
                 var html = $("html");
                 var oldScrollTop = html.scrollTop(); // necessary for Firefox.
                 html.css("overflow-y", "").scrollTop(oldScrollTop);

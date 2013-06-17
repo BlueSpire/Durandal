@@ -38,9 +38,9 @@ Features
         <file src="content\Content\images\ios-startup-image-landscape.png" target="content\Content\images\ios-startup-image-landscape.png" />
         <file src="content\Content\images\ios-startup-image-portrait.png" target="content\Content\images\ios-startup-image-portrait.png" />
         <file src="content\Content\durandal.css" target="content\Content\durandal.css" />
+        <file src="content\Scripts\durandal\plugins\dialog.js" target="content\Scripts\durandal\plugins\dialog.js" />
         <file src="content\Scripts\durandal\plugins\history.js" target="content\Scripts\durandal\plugins\history.js" />
         <file src="content\Scripts\durandal\plugins\http.js" target="content\Scripts\durandal\plugins\http.js" />
-        <file src="content\Scripts\durandal\plugins\modal.js" target="content\Scripts\durandal\plugins\modal.js" />
         <file src="content\Scripts\durandal\plugins\observable.js" target="content\Scripts\durandal\plugins\observable.js" />
         <file src="content\Scripts\durandal\plugins\router.js" target="content\Scripts\durandal\plugins\router.js" />
         <file src="content\Scripts\durandal\plugins\serializer.js" target="content\Scripts\durandal\plugins\serializer.js" />

@@ -24,7 +24,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
     app.title = 'Durandal Starter Kit';
 
     app.plugins = {
-        modal: true,
+        dialog: true,
         widget: true
     };
 

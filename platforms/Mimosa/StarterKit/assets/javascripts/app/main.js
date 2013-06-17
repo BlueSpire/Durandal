@@ -23,7 +23,7 @@ define(function(require) {
     app.title = 'Durandal Starter Kit';
 
     app.plugins = {
-        modal: true,
+        dialog: true,
         widget: true
     };
 

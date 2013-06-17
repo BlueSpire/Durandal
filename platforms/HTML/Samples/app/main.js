@@ -25,7 +25,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
 
     //specify which plugins to install and their configuration
     app.plugins = {
-        modal: true,
+        dialog: true,
         widget: {
             kinds: ['expander']
         }
