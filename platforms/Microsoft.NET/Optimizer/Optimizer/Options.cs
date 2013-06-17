@@ -1,6 +1,7 @@
 ﻿using System;
 using CommandLine;
 using CommandLine.Text;
+using System.Collections.Generic;
 
 namespace Optimizer {
   class Options {
@@ -24,6 +25,34 @@ namespace Optimizer {
 
     [Option('e', "pluginExtension", DefaultValue = ".html", HelpText = "The view file extension.")]
     public string ViewExtension { get; set; }
+
+    [OptionList('i', "ignore", HelpText = "Ignore certain files or folders relative to the app path, separated by semicolon ;", Separator = ';')]
+    public IList<string> Ignores { get; set; }
+
+    [Option('o', "output", DefaultValue = "main-built.js", HelpText="Specify the name of the output combined and minified built file. Relative to the application source folder (-s option)")]
+    public string OutputFileName { get; set; }
+
+    [Option("buildFile", DefaultValue = "app.build.js", HelpText="Specify where the json configuration for r.js will be saved within this folder")]
+    public string BuildFile { get; set; }
+
+    [Option("mainEntry", DefaultValue = "main.js", HelpText = "Specify the main entry point file")]
+    public string MainEntry { get; set; }
+
+    [Option("name", DefaultValue = "main", HelpText = "Specify the module name")]
+    public string ModuleName { get; set; }
+
+    [Option("lang", Required = false, DefaultValue = "en", HelpText = "Specify the language to be replaced %LANG% paths on modules. You need to provide a custom configuration file first (-c) that has defined modules and we'll replace the %LANG% with this value in all the 'include' options of all the provided modules")]
+    public string Lang { get; set; }
+
+    [Option("preserveLicenseComments", DefaultValue = true, HelpText = "Specify false to remove the license comments")]
+    public bool? PreserveLicenseComments { get; set; }
+
+    [OptionList('r', "require", HelpText = "Default: main. Include extra requires separated by semicolon (;)", Separator = ';')]
+    public IList<string> InsertRequire { get; set; }
+
+    [OptionList('x', "exclude", HelpText = "Exclude certain modules i.e. if they were built before", Separator = ';')]
+    public IList<string> Excludes { get; set; }
+
 
     [HelpOption]
     public string GetUsage() {
