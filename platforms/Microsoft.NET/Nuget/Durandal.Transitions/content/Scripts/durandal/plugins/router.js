@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/events', 'plugins/history', 'knockout'], function(system, app, activator, events, history, ko) {
+define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/events', 'durandal/composition', 'plugins/history', 'knockout'], function(system, app, activator, events, composition, history, ko) {
     var optionalParam = /\((.*?)\)/g;
     var namedParam = /(\(\?)?:\w+/g;
     var splatParam = /\*\w+/g;
@@ -50,7 +50,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             isNavigating: ko.computed(function() {
                 var current = activeItem();
                 return isProcessing() || (current && current.router && current.router.isNavigating());
-            })
+            }),
+            __router__:true
         };
 
         events.includeIn(router);
@@ -511,6 +512,34 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
     rootRouter.deactivate = function() {
         history.deactivate();
+    };
+
+    rootRouter.install = function(){
+        ko.bindingHandlers.router = {
+            init: function() {
+                return { controlsDescendantBindings: true };
+            },
+            update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                var settings = ko.utils.unwrapObservable(valueAccessor()) || {};
+
+                if (settings.__router__) {
+                    settings = {
+                        model:settings.activeItem(),
+                        afterCompose:settings.afterCompose,
+                        activate: false
+                    };
+                } else {
+                    var theRouter = ko.utils.unwrapObservable(settings.router || viewModel.router) || rootRouter;
+                    settings.model = theRouter.activeItem();
+                    settings.afterCompose = theRouter.afterCompose;
+                    settings.activate = false;
+                }
+
+                composition.compose(element, settings, bindingContext);
+            }
+        };
+
+        ko.virtualElements.allowedBindings.router = true;
     };
 
     return rootRouter;
