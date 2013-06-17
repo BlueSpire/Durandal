@@ -62,7 +62,7 @@ define(['durandal/system', 'jquery', 'knockout'], function(system, $, ko) {
                         ko.virtualElements.prepend(context.parent, context.child);
                     }
 
-                    context.triggerViewAttached();
+                    context.triggerAttach();
 
                     var startValues = {
                         marginLeft: fadeOnly ? '0' : '20px',

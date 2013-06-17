@@ -9,10 +9,6 @@
         }.bind(this);
     }
 
-    function viewAttached(view) {
-        system.log('View Activating', this);
-    }
-
     // The view model is an abstract description of the state of the UI, but without any knowledge of the UI technology (HTML)
     return {
         people : [
@@ -20,7 +16,6 @@
             new Person("Bertie", ["Boutros-Boutros", "Brianna", "Barbie", "Bee-bop"]),
             new Person("Charles", ["Cayenne", "Cleopatra"])
         ],
-        showRenderTimes : ko.observable(false),
-        viewAttached : viewAttached
+        showRenderTimes : ko.observable(false)
     }
 });

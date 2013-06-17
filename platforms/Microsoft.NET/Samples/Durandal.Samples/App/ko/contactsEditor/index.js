@@ -48,12 +48,7 @@
         self.lastSavedJson = ko.observable("")
     };
 
-    function viewAttached(view) {
-        system.log('View Activating', this);
-    }
-
     return {
-        ContactsModel : new ContactsModel(initialData),
-        viewAttached : viewAttached
+        ContactsModel : new ContactsModel(initialData)
     }
 });

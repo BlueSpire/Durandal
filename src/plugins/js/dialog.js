@@ -72,8 +72,12 @@
                 activate:false
             };
 
-            if (dialogContext.documentAttached) {
-                settings.documentAttached = dialogContext.documentAttached;
+            if (dialogContext.attachedToParent) {
+                settings.attachedToParent = dialogContext.attachedToParent;
+            }
+
+            if (dialogContext.compositionComplete) {
+                settings.compositionComplete = dialogContext.compositionComplete;
             }
 
             return settings;
@@ -207,7 +211,7 @@
                 $("body").css("margin-right", theDialog.oldBodyMarginRight);
             }
         },
-        documentAttached: function (child, context) {
+        compositionComplete: function (child, context) {
             var $child = $(child);
             var width = $child.width();
             var height = $child.height();

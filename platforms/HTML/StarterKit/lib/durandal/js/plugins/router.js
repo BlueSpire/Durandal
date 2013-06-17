@@ -110,7 +110,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     }
 
                     if (previousActivation == instance) {
-                        router.afterCompose();
+                        router.attachedToParent();
                     }
                 } else {
                     cancelNavigation(instance, instruction);
@@ -337,12 +337,16 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             history.history.back();
         };
 
-        router.afterCompose = function() {
+        router.attachedToParent = function() {
             setTimeout(function() {
                 isProcessing(false);
-                router.trigger('router:navigation:composed', currentActivation, currentInstruction, router);
+                router.trigger('router:navigation:attached-to-parent', currentActivation, currentInstruction, router);
                 dequeueInstruction();
             }, 10);
+        };
+
+        router.compositionComplete = function(){
+            router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
         };
 
         router.convertRouteToHash = function(route) {
@@ -525,13 +529,15 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 if (settings.__router__) {
                     settings = {
                         model:settings.activeItem(),
-                        afterCompose:settings.afterCompose,
+                        attachedToParent:settings.attachedToParent,
+                        compositionComplete:settings.compositionComplete,
                         activate: false
                     };
                 } else {
                     var theRouter = ko.utils.unwrapObservable(settings.router || viewModel.router) || rootRouter;
                     settings.model = theRouter.activeItem();
-                    settings.afterCompose = theRouter.afterCompose;
+                    settings.attachedToParent = theRouter.attachedToParent;
+                    settings.compositionComplete = theRouter.compositionComplete;
                     settings.activate = false;
                 }
 

@@ -34,17 +34,12 @@
         gridViewModel.currentPageIndex(0);
     };
 
-    function viewAttached() {
-        system.log('View Activating', this);
-    }
-
     return {
         items: items,
         addItem: addItem,
         sortByName: sortByName,
         jumpToFirstPage: jumpToFirstPage,
         gridViewModel: gridViewModel,
-        viewAttached: viewAttached,
         SimpleGrid: SimpleGrid
     };
 });

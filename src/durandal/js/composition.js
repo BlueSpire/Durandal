@@ -1,8 +1,8 @@
-﻿define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/activator', 'jquery', 'knockout'], function (system, viewLocator, viewModelBinder, viewEngine, activator, $, ko) {
+define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/activator', 'jquery', 'knockout'], function (system, viewLocator, viewModelBinder, viewEngine, activator, $, ko) {
     var dummyModel = {},
         activeViewAttributeName = 'data-active-view',
         composition,
-        documentAttachedCallbacks = [],
+        compositionCompleteCallbacks = [],
         compositionCount = 0;
 
     function getHostState(parent) {
@@ -27,18 +27,18 @@
 
         return state;
     }
-    
+
     function endComposition() {
         compositionCount--;
 
         if (compositionCount === 0) {
-            var i = documentAttachedCallbacks.length;
+            var i = compositionCompleteCallbacks.length;
 
             while(i--) {
-                documentAttachedCallbacks[i]();
+                compositionCompleteCallbacks[i]();
             }
 
-            documentAttachedCallbacks = [];
+            compositionCompleteCallbacks = [];
         }
     }
 
@@ -64,7 +64,7 @@
         }
     }
 
-    function triggerViewAttached() {
+    function triggerAttach() {
         var context = this;
 
         if (context.activeView) {
@@ -72,41 +72,41 @@
         }
 
         if (context.child) {
-            if (context.model && context.model.viewAttached) {
-                if (context.composingNewView || context.alwaysAttachView) {
-                    context.model.viewAttached(context.child, context);
+            if (context.model && context.model.attachedToParent) {
+                if (context.composingNewView || context.alwaysTriggerAttach) {
+                    context.model.attachedToParent(context.child, context.parent, context);
                 }
             }
-            
+
+            if (context.attachedToParent) {
+                context.attachedToParent(context.child, context.parent, context);
+            }
+
             context.child.setAttribute(activeViewAttributeName, true);
 
             if (context.composingNewView && context.model) {
-                if (context.model.documentAttached) {
-                    composition.current.completed(function () {
-                        context.model.documentAttached(context.child, context);
+                if (context.model.compositionComplete) {
+                    composition.current.complete(function () {
+                        context.model.compositionComplete(context.child, context);
                     });
                 }
 
-                if (context.model.documentDetached) {
-                    composition.documentDetached(context.child, function () {
-                        context.model.documentDetached(context.child, context);
+                if (context.model.detachedFromDocument) {
+                    ko.utils.domNodeDisposal.addDisposeCallback(context.child, function () {
+                        context.model.detachedFromDocument(context.child, context);
                     });
                 }
             }
-        }
-        
-        if (context.afterCompose) {
-            context.afterCompose(context.child, context);
-        }
 
-        if (context.documentAttached) {
-            composition.current.completed(function () {
-                context.documentAttached(context.child, context);
-            });
+            if (context.compositionComplete) {
+                composition.current.complete(function () {
+                    context.compositionComplete(context.child, context);
+                });
+            }
         }
 
         endComposition();
-        context.triggerViewAttached = system.noop;
+        context.triggerAttach = system.noop;
     }
 
     function shouldTransition(context) {
@@ -126,10 +126,10 @@
                     return currentViewId != newViewId;
                 }
             }
-            
+
             return true;
         }
-        
+
         return false;
     }
 
@@ -138,12 +138,9 @@
             return 'transitions/' + name;
         },
         current: {
-            completed: function (callback) {
-                documentAttachedCallbacks.push(callback);
+            complete: function (callback) {
+                compositionCompleteCallbacks.push(callback);
             }
-        },
-        documentDetached: function (element, callback) {
-            ko.utils.domNodeDisposal.addDisposeCallback(element, callback);
         },
         switchContent: function (context) {
             context.transition = context.transition || this.defaultTransitionName;
@@ -152,7 +149,7 @@
                 var transitionModuleId = this.convertTransitionToModuleId(context.transition);
                 system.acquire(transitionModuleId).then(function (transition) {
                     context.transition = transition;
-                    transition(context).then(function () { context.triggerViewAttached(); });
+                    transition(context).then(function () { context.triggerAttach(); });
                 });
             } else {
                 if (context.child != context.activeView) {
@@ -179,7 +176,7 @@
                     }
                 }
 
-                context.triggerViewAttached();
+                context.triggerAttach();
             }
         },
         bindAndShow: function (child, context) {
@@ -314,7 +311,7 @@
 
             settings.activeView = hostState.activeView;
             settings.parent = element;
-            settings.triggerViewAttached = triggerViewAttached;
+            settings.triggerAttach = triggerAttach;
             settings.bindingContext = bindingContext;
 
             if (settings.cacheViews && !settings.viewElements) {
@@ -344,6 +341,9 @@
     };
 
     ko.bindingHandlers.compose = {
+        init: function() {
+            return { controlsDescendantBindings: true };
+        },
         update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var settings = composition.getSettings(valueAccessor);
             composition.compose(element, settings, bindingContext);

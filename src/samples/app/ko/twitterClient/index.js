@@ -134,14 +134,6 @@
         }
     });
 
-    function activate() {
-        system.log('View Activating', this);
-    }
-
-    function viewAttached() {
-        system.log('View Activated', this);
-    }
-
     return {
         savedLists : savedLists,
         editingList : editingList,
@@ -154,8 +146,6 @@
         deleteList : deleteList,
         hasUnsavedChanges : hasUnsavedChanges,
         userNameToAddIsValid : userNameToAddIsValid,
-        canAddUserName: canAddUserName,
-        activate: activate,
-        viewAttached: viewAttached
+        canAddUserName: canAddUserName
     }
 });

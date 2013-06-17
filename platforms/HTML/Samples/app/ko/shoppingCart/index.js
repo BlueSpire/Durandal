@@ -47,14 +47,9 @@
         };
     };
 
-    function viewAttached() {
-        system.log('View Activating', this);
-    }
-
     return {
         Cart: new Cart(),
         formatCurrency : formatCurrency,
-        sampleProductCategories: sampleProductCategories,
-        viewAttached : viewAttached
+        sampleProductCategories: sampleProductCategories
     };
 });
