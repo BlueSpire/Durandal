@@ -22330,7 +22330,7 @@ define('build', function (require) {
 
 
                 //All module layers are done, write out the build.txt file.
-                file.saveUtf8File(config.dir + "build.txt", buildFileContents);
+                file.saveUtf8File(config.dir + (config.buildLog || "build.txt"), buildFileContents);
             }
 
             //If just have one CSS file to optimize, do that here.
