@@ -1,0 +1,15 @@
+﻿<div>
+    <h2>Simple List</h2>
+    <div class="well liveExample">
+        <form data-bind="submit: addItem">
+            <label>Add item:</label>
+            <div class="input-append">
+                <input class="span3" data-bind='value: itemToAdd, valueUpdate: "afterkeydown"' />
+                <button class="btn" type="submit" data-bind="enable: itemToAdd().length > 0">Add</button>
+            </div>
+            <br />
+            <p>Your items:</p>
+            <select multiple="multiple" width="50" data-bind="options: items"></select>
+        </form>
+    </div>
+</div>

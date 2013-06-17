@@ -1,0 +1,33 @@
+﻿<style type='text/css'>
+    .liveExample table, .liveExample td, .liveExample th { padding: 0.2em; border-width: 0; }
+    .liveExample td input { width: 13em; }
+    tr { vertical-align: top; }
+    .liveExample input.error { border: 1px solid red; background-color: #FDC; }
+    .liveExample label.error { display: block; color: Red; font-size: 0.8em; }    
+</style>
+<div>
+    <h2>Grid Editor</h2>
+    <div class='well liveExample'> 
+        <form data-bind='submit: doSubmit'>
+            <p>You have asked for <span data-bind='text: GiftModel.gifts().length'>&nbsp;</span> gift(s)</p>
+            <table data-bind='visible: GiftModel.gifts().length > 0'>
+                <thead>
+                    <tr>
+                        <th>Gift name</th>
+                        <th>Price</th>
+                        <th />
+                    </tr>
+                </thead>
+                <tbody data-bind='foreach: GiftModel.gifts'>
+                    <tr>
+                        <td><input class='required' data-bind='value: name, uniqueName: true' /></td>
+                        <td><input class='required number' data-bind='value: price, uniqueName: true' /></td>
+                        <td><button data-bind='click: $root.GiftModel.removeGift'>Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        <button data-bind='click: GiftModel.addGift'>Add Gift</button>
+        <button data-bind='enable: GiftModel.gifts().length > 0' type="submit">Submit</button>
+        </form>
+    </div>
+</div>

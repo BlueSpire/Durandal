@@ -1,9 +1,10 @@
-Welcome to the Durandal project!
-
-[![Build Status](https://travis-ci.org/BlueSpire/Durandal.png?branch=master)](https://travis-ci.org/BlueSpire/Durandal)
-
+# Durandal
 
 Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain. We've used it to build apps for PC, Mac, Linux, iOS and Android...and now it's your turn...
+
+> **IMPORTANT:** The repository currently represents WIP on version 2.0.0. Please do not use the code in the master branch. Use released version 1.2.0 via [Durandal's web site](http://durandaljs.com/pages/downloads/). Future versions of Durandal will use a stricter tagging, branching and versioning strategy with the hopes of avoiding the current confusion you may have if you are reading this. Please accept our apologies for the over-site. Thank you.
+
+[![Build Status](https://travis-ci.org/BlueSpire/Durandal.png?branch=master)](https://travis-ci.org/BlueSpire/Durandal)
 
 ## Features
 
@@ -16,8 +17,8 @@ Durandal is a cross-device, cross-platform client framework written in JavaScrip
 * App Bundling and Optimization
 * Use any Backend Technology
 * Built on top of [jQuery](http://jquery.com/), [Knockout](http://knockoutjs.com/) & [RequireJS](http://requirejs.org/).
-* Integrates with other libraries such as [SammyJS](http://sammyjs.org/) & [Bootstrap](http://twitter.github.com/bootstrap/).
-* Make jQuery & Bootstrap widgets templatable and bindable (or build your own widgets).
+* Integrates with popular CSS libraries such as [Bootstrap](http://twitter.github.com/bootstrap/).
+* Make your own templatable and data-bindable widgets.
 
 ## Documentation
 

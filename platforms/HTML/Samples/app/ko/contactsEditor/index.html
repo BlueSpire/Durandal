@@ -1,0 +1,44 @@
+﻿<style>
+    .liveExample td { vertical-align: text-top; }
+    .liveExample textarea { width: initial;  }
+</style>
+<div>
+    <h2>Grid Editor</h2>
+    <div class="well liveExample">
+        <div id='contactsList'>
+            <table class='contactsEditor'>
+                <tr>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Phone numbers</th>
+                </tr>
+                <tbody data-bind="foreach: ContactsModel.contacts">
+                    <tr>
+                        <td>
+                            <input data-bind='value: firstName' />
+                            <div><a href='#' data-bind='click: $root.ContactsModel.removeContact'>Delete</a></div>
+                        </td>
+                        <td><input data-bind='value: lastName' /></td>
+                        <td>
+                            <table>
+                                <tbody data-bind="foreach: phones">
+                                    <tr>
+                                        <td><input data-bind='value: type' /></td>
+                                        <td><input data-bind='value: number' /></td>
+                                        <td><a href='#' data-bind='click: $root.ContactsModel.removePhone'>Delete</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a href='#' data-bind='click: $root.ContactsModel.addPhone'>Add number</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p>
+            <button data-bind='click: ContactsModel.addContact'>Add a contact</button>
+            <button data-bind='click: ContactsModel.save, enable: ContactsModel.contacts().length > 0'>Save to JSON</button>
+        </p>
+        <textarea data-bind='value: ContactsModel.lastSavedJson' rows='5' cols='60'> </textarea>
+    </div>
+</div>

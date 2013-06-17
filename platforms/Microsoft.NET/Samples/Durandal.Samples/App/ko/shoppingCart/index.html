@@ -1,0 +1,49 @@
+﻿<style>
+    .liveExample .price  { text-align: center }
+    .liveExample th { width: 11em; }
+    .liveExample input { width: 8em; float:right; text-align:right; padding-right:10px; }
+</style>
+<div>
+    <h2>Shopping Cart</h2>
+    <div class="well liveExample">
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Product</th>
+                    <th class="price">Price</th>
+                    <th class="quantity">Quantity</th>
+                    <th class="price">Subtotal</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody data-bind='foreach: Cart.lines'>
+                <tr>
+                    <td>
+                        <select data-bind='options: sampleProductCategories, optionsText: "name", optionsCaption: "Select...", value: category'> </select>
+                    </td>
+                    <td data-bind="with: category">
+                        <select data-bind='options: products, optionsText: "name", optionsCaption: "Select...", value: $parent.product'> </select>
+                    </td>
+                    <td class='price' data-bind='with: product'>
+                        <span data-bind='text: $root.formatCurrency(price)'> </span>
+                    </td>
+                    <td class='quantity'>
+                        <input data-bind='visible: product, value: quantity, valueUpdate: "afterkeydown"' />
+                    </td>
+                    <td class='price'>
+                        <span data-bind='visible: product, text: $root.formatCurrency(subtotal())' > </span>
+                    </td>
+                    <td>
+                        <button data-bind='click: $root.Cart.removeLine'>Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class='grandTotal'>
+            Total value: <span data-bind='text: formatCurrency(Cart.grandTotal())'> </span>
+        </p>
+        <button data-bind='click: Cart.addLine'>Add product</button>
+        <button data-bind='click: Cart.save'>Submit order</button>
+    </div>
+</div>

@@ -1,4 +1,7 @@
-﻿1.2.0
+﻿2.0.0
+The repository currently represents WIP on version 2.0.0. The changes doc will be updated as we get closer to release. Please do not use the code in the master branch. Use released version 1.2.0 via durandal's web site. Future versions of durandal will use a stricter tagging, branching and versioning strategy with the hopes of avoiding the current confusion you may have if you are reading this. Please accept our apologies for the oversite. Thank you.
+
+1.2.0
 
 -Fixed bugs in .NET's optimizer. Added a 'loader' options to specify 'almond' or 'require'.
 -Prevent popping when transitioning with the 'entrance' transition.
