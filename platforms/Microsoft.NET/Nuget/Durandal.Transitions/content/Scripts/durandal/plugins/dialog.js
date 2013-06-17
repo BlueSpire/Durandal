@@ -42,7 +42,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
         return system.defer(function(dfd) {
             if (system.isString(objOrModuleId)) {
                 system.acquire(objOrModuleId).then(function (module) {
-                    dfd.resolve(new (system.getObjectResolver(module))());
+                    dfd.resolve(system.resolveObject(module));
                 });
             } else {
                 dfd.resolve(objOrModuleId);

@@ -115,11 +115,11 @@
 
             obj.__moduleId__ = id;
         },
-        getObjectResolver: function(module) {
+        resolveObject: function(module) {
             if (system.isFunction(module)) {
-                return module;
+                return new module();
             } else {
-                return (function() { return module; });
+                return module;
             }
         },
         debug: function(enable) {

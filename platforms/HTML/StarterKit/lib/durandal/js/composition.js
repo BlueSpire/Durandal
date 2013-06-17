@@ -339,7 +339,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 }
             } else if (system.isString(settings.model)) {
                 system.acquire(settings.model).then(function (module) {
-                    settings.model = new (system.getObjectResolver(module))();
+                    settings.model = system.resolveObject(module);
                     composition.inject(settings);
                 });
             } else {

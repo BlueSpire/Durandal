@@ -193,7 +193,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 ensureActivation(activator.create(), currentActivation, instruction);
             } else {
                 system.acquire(instruction.config.moduleId).then(function(module) {
-                    var instance = new (system.getObjectResolver(module))();
+                    var instance = system.resolveObject(module);
                     ensureActivation(activeItem, instance, instruction);
                 });
             }
