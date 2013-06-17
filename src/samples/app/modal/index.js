@@ -1,8 +1,8 @@
-﻿define(['durandal/app', './customModal'], function (app, CustomModal) {
+﻿define(['plugins/dialog', './customModal'], function (dialog, CustomModal) {
     return {
         showCustomModal: function() {
             CustomModal.show().then(function(response) {
-                app.showMessage('You answered "' + response + '".');
+                dialog.showMessage('You answered "' + response + '".');
             });
         }
     };
