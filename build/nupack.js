@@ -40,7 +40,7 @@ asyncblock(function (flow) {
 	var idRegex = /(<id>).*(<\/id>)/gi;
 	var fileRegex = /(\<file src=\")/gi;
 	var date = new Date();
-	var revision = date.getUTCMonth() * 100 + date.getUTCDay();
+	var revision = (date.getUTCMonth()+1) * 100 + date.getUTCDate();
 	var build = date.getUTCHours() * 10000 + date.getUTCMinutes() * 100 + date.getUTCSeconds();
 	content = content.replace(versionRegex, "$1.{0}.{1}$2".format(revision, build));
 	content = content.replace(nameRegex, "$1{0}$2".format("Durandal 2.0"));
