@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'durandal/app', './sampleProductCategories', 'jquery', 'knockout'], function (system, app, sampleProductCategories, $, ko) {
+﻿define('ko/shoppingCart/index', ['durandal/system', 'durandal/app', 'ko/shoppingCart/sampleProductCategories', 'jquery', 'knockout'], function (system, app, sampleProductCategories, $, ko) {
     function formatCurrency(value) {
         return "$" + value.toFixed(2);
     };

@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'jquery', 'knockout'], function(system, $, ko) {
+﻿define('ko/contactsEditor/index', ['durandal/system', 'jquery', 'knockout'], function(system, $, ko) {
     var initialData = [
       {
           firstName: "Danny", lastName: "LaRusso", phones: [

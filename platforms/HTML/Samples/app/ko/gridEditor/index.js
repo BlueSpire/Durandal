@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'durandal/app', 'jquery', 'knockout'], function(system, app, $, ko) {
+﻿define('ko/gridEditor/index', ['durandal/system', 'durandal/app', 'jquery', 'knockout'], function(system, app, $, ko) {
     var GiftModel = function (gifts) {
         var self = this;
         self.gifts = ko.observableArray(gifts);

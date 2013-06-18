@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'durandal/app', './simpleGrid', 'knockout'], function(system, app, SimpleGrid, ko) {
+﻿define('ko/pagedGrid/index', ['durandal/system', 'durandal/app', 'ko/pagedGrid/simpleGrid', 'knockout'], function (system, app, SimpleGrid, ko) {
     var initialData = [
         { name: "Well-Travelled Kitten", sales: 352, price: 75.95 },
         { name: "Speedy Coyote", sales: 89, price: 190.00 },

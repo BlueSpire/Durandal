@@ -1,4 +1,4 @@
-﻿define(['knockout'], function (ko) {
+﻿define('ko/simpleList/index', ['knockout'], function (ko) {
     var initialData = ["Alpha", "Beta", "Gamma"];
     var items = ko.observableArray(initialData);
     var itemToAdd = ko.observable("");

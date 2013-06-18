@@ -1,4 +1,4 @@
-﻿define(['knockout'], function (ko) {
+﻿define('ko/controlTypes/index', ['knockout'], function (ko) {
     return {
         stringValue: ko.observable("Hello"),
         passwordValue: ko.observable("mypass"),

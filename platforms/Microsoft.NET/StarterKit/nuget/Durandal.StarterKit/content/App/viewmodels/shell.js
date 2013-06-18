@@ -1,4 +1,4 @@
-﻿define(['plugins/router', 'durandal/app'], function (router, app) {
+﻿define('viewmodels/shell', ['plugins/router', 'durandal/app'], function (router, app) {
     return {
         router: router,
         search: function() {

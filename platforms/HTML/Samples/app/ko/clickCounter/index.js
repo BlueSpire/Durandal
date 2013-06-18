@@ -1,4 +1,4 @@
-﻿define(['knockout'], function (ko) {
+﻿define('ko/clickCounter/index', ['knockout'], function (ko) {
     var counter = ko.observable(0);
     var limiter = ko.computed(function () {
         return counter() >= 3;

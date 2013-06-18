@@ -1,4 +1,4 @@
-﻿define(function() {
+﻿define('ko/shoppingCart/sampleProductCategories', [], function () {
     // Some of the Knockout examples use this data
     return sampleProductCategories = [
       {

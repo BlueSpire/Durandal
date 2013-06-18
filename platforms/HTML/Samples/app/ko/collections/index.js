@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'knockout'], function(system, ko) {
+﻿define('ko/collections/index', ['durandal/system', 'knockout'], function(system, ko) {
     // Define a "Person" class that tracks its own name and children, and has a method to add a new child
     var Person = function (name, children) {
         this.name = name;

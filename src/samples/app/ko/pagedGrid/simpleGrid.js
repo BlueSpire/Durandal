@@ -1,4 +1,4 @@
-﻿define(['knockout'], function(ko) {
+﻿define('ko/pagedGrid/simpleGrid', ['knockout'], function(ko) {
     var SimpleGrid = function (configuration) {
         this.data = configuration.data;
         this.currentPageIndex = ko.observable(0);

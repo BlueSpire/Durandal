@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'jquery', 'knockout'], function (system, $, ko) {
+﻿define('ko/twitterClient/index', ['durandal/system', 'jquery', 'knockout'], function (system, $, ko) {
     var initialLists = [
             { name: "SPA Advocates", userNames: ['DurandalJS','John_Papa','EisenbergEffect','wardbell','DanWahlin', 'mikekidder',] },
             { name: "Celebrities", userNames: ['JohnCleese', 'MCHammer', 'StephenFry', 'algore', 'StevenSanderson'] },

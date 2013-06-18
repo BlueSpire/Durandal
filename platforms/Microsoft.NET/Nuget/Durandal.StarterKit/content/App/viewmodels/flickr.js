@@ -1,4 +1,4 @@
-﻿define(['plugins/http', 'durandal/app', 'knockout'], function (http, app, ko) {
+﻿define('viewmodels/flickr', ['plugins/http', 'durandal/app', 'knockout'], function (http, app, ko) {
     
     return {
         displayName: 'Flickr',
