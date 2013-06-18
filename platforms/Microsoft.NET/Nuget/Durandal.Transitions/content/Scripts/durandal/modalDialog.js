@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/composition', 'durandal/system', 'durandal/activator', 'jquery'], function (composition, system, activator, $) {
+define('durandal/modalDialog', ['durandal/composition', 'durandal/system', 'durandal/activator', 'jquery'], function (composition, system, activator, $) {
     var contexts = {},
         modalCount = 0;
 

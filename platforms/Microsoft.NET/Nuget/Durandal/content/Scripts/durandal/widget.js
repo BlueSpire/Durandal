@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], function(system, composition, $, ko) {
+define('durandal/widget', ['durandal/system', 'durandal/composition', 'jquery', 'knockout'], function(system, composition, $, ko) {
     var partAttributeName = 'data-part',
         partAttributeSelector = '[' + partAttributeName + ']';
 

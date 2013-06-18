@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/viewEngine'], function(viewEngine) {
+define('durandal/messageBox', ['durandal/viewEngine'], function(viewEngine) {
     var MessageBox = function(message, title, options) {
         this.message = message;
         this.title = title || MessageBox.defaultTitle;
