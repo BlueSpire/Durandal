@@ -11,13 +11,13 @@ var DEBUG=true;
 		// [1] CommonJS/Node.js
 		var target = module['exports'] || exports; // module.exports is for Node.js
 		factory(target);
-	} else if (typeof define === 'function') {// && define['amd']) {
+	} else if (typeof define === 'function' && define['amd']) {
         // [2] AMD anonymous module
-        define('knockout', ['exports'], factory);
-    } //else {
+        define("ko", ['exports'], factory);
+    } else {
         // [3] No module loader (plain <script> tag) - put directly in global namespace
-    	factory(window['knockout'] = {});
-    //}
+    	factory(window['ko'] = {});
+    }
 }(function(koExports){
 // Internally, all KO objects are attached to koExports (even the non-exported ones whose names will be minified by the closure compiler).
 // In the future, the following "ko" variable may be made distinct from "koExports" so that private objects are not externally reachable.
@@ -1970,10 +1970,10 @@ ko.exportSymbol('bindingProvider', ko.bindingProvider);
         } else {
             this['$parents'] = [];
             this['$root'] = dataItem;
-            // Export 'knockout' in the binding context so it will be available in bindings and templates
-            // even if 'knockout' isn't exported as a global, such as when using an AMD loader.
+            // Export 'ko' in the binding context so it will be available in bindings and templates
+            // even if 'ko' isn't exported as a global, such as when using an AMD loader.
             // See https://github.com/SteveSanderson/knockout/issues/490
-            this['knockout'] = ko;
+            this['ko'] = ko;
         }
         this['$data'] = dataItem;
         if (dataItemAlias)
