@@ -1,5 +1,4 @@
-/// <reference path="../platforms/microsoft.net/samples/durandal.samples/scripts/nodelib/node.js" />
-/// <reference path="../platforms/microsoft.net/samples/durandal.samples/scripts/jquery-1.9.1.js" />
+/// <reference path="nodelib/node.js" />
 /// <reference path="node_modules/glob/glob.js " />
 var source = "../platforms/Microsoft.NET/Nuget/Durandal/";
 var input = source + "Durandal.nuspec";

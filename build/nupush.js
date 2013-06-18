@@ -1,6 +1,4 @@
-/// <reference path="../platforms/microsoft.net/samples/durandal.samples/scripts/nodelib/node.js" />
-/// <reference path="../platforms/microsoft.net/samples/durandal.samples/scripts/jquery-1.9.1.js" />
-/// <reference path="node_modules/glob/glob.js " />
+/// <reference path="nupack.js " />
 
 var fs = require('fs');
 var glob = require('glob');
