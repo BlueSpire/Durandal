@@ -55,7 +55,10 @@ Features
         <file src="content\Scripts\durandal\viewLocator.js" target="content\Scripts\durandal\viewLocator.js" />
         <file src="content\Scripts\durandal\viewModelBinder.js" target="content\Scripts\durandal\viewModelBinder.js" />
         <file src="content\Scripts\almond-custom.js" target="content\Scripts\almond-custom.js" />
-        <file src="content\Scripts\r.js" target="content\Scripts\r.js" />
         <file src="content\Scripts\text.js" target="content\Scripts\text.js" />
+        <file src="tools\require.intellisense.js" target="tools\require.intellisense.js" />
+        <file src="tools\common.ps1" target="tools\common.ps1" />
+        <file src="tools\install.ps1" target="tools\install.ps1" />
+        <file src="tools\uninstall.ps1" target="tools\uninstall.ps1" />
     </files>
 </package>

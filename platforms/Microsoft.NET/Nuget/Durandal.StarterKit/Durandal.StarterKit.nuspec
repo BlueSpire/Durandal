@@ -43,5 +43,8 @@ This is a starter kit for durandal-based projects.</description>
         <file src="content\Views\Durandal\Index.cshtml" target="content\Views\Durandal\Index.cshtml" />
         <file src="content\Views\Durandal\_splash.cshtml" target="content\Views\Durandal\_splash.cshtml" />
         <file src="content\readme.md" target="content\readme.md" />
+        <file src="tools\common.ps1" target="tools\common.ps1" />
+        <file src="tools\install.ps1" target="tools\install.ps1" />
+        <file src="tools\uninstall.ps1" target="tools\uninstall.ps1" />
     </files>
 </package>
