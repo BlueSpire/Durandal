@@ -3,7 +3,3 @@
 /// <reference path="bootstrap.js" />
 /// <reference path="require.js" />
 /// <reference path="../App/main.js" />
-
-//enable ko and jQuery AMD, otherwise intellisense won't work!
-define.amd = define.amd || {};
-define.amd.jQuery = true;
