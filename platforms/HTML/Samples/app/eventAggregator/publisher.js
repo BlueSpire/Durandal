@@ -1,4 +1,4 @@
-﻿define(['durandal/app', 'knockout'], function (app, ko) {
+﻿define('eventAggregator/publisher', ['durandal/app', 'knockout'], function (app, ko) {
     var message = ko.observable();
     var canPublish = ko.computed(function () {
         return message() ? true : false;

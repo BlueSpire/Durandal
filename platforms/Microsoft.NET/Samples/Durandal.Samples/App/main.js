@@ -1,10 +1,11 @@
 ﻿requirejs.config({
+	baseUrl: '/App',
     paths: {
         'text': '../Scripts/text',
         'durandal': '../Scripts/durandal',
         'plugins': '../Scripts/durandal/plugins',
         'transitions': '../Scripts/durandal/transitions',
-        'knockout': '../Scripts/knockout-2.2.1',
+        'knockout': '../Scripts/knockout-2.2.1.debug',
         'bootstrap': '../Scripts/bootstrap',
         'jquery': '../Scripts/jquery-1.9.1'
     },
@@ -12,15 +13,22 @@
         'bootstrap': {
             deps: ['jquery'],
             exports: '$.support.transition' // just picked one
+        },
+        'jquery': {
+        	exports: function() {
+        		return jQuery;
+        	},
         }
     }
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (system, app, viewLocator) {
+
+
+define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator'], function (system, app, viewLocator) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
-
+	
     app.title = 'Durandal Samples';
     
     //specify which plugins to install and their configuration

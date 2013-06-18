@@ -1,4 +1,5 @@
-﻿define(['plugins/router', 'knockout'], function(router, ko) {
+﻿define('ko/index', ['plugins/router', 'knockout'], function (router, ko) {
+	
     var childRouter = router.createChildRouter()
         .makeRelative({
             moduleId:'ko',

@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['jquery', 'knockout'], function($, ko) {
+define('plugins/http', ['jquery', 'knockout'], function ($, ko) {
     return {
         callbackParam:'callback',
         get:function(url, query) {

@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['jquery'], function ($) {
+define('durandal/system', ['jquery'], function ($) {
     var isDebugging = false,
         nativeKeys = Object.keys,
         hasOwnProperty = Object.prototype.hasOwnProperty,

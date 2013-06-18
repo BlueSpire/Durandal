@@ -1,4 +1,4 @@
-﻿define(['./project', 'plugins/widget', 'knockout'], function (Project, widget, ko) {
+﻿define('widgets/index', ['widgets/project', 'plugins/widget', 'knockout'], function (Project, widget, ko) {
     return {
         projects: ko.observableArray([
             new Project('Durandal', 'A cross-device, cross-platform application framework written in JavaScript, Durandal is a very small amount of code built on top of three existing and established Javascript libraries: jQuery, Knockout and RequireJS.'),

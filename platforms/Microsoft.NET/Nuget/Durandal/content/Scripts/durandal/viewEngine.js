@@ -3,9 +3,9 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/system', 'jquery'], function (system, $) {
+define('durandal/viewEngine', ['durandal/system', 'jquery'], function (system, $) {
     var parseMarkup;
-
+	
     if ($.parseHTML) {
         parseMarkup = function (html) {
             return $.parseHTML(html);

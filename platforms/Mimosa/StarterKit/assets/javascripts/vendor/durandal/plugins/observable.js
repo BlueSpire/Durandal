@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(system, viewModelBinder, ko) {
+define('plugins/observable', ['durandal/system', 'durandal/viewModelBinder', 'knockout'], function (system, viewModelBinder, ko) {
     var nonObservableTypes = ['[object Function]', '[object String]', '[object Boolean]', '[object Number]', '[object Date]', '[object RegExp]'];
     var ignoredProperties = ['__moduleId__', '__observable__'];
     var toString = Object.prototype.toString;
@@ -11,7 +11,7 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
     var arrayMethods = ["pop", "reverse", "shift", "sort", "splice", "unshift"];
     var arrayProto = Array.prototype;
     var observableArrayFunctions = ko.observableArray.fn;
-
+	
     function canConvert(value) {
         if (!value || system.isElement(value) || value.ko === ko) {
             return false;

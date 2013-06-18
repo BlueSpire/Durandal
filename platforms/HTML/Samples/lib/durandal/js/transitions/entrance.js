@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/system', 'jquery', 'knockout'], function(system, $, ko) {
+define('durandal/transitions/entrance', ['durandal/system', 'jquery', 'knockout'], function(system, $, ko) {
     var fadeOutDuration = 100;
     var endValues = {
         marginRight: 0,

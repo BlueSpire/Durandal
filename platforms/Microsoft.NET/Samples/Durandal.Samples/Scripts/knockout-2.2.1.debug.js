@@ -7,17 +7,17 @@ var DEBUG=true;
 (function(window,document,navigator,jQuery,undefined){
 !function(factory) {
     // Support three module loading scenarios
-    if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
-        // [1] CommonJS/Node.js
-        var target = module['exports'] || exports; // module.exports is for Node.js
-        factory(target);
-    } else if (typeof define === 'function' && define['amd']) {
+	if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
+		// [1] CommonJS/Node.js
+		var target = module['exports'] || exports; // module.exports is for Node.js
+		factory(target);
+	} else if (typeof define === 'function') {// && define['amd']) {
         // [2] AMD anonymous module
-        define(['exports'], factory);
-    } else {
+        define('knockout', ['exports'], factory);
+    } //else {
         // [3] No module loader (plain <script> tag) - put directly in global namespace
-        factory(window['ko'] = {});
-    }
+    	factory(window['knockout'] = {});
+    //}
 }(function(koExports){
 // Internally, all KO objects are attached to koExports (even the non-exported ones whose names will be minified by the closure compiler).
 // In the future, the following "ko" variable may be made distinct from "koExports" so that private objects are not externally reachable.
@@ -1970,10 +1970,10 @@ ko.exportSymbol('bindingProvider', ko.bindingProvider);
         } else {
             this['$parents'] = [];
             this['$root'] = dataItem;
-            // Export 'ko' in the binding context so it will be available in bindings and templates
-            // even if 'ko' isn't exported as a global, such as when using an AMD loader.
+            // Export 'knockout' in the binding context so it will be available in bindings and templates
+            // even if 'knockout' isn't exported as a global, such as when using an AMD loader.
             // See https://github.com/SteveSanderson/knockout/issues/490
-            this['ko'] = ko;
+            this['knockout'] = ko;
         }
         this['$data'] = dataItem;
         if (dataItemAlias)

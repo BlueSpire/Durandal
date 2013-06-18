@@ -3,8 +3,8 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/activator', 'jquery', 'knockout'], function (system, viewLocator, viewModelBinder, viewEngine, activator, $, ko) {
-    var dummyModel = {},
+define('durandal/composition', ['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/activator', 'jquery', 'knockout'], function (system, viewLocator, viewModelBinder, viewEngine, activator, $, ko) {
+	var dummyModel = {},
         activeViewAttributeName = 'data-active-view',
         composition,
         documentAttachedCallbacks = [],
@@ -140,7 +140,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
 
     composition = {
         convertTransitionToModuleId: function (name) {
-            return 'transitions/' + name;
+            return 'durandal/transitions/' + name;
         },
         current: {
             completed: function (callback) {

@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/system', 'knockout'], function (system, ko) {
+define('durandal/viewModelBinder', ['durandal/system', 'knockout'], function (system, ko) {
     var viewModelBinder;
     var insufficientInfoMessage = 'Insufficient Information to Bind';
     var unexpectedViewMessage = 'Unexpected View Type';
