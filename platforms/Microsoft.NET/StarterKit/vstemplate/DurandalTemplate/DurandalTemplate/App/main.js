@@ -1,4 +1,5 @@
 ﻿requirejs.config({
+    baseUrl: 'App',
     paths: {
         'text': '../Scripts/text',
         'durandal': '../Scripts/durandal',
@@ -26,7 +27,9 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
     app.plugins = {
         router: true,
         dialog: true,
-        widget: true
+        widget: {
+        	kinds: ['expander']
+        }
     };
 
     app.start().then(function() {

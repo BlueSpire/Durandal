@@ -13,7 +13,7 @@ var DEBUG=true;
 		factory(target);
 	} else if (typeof define === 'function' && define['amd']) {
         // [2] AMD anonymous module
-        define("ko", ['exports'], factory);
+        define("knockout", ['exports'], factory);
     } else {
         // [3] No module loader (plain <script> tag) - put directly in global namespace
     	factory(window['ko'] = {});

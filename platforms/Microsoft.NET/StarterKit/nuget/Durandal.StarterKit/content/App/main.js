@@ -26,7 +26,9 @@ define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator'],  fun
     app.plugins = {
         router: true,
         dialog: true,
-        widget: true
+        widget: {
+        	kinds: ['expander']
+        }
     };
 
     app.start().then(function() {
