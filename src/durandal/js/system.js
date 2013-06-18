@@ -181,6 +181,11 @@
             }
 
             return obj;
+        },
+        wait: function(milliseconds) {
+            return system.defer(function(dfd) {
+                setTimeout(dfd.resolve, milliseconds);
+            }).promise();
         }
     };
 
