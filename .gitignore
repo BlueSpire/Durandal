@@ -29,6 +29,7 @@ MSSCCPRJ.SCC
 Packages/
 *.db
 platforms/Microsoft.NET/Samples/Durandal.Samples/src
+.nuget
 
 !skeletons/vsix/DurandalMvcSpaTemplateVsix/packages/
 !build.bat
