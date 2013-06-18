@@ -1,2 +1,1 @@
-node nupush.js
-pause
+node nupush.js -NoPackageAnalysis
