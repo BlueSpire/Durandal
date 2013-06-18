@@ -38,6 +38,7 @@ This is a starter kit for durandal-based projects.</description>
         <file src="content\App_Start\DurandalBundleConfig.cs.pp" target="content\App_Start\DurandalBundleConfig.cs.pp" />
         <file src="content\App_Start\DurandalConfig.cs.pp" target="content\App_Start\DurandalConfig.cs.pp" />
         <file src="content\Content\ie10mobile.css" target="content\Content\ie10mobile.css" />
+        <file src="content\Content\samples.css" target="content\Content\samples.css" />
         <file src="content\Content\starterkit.css" target="content\Content\starterkit.css" />
         <file src="content\Controllers\DurandalController.cs.pp" target="content\Controllers\DurandalController.cs.pp" />
         <file src="content\Views\Durandal\Index.cshtml" target="content\Views\Durandal\Index.cshtml" />
