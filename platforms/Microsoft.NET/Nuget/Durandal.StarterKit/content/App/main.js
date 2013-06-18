@@ -1,5 +1,6 @@
 ﻿requirejs.config({
-    paths: {
+	baseUrl: '/App',
+	paths: {
         'text': '../Scripts/text',
         'durandal': '../Scripts/durandal',
         'plugins': '../Scripts/durandal/plugins',
@@ -16,7 +17,7 @@
     }
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (system, app, viewLocator) {
+define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (system, app, viewLocator) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
