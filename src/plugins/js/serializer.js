@@ -15,7 +15,7 @@
         serialize: function(object, settings) {
             settings = (settings === undefined) ? {} : settings;
 
-            if(system.isString(settings)){
+            if(system.isString(settings) || system.isNumber(settings)){
                 settings = { space:settings }
             }
 
