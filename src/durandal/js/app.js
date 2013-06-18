@@ -41,6 +41,8 @@
                 }
 
                 $.when(results).then(dfd.resolve);
+            }).fail(function(err){
+                system.error('Failed to load plugins. Details: ' + err.message);
             });
         }).promise();
     }
