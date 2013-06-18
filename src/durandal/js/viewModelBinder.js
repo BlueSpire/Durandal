@@ -29,11 +29,13 @@
             action(viewName);
             viewModelBinder.afterBind(obj, view);
         } catch (e) {
-            if (viewModelBinder.throwOnErrors) {
-                system.error(e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(obj));
-            } else {
-                system.log(e.message, viewName, obj);
-            }
+        	if (viewModelBinder.throwOnErrors) {
+        		//Preserve the original error location for easier debugging!!
+        		e.message = e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(obj);
+        		system.error(e);
+        	} else {
+        		system.log(e.message, viewName, obj);
+        	}
         }
     }
 
