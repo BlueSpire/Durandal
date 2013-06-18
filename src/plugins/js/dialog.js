@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/activator', 'durandal/viewEngine', 'jquery'], function (system, app, composition, activator, viewEngine, $) {
+﻿define('plugins/dialog', ['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/activator', 'durandal/viewEngine', 'jquery'], function (system, app, composition, activator, viewEngine, $) {
     var contexts = {},
         dialogCount = 0,
         dialog;

@@ -1,6 +1,6 @@
-﻿define(['durandal/system', 'jquery'], function (system, $) {
+﻿define('durandal/viewEngine', ['durandal/system', 'jquery'], function (system, $) {
     var parseMarkup;
-
+	
     if ($.parseHTML) {
         parseMarkup = function (html) {
             return $.parseHTML(html);

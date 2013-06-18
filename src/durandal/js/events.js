@@ -1,4 +1,4 @@
-﻿define(['durandal/system'], function (system) {
+﻿define('durandal/events', ['durandal/system'], function (system) {
     var eventSplitter = /\s+/;
     var Events = function() { };
 

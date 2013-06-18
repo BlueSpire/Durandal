@@ -1,5 +1,5 @@
-﻿define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/activator', 'jquery', 'knockout'], function (system, viewLocator, viewModelBinder, viewEngine, activator, $, ko) {
-    var dummyModel = {},
+﻿define('durandal/composition', ['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/activator', 'jquery', 'knockout'], function (system, viewLocator, viewModelBinder, viewEngine, activator, $, ko) {
+	var dummyModel = {},
         activeViewAttributeName = 'data-active-view',
         composition,
         documentAttachedCallbacks = [],
@@ -135,7 +135,7 @@
 
     composition = {
         convertTransitionToModuleId: function (name) {
-            return 'transitions/' + name;
+            return 'durandal/transitions/' + name;
         },
         current: {
             completed: function (callback) {

@@ -1,4 +1,4 @@
-﻿define(['jquery'], function ($) {
+﻿define('durandal/system', ['jquery'], function ($) {
     var isDebugging = false,
         nativeKeys = Object.keys,
         hasOwnProperty = Object.prototype.hasOwnProperty,

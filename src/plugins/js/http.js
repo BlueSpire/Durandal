@@ -1,4 +1,4 @@
-﻿define(['jquery', 'knockout'], function($, ko) {
+﻿define('plugins/http', ['jquery', 'knockout'], function ($, ko) {
     return {
         callbackParam:'callback',
         get:function(url, query) {

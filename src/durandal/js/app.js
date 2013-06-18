@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'durandal/events', 'jquery'], function(system, viewEngine, composition, Events, $) {
+﻿define('durandal/app', ['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'durandal/events', 'jquery'], function(system, viewEngine, composition, Events, $) {
     var app;
 
     function loadPlugins(){

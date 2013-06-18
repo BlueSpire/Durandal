@@ -1,4 +1,4 @@
-﻿define(['durandal/system'], function(system) {
+﻿define('plugins/serializer', ['durandal/system'], function (system) {
     return {
         typeAttribute: 'type',
         space:undefined,

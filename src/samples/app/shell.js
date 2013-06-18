@@ -1,4 +1,4 @@
-﻿define(['plugins/router'], function (router) {
+﻿define('shell', ['plugins/router'], function (router) {
     
     return {
         router: router,

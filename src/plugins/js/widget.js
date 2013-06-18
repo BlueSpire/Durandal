@@ -1,4 +1,5 @@
-﻿define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], function(system, composition, $, ko) {
+﻿define('plugins/widget', ['durandal/system', 'durandal/composition', 'jquery', 'knockout'], function (system, composition, $, ko) {
+	
     var partAttributeName = 'data-part',
         partAttributeSelector = '[' + partAttributeName + ']';
 
