@@ -233,6 +233,7 @@
     <Content Include="Scripts\r.js" />
     <None Include="Scripts\require.intellisense.js" />
     <Content Include="Scripts\require.js" />
+    <Content Include="Scripts\require.min.js" />
     <Content Include="Scripts\text.js" />
     <Content Include="Scripts\_References.js" />
     <Content Include="src\durandal\css\durandal.css" />
