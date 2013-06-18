@@ -31,6 +31,9 @@ define(['durandal/system', 'jquery'], function (system, $) {
         parseMarkup: parseMarkup,
         processMarkup: function (markup) {
             var allElements = this.parseMarkup(markup);
+            return this.ensureSingleElement(allElements);
+        },
+        ensureSingleElement:function(allElements){
             if (allElements.length == 1) {
                 return allElements[0];
             }

@@ -4,58 +4,43 @@
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
 define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], function(system, composition, $, ko) {
-    var partAttributeName = 'data-part',
-        partAttributeSelector = '[' + partAttributeName + ']';
-
     var kindModuleMaps = {},
         kindViewMaps = {},
-        bindableSettings = ['model', 'view', 'kind'];
+        bindableSettings = ['model', 'view', 'kind'],
+        widgetDataKey = 'durandal-widget-data';
+
+    function extractParts(element, settings){
+        var data = ko.utils.domData.get(element, widgetDataKey);
+
+        if(!data){
+            data = {
+                parts:composition.cloneNodes(ko.virtualElements.childNodes(element))
+            };
+
+            ko.virtualElements.emptyNode(element);
+            ko.utils.domData.set(element, widgetDataKey, data);
+        }
+
+        settings.parts = data.parts;
+    }
 
     var widget = {
-        getParts: function(elements) {
-            var parts = {};
-
-            if (!system.isArray(elements)) {
-                elements = [elements];
-            }
-
-            for (var i = 0; i < elements.length; i++) {
-                var element = elements[i];
-
-                if (element.getAttribute) {
-                    var id = element.getAttribute(partAttributeName);
-                    if (id) {
-                        parts[id] = element;
-                    }
-
-                    var childParts = $(partAttributeSelector, element)
-                                        .not($('[data-bind^="widget:"] ' + partAttributeSelector, element));
-
-                    for (var j = 0; j < childParts.length; j++) {
-                        var part = childParts.get(j);
-                        parts[part.getAttribute(partAttributeName)] = part;
-                    }
-                }
-            }
-
-            return parts;
-        },
         getSettings: function(valueAccessor) {
-            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
+            var settings = ko.utils.unwrapObservable(valueAccessor()) || {};
 
-            if (system.isString(value)) {
-                return value;
-            } else {
-                for (var attrName in value) {
-                    if (ko.utils.arrayIndexOf(bindableSettings, attrName) != -1) {
-                        value[attrName] = ko.utils.unwrapObservable(value[attrName]);
-                    } else {
-                        value[attrName] = value[attrName];
-                    }
+            if (system.isString(settings)) {
+                return { kind: settings };
+            }
+
+            for (var attrName in settings) {
+                if (ko.utils.arrayIndexOf(bindableSettings, attrName) != -1) {
+                    settings[attrName] = ko.utils.unwrapObservable(settings[attrName]);
+                } else {
+                    settings[attrName] = settings[attrName];
                 }
             }
 
-            return value;
+            return settings;
         },
         registerKind: function(kind) {
             ko.bindingHandlers[kind] = {
@@ -65,7 +50,8 @@ define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], functi
                 update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                     var settings = widget.getSettings(valueAccessor);
                     settings.kind = kind;
-                    widget.create(element, settings, bindingContext);
+                    extractParts(element, settings);
+                    widget.create(element, settings, bindingContext, true);
                 }
             };
 
@@ -92,14 +78,6 @@ define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], functi
         convertKindToViewPath: function(kind) {
             return 'widgets/' + kind + '/view';
         },
-        beforeBind: function (child, context) {
-            var replacementParts = widget.getParts(context.parent);
-            var standardParts = widget.getParts(child);
-
-            for (var partId in replacementParts) {
-                $(standardParts[partId]).replaceWith(replacementParts[partId]);
-            }
-        },
         createCompositionSettings: function(element, settings) {
             if (!settings.model) {
                 settings.model = this.mapKindToModuleId(settings.kind);
@@ -110,15 +88,15 @@ define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], functi
             }
 
             settings.preserveContext = true;
-            settings.beforeBind = this.beforeBind;
             settings.activate = true;
             settings.activationData = settings;
+            settings.mode = 'templated';
 
             return settings;
         },
-        create: function(element, settings, bindingContext) {
-            if (system.isString(settings)) {
-                settings = { kind: settings };
+        create: function(element, settings, bindingContext, fromBinding) {
+            if(!fromBinding){
+                settings = widget.getSettings(function() { return settings; }, element);
             }
 
             var compositionSettings = widget.createCompositionSettings(element, settings);
@@ -142,7 +120,8 @@ define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], functi
                 },
                 update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                     var settings = widget.getSettings(valueAccessor);
-                    widget.create(element, settings, bindingContext);
+                    extractParts(element, settings);
+                    widget.create(element, settings, bindingContext, true);
                 }
             };
 

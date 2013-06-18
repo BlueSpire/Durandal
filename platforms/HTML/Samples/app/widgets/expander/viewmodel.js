@@ -1,4 +1,4 @@
-﻿define(['plugins/widget','jquery'], function(widget, $) {
+﻿define(['durandal/composition','jquery'], function(composition, $) {
     var ctor = function() { };
 
     ctor.prototype.activate = function(settings) {
@@ -14,7 +14,7 @@
     };
 
     ctor.prototype.afterRenderItem = function(elements, item) {
-        var parts = widget.getParts(elements);
+        var parts = composition.getParts(elements);
         var $itemContainer = $(parts.itemContainer);
 
         $itemContainer.hide();

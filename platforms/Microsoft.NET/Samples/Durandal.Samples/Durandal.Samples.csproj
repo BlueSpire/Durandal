@@ -168,6 +168,7 @@
     <Content Include="App\shell.js" />
     <Content Include="App\viewComposition\index.html" />
     <Content Include="App\viewComposition\index.js" />
+    <Content Include="App\viewComposition\inlineModule.js" />
     <Content Include="App\views\childView1.html" />
     <Content Include="App\views\childView2.html" />
     <Content Include="App\widgets\expander\view.html" />

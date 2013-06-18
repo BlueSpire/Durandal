@@ -8,7 +8,11 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
         activeViewAttributeName = 'data-active-view',
         composition,
         compositionCompleteCallbacks = [],
-        compositionCount = 0;
+        compositionCount = 0,
+        compositionDataKey = 'durandal-composition-data',
+        partAttributeName = 'data-part',
+        partAttributeSelector = '[' + partAttributeName + ']',
+        bindableSettings = ['model', 'view', 'transition', 'area', 'strategy', 'activationData'];
 
     function getHostState(parent) {
         var elements = [];
@@ -138,6 +142,24 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
         return false;
     }
 
+    function cloneNodes(nodesArray) {
+        for (var i = 0, j = nodesArray.length, newNodesArray = []; i < j; i++) {
+            var clonedNode = nodesArray[i].cloneNode(true);
+            newNodesArray.push(clonedNode);
+        }
+        return newNodesArray;
+    }
+
+    function replaceParts(context){
+        var parts = cloneNodes(context.parts);
+        var replacementParts = composition.getParts(parts);
+        var standardParts = composition.getParts(context.child);
+
+        for (var partId in replacementParts) {
+            $(standardParts[partId]).replaceWith(replacementParts[partId]);
+        }
+    }
+
     composition = {
         convertTransitionToModuleId: function (name) {
             return 'transitions/' + name;
@@ -147,6 +169,35 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 compositionCompleteCallbacks.push(callback);
             }
         },
+        getParts: function(elements) {
+            var parts = {};
+
+            if (!system.isArray(elements)) {
+                elements = [elements];
+            }
+
+            for (var i = 0; i < elements.length; i++) {
+                var element = elements[i];
+
+                if (element.getAttribute) {
+                    var id = element.getAttribute(partAttributeName);
+                    if (id) {
+                        parts[id] = element;
+                    }
+
+                    var childParts = $(partAttributeSelector, element)
+                        .not($('[data-bind] ' + partAttributeSelector, element));
+
+                    for (var j = 0; j < childParts.length; j++) {
+                        var part = childParts.get(j);
+                        parts[part.getAttribute(partAttributeName)] = part;
+                    }
+                }
+            }
+
+            return parts;
+        },
+        cloneNodes:cloneNodes,
         switchContent: function (context) {
             context.transition = context.transition || this.defaultTransitionName;
 
@@ -200,6 +251,10 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
 
                 if (context.preserveContext && context.bindingContext) {
                     if (context.composingNewView) {
+                        if(context.parts){
+                            replaceParts(context);
+                        }
+
                         viewModelBinder.bindContext(context.bindingContext, child, context.model);
                     }
                 } else if (child) {
@@ -214,6 +269,11 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                             });
                             return;
                         }
+
+                        if(context.parts){
+                            replaceParts(context);
+                        }
+
                         viewModelBinder.bind(modelToBind, child);
                     }
                 }
@@ -231,21 +291,39 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 moduleId;
 
             if (system.isString(settings)) {
+                if (viewEngine.isViewUrl(settings)) {
+                    settings = {
+                        view: settings
+                    };
+                } else {
+                    settings = {
+                        model: settings,
+                        activate: true
+                    };
+                }
+
                 return settings;
             }
 
             moduleId = system.getModuleId(settings);
-            if(moduleId) {
+            if (moduleId) {
                 settings = {
-                    model: settings
+                    model: settings,
+                    activate: true
                 };
-            } else {
-                if(!activatorPresent && settings.model) {
-                    activatorPresent = activator.isActivator(settings.model);
-                }
 
-                for(var attrName in settings) {
+                return settings;
+            }
+
+            if(!activatorPresent && settings.model) {
+                activatorPresent = activator.isActivator(settings.model);
+            }
+
+            for (var attrName in settings) {
+                if (ko.utils.arrayIndexOf(bindableSettings, attrName) != -1) {
                     settings[attrName] = ko.utils.unwrapObservable(settings[attrName]);
+                } else {
+                    settings[attrName] = settings[attrName];
                 }
             }
 
@@ -288,28 +366,11 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 this.executeStrategy(context);
             }
         },
-        compose: function (element, settings, bindingContext) {
+        compose: function (element, settings, bindingContext, fromBinding) {
             compositionCount++;
 
-            if (system.isString(settings)) {
-                if (viewEngine.isViewUrl(settings)) {
-                    settings = {
-                        view: settings
-                    };
-                } else {
-                    settings = {
-                        model: settings,
-                        activate: true
-                    };
-                }
-            }
-
-            var moduleId = system.getModuleId(settings);
-            if (moduleId) {
-                settings = {
-                    model: settings,
-                    activate: true
-                };
+            if(!fromBinding){
+                settings = composition.getSettings(function() { return settings; }, element);
             }
 
             var hostState = getHostState(element);
@@ -350,8 +411,33 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
             return { controlsDescendantBindings: true };
         },
         update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-            var settings = composition.getSettings(valueAccessor);
-            composition.compose(element, settings, bindingContext);
+            var settings = composition.getSettings(valueAccessor, element);
+            if(settings.mode){
+                var data = ko.utils.domData.get(element, compositionDataKey);
+                if(!data){
+                    var childNodes = ko.virtualElements.childNodes(element);
+                    data = {};
+
+                    if(settings.mode === 'inline'){
+                        data.view = viewEngine.ensureSingleElement(childNodes);
+                    }else if(settings.mode === 'templated'){
+                        data.parts = cloneNodes(childNodes);
+                    }
+
+                    ko.virtualElements.emptyNode(element);
+                    ko.utils.domData.set(element, compositionDataKey, data);
+                }
+
+                if(settings.mode === 'inline'){
+                    settings.view = data.view.cloneNode(true);
+                }else if(settings.mode === 'templated'){
+                    settings.parts = data.parts;
+                }
+
+                settings.preserveContext = true;
+            }
+
+            composition.compose(element, settings, bindingContext, true);
         }
     };
 
