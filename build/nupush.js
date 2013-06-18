@@ -9,7 +9,6 @@ asyncblock(function (done) {
 	nupackDone = done.add();
 	require("./nupack.js");
 	done.wait();
-	console.log("pushing...");
 	//read your apiKeys from apiKey.txt, for example:
 	//-Source http://nuget.yourdomain.com {A68DC067-A00F-4D2E-9D45-79E549701E5A}
 	//you can have multiple keys, one per line so we'll push on all the provided servers
