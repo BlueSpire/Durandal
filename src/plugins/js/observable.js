@@ -10,11 +10,11 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
 
     function shouldIgnorePropertyName(propertyName){
         var first = propertyName[0];
-        return first !== '_' && first !== '$';
+        return first === '_' || first === '$';
     }
 
     function canConvertType(value) {
-        if (!value || system.isElement(value) || value.ko === ko) {
+        if (!value || system.isElement(value) || value.ko === ko || value.jquery) {
             return false;
         }
 
@@ -144,6 +144,10 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
             isArray,
             lookup = obj.__observable__ || (obj.__observable__ = {});
 
+        if(original === undefined){
+            original = obj[propertyName];
+        }
+
         if (system.isArray(original)) {
             observable = ko.observableArray(original);
             makeObservableArray(original, observable);
@@ -245,10 +249,14 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
     observableModule.install = function() {
         var original = viewModelBinder.beforeBind;
 
-        viewModelBinder.beforeBind = function(obj, view) {
-            convertObject(obj);
-            original(obj, view);
-        };
+        if(original === system.noop){
+            viewModelBinder.beforeBind = convertObject;
+        }else{
+            viewModelBinder.beforeBind = function(obj, view) {
+                convertObject(obj);
+                original(obj, view);
+            };
+        }
     };
 
     return observableModule;
