@@ -1,5 +1,5 @@
 ﻿requirejs.config({
-	baseUrl: 'App',
+	baseUrl: '/App',
 	paths: {
 		'text': '../Scripts/text',
 		'durandal': '../Scripts/durandal',
@@ -28,7 +28,7 @@ define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator'], func
 	//>>excludeStart("build", true);
 	system.debug(true);
 	//>>excludeEnd("build");
-
+	
 	app.title = 'Durandal Samples';
 
 	//specify which plugins to install and their configuration

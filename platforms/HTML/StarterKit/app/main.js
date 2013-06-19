@@ -19,7 +19,7 @@
 
 define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (system, app, viewLocator) {
     //>>excludeStart("build", true);
-    system.debug(true);
+	system.debug(true);
     //>>excludeEnd("build");
 
     app.title = 'Durandal Starter Kit';
