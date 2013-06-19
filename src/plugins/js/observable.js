@@ -1,12 +1,12 @@
 define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(system, viewModelBinder, ko) {
     var observableModule,
         toString = Object.prototype.toString,
-        nonObservableTypes = ['[object Function]', '[object String]', '[object Boolean]', '[object Number]', '[object Date]', '[object RegExp]'];
-
-    var observableArrayMethods = ["remove", "removeAll", "destroy", "destroyAll", "replace"];
-    var arrayMethods = ["pop", "reverse", "shift", "sort", "splice", "unshift"];
-    var arrayProto = Array.prototype;
-    var observableArrayFunctions = ko.observableArray.fn;
+        nonObservableTypes = ['[object Function]', '[object String]', '[object Boolean]', '[object Number]', '[object Date]', '[object RegExp]'],
+        observableArrayMethods = ['remove', 'removeAll', 'destroy', 'destroyAll', 'replace'],
+        arrayMethods = ['pop', 'reverse', 'sort', 'shift', 'splice'],
+        additiveArrayFunctions = ['push', 'unshift'],
+        arrayProto = Array.prototype,
+        observableArrayFunctions = ko.observableArray.fn;
 
     function shouldIgnorePropertyName(propertyName){
         var first = propertyName[0];
@@ -24,7 +24,7 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
     }
 
     function makeObservableArray(original, observable) {
-        var lookup = original.__observable__;
+        var lookup = original.__observable__, notify = true;
 
         if(lookup && lookup.__full__){
             return;
@@ -34,30 +34,69 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
         lookup.__full__ = true;
 
         observableArrayMethods.forEach(function(methodName) {
-            original[methodName] = observableArrayFunctions[methodName].bind(observable);
-        });
-
-        arrayMethods.forEach(function(methodName) {
             original[methodName] = function() {
-                observable.valueWillMutate();
-                var methodCallResult = arrayProto[methodName].apply(original, arguments);
-                observable.valueHasMutated();
+                notify = false;
+                var methodCallResult = observableArrayFunctions[methodName].apply(observable, arguments);
+                notify = true;
                 return methodCallResult;
             };
         });
 
-        original['push'] = function() {
-            for(var i = 0; i < arguments.length; i++) {
+        arrayMethods.forEach(function(methodName) {
+            original[methodName] = function() {
+                if(notify){
+                    observable.valueWillMutate();
+                }
+
+                var methodCallResult = arrayProto[methodName].apply(original, arguments);
+
+                if(notify){
+                    observable.valueHasMutated();
+                }
+
+                return methodCallResult;
+            };
+        });
+
+        additiveArrayFunctions.forEach(function(methodName){
+            original[methodName] = function() {
+                for (var i = 0, len = arguments.length; i < len; i++) {
+                    convertObject(arguments[i]);
+                }
+
+                if(notify){
+                    observable.valueWillMutate();
+                }
+
+                var methodCallResult = arrayProto[methodName].apply(original, arguments);
+
+                if(notify){
+                    observable.valueHasMutated();
+                }
+
+                return methodCallResult;
+            };
+        });
+
+        original['splice'] = function() {
+            for (var i = 2, len = arguments.length; i < len; i++) {
                 convertObject(arguments[i]);
             }
 
-            observable.valueWillMutate();
-            var methodCallResult = arrayProto['push'].apply(original, arguments);
-            observable.valueHasMutated();
+            if(notify){
+                observable.valueWillMutate();
+            }
+
+            var methodCallResult = arrayProto['splice'].apply(original, arguments);
+
+            if(notify){
+                observable.valueHasMutated();
+            }
+
             return methodCallResult;
         };
 
-        for (var i = 0; i < original.length; i++) {
+        for (var i = 0, len = original.length; i < len; i++) {
             convertObject(original[i]);
         }
     }
