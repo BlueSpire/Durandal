@@ -1,0 +1,37 @@
+{
+    "name" : "roland",
+    "version" : "0.1.0",
+    "description":"Durandal's build optimizer...",
+    "keywords":["durandal", "build", "require", "spa", "amd"],
+    "preferGlobal": true,
+    "homepage":"http://durandaljs.com/",
+    "bugs":"https://github.com/BlueSpire/Durandal/issues",
+    "license" : "MIT",
+    "author":{
+        "name" : "Rob Eisenberg",
+        "email" : "info@bluespire.com",
+        "url" : "http://robeisenberg.com/"
+    },
+    "directories":{
+        "lib" : "./lib",
+        "bin": "./bin"
+    },
+    "main":"./lib/roland.js",
+    "bin":{ "roland" : "./lib/roland-cli.js" },
+    "repository":{
+        "type" : "git",
+        "url" : "https://github.com/BlueSpire/Durandal"
+    },
+    "dependencies" : {
+        "wrench" : "~1.5.1",
+        "minimatch" : "~0.2.12",
+        "commander" : "~1.2.0",
+        "requirejs" : "~2.1.6",
+        "uglify-js" : "~2.3.6"
+    },
+    "engine" : {
+        "node" : "0.10.12",
+        "npm" : "1"
+    },
+    "readmeFilename": "README.md"
+}
