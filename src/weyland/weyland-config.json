@@ -1,0 +1,40 @@
+{
+    "build":{
+        "main":{
+            "tasks":[
+                {
+                    "basedOn":"validate",
+                    "include":"app/*.js"
+                },
+                {
+                    "basedOn":"minify",
+                    "include":"app/*.js"
+                },
+                {
+                    "basedOn":"rjs",
+                    "include":["app/*.js","app/*.html"]
+                }
+            ]
+        }
+    },
+    "templates":{
+        "validate":{
+            "type":"jshint",
+            "config":{
+
+            }
+        },
+        "minify":{
+            "type":"uglifyjs",
+            "config":{
+
+            }
+        },
+        "rjs":{
+            "type":"rjs",
+            "config":{
+
+            }
+        }
+    }
+}

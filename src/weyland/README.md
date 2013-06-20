@@ -1,6 +1,6 @@
-# Roland
+# Weyland
 
-Roland is Durandal's build optimizer.
+Weyland is Durandal's build optimizer.
 
 [![Build Status](https://travis-ci.org/BlueSpire/Durandal.png?branch=master)](https://travis-ci.org/BlueSpire/Durandal)
 

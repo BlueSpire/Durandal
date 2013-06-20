@@ -1,6 +1,6 @@
 {
-    "name" : "roland",
-    "version" : "0.1.1",
+    "name" : "weyland",
+    "version" : "0.1.0",
     "description":"Durandal's build optimizer.",
     "keywords":["durandal", "build", "require", "spa", "amd"],
     "preferGlobal": true,
@@ -16,8 +16,8 @@
         "lib" : "./lib",
         "bin": "./bin"
     },
-    "main":"./lib/roland.js",
-    "bin":{ "roland" : "./bin/roland-cli.js" },
+    "main":"./lib/weyland.js",
+    "bin":{ "weyland" : "./bin/cli.js" },
     "repository":{
         "type" : "git",
         "url" : "https://github.com/BlueSpire/Durandal"
