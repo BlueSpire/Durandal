@@ -29,6 +29,6 @@ MSSCCPRJ.SCC
 Packages/
 *.db
 
-!src/roland/bin/
+!src/weyland/bin*
 !build.bat
 !*.ps1
