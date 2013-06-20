@@ -1,7 +1,7 @@
 {
     "name" : "roland",
-    "version" : "0.1.0",
-    "description":"Durandal's build optimizer...",
+    "version" : "0.1.1",
+    "description":"Durandal's build optimizer.",
     "keywords":["durandal", "build", "require", "spa", "amd"],
     "preferGlobal": true,
     "homepage":"http://durandaljs.com/",
