@@ -32,6 +32,5 @@
     "engine" : {
         "node" : "0.10.12",
         "npm" : "1"
-    },
-    "readmeFilename": "README.md"
+    }
 }
