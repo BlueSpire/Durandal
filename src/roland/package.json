@@ -17,7 +17,7 @@
         "bin": "./bin"
     },
     "main":"./lib/roland.js",
-    "bin":{ "roland" : "./lib/roland-cli.js" },
+    "bin":{ "roland" : "./bin/roland-cli.js" },
     "repository":{
         "type" : "git",
         "url" : "https://github.com/BlueSpire/Durandal"

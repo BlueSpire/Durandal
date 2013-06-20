@@ -29,6 +29,6 @@ MSSCCPRJ.SCC
 Packages/
 *.db
 
-!skeletons/vsix/DurandalMvcSpaTemplateVsix/packages/
+!src/roland/bin/
 !build.bat
 !*.ps1
