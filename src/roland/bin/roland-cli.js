@@ -9,6 +9,7 @@
     process.title = "roland"
 
     //setup commands and options
+    console.log('Roland ' + pack.version + " doesn't do anything yet...");
 
     program.parse(process.argv);
 })()
