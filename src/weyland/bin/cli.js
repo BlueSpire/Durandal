@@ -10,7 +10,7 @@
 
     program.version(pack.version);
 
-    require('../lib/commands/build');
+    require('../lib/commands/build/cli-adapter');
 
     //display help if command is missing
     if (process.argv.length === 2 || (process.argv.length > 2 && process.argv[2] === '--help')) {

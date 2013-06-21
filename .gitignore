@@ -30,7 +30,6 @@ Packages/
 *.db
 
 !src/weyland/bin*
-!src/weyland/lib/commands/build.js
-!src/weyland/lib/tasks/build*
+!src/weyland/lib/commands/build*
 !build.bat
 !*.ps1
