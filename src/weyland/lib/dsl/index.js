@@ -1,8 +1,13 @@
 var BuildConfigurationBuilder = require('./buildConfigurationBuilder');
 
-exports.buildConfigurations = [];
-exports.build = function(name){
+var ctor = function(){
+    this.buildConfigurations = [];
+}
+
+ctor.prototype.build = function(name){
     var builder = new BuildConfigurationBuilder(name);
-    exports.buildConfigurations.push(builder.config);
+    this.buildConfigurations.push(builder.config);
     return builder;
 };
+
+module.exports = ctor;

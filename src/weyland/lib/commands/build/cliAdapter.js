@@ -2,7 +2,7 @@ var build = require('./index'),
     program = require('commander'),
     path = require('path'),
     fs = require('fs'),
-    dsl = require('../../dsl');
+    DSL = require('../../dsl');
 
 var command = program
     .command('build')
@@ -12,6 +12,14 @@ var command = program
 
 function doBuild(){
     var configPath = command.config || path.join(process.cwd(), "weyland-config.js");
-    require(configPath).config(dsl);
-    build.process(dsl.buildConfigurations);
+    var config = require(configPath);
+    var buildConfigurations = config.build;
+
+    if(!buildConfigurations){
+        var dsl = new DSL();
+        config.config(dsl);
+        buildConfigurations = dsl.buildConfigurations;
+    }
+
+    build.process(program, buildConfigurations);
 };

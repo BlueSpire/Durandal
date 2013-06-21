@@ -1,3 +1,5 @@
+var log = require('npmlog');
+
 exports.defaultConfig = {
     moduleId:'jshint',
     config:{
@@ -6,5 +8,5 @@ exports.defaultConfig = {
 };
 
 exports.build = function(config){
-
+    log.info('build', 'jshint');
 }

@@ -9,6 +9,7 @@
     process.on("uncaughtException", errorHandler);
 
     program.version(pack.version);
+    program.option('-v --verbose', 'use verbose logging');
 
     require('../lib/commands/build/cliAdapter');
 
