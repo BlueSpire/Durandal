@@ -1,4 +1,4 @@
-exports.invoke = function(config){
-    console.log(config);
+exports.process = function(configs){
+    console.log(configs);
     console.log("Weyland 'build' doesn't do anything yet...");
 };
