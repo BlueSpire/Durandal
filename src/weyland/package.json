@@ -16,7 +16,7 @@
         "lib" : "./lib",
         "bin": "./bin"
     },
-    "main":"./lib/weyland.js",
+    "main":"./lib/index.js",
     "bin":{ "weyland" : "./bin/cli.js" },
     "repository":{
         "type" : "git",
