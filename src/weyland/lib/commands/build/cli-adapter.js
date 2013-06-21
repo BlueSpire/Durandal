@@ -1,6 +1,7 @@
 var build = require('./index'),
     program = require('commander'),
-    path = require('path');
+    path = require('path'),
+    fs = require('fs');
 
 var command = program
     .command('build')
@@ -11,6 +12,11 @@ var command = program
 function doBuild(){
     var configPath = command.config || path.join(process.cwd(), "weyland-config.json");
 
-    console.log(configPath);
-    build.invoke();
+    fs.readFile(configPath, 'utf8', function (err, data) {
+        if (err) {
+            throw err;
+        }
+
+        build.invoke(JSON.parse(data));
+    });
 };
