@@ -1,12 +1,12 @@
 exports.config = function(weyland) {
     weyland.build('main')
         .task.jshint({
-            include:"app/*.js"
+            input:'app/*.js'
         })
         .task.uglifyjs({
-            include:"app/*.js"
+            input:'app/*.js'
         })
         .task.rjs({
-            include:["app/*.js","app/*.html"]
+            input:['app/*.js','app/*.html']
         });
 }
