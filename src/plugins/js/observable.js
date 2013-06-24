@@ -181,7 +181,7 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
                             observable(val);
                         }
 
-                        makeObservableArray(val, observable, deep);
+                        makeObservableArray(val, observable);
                     }
                 } else {
                     convertObject(val);
