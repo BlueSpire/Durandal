@@ -170,7 +170,9 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
             }
         },
         addBindingHandler:function(name, config){
-            var dataKey = 'composition-handler-' + name;
+            var key,
+                value,
+                dataKey = 'composition-handler-' + name;
 
             ko.bindingHandlers[name] = {
                 init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
@@ -203,6 +205,13 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                     }
                 }
             };
+
+            for (key in config) {
+              value = config[key];
+              if (key !== "init" && key !== "update") {
+                ko.bindingHandlers[name][key] = value;
+              }
+            }
         },
         getParts: function(elements) {
             var parts = {};
