@@ -169,6 +169,41 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 compositionCompleteCallbacks.push(callback);
             }
         },
+        addBindingHandler:function(name, config){
+            var dataKey = 'composition-handler-' + name;
+
+            ko.bindingHandlers[name] = {
+                init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                    var data = {
+                        notify:ko.observable(null)
+                    };
+
+                    composition.current.complete(function(){
+                        if(config.init){
+                            config.init(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+                        }
+
+                        if(config.update){
+                            data.update = config.update;
+                            data.notify('new value');
+                        }
+                    });
+
+                    ko.utils.domData.set(element, dataKey, data);
+
+                    return { controlsDescendantBindings: true };
+                },
+                update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                    var data = ko.utils.domData.get(element, dataKey);
+
+                    if(data.update){
+                        data.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+                    }else{
+                        data.notify();
+                    }
+                }
+            };
+        },
         getParts: function(elements) {
             var parts = {};
 
