@@ -171,46 +171,43 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
         },
         addBindingHandler:function(name, config){
             var key,
-                value,
-                dataKey = 'composition-handler-' + name;
+                dataKey = 'composition-handler-' + name,
+                handler = ko.bindingHandlers[name] = {
+                    init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                        var data = {
+                            trigger:ko.observable(null)
+                        };
 
-            ko.bindingHandlers[name] = {
-                init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                    var data = {
-                        notify:ko.observable(null)
-                    };
+                        composition.current.complete(function(){
+                            if(config.init){
+                                config.init(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+                            }
 
-                    composition.current.complete(function(){
-                        if(config.init){
-                            config.init(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+                            if(config.update){
+                                ko.utils.domData.set(element, dataKey, config);
+                                data.trigger('trigger');
+                            }
+                        });
+
+                        ko.utils.domData.set(element, dataKey, data);
+
+                        return { controlsDescendantBindings: true };
+                    },
+                    update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                        var data = ko.utils.domData.get(element, dataKey);
+
+                        if(data.update){
+                            data.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+                        }else{
+                            data.trigger();
                         }
-
-                        if(config.update){
-                            data.update = config.update;
-                            data.notify('new value');
-                        }
-                    });
-
-                    ko.utils.domData.set(element, dataKey, data);
-
-                    return { controlsDescendantBindings: true };
-                },
-                update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                    var data = ko.utils.domData.get(element, dataKey);
-
-                    if(data.update){
-                        data.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
-                    }else{
-                        data.notify();
                     }
-                }
-            };
+                };
 
             for (key in config) {
-              value = config[key];
-              if (key !== "init" && key !== "update") {
-                ko.bindingHandlers[name][key] = value;
-              }
+                if (key !== "init" && key !== "update") {
+                    handler[key] = config[key];
+                }
             }
         },
         getParts: function(elements) {
