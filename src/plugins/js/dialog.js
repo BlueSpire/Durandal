@@ -184,8 +184,9 @@
             theDialog.blockout = blockout.get(0);
 
             if (!dialog.isOpen()) {
-                theDialog.oldBodyMarginRight = $("body").css("margin-right");
-                
+                theDialog.oldBodyMarginRight = body.css("margin-right");
+                theDialog.oldInlineMarginRight = body.get(0).style.marginRight;
+
                 var html = $("html");
                 var oldBodyOuterWidth = body.outerWidth(true);
                 var oldScrollTop = html.scrollTop();
@@ -203,12 +204,17 @@
                 $(theDialog.host).remove();
                 $(theDialog.blockout).remove();
             }, this.removeDelay);
-            
+
             if (!dialog.isOpen()) {
                 var html = $("html");
                 var oldScrollTop = html.scrollTop(); // necessary for Firefox.
                 html.css("overflow-y", "").scrollTop(oldScrollTop);
-                $("body").css("margin-right", theDialog.oldBodyMarginRight);
+
+                if(theDialog.oldInlineMarginRight) {
+                    $("body").css("margin-right", theDialog.oldBodyMarginRight);
+                } else {
+                    $("body").css("margin-right", '');
+                }
             }
         },
         compositionComplete: function (child, context) {
