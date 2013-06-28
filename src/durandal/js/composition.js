@@ -265,6 +265,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                             ko.virtualElements.emptyNode(context.parent);
                             ko.virtualElements.prepend(context.parent, context.child);
                         }
+                        $(context.child).fadeIn();//since there is no transition, show the elements as they were hidden right after applyBinding was called b/c they needed to be in the DOM - see #206
                     }
                 }
 
@@ -292,6 +293,8 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                         }
 
                         viewModelBinder.bindContext(context.bindingContext, child, context.model);
+                        $(child).hide();//append the child to DOM in order to prevent #206 - observables will be disposed if anyone of them gets updated (i.e. in an ajax call) untill the transition will start and the node will actually be added to DOM
+                    	ko.virtualElements.prepend(context.parent.parentNode, child);
                     }
                 } else if (child) {
                     var modelToBind = context.model || dummyModel;
@@ -311,6 +314,8 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                         }
 
                         viewModelBinder.bind(modelToBind, child);
+                        $(child).hide();//append the child to DOM in order to prevent #206 - observables will be disposed if anyone of them gets updated (i.e. in an ajax call) untill the transition will start and the node will actually be added to DOM
+                        ko.virtualElements.prepend(context.parent.parentNode, child);
                     }
                 }
 
