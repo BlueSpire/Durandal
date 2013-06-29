@@ -3,12 +3,28 @@
     var insufficientInfoMessage = 'Insufficient Information to Bind';
     var unexpectedViewMessage = 'Unexpected View Type';
 
-    function doBind(obj, view, action) {
-        if (!view || !obj) {
+    function normalizeBindingInstruction(result){
+        if(result === undefined){
+            return { applyBindings: true };
+        }
+
+        if(system.isBoolean(result)){
+            return { applyBindings:result };
+        }
+
+        if(result.applyBindings === undefined){
+            result.applyBindings = true;
+        }
+
+        return result;
+    }
+
+    function doBind(obj, view, bindingTarget, data){
+        if (!view || !bindingTarget) {
             if (viewModelBinder.throwOnErrors) {
                 system.error(insufficientInfoMessage);
             } else {
-                system.log(insufficientInfoMessage, view, obj);
+                system.log(insufficientInfoMessage, view, data);
             }
             return;
         }
@@ -17,22 +33,41 @@
             if (viewModelBinder.throwOnErrors) {
                 system.error(unexpectedViewMessage);
             } else {
-                system.log(unexpectedViewMessage, view, obj);
+                system.log(unexpectedViewMessage, view, data);
             }
             return;
         }
 
         var viewName = view.getAttribute('data-view');
-        
+
         try {
-            viewModelBinder.beforeBind(obj, view);
-            action(viewName);
-            viewModelBinder.afterBind(obj, view);
+            var instruction;
+
+            if (obj && obj.binding) {
+                instruction = obj.binding(view);
+            }
+
+            instruction = normalizeBindingInstruction(instruction);
+            viewModelBinder.beforeBind(data, view, instruction);
+
+            if(instruction.applyBindings){
+                system.log('Binding', viewName, data);
+                ko.applyBindings(bindingTarget, view);
+            }else if(obj){
+                ko.utils.domData.set(view, "__ko_bindingContext__", { $data:obj });
+            }
+
+            viewModelBinder.afterBind(data, view, instruction);
+
+            if (obj && obj.bindingComplete) {
+                obj.bindingComplete(view);
+            }
         } catch (e) {
+            e.message = e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(data);
             if (viewModelBinder.throwOnErrors) {
-                system.error(e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(obj));
+                system.error(e);
             } else {
-                system.log(e.message, viewName, obj);
+                system.log(e.message);
             }
         }
     }
@@ -46,32 +81,10 @@
                 bindingContext = bindingContext.createChildContext(obj);
             }
 
-            doBind(bindingContext, view, function (viewName) {
-                if (obj && obj.beforeBind) {
-                    obj.beforeBind(view);
-                }
-
-                system.log('Binding', viewName, obj || bindingContext);
-                ko.applyBindings(bindingContext, view);
-                
-                if (obj && obj.afterBind) {
-                    obj.afterBind(view);
-                }
-            });
+            doBind(obj, view, bindingContext, obj || bindingContext.$data);
         },
         bind: function(obj, view) {
-            doBind(obj, view, function (viewName) {
-                if (obj.beforeBind) {
-                    obj.beforeBind(view);
-                }
-                
-                system.log('Binding', viewName, obj);
-                ko.applyBindings(obj, view);
-                
-                if (obj.afterBind) {
-                    obj.afterBind(view);
-                }
-            });
+            doBind(obj, view, obj, obj);
         }
     };
 });

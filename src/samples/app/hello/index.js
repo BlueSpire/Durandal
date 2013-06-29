@@ -14,11 +14,11 @@
         activate: function() {
             system.log('Lifecycle : activate');
         },
-        beforeBind: function () {
-            system.log('Lifecycle : beforeBind');
+        binding: function () {
+            system.log('Lifecycle : binding');
         },
-        afterBind: function () {
-            system.log('Lifecycle : afterBind');
+        bindingComplete: function () {
+            system.log('Lifecycle : bindingComplete');
         },
         attachedToParent: function (view, parent) {
             system.log('Lifecycle : attachedToParent');

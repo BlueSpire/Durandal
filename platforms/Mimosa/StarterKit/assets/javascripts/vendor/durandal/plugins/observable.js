@@ -254,14 +254,13 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
     observableModule.install = function() {
         var original = viewModelBinder.beforeBind;
 
-        if(original === system.noop){
-            viewModelBinder.beforeBind = convertObject;
-        }else{
-            viewModelBinder.beforeBind = function(obj, view) {
+        viewModelBinder.beforeBind = function(obj, view, instruction) {
+            if(instruction.applyBindings){
                 convertObject(obj);
-                original(obj, view);
-            };
-        }
+            }
+
+            original(obj, view);
+        };
     };
 
     return observableModule;
