@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/system', 'jquery', 'knockout'], function(system, $, ko) {
+define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], function(system, composition, $, ko) {
     var fadeOutDuration = 100;
     var endValues = {
         marginRight: 0,
@@ -53,13 +53,8 @@ define(['durandal/system', 'jquery', 'knockout'], function(system, $, ko) {
                 function startTransition() {
                     scrollIfNeeded();
 
-                    if (context.cacheViews) {
-                        if (context.composingNewView) {
-                            ko.virtualElements.prepend(context.parent, context.child);
-                        }
-                    } else {
-                        ko.virtualElements.emptyNode(context.parent);
-                        ko.virtualElements.prepend(context.parent, context.child);
+                    if (!context.cacheViews) {
+                        composition.removePreviousView(context.parent);
                     }
 
                     context.triggerAttach();

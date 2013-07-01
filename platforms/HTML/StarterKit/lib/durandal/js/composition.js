@@ -241,6 +241,23 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
             return parts;
         },
         cloneNodes:cloneNodes,
+        removePreviousView:function(parent){
+            var children = ko.virtualElements.childNodes(parent), i, len;
+
+            if(!system.isArray(children)){
+                var arrayChildren = [];
+
+                for(i = 0, len = children.length; i < len; i++){
+                    arrayChildren[i] = children[i];
+                }
+
+                children = arrayChildren;
+            }
+
+            for(i = 1, len = children.length; i < len; i++){
+                ko.removeNode(children[i]);
+            }
+        },
         switchContent: function (context) {
             context.transition = context.transition || this.defaultTransitionName;
 
@@ -253,7 +270,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
             } else {
                 if (context.child != context.activeView) {
                     if (context.cacheViews && context.activeView) {
-                        $(context.activeView).css('display', 'none');
+                        $(context.activeView).hide();
                     }
 
                     if (!context.child) {
@@ -261,17 +278,11 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                             ko.virtualElements.emptyNode(context.parent);
                         }
                     } else {
-                        if (context.cacheViews) {
-                            if (context.composingNewView) {
-                                context.viewElements.push(context.child);
-                                ko.virtualElements.prepend(context.parent, context.child);
-                            } else {
-                                $(context.child).css('display', '');
-                            }
-                        } else {
-                            ko.virtualElements.emptyNode(context.parent);
-                            ko.virtualElements.prepend(context.parent, context.child);
+                        if (!context.cacheViews) {
+                            composition.removePreviousView(context.parent);
                         }
+
+                        $(context.child).show();
                     }
                 }
 
@@ -298,8 +309,8 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                             replaceParts(context);
                         }
 
-                        //$(child).hide();
-                        //ko.virtualElements.prepend(context.parent, child);
+                        $(child).hide();
+                        ko.virtualElements.prepend(context.parent, child);
 
                         viewModelBinder.bindContext(context.bindingContext, child, context.model);
                     }
@@ -320,8 +331,8 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                             replaceParts(context);
                         }
 
-                        //$(child).hide();
-                        //ko.virtualElements.prepend(context.parent, child);
+                        $(child).hide();
+                        ko.virtualElements.prepend(context.parent, child);
 
                         viewModelBinder.bind(modelToBind, child);
                     }
