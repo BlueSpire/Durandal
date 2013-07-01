@@ -4,9 +4,11 @@
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
 define(['durandal/system', 'knockout'], function (system, ko) {
-    var viewModelBinder;
-    var insufficientInfoMessage = 'Insufficient Information to Bind';
-    var unexpectedViewMessage = 'Unexpected View Type';
+    var viewModelBinder,
+        insufficientInfoMessage = 'Insufficient Information to Bind',
+        unexpectedViewMessage = 'Unexpected View Type',
+        bindingInstructionKey = 'durandal-binding-instruction',
+        koBindingContextKey = '__ko_bindingContext__';
 
     function normalizeBindingInstruction(result){
         if(result === undefined){
@@ -59,7 +61,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 system.log('Binding', viewName, data);
                 ko.applyBindings(bindingTarget, view);
             }else if(obj){
-                ko.utils.domData.set(view, "__ko_bindingContext__", { $data:obj });
+                ko.utils.domData.set(view, koBindingContextKey, { $data:obj });
             }
 
             viewModelBinder.afterBind(data, view, instruction);
@@ -67,6 +69,9 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             if (obj && obj.bindingComplete) {
                 obj.bindingComplete(view);
             }
+
+            ko.utils.domData.set(view, bindingInstructionKey, instruction);
+            return instruction;
         } catch (e) {
             e.message = e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(data);
             if (viewModelBinder.throwOnErrors) {
@@ -81,15 +86,18 @@ define(['durandal/system', 'knockout'], function (system, ko) {
         beforeBind: system.noop,
         afterBind: system.noop,
         throwOnErrors: false,
+        getBindingInstruction:function(view){
+            return ko.utils.domData.get(view, bindingInstructionKey);
+        },
         bindContext: function(bindingContext, view, obj) {
             if (obj) {
                 bindingContext = bindingContext.createChildContext(obj);
             }
 
-            doBind(obj, view, bindingContext, obj || bindingContext.$data);
+            return doBind(obj, view, bindingContext, obj || bindingContext.$data);
         },
         bind: function(obj, view) {
-            doBind(obj, view, obj, obj);
+            return doBind(obj, view, obj, obj);
         }
     };
 });
