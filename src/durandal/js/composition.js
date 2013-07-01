@@ -157,6 +157,24 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
         }
     }
 
+    function removePreviousView(parent){
+        var children = ko.virtualElements.childNodes(parent), i, len;
+
+        if(!system.isArray(children)){
+            var arrayChildren = [];
+
+            for(i = 0, len = children.length; i < len; i++){
+                arrayChildren[i] = children[i];
+            }
+
+            children = arrayChildren;
+        }
+
+        for(i = 1,len = children.length; i < len; i++){
+            ko.removeNode(children[i]);
+        }
+    }
+
     composition = {
         convertTransitionToModuleId: function (name) {
             return 'transitions/' + name;
@@ -169,37 +187,41 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
         addBindingHandler:function(name, config){
             var key,
                 dataKey = 'composition-handler-' + name,
-                handler = ko.bindingHandlers[name] = {
-                    init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                        var data = {
-                            trigger:ko.observable(null)
-                        };
+                handler;
 
-                        composition.current.complete(function(){
-                            if(config.init){
-                                config.init(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
-                            }
+            config = config || ko.bindingHandlers[name];
 
-                            if(config.update){
-                                ko.utils.domData.set(element, dataKey, config);
-                                data.trigger('trigger');
-                            }
-                        });
+            handler = ko.bindingHandlers[name] = {
+                init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                    var data = {
+                        trigger:ko.observable(null)
+                    };
 
-                        ko.utils.domData.set(element, dataKey, data);
-
-                        return { controlsDescendantBindings: true };
-                    },
-                    update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                        var data = ko.utils.domData.get(element, dataKey);
-
-                        if(data.update){
-                            data.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
-                        }else{
-                            data.trigger();
+                    composition.current.complete(function(){
+                        if(config.init){
+                            config.init(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
                         }
+
+                        if(config.update){
+                            ko.utils.domData.set(element, dataKey, config);
+                            data.trigger('trigger');
+                        }
+                    });
+
+                    ko.utils.domData.set(element, dataKey, data);
+
+                    return { controlsDescendantBindings: true };
+                },
+                update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                    var data = ko.utils.domData.get(element, dataKey);
+
+                    if(data.update){
+                        data.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+                    }else{
+                        data.trigger();
                     }
-                };
+                }
+            };
 
             for (key in config) {
                 if (key !== "init" && key !== "update") {
@@ -236,31 +258,31 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
             return parts;
         },
         cloneNodes:cloneNodes,
-        removePreviousView:function(parent){
-            var children = ko.virtualElements.childNodes(parent), i, len;
-
-            if(!system.isArray(children)){
-                var arrayChildren = [];
-
-                for(i = 0, len = children.length; i < len; i++){
-                    arrayChildren[i] = children[i];
-                }
-
-                children = arrayChildren;
-            }
-
-            for(i = 1, len = children.length; i < len; i++){
-                ko.removeNode(children[i]);
-            }
-        },
-        switchContent: function (context) {
+        finalize: function (context) {
             context.transition = context.transition || this.defaultTransitionName;
 
-            if (shouldTransition(context)) {
+            if(!context.child && !context.activeView){
+                if (!context.cacheViews) {
+                    ko.virtualElements.emptyNode(context.parent);
+                }
+
+                context.triggerAttach();
+            }else if (shouldTransition(context)) {
                 var transitionModuleId = this.convertTransitionToModuleId(context.transition);
                 system.acquire(transitionModuleId).then(function (transition) {
                     context.transition = transition;
-                    transition(context).then(function () { context.triggerAttach(); });
+
+                    transition(context).then(function () {
+                        if (!context.cacheViews) {
+                            if(!context.child){
+                                ko.virtualElements.emptyNode(context.parent);
+                            }else{
+                                removePreviousView(context.parent);
+                            }
+                        }
+
+                        context.triggerAttach();
+                    });
                 });
             } else {
                 if (context.child != context.activeView) {
@@ -274,7 +296,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                         }
                     } else {
                         if (!context.cacheViews) {
-                            composition.removePreviousView(context.parent);
+                            removePreviousView(context.parent);
                         }
 
                         $(context.child).show();
@@ -333,7 +355,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                     }
                 }
 
-                composition.switchContent(context);
+                composition.finalize(context);
             }, skipActivation);
         },
         defaultStrategy: function (context) {

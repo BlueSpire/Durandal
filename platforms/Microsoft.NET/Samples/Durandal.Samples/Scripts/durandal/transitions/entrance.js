@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], function(system, composition, $, ko) {
+define(['durandal/system', 'durandal/composition', 'jquery'], function(system, composition, $) {
     var fadeOutDuration = 100;
     var endValues = {
         marginRight: 0,
@@ -30,33 +30,13 @@ define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], functi
             }
 
             if (!context.child) {
-                scrollIfNeeded();
-
-                if (context.activeView) {
-                    $(context.activeView).fadeOut(fadeOutDuration, function () {
-                        if (!context.cacheViews) {
-                            ko.virtualElements.emptyNode(context.parent);
-                        }
-                        endTransition();
-                    });
-                } else {
-                    if (!context.cacheViews) {
-                        ko.virtualElements.emptyNode(context.parent);
-                    }
-                    endTransition();
-                }
+                $(context.activeView).fadeOut(fadeOutDuration, endTransition);
             } else {
-                var $previousView = $(context.activeView);
                 var duration = context.duration || 500;
                 var fadeOnly = !!context.fadeOnly;
 
                 function startTransition() {
                     scrollIfNeeded();
-
-                    if (!context.cacheViews) {
-                        composition.removePreviousView(context.parent);
-                    }
-
                     context.triggerAttach();
 
                     var startValues = {
@@ -75,8 +55,8 @@ define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], functi
                     });
                 }
 
-                if ($previousView.length) {
-                    $previousView.fadeOut(fadeOutDuration, startTransition);
+                if (context.activeView) {
+                    $(context.activeView).fadeOut(fadeOutDuration, startTransition);
                 } else {
                     startTransition();
                 }

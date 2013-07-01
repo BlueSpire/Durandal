@@ -12,7 +12,7 @@
                 { route: 'flickr', moduleId: 'viewmodels/flickr', nav: true }
             ]).buildNavigationModel();
             
-            router.activate();
+            return router.activate();
         }
     };
 });

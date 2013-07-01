@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], function(system, composition, $, ko) {
+﻿define(['durandal/system', 'durandal/composition', 'jquery'], function(system, composition, $) {
     var fadeOutDuration = 100;
     var endValues = {
         marginRight: 0,
@@ -25,33 +25,13 @@
             }
 
             if (!context.child) {
-                scrollIfNeeded();
-
-                if (context.activeView) {
-                    $(context.activeView).fadeOut(fadeOutDuration, function () {
-                        if (!context.cacheViews) {
-                            ko.virtualElements.emptyNode(context.parent);
-                        }
-                        endTransition();
-                    });
-                } else {
-                    if (!context.cacheViews) {
-                        ko.virtualElements.emptyNode(context.parent);
-                    }
-                    endTransition();
-                }
+                $(context.activeView).fadeOut(fadeOutDuration, endTransition);
             } else {
-                var $previousView = $(context.activeView);
                 var duration = context.duration || 500;
                 var fadeOnly = !!context.fadeOnly;
 
                 function startTransition() {
                     scrollIfNeeded();
-
-                    if (!context.cacheViews) {
-                        composition.removePreviousView(context.parent);
-                    }
-
                     context.triggerAttach();
 
                     var startValues = {
@@ -70,8 +50,8 @@
                     });
                 }
 
-                if ($previousView.length) {
-                    $previousView.fadeOut(fadeOutDuration, startTransition);
+                if (context.activeView) {
+                    $(context.activeView).fadeOut(fadeOutDuration, startTransition);
                 } else {
                     startTransition();
                 }
