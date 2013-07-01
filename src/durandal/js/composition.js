@@ -46,8 +46,10 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
         }
     }
 
-    function tryActivate(context, successCallback) {
-        if (context.activate && context.model && context.model.activate) {
+    function tryActivate(context, successCallback, skipActivation) {
+        if(skipActivation){
+            successCallback();
+        } else if (context.activate && context.model && context.model.activate) {
             var result;
 
             if(system.isArray(context.activationData)) {
@@ -271,7 +273,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 context.triggerAttach();
             }
         },
-        bindAndShow: function (child, context) {
+        bindAndShow: function (child, context, skipActivation) {
             context.child = child;
 
             if (context.cacheViews) {
@@ -291,6 +293,9 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                             replaceParts(context);
                         }
 
+                        //$(child).hide();
+                        //ko.virtualElements.prepend(context.parent, child);
+
                         viewModelBinder.bindContext(context.bindingContext, child, context.model);
                     }
                 } else if (child) {
@@ -301,7 +306,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                         if (!context.composingNewView) {
                             $(child).remove();
                             viewEngine.createView(child.getAttribute('data-view')).then(function(recreatedView) {
-                                composition.bindAndShow(recreatedView, context);
+                                composition.bindAndShow(recreatedView, context, true);
                             });
                             return;
                         }
@@ -310,12 +315,15 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                             replaceParts(context);
                         }
 
+                        //$(child).hide();
+                        //ko.virtualElements.prepend(context.parent, child);
+
                         viewModelBinder.bind(modelToBind, child);
                     }
                 }
 
                 composition.switchContent(context);
-            });
+            }, skipActivation);
         },
         defaultStrategy: function (context) {
             return viewLocator.locateViewForObject(context.model, context.viewElements);
