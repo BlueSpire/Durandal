@@ -228,12 +228,15 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 params[i] = current ? decodeURIComponent(current) : null;
             }
 
-            var queryObject = router.parseQueryString(queryString);
-            if (queryObject) {
-                params.push(queryObject);
+            var queryParams = router.parseQueryString(queryString);
+            if (queryParams) {
+                params.push(queryParams);
             }
 
-            return params;
+            return {
+                params:params,
+                queryParams:queryParams
+            };
         }
 
         function mapRoute(config) {
@@ -253,11 +256,13 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             router.routes.push(config);
 
             router.route(config.routePattern, function(fragment, queryString) {
+                var paramInfo = createParams(config.routePattern, fragment, queryString);
                 queueInstruction({
                     fragment: fragment,
                     queryString:queryString,
                     config: config,
-                    params: createParams(config.routePattern, fragment, queryString)
+                    params: paramInfo.params,
+                    queryParams:paramInfo.queryParams
                 });
             });
 
@@ -431,6 +436,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             var routePattern = routeStringToRegExp(route);
             
             router.route(routePattern, function (fragment, queryString) {
+                var paramInfo = createParams(routePattern, fragment, queryString);
                 var instruction = {
                     fragment: fragment,
                     queryString: queryString,
@@ -438,7 +444,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                         route: route,
                         routePattern: routePattern
                     },
-                    params: createParams(routePattern, fragment, queryString)
+                    params: paramInfo.params,
+                    queryParams: paramInfo.queryParams
                 };
 
                 if (!config) {
