@@ -274,6 +274,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 context.triggerAttach();
             }else if (shouldTransition(context)) {
                 var transitionModuleId = this.convertTransitionToModuleId(context.transition);
+
                 system.acquire(transitionModuleId).then(function (transition) {
                     context.transition = transition;
 
@@ -284,6 +285,11 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                             }else{
                                 removePreviousView(context.parent);
                             }
+                        }else if(context.activeView){
+                            var instruction = viewModelBinder.getBindingInstruction(context.activeView);
+                            if(instruction.cacheViews != undefined && !instruction.cacheViews){
+                                ko.removeNode(context.activeView);
+                            }
                         }
 
                         context.triggerAttach();
@@ -292,7 +298,12 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
             } else {
                 if (context.child != context.activeView) {
                     if (context.cacheViews && context.activeView) {
-                        $(context.activeView).hide();
+                        var instruction = viewModelBinder.getBindingInstruction(context.activeView);
+                        if(instruction.cacheViews != undefined && !instruction.cacheViews){
+                            ko.removeNode(context.activeView);
+                        }else{
+                            $(context.activeView).hide();
+                        }
                     }
 
                     if (!context.child) {
