@@ -3,7 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/events', 'durandal/composition', 'plugins/history', 'knockout'], function(system, app, activator, events, composition, history, ko) {
+define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/events', 'durandal/composition', 'plugins/history', 'knockout', 'jquery'], function(system, app, activator, events, composition, history, ko, $) {
     var optionalParam = /\((.*?)\)/g;
     var namedParam = /(\(\?)?:\w+/g;
     var splatParam = /\*\w+/g;
@@ -74,6 +74,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 router.updateDocumentTitle(instance, instruction);
             }
 
+            rootRouter.explicitNavigation = false;
+            rootRouter.navigatingBack = false;
             router.trigger('router:navigation:complete', instance, instruction, router);
         }
 
@@ -85,6 +87,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
 
             isProcessing(false);
+            rootRouter.explicitNavigation = false;
+            rootRouter.navigatingBack = false;
             router.trigger('router:navigation:cancelled', instance, instruction, router);
         }
 
@@ -92,10 +96,18 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             system.log('Navigation Redirecting');
 
             isProcessing(false);
+            rootRouter.explicitNavigation = false;
+            rootRouter.navigatingBack = false;
             router.navigate(url, { trigger: true, replace: true });
         }
 
         function activateRoute(activator, instance, instruction) {
+            rootRouter.navigatingBack = !rootRouter.explicitNavigation && currentActivation != instruction.fragment;
+
+            if(rootRouter.navigatingBack){
+                system.log('Navigating Back');
+            }
+
             activator.activateItem(instance, instruction.params).then(function(succeeded) {
                 if (succeeded) {
                     var previousActivation = currentActivation;
@@ -330,6 +342,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         };
 
         router.navigate = function(fragment, options) {
+            rootRouter.explicitNavigation = true;
             history.navigate(fragment, options);
         };
 
@@ -505,12 +518,17 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     };
 
     rootRouter = createRouter();
+    rootRouter.explicitNavigation = false;
+    rootRouter.navigatingBack = false;
 
     rootRouter.activate = function(options) {
         return system.defer(function(dfd) {
             startDeferred = dfd;
             rootRouter.options = system.extend({ routeHandler: rootRouter.loadUrl }, rootRouter.options, options);
             history.activate(rootRouter.options);
+            $(document).on('click', 'a', function(){
+                rootRouter.explicitNavigation = true;
+            });
         }).promise();
     };
 
