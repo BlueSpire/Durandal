@@ -23,11 +23,11 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
 
     app.title = 'Durandal Starter Kit';
 
-    app.plugins = {
+    app.configurePlugins({
         router:true,
         dialog: true,
         widget: true
-    };
+    });
 
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.

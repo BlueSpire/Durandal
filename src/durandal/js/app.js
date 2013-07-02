@@ -1,32 +1,23 @@
 ﻿define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'durandal/events', 'jquery'], function(system, viewEngine, composition, Events, $) {
-    var app;
+    var app,
+        allPluginIds = [],
+        allPluginConfigs = [];
 
     function loadPlugins(){
         return system.defer(function(dfd){
-            var config = app.plugins || {},
-                pluginIds = system.keys(config),
-                pluginConfigs = [],
-                i;
+            var results = [], i;
 
-            if(pluginIds.length == 0){
+            if(allPluginIds.length == 0){
                 dfd.resolve();
                 return;
             }
 
-            for(i = 0; i < pluginIds.length; i++){
-                var key = pluginIds[i];
-                pluginIds[i] = 'plugins/' + key
-                pluginConfigs[i] = config[key];
-            }
-
-            system.acquire.apply(system, pluginIds).then(function(){
-                var results = [];
-
+            system.acquire.apply(system, allPluginIds).then(function(){
                 for(i = 0; i < arguments.length; i++){
                     var currentModule = arguments[i];
 
                     if(currentModule.install){
-                        var config = pluginConfigs[i];
+                        var config = allPluginConfigs[i];
                         if(!system.isObject(config)){
                             config = {};
                         }
@@ -34,9 +25,9 @@
                         var result = currentModule.install(config);
                         results.push(result);
                         delete currentModule.install;
-                        system.log('Plugin:Installed ' + pluginIds[i].replace('plugins/', ''));
+                        system.log('Plugin:Installed ' + allPluginIds[i]);
                     }else{
-                        system.log('Plugin:Loaded ' + pluginIds[i].replace('plugins/', ''));
+                        system.log('Plugin:Loaded ' + allPluginIds[i]);
                     }
                 }
 
@@ -49,7 +40,20 @@
 
     app = {
         title: 'Application',
-        plugins:{},
+        configurePlugins:function(config, baseUrl){
+            var pluginIds = system.keys(config);
+            baseUrl = baseUrl || 'plugins/';
+
+            if(baseUrl.indexOf('/', baseUrl.length - 1) === -1){
+                baseUrl += '/';
+            }
+
+            for(var i = 0; i < pluginIds.length; i++){
+                var key = pluginIds[i];
+                allPluginIds[i] = baseUrl + key
+                allPluginConfigs[i] = config[key];
+            }
+        },
         start: function() {
             system.log('Application:Starting');
 

@@ -24,13 +24,13 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
     app.title = 'Durandal Samples';
 
     //specify which plugins to install and their configuration
-    app.plugins = {
+    app.configurePlugins({
         router:true,
         dialog: true,
         widget: {
             kinds: ['expander']
         }
-    };
+    });
 
     app.start().then(function () {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
