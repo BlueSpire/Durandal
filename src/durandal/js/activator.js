@@ -122,7 +122,7 @@
                     resultOrPromise.then(function(result) {
                         dfd.resolve(settings.interpretResponse(result));
                     }, function(reason) {
-                        system.log(reason);
+                        system.error(reason);
                         dfd.resolve(false);
                     });
                 } else {
@@ -155,7 +155,7 @@
                     resultOrPromise.then(function(result) {
                         dfd.resolve(settings.interpretResponse(result));
                     }, function(reason) {
-                        system.log(reason);
+                        system.error(reason);
                         dfd.resolve(false);
                     });
                 } else {
