@@ -23,6 +23,10 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             settings.afterDeactivate = activator.defaults.afterDeactivate;
         }
 
+        if(!settings.affirmations){
+            settings.affirmations = activator.defaults.affirmations;
+        }
+
         if (!settings.interpretResponse) {
             settings.interpretResponse = activator.defaults.interpretResponse;
         }
@@ -125,13 +129,13 @@ define(['durandal/system', 'knockout'], function (system, ko) {
 
                 if (resultOrPromise.then) {
                     resultOrPromise.then(function(result) {
-                        dfd.resolve(settings.interpretResponse(result));
+                        dfd.resolve(settings.interpretResponse(result), result);
                     }, function(reason) {
                         system.error(reason);
                         dfd.resolve(false);
                     });
                 } else {
-                    dfd.resolve(settings.interpretResponse(resultOrPromise));
+                    dfd.resolve(settings.interpretResponse(resultOrPromise), resultOrPromise);
                 }
             } else {
                 dfd.resolve(true);
@@ -158,13 +162,13 @@ define(['durandal/system', 'knockout'], function (system, ko) {
 
                 if (resultOrPromise.then) {
                     resultOrPromise.then(function(result) {
-                        dfd.resolve(settings.interpretResponse(result));
+                        dfd.resolve(settings.interpretResponse(result), result);
                     }, function(reason) {
                         system.error(reason);
                         dfd.resolve(false);
                     });
                 } else {
-                    dfd.resolve(settings.interpretResponse(resultOrPromise));
+                    dfd.resolve(settings.interpretResponse(resultOrPromise), resultOrPromise);
                 }
             } else {
                 dfd.resolve(true);
@@ -199,12 +203,12 @@ define(['durandal/system', 'knockout'], function (system, ko) {
 
         computed.deactivateItem = function (item, close) {
             return system.defer(function(dfd) {
-                computed.canDeactivateItem(item, close).then(function(canDeactivate) {
+                computed.canDeactivateItem(item, close).then(function(canDeactivate, canDeactivateData) {
                     if (canDeactivate) {
                         deactivate(item, close, settings, dfd, activeItem);
                     } else {
                         computed.notifySubscribers();
-                        dfd.resolve(false);
+                        dfd.resolve(false, canDeactivateData);
                     }
                 });
             }).promise();
@@ -233,9 +237,9 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                     return;
                 }
 
-                computed.canDeactivateItem(currentItem, settings.closeOnDeactivate).then(function (canDeactivate) {
+                computed.canDeactivateItem(currentItem, settings.closeOnDeactivate).then(function (canDeactivate, canDeactivateData) {
                     if (canDeactivate) {
-                        computed.canActivateItem(newItem, activationData).then(function (canActivate) {
+                        computed.canActivateItem(newItem, activationData).then(function (canActivate, canActivateData) {
                             if (canActivate) {
                                 system.defer(function (dfd2) {
                                     deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2);
@@ -252,7 +256,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                                 }
 
                                 computed.isActivating(false);
-                                dfd.resolve(false);
+                                dfd.resolve(false, canActivateData);
                             }
                         });
                     } else {
@@ -261,7 +265,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                         }
 
                         computed.isActivating(false);
-                        dfd.resolve(false);
+                        dfd.resolve(false, canDeactivateData);
                     }
                 });
             }).promise();
@@ -434,10 +438,14 @@ define(['durandal/system', 'knockout'], function (system, ko) {
     return activator = {
         defaults: {
             closeOnDeactivate: true,
+            affirmations:['yes', 'ok'],
             interpretResponse: function (value) {
-                if (typeof value == 'string') {
-                    var lowered = value.toLowerCase();
-                    return lowered == 'yes' || lowered == 'ok';
+                if(system.isObject(value)){
+                    value = value.can || false;
+                }
+
+                if (system.isString(value)) {
+                    return ko.utils.arrayIndexOf(this.affirmations, value.toLowerCase()) !== -1;
                 }
 
                 return value;

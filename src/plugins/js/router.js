@@ -104,7 +104,7 @@
                 system.log('Navigating Back');
             }
 
-            activator.activateItem(instance, instruction.params).then(function(succeeded) {
+            activator.activateItem(instance, instruction.params).then(function(succeeded, failData) {
                 if (succeeded) {
                     var previousActivation = currentActivation;
                     completeNavigation(instance, instruction);
@@ -120,7 +120,9 @@
                     if (previousActivation == instance) {
                         router.attachedToParent();
                     }
-                } else {
+                } else if(failData.redirect){
+                    redirect(failData.redirect);
+                }else{
                     cancelNavigation(instance, instruction);
                 }
 

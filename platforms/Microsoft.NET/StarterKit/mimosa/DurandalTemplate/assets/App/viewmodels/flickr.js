@@ -7,6 +7,9 @@
     return {
         displayName: 'Flickr',
         images: ko.observableArray([]),
+        canActivate: function () {
+            return { redirect: '#/' };
+        },
         activate: function () {
             //the router's activator calls this function and waits for it to complete before proceding
             if (this.images().length > 0) {
