@@ -50,8 +50,8 @@
 
             for(var i = 0; i < pluginIds.length; i++){
                 var key = pluginIds[i];
-                allPluginIds[i] = baseUrl + key
-                allPluginConfigs[i] = config[key];
+                allPluginIds.push(baseUrl + key);
+                allPluginConfigs.push(config[key]);
             }
         },
         start: function() {
