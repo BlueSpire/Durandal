@@ -4,6 +4,7 @@
     var splatParam = /\*\w+/g;
     var escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
     var startDeferred, rootRouter;
+    var trailingSlash = /\/$/;
 
     function routeStringToRegExp(routeString) {
         routeString = routeString.replace(escapeRegExp, '\\$&')
@@ -317,6 +318,8 @@
                 coreFragment = fragment.substring(0, queryIndex);
                 queryString = fragment.substr(queryIndex + 1);
             }
+
+            coreFragment = coreFragment.replace(trailingSlash, '');
 
             for (var i = 0; i < handlers.length; i++) {
                 var current = handlers[i];
