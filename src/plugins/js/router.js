@@ -51,6 +51,9 @@
         };
 
         events.includeIn(router);
+        activeItem.settings.areSameItem = function () {
+            return false;
+        };
 
         function completeNavigation(instance, instruction) {
             system.log('Navigation Complete', instance, instruction);
