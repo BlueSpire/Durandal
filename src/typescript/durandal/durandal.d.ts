@@ -1,11 +1,8 @@
-// Type definitions for durandal 2.0.0
-// Project: http://durandaljs.com
-// Definitions by: Evan Larsen <http://nouvosoft.com/> and Rob Eisenberg
-// Definitions: https://github.com/borisyankov/DefinitelyTyped
-
-/// <reference path="../jquery/jquery.d.ts" />
-/// <reference path="../knockout/knockout.d.ts" />
-
+/**
+ * Durandal 2.0.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Available via the MIT license.
+ * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
+ */
 declare module "durandal/system" {
     /**
       * Returns the module id associated with the specified object
