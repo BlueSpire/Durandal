@@ -12,22 +12,23 @@
         },
         canSayHello: canSayHello,
         activate: function() {
-            system.log('Lifecycle : activate');
+            system.log('Lifecycle : activate : hello');
         },
         binding: function () {
-            system.log('Lifecycle : binding');
+            system.log('Lifecycle : binding : hello');
+            return { cacheViews:false }; //cancels view caching for this module, allowing the triggering of the detached callback
         },
         bindingComplete: function () {
-            system.log('Lifecycle : bindingComplete');
+            system.log('Lifecycle : bindingComplete : hello');
         },
-        attachedToParent: function (view, parent) {
-            system.log('Lifecycle : attachedToParent');
+        attached: function (view, parent) {
+            system.log('Lifecycle : attached : hello');
         },
         compositionComplete: function (view) {
-            system.log('Lifecycle : compositionComplete');
+            system.log('Lifecycle : compositionComplete : hello');
         },
-        detachedFromDocument: function (view) {
-            system.log('Lifecycle : detachedFromDocument'); //Note: This won't be called as long as the composition system is set to cache views.
+        detached: function (view) {
+            system.log('Lifecycle : detached : hello');
         }
     };
 });

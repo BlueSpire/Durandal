@@ -87,14 +87,14 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
         }
 
         if (context.child) {
-            if (context.model && context.model.attachedToParent) {
+            if (context.model && context.model.attached) {
                 if (context.composingNewView || context.alwaysTriggerAttach) {
-                    context.model.attachedToParent(context.child, context.parent, context);
+                    context.model.attached(context.child, context.parent, context);
                 }
             }
 
-            if (context.attachedToParent) {
-                context.attachedToParent(context.child, context.parent, context);
+            if (context.attached) {
+                context.attached(context.child, context.parent, context);
             }
 
             context.child.setAttribute(activeViewAttributeName, true);
@@ -106,9 +106,9 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                     });
                 }
 
-                if (context.model.detachedFromDocument) {
+                if (context.model.detached) {
                     ko.utils.domNodeDisposal.addDisposeCallback(context.child, function () {
-                        context.model.detachedFromDocument(context.child, context);
+                        context.model.detached(context.child, context);
                     });
                 }
             }
@@ -193,12 +193,13 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 compositionCompleteCallbacks.push(callback);
             }
         },
-        addBindingHandler:function(name, config){
+        addBindingHandler:function(name, config, initOptionsFactory){
             var key,
                 dataKey = 'composition-handler-' + name,
                 handler;
 
             config = config || ko.bindingHandlers[name];
+            initOptionsFactory = initOptionsFactory || function(){ return undefined;  };
 
             handler = ko.bindingHandlers[name] = {
                 init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
@@ -219,7 +220,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
 
                     ko.utils.domData.set(element, dataKey, data);
 
-                    return { controlsDescendantBindings: true };
+                    return initOptionsFactory(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
                 },
                 update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                     var data = ko.utils.domData.get(element, dataKey);

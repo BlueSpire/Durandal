@@ -121,7 +121,7 @@
                     }
 
                     if (previousActivation == instance) {
-                        router.attachedToParent();
+                        router.attached();
                     }
                 } else if(failData.redirect){
                     redirect(failData.redirect);
@@ -358,10 +358,10 @@
             history.history.back();
         };
 
-        router.attachedToParent = function() {
+        router.attached = function() {
             setTimeout(function() {
                 isProcessing(false);
-                router.trigger('router:navigation:attached-to-parent', currentActivation, currentInstruction, router);
+                router.trigger('router:navigation:attached', currentActivation, currentInstruction, router);
                 dequeueInstruction();
             }, 10);
         };
@@ -557,14 +557,14 @@
                 if (settings.__router__) {
                     settings = {
                         model:settings.activeItem(),
-                        attachedToParent:settings.attachedToParent,
+                        attached:settings.attached,
                         compositionComplete:settings.compositionComplete,
                         activate: false
                     };
                 } else {
                     var theRouter = ko.utils.unwrapObservable(settings.router || viewModel.router) || rootRouter;
                     settings.model = theRouter.activeItem();
-                    settings.attachedToParent = theRouter.attachedToParent;
+                    settings.attached = theRouter.attached;
                     settings.compositionComplete = theRouter.compositionComplete;
                     settings.activate = false;
                 }

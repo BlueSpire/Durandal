@@ -77,8 +77,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 activate:false
             };
 
-            if (dialogContext.attachedToParent) {
-                settings.attachedToParent = dialogContext.attachedToParent;
+            if (dialogContext.attached) {
+                settings.attached = dialogContext.attached;
             }
 
             if (dialogContext.compositionComplete) {
