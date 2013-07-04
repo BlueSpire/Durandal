@@ -45,13 +45,15 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
         compositionCount--;
 
         if (compositionCount === 0) {
-            var i = compositionCompleteCallbacks.length;
+            setTimeout(function(){
+                var i = compositionCompleteCallbacks.length;
 
-            while(i--) {
-                compositionCompleteCallbacks[i]();
-            }
+                while(i--) {
+                    compositionCompleteCallbacks[i]();
+                }
 
-            compositionCompleteCallbacks = [];
+                compositionCompleteCallbacks = [];
+            }, 1);
         }
     }
 
@@ -226,10 +228,10 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                     var data = ko.utils.domData.get(element, dataKey);
 
                     if(data.update){
-                        data.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
-                    }else{
-                        data.trigger();
+                        return data.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
                     }
+
+                    data.trigger();
                 }
             };
 
