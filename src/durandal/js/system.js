@@ -61,7 +61,7 @@
                 else if ((slice.call(arguments)).length == 1 && typeof slice.call(arguments)[0] == 'string') {
                     console.log((slice.call(arguments)).toString());
                 } else {
-                    console.log(slice.call(arguments));
+                    console.log.apply(console, slice.call(arguments));
                 }
             }
             // IE8
