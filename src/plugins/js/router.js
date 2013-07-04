@@ -356,7 +356,7 @@
 
         router.navigate = function(fragment, options) {
             rootRouter.explicitNavigation = true;
-            history.navigate(fragment, options);
+            return history.navigate(fragment, options);
         };
 
         router.navigateBack = function() {
