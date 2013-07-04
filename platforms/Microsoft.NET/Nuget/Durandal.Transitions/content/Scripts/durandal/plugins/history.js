@@ -109,19 +109,22 @@ define(['durandal/system', 'jquery'], function (system, $) {
         var loc = history.location;
         var atRoot = loc.pathname.replace(/[^\/]$/, '$&/') === history.root;
 
-        // If we've started off with a route from a `pushState`-enabled browser,
-        // but we're currently in a browser that doesn't support it...
-        if (history._wantsHashChange && history._wantsPushState && !history._hasPushState && !atRoot) {
-            history.fragment = history.getFragment(null, true);
-            history.location.replace(history.root + history.location.search + '#' + history.fragment);
-            // Return immediately as browser will do redirect to new url
-            return true;
+        // Transition from hashChange to pushState or vice versa if both are requested.
+        if (history._wantsHashChange && history._wantsPushState) {
+            // If we've started off with a route from a `pushState`-enabled
+            // browser, but we're currently in a browser that doesn't support it...
+            if (!history._hasPushState && !atRoot) {
+                history.fragment = history.getFragment(null, true);
+                history.location.replace(history.root + history.location.search + '#' + history.fragment);
+                // Return immediately as browser will do redirect to new url
+                return true;
 
             // Or if we've started out with a hash-based route, but we're currently
             // in a browser where it could be `pushState`-based instead...
-        } else if (history._wantsPushState && history._hasPushState && atRoot && loc.hash) {
-            history.fragment = history.getHash().replace(routeStripper, '');
-            history.history.replaceState({}, document.title, history.root + history.fragment + loc.search);
+            } else if (history._hasPushState && atRoot && loc.hash) {
+                this.fragment = history.getHash().replace(routeStripper, '');
+                this.history.replaceState({}, document.title, history.root + history.fragment + loc.search);
+            }
         }
 
         if (!history.options.silent) {
@@ -153,7 +156,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
             history.navigate(current);
         }
         
-        history.loadUrl() || history.loadUrl(history.getHash());
+        history.loadUrl();
     };
     
     // Attempt to load the current URL fragment. Pass it to options.routeHandler
@@ -178,7 +181,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
         }
 
         if (!options || options === true) {
-            options = { trigger: options };
+            options = {trigger: !!options};
         }
 
         fragment = history.getFragment(fragment || '');

@@ -339,6 +339,15 @@
                 }
             }
 
+            system.log('Route Not Found');
+
+            if (currentInstruction) {
+                history.navigate(currentInstruction.fragment, { trigger:false, replace:true });
+            }
+
+            rootRouter.explicitNavigation = false;
+            rootRouter.navigatingBack = false;
+
             return false;
         };
 
