@@ -248,38 +248,8 @@
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(SolutionDir)DurandalTemplate\App\durandal" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\App\viewmodels" "..\..\..\..\mimosa\DurandalTemplate\assets\App\viewmodels" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\App\views" "..\..\..\..\mimosa\DurandalTemplate\assets\App\views" /s /i /y
-rd "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd" /S /Q
-rd "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\widgets" /S /Q
-xcopy "$(SolutionDir)DurandalTemplate\Content\font" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\font" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Content\images" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\images" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Content\app.css" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Content\durandal.css" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Content\bootstrap.css" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Content\bootstrap-responsive.css" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Content\font-awesome.css" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Content\ie10mobile.css" "..\..\..\..\mimosa\DurandalTemplate\assets\Content\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Scripts\bootstrap.js" "..\..\..\..\mimosa\DurandalTemplate\assets\Scripts\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Scripts\jQuery-1.9.1.js" "..\..\..\..\mimosa\DurandalTemplate\assets\Scripts\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Scripts\knockout-2.2.1.js" "..\..\..\..\mimosa\DurandalTemplate\assets\Scripts\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\almond-custom.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\r.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\require.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\App\durandal\amd\text.js" "..\..\..\..\mimosa\DurandalTemplate\assets\App\durandal\amd\" /s /i /y
-
-xcopy "$(SolutionDir)DurandalTemplate\App\viewmodels" "..\..\..\..\nuget\Durandal.StarterKit\content\App\viewmodels" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\App\views" "..\..\..\..\nuget\Durandal.StarterKit\content\App\views" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\App\main.js" "..\..\..\..\nuget\Durandal.StarterKit\content\App\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\App\main-built.js" "..\..\..\..\nuget\Durandal.StarterKit\content\App\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\App_Start\DurandalBundleConfig.cs.pp" "..\..\..\..\nuget\Durandal.StarterKit\content\App_Start\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Content\images" "..\..\..\..\nuget\Durandal.StarterKit\content\Content\images" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Content\app.css" "..\..\..\..\nuget\Durandal.StarterKit\content\Content\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Content\ie10mobile.css" "..\..\..\..\nuget\Durandal.StarterKit\content\Content\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Controllers\DurandalController.cs.pp" "..\..\..\..\nuget\Durandal.StarterKit\content\Controllers\" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\Views\Durandal" "..\..\..\..\nuget\Durandal.StarterKit\content\Views\Durandal" /s /i /y
-xcopy "$(SolutionDir)DurandalTemplate\readme.md" "..\..\..\..\nuget\Durandal.StarterKit\content\" /s /i /y</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

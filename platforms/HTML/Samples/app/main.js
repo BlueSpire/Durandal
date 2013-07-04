@@ -11,7 +11,7 @@
     shim: {
         'bootstrap': {
             deps: ['jquery'],
-            exports: '$.support.transition' // just picked one
+            exports: 'jQuery'
         }
     }
 });
