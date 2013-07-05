@@ -17,7 +17,7 @@ Durandal is a cross-device, cross-platform client framework written in JavaScrip
 * App Bundling and Optimization
 * Use any Backend Technology
 * Built on top of [jQuery](http://jquery.com/), [Knockout](http://knockoutjs.com/) & [RequireJS](http://requirejs.org/).
-* Integrates with popular CSS libraries such as [Bootstrap](http://twitter.github.com/bootstrap/).
+* Integrates with popular CSS libraries such as [Bootstrap](http://twitter.github.com/bootstrap/) and [Foundation](http://foundation.zurb.com/).
 * Make your own templatable and data-bindable widgets.
 
 ## Documentation
@@ -25,10 +25,10 @@ Durandal is a cross-device, cross-platform client framework written in JavaScrip
 All the documentation is located on [the official site](http://durandaljs.com/), so have a look there for help on how to [get started](http://durandaljs.com/pages/get-started/), [read tutorials](http://durandaljs.com/pages/docs/), [view sample descriptions](http://durandaljs.com/documentation/Understanding-the-Samples/) and peruse the module reference docs.
 If you want to keep up to date with the activity that is happening on the master branch, you can [subscribe to the commit feed](https://github.com/BlueSpire/durandal/commits/master.atom).
 
-## Community
+## Community & Support
 
 Need help with something that the docs aren't providing an answer to? 
-Visit our [google group](https://groups.google.com/forum/?fromgroups#!forum/durandaljs) and join in the conversation.
+Visit our [google group](https://groups.google.com/forum/?fromgroups#!forum/durandaljs) and join in the conversation. We also provide [full commercial support](http://durandaljs.com/pages/support/) no matter how large or small your team is. Additionally, we offer both [on-site and remote training](http://durandaljs.com/pages/training/).
 
 ## License
 
