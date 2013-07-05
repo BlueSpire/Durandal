@@ -1,7 +1,7 @@
 watch = mimosa watch
 build = mimosa build
 
-.PHONY : start startd build build-opt buildo clean pack package
+.PHONY : start startd build build-opt buildo clean pack package dist distribute
 
 start:
 	@echo "[x] Building assets and starting development server..."
@@ -34,3 +34,19 @@ pack:
 package:
 	@echo "[x] Building and packaging application..."
 	@$(build) -omp
+
+dist:
+	@echo "[x] Building and distributing application..."
+	@mimosa clean --force
+	@$(build) -om
+	rm -Rf dist
+    cp -R public dist
+    cp views\index-optimize.html dist\index.html
+
+distribute:
+	@echo "[x] Building and distributing application..."
+	@mimosa clean --force
+	@$(build) -om
+	rm -Rf dist
+    cp -R public dist
+    cp views\index-optimize.html dist\index.html

@@ -1,6 +1,18 @@
-﻿require.config({
+﻿requirejs.config({
     paths: {
-        'text': 'durandal/amd/text'
+        'text': '../vendor/text',
+        'durandal':'../vendor/durandal',
+        'plugins' : '../vendor/durandal/plugins',
+        'transitions' : '../vendor/durandal/transitions',
+        'knockout': '../vendor/knockout-2.2.1',
+        'bootstrap': '../vendor/bootstrap',
+        'jquery': '../vendor/jquery-1.9.1'
+    },
+    shim: {
+        'bootstrap': {
+            deps: ['jquery'],
+            exports: 'jQuery'
+        }
     }
 });
 
