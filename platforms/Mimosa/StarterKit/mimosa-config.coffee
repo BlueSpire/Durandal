@@ -8,7 +8,7 @@ exports.config =
       {
         folder:'stylesheets'
         output:'stylesheets/styles.css'
-        order: ['bootstrap.css', 'bootstrap-responsive.css']
+        order: ['bootstrap.css', 'bootstrap-responsive.css', 'font-awesome.css', 'durandal.css', 'starterkit.css']
       }
     ]
 
