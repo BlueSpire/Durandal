@@ -94,3 +94,9 @@ copyDurandal "Mimosa/StarterKit/assets/javascripts/vendor/durandal" `
 
 copyStarterKit "Mimosa/StarterKit/assets/javascripts/app" `
 		 	   "Mimosa/StarterKit/assets/stylesheets"
+
+Write-Host "Building Bower Package"
+
+copyDurandal "Bower/js" `
+             "Bower/css" `
+             "Bower/img"
