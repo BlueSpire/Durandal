@@ -3,6 +3,7 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
+/** @module durandal/activator */
 define(['durandal/system', 'knockout'], function (system, ko) {
     var activator;
 
