@@ -3,7 +3,14 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
-/** @module durandal/activator */
+/**
+ * The activator module encapsulates all logic related to screen/component activation.
+ * An activator is essentially an asynchronous state machine that understands a particular state transition protocol.
+ * The protocol ensures that the following series of events always occur: canDeactivate (previous state), deactivate (previous state), canActivate (new state), activate (new state).
+ * @module durandal/activator
+ * @requires module:durandal/system
+ * @requires module:knockout
+ */
 define(['durandal/system', 'knockout'], function (system, ko) {
     var activator;
 
@@ -436,8 +443,14 @@ define(['durandal/system', 'knockout'], function (system, ko) {
         return computed;
     }
 
-    return activator = {
+    activator = /** @lends module:durandal/activator */ {
+        /**
+          * The default settings used by activators.
+          */
         defaults: {
+            /**
+             * The default value passed to an object's deactivate function as its close parameter.
+             */
             closeOnDeactivate: true,
             affirmations:['yes', 'ok'],
             interpretResponse: function (value) {
@@ -463,9 +476,21 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 }
             }
         },
+        /** Creates a new activator.
+          * @function
+          * @param {object} [initialActiveItem] The item which should be immediately activated upon creation of the ativator.
+          * @param {object} [settings] Per activator overrides of the default activator settings.
+          * @returns {object} The created activator.
+          */
         create: createActivator,
+        /**
+         * Determines whether or not the provided object is an activator or not.
+         * @param {object} object Any object you wish to verify as an activator or not.
+         */
         isActivator:function(object){
             return object && object.__activator__;
         }
     };
+
+    return activator;
 });
