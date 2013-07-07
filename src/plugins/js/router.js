@@ -64,14 +64,14 @@
             system.log('Navigation Complete', instance, instruction);
 
             if (currentActivation && currentActivation.__moduleId__) {
-                router.trigger('router:navigatedFrom:' + currentActivation.__moduleId__);
+                router.trigger('router:navigation:from:' + currentActivation.__moduleId__);
             }
 
             currentActivation = instance;
             currentInstruction = instruction;
 
             if (currentActivation && currentActivation.__moduleId__) {
-                router.trigger('router:navigatedTo:' + currentActivation.__moduleId__);
+                router.trigger('router:navigation:to:' + currentActivation.__moduleId__);
             }
 
             if (!hasChildRouter(instance)) {
@@ -111,6 +111,8 @@
             if(rootRouter.navigatingBack){
                 system.log('Navigating Back');
             }
+
+            router.trigger('router:route:activating', instance, instruction);
 
             activator.activateItem(instance, instruction.params).then(function(succeeded, failData) {
                 if (succeeded) {
