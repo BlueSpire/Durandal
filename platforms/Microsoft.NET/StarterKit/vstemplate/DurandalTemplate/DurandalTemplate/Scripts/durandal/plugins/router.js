@@ -68,15 +68,17 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         function completeNavigation(instance, instruction) {
             system.log('Navigation Complete', instance, instruction);
 
-            if (currentActivation && currentActivation.__moduleId__) {
-                router.trigger('router:navigation:from:' + currentActivation.__moduleId__);
+            var fromModuleId = system.getModuleId(currentActivation);
+            if (fromModuleId) {
+                router.trigger('router:navigation:from:' + fromModuleId);
             }
 
             currentActivation = instance;
             currentInstruction = instruction;
 
-            if (currentActivation && currentActivation.__moduleId__) {
-                router.trigger('router:navigation:to:' + currentActivation.__moduleId__);
+            var toModuleId = system.getModuleId(currentActivation);
+            if (toModuleId) {
+                router.trigger('router:navigation:to:' + toModuleId);
             }
 
             if (!hasChildRouter(instance)) {
