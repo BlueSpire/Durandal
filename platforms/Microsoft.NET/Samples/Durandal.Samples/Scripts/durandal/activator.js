@@ -6,8 +6,11 @@
 /**
  * The activator module encapsulates all logic related to screen/component activation.
  * An activator is essentially an asynchronous state machine that understands a particular state transition protocol.
- * The protocol ensures that the following series of events always occur: canDeactivate (previous state), deactivate (previous state), canActivate (new state), activate (new state).
+ * The protocol ensures that the following series of events always occur: `canDeactivate` (previous state), `canActivate` (new state), `deactivate` (previous state), `activate` (new state).
+ * Each of the _can_ callbacks may return a boolean, affirmative value or promise for one of those. If either of the _can_ functions yields a false result, then activation halts.
  * @module activator
+ * @requires system
+ * @requires knockout
  */
 define(['durandal/system', 'knockout'], function (system, ko) {
     var activator;
@@ -183,6 +186,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
     };
 
     /**
+     * An activator is a read/write computed observable that enforces the activation lifecycle whenever changing values.
      * @class Activator
      */
     function createActivator(initialActiveItem, settings) {
@@ -201,15 +205,39 @@ define(['durandal/system', 'knockout'], function (system, ko) {
         });
 
         computed.__activator__ = true;
+
+        /**
+         * The settings for this activator.
+         * @property {ActivatorSettings} settings
+         */
         computed.settings = settings;
         settings.activator = computed;
 
+        /**
+         * An observable which indicates whether or not the activator is currently in the process of activating an instance.
+         * @method isActivating
+         * @return {boolean}
+         */
         computed.isActivating = ko.observable(false);
 
+        /**
+         * Determines whether or not the specified item can be deactivated.
+         * @method canDeactivateItem
+         * @param {object} item The item to check.
+         * @param {boolean} close Whether or not to check if close is possible.
+         * @return {promise}
+         */
         computed.canDeactivateItem = function (item, close) {
             return canDeactivateItem(item, close, settings);
         };
 
+        /**
+         * Deactivates the specified item.
+         * @method deactivateItem
+         * @param {object} item The item to deactivate.
+         * @param {boolean} close Whether or not to close the item.
+         * @return {promise}
+         */
         computed.deactivateItem = function (item, close) {
             return system.defer(function(dfd) {
                 computed.canDeactivateItem(item, close).then(function(canDeactivate, canDeactivateData) {
@@ -223,10 +251,24 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             }).promise();
         };
 
+        /**
+         * Determines whether or not the specified item can be activated.
+         * @method canActivateItem
+         * @param {object} item The item to check.
+         * @param {object} activationData Data associated with the activation.
+         * @return {promise}
+         */
         computed.canActivateItem = function (newItem, activationData) {
             return canActivateItem(newItem, activeItem, settings, activationData);
         };
 
+        /**
+         * Activates the specified item.
+         * @method activateItem
+         * @param {object} newItem The item to activate.
+         * @param {object} activationData Data associated with the activation.
+         * @return {promise}
+         */
         computed.activateItem = function (newItem, activationData) {
             var viaSetter = computed.viaSetter;
             computed.viaSetter = false;
@@ -280,6 +322,11 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             }).promise();
         };
 
+        /**
+         * Determines whether or not the activator, in its current state, can be activated.
+         * @method canActivate
+         * @return {promise}
+         */
         computed.canActivate = function () {
             var toCheck;
 
@@ -293,6 +340,11 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             return computed.canActivateItem(toCheck);
         };
 
+        /**
+         * Activates the activator, in its current state.
+         * @method activate
+         * @return {promise}
+         */
         computed.activate = function () {
             var toActivate;
 
@@ -306,10 +358,20 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             return computed.activateItem(toActivate);
         };
 
+        /**
+         * Determines whether or not the activator, in its current state, can be deactivated.
+         * @method canDeactivate
+         * @return {promise}
+         */
         computed.canDeactivate = function (close) {
             return computed.canDeactivateItem(computed(), close);
         };
 
+        /**
+         * Deactivates the activator, in its current state.
+         * @method deactivate
+         * @return {promise}
+         */
         computed.deactivate = function (close) {
             return computed.deactivateItem(computed(), close);
         };
@@ -452,11 +514,17 @@ define(['durandal/system', 'knockout'], function (system, ko) {
         /**
          * The default value passed to an object's deactivate function as its close parameter.
          * @property {boolean} closeOnDeactivate
+         * @default true
          */
         closeOnDeactivate: true,
+        /**
+         * Lower-cased words which represent a truthy value.
+         * @property {string[]} affirmations
+         * @default ['yes', 'ok']
+         */
         affirmations:['yes', 'ok'],
         /**
-         * A function that interprets the response of a canActivate/canDeactivate call using the known affirmative values.
+         * Interprets the response of a `canActivate` or `canDeactivate` call using the known affirmative values in the `affirmations` array.
          * @method interpretResponse
          * @param {object} value
          * @returns {boolean}
@@ -472,13 +540,33 @@ define(['durandal/system', 'knockout'], function (system, ko) {
 
             return value;
         },
+        /**
+         * Determines whether or not the current item and the new item are the same.
+         * @method areSameItem
+         * @param {object} currentItem
+         * @param {object} newItem
+         * @param {object} activationData
+         * @returns {boolean}
+         */
         areSameItem: function (currentItem, newItem, activationData) {
             return currentItem == newItem;
         },
+        /**
+         * Called immediately before the new item is activated.
+         * @method beforeActivate
+         * @param {object} newItem
+         */
         beforeActivate: function (newItem) {
             return newItem;
         },
-        afterDeactivate: function (item, close, setter) {
+        /**
+         * Called immediately after the old item is deactivated.
+         * @method afterDeactivate
+         * @param {object} oldItem The previous item.
+         * @param {boolean} close Whether or not the previous item was closed.
+         * @param {function} setter The activate item setter function.
+         */
+        afterDeactivate: function (oldItem, close, setter) {
             if (close && setter) {
                 setter(null);
             }
