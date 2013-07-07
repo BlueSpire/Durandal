@@ -2,9 +2,7 @@
  * The activator module encapsulates all logic related to screen/component activation.
  * An activator is essentially an asynchronous state machine that understands a particular state transition protocol.
  * The protocol ensures that the following series of events always occur: canDeactivate (previous state), deactivate (previous state), canActivate (new state), activate (new state).
- * @module durandal/activator
- * @requires module:durandal/system
- * @requires module:knockout
+ * @module activator
  */
 define(['durandal/system', 'knockout'], function (system, ko) {
     var activator;
@@ -179,6 +177,9 @@ define(['durandal/system', 'knockout'], function (system, ko) {
         }).promise();
     };
 
+    /**
+     * @class Activator
+     */
     function createActivator(initialActiveItem, settings) {
         var activeItem = ko.observable(null);
 
@@ -438,49 +439,70 @@ define(['durandal/system', 'knockout'], function (system, ko) {
         return computed;
     }
 
-    activator = /** @lends module:durandal/activator */ {
+    /**
+     * @class ActivatorSettings
+     * @static
+     */
+    var activatorSettings = {
         /**
-          * The default settings used by activators.
-          */
-        defaults: {
-            /**
-             * The default value passed to an object's deactivate function as its close parameter.
-             */
-            closeOnDeactivate: true,
-            affirmations:['yes', 'ok'],
-            interpretResponse: function (value) {
-                if(system.isObject(value)){
-                    value = value.can || false;
-                }
-
-                if (system.isString(value)) {
-                    return ko.utils.arrayIndexOf(this.affirmations, value.toLowerCase()) !== -1;
-                }
-
-                return value;
-            },
-            areSameItem: function (currentItem, newItem, activationData) {
-                return currentItem == newItem;
-            },
-            beforeActivate: function (newItem) {
-                return newItem;
-            },
-            afterDeactivate: function (item, close, setter) {
-                if (close && setter) {
-                    setter(null);
-                }
+         * The default value passed to an object's deactivate function as its close parameter.
+         * @property {boolean} closeOnDeactivate
+         */
+        closeOnDeactivate: true,
+        affirmations:['yes', 'ok'],
+        /**
+         * A function that interprets the response of a canActivate/canDeactivate call using the known affirmative values.
+         * @method interpretResponse
+         * @param {object} value
+         * @returns {boolean}
+         */
+        interpretResponse: function (value) {
+            if(system.isObject(value)){
+                value = value.can || false;
             }
+
+            if (system.isString(value)) {
+                return ko.utils.arrayIndexOf(this.affirmations, value.toLowerCase()) !== -1;
+            }
+
+            return value;
         },
-        /** Creates a new activator.
-          * @function
+        areSameItem: function (currentItem, newItem, activationData) {
+            return currentItem == newItem;
+        },
+        beforeActivate: function (newItem) {
+            return newItem;
+        },
+        afterDeactivate: function (item, close, setter) {
+            if (close && setter) {
+                setter(null);
+            }
+        }
+    }
+
+    /**
+     * @class ActivatorModule
+     * @static
+     */
+    activator = {
+        /**
+         * The default settings used by activators.
+         * @property {ActivatorSettings} defaults
+         */
+        defaults: activatorSettings,
+        /**
+          * Creates a new activator.
+          * @method create
           * @param {object} [initialActiveItem] The item which should be immediately activated upon creation of the ativator.
-          * @param {object} [settings] Per activator overrides of the default activator settings.
-          * @returns {object} The created activator.
+          * @param {ActivatorSettings} [settings] Per activator overrides of the default activator settings.
+          * @returns {Activator} The created activator.
           */
         create: createActivator,
         /**
          * Determines whether or not the provided object is an activator or not.
+         * @method isActivator
          * @param {object} object Any object you wish to verify as an activator or not.
+         * @returns {boolean} True if the object is an activator; false otherwise.
          */
         isActivator:function(object){
             return object && object.__activator__;

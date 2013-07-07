@@ -12,6 +12,6 @@ push-location "platforms" -PassThru
 pop-location
 
 Write-Host "Building API Docs"
-./tools/jsdoc/jsdoc -c conf.json
+yuidoc
 
 pause

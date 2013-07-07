@@ -1,0 +1,14 @@
+{
+    "name": "Durandal API",
+    "description": "Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain.",
+    "version": "2.0.0",
+    "url": "http://durandaljs.com/",
+    "options": {
+        "paths": [
+            "./src/durandal/js/",
+            "./src/plugins/js/",
+            "./src/transitions/js/"
+        ],
+        "outdir": "./dist/apidocs"
+    }
+}
