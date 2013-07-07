@@ -12,9 +12,10 @@
 -New system module helper apis: resolveObject (can be used in TypeScript to return the viewmodel out of a module), assert, error, extend, wait, isElement, isArray, isObject, isBoolean, isArguments, isFunction, isString, isNumber, isDate and isRexExp. The acquire function's promise now correctly reports load errors through the standard promise error mechanism. system.error is plumbed throughout framework to surface real errors as opposed to simple logs.
 -Added "fadeOnly" option to the entrance transition. Removing some bogus styles after the transition completes.
 -Removed app.adaptToDevice()...which was causing lots of confusion.
--Fixed issue which caused optimizer to fail to launch RequireJS when run from command line.
+-Removed the optimizer. It is not replaced by Weyland.
 -New samples and starter kits available for: raw HTML, .NET (Nuget and VSIX) and Mimosa.
 -Added more knockout samples
+-Added api docs via YUIDoc
 
 1.2.0
 
