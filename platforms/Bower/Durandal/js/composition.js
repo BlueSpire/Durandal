@@ -543,27 +543,5 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
 
     ko.virtualElements.allowedBindings.compose = true;
 
-    //hack to prevent ko from disposing our observables before we had the chance to put them in the DOM
-    for (var key in ko.utils) {
-        var val = ko.utils[key];
-        if (!val) {
-            continue;
-        }
-
-        var code = val.toString();
-
-        if (key === 'domNodeIsAttachedToDocument' || code.indexOf('ownerDocument') != -1) {
-            ko.utils[key] = function () {
-                if (compositionCount > 0) {
-                    return true;
-                }
-
-                return val.apply(ko.utils, arguments);
-            };
-
-            break;
-        }
-    }
-
     return composition;
 });
