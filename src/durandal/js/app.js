@@ -49,6 +49,7 @@ define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'duran
 
     /**
      * @class AppModule
+     * @uses Events
      */
     app = {
         /**
