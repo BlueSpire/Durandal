@@ -1,5 +1,5 @@
 ﻿/**
- * The app module controls app startup, plugin loading and configuration and root visual display.
+ * The app module controls app startup, plugin loading/configuration and root visual display.
  * @module app
  * @requires system
  * @requires viewEngine

@@ -196,7 +196,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
      * @class CompositionTransaction
      * @static
      */
-    var compositionTransation = {
+    var compositionTransaction = {
         /**
          * Registers a callback which will be invoked when the current composition transaction has completed. The transaction includes all parent and children compositions.
          * @method complete
@@ -225,7 +225,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
          * Represents the currently executing composition transaction.
          * @property {CompositionTransaction} current
          */
-        current: compositionTransation,
+        current: compositionTransaction,
         /**
          * Registers a binding handler that will be invoked when the current composition transaction is complete.
          * @method addBindingHandler
