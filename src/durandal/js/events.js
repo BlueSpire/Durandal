@@ -192,12 +192,12 @@ define(['durandal/system'], function (system) {
     /**
      * Creates an object with eventing capabilities.
      * @class EventsModule
+     * @static
      */
 
     /**
      * Adds eventing capabilities to the specified object.
      * @method includeIn
-     * @static
      * @param {object} targetObject The object to add eventing capabilities to.
      */
     Events.includeIn = function(targetObject) {

@@ -1,3 +1,14 @@
+/**
+ * The composition module encapsulates all functionality related to visual composition.
+ * @module composition
+ * @requires system
+ * @requires viewLocator
+ * @requires viewModelBinder
+ * @requires viewEngine
+ * @requires activator
+ * @requires jquery
+ * @requires knockout
+ */
 define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', 'durandal/viewEngine', 'durandal/activator', 'jquery', 'knockout'], function (system, viewLocator, viewModelBinder, viewEngine, activator, $, ko) {
     var dummyModel = {},
         activeViewAttributeName = 'data-active-view',
@@ -181,15 +192,47 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
         }
     }
 
+    /**
+     * @class CompositionTransaction
+     * @static
+     */
+    var compositionTransation = {
+        /**
+         * Registers a callback which will be invoked when the current composition transaction has completed. The transaction includes all parent and children compositions.
+         * @method complete
+         * @param {function} callback The callback to be invoked when composition is complete.
+         */
+        complete: function (callback) {
+            compositionCompleteCallbacks.push(callback);
+        }
+    };
+
+    /**
+     * @class CompositionModule
+     * @static
+     */
     composition = {
+        /**
+         * Converts a transition name to its moduleId.
+         * @method convertTransitionToModuleId
+         * @param {string} name The name of the transtion.
+         * @return {string} The moduleId.
+         */
         convertTransitionToModuleId: function (name) {
             return 'transitions/' + name;
         },
-        current: {
-            complete: function (callback) {
-                compositionCompleteCallbacks.push(callback);
-            }
-        },
+        /**
+         * Represents the currently executing composition transaction.
+         * @property {CompositionTransaction} current
+         */
+        current: compositionTransation,
+        /**
+         * Registers a binding handler that will be invoked when the current composition transaction is complete.
+         * @method addBindingHandler
+         * @param {string} name The name of the binding handler.
+         * @param {object} [config] The binding handler instance. If none is provided, the name will be used to look up an existing handler which will then be converted to a composition handler.
+         * @param {function} [initOptionsFactory] If the registered binding needs to return options from its init call back to knockout, this function will server as a factory for those options. It will receive the same parameters that the init function does.
+         */
         addBindingHandler:function(name, config, initOptionsFactory){
             var key,
                 dataKey = 'composition-handler-' + name,
@@ -236,6 +279,12 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 }
             }
         },
+        /**
+         * Gets an object keyed with all the elements that are replacable parts, found within the supplied elements. The key will be the part name and the value will be the element itself.
+         * @method getParts
+         * @param {DOMElement\DOMElement[]} elements The element(s) to search for parts.
+         * @return {object} An object keyed by part.
+         */
         getParts: function(elements) {
             var parts = {};
 
@@ -376,6 +425,12 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 composition.finalize(context);
             }, skipActivation);
         },
+        /**
+         * Eecutes the default view location strategy.
+         * @method defaultStrategy
+         * @param {object} context The composition context containing the model and possibly existing viewElements.
+         * @return {promise} A promise for the view.
+         */
         defaultStrategy: function (context) {
             return viewLocator.locateViewForObject(context.model, context.viewElements);
         },
@@ -461,6 +516,13 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 this.executeStrategy(context);
             }
         },
+        /**
+         * Initiates a composition.
+         * @method compose
+         * @param {DOMElement} element The DOMElement of knockout virtual element that serves as the parent for the composition.
+         * @param {object} settings The composition settings.
+         * @param {object} [bindingContext] The current binding context.
+         */
         compose: function (element, settings, bindingContext, fromBinding) {
             compositionCount++;
 
