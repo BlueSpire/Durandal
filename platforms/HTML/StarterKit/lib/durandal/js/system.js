@@ -1,5 +1,5 @@
 /**
- * Durandal 2.0.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Durandal 2.0.0-pre Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
@@ -87,7 +87,7 @@ define(['require', 'jquery'], function(require, $) {
     };
 
     system = {
-        version: "2.0.0",
+        version: "2.0.0-pre",
         noop: noop,
         getModuleId: function(obj) {
             if (!obj) {
