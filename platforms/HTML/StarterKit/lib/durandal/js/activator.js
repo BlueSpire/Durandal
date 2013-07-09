@@ -527,7 +527,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          * Interprets the response of a `canActivate` or `canDeactivate` call using the known affirmative values in the `affirmations` array.
          * @method interpretResponse
          * @param {object} value
-         * @returns {boolean}
+         * @return {boolean}
          */
         interpretResponse: function (value) {
             if(system.isObject(value)){
@@ -546,7 +546,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          * @param {object} currentItem
          * @param {object} newItem
          * @param {object} activationData
-         * @returns {boolean}
+         * @return {boolean}
          */
         areSameItem: function (currentItem, newItem, activationData) {
             return currentItem == newItem;
@@ -588,14 +588,14 @@ define(['durandal/system', 'knockout'], function (system, ko) {
           * @method create
           * @param {object} [initialActiveItem] The item which should be immediately activated upon creation of the ativator.
           * @param {ActivatorSettings} [settings] Per activator overrides of the default activator settings.
-          * @returns {Activator} The created activator.
+          * @return {Activator} The created activator.
           */
         create: createActivator,
         /**
          * Determines whether or not the provided object is an activator or not.
          * @method isActivator
          * @param {object} object Any object you wish to verify as an activator or not.
-         * @returns {boolean} True if the object is an activator; false otherwise.
+         * @return {boolean} True if the object is an activator; false otherwise.
          */
         isActivator:function(object){
             return object && object.__activator__;
