@@ -1,24 +1,67 @@
-﻿define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/activator', 'durandal/viewEngine', 'jquery'], function (system, app, composition, activator, viewEngine, $) {
+﻿/**
+ * The viewLocator module collaborates with the viewEngine module to provide views (literally dom sub-trees) to other parts of the framework as needed. The primary consumer of the viewLocator is the composition module.
+ * @module dialog
+ * @requires system
+ * @requires app
+ * @requires composition
+ * @requires activator
+ * @requires viewEngine
+ * @requires jquery
+ */
+define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/activator', 'durandal/viewEngine', 'jquery'], function (system, app, composition, activator, viewEngine, $) {
     var contexts = {},
         dialogCount = 0,
         dialog;
 
+    /**
+     * Models a message box's message, title and options.
+     * @class MessageBox
+     */
     var MessageBox = function(message, title, options) {
         this.message = message;
         this.title = title || MessageBox.defaultTitle;
         this.options = options || MessageBox.defaultOptions;
     };
 
+    /**
+     * Selects an option and closes the message box, returning the selected option through the dialog system's promise.
+     * @method selectOption
+     * @param {string} dialogResult The result to select.
+     */
     MessageBox.prototype.selectOption = function (dialogResult) {
         dialog.close(this, dialogResult);
     };
 
+    /**
+     * Provides the view to the composition system.
+     * @method getView
+     * @return {DOMElement} The view of the message box.
+     */
     MessageBox.prototype.getView = function(){
         return viewEngine.processMarkup(MessageBox.defaultViewMarkup);
     };
 
+    /**
+     * The title to be used for the message box if one is not provided.
+     * @property {string} defaultTitle
+     * @default Application
+     * @static
+     */
     MessageBox.defaultTitle = app.title || 'Application';
+
+    /**
+     * The options to display in the message box of none are specified.
+     * @property {string[]} defaultOptions
+     * @default ['Ok']
+     * @static
+     */
     MessageBox.defaultOptions = ['Ok'];
+
+    /**
+     * The markup for the message box's view.
+     * @property {string} defaultViewMarkup
+     * @static
+     */
     MessageBox.defaultViewMarkup = [
         '<div data-view="plugins/messageBox" class="messageBox">',
             '<div class="modal-header">',
@@ -45,18 +88,52 @@
         }).promise();
     }
 
+    /**
+     * @class DialogModule
+     * @static
+     */
     dialog = {
+        /**
+         * The constructor function used to create message boxes.
+         * @property {MessageBox} MessageBox
+         */
         MessageBox:MessageBox,
+        /**
+         * The css zIndex that the last dialog was displayed at.
+         * @property {int} currentZIndex
+         */
         currentZIndex: 1050,
+        /**
+         * Gets the next css zIndex at which a dialog should be displayed.
+         * @method getNextZIndex
+         * @param {int} The zIndex.
+         */
         getNextZIndex: function () {
             return ++this.currentZIndex;
         },
+        /**
+         * Determines whether or not there are any dialogs open.
+         * @method isOpen
+         * @return {boolean} True if a dialog is open. false otherwise.
+         */
         isOpen: function() {
             return dialogCount > 0;
         },
+        /**
+         * Gets the dialog context by name or returns the default context if no name is specified.
+         * @method getContext
+         * @param {string} [name] The name of the context to retrieve.
+         * @return {DialogContext} True context.
+         */
         getContext: function(name) {
             return contexts[name || 'default'];
         },
+        /**
+         * Adds (or replaces) a dialog context.
+         * @method addContext
+         * @param {string} name The name of the context to add.
+         * @param {DialogContext} dialogContext The context to add.
+         */
         addContext: function(name, dialogContext) {
             dialogContext.name = name;
             contexts[name] = dialogContext;
@@ -82,6 +159,12 @@
 
             return settings;
         },
+        /**
+         * Gets the dialog model that is associated with the specified object.
+         * @method getDialog
+         * @param {object} obj The object for whom to retrieve the dialog.
+         * @return {Dialog} The dialog model.
+         */
         getDialog:function(obj){
             if(obj){
                 return obj.__dialog__;
@@ -89,6 +172,12 @@
 
             return undefined;
         },
+        /**
+         * Closes the dialog associated with the specified object.
+         * @method close
+         * @param {object} obj The object whose dialog should be closed.
+         * @param {object} result* The results to return back to the dialog caller after closing.
+         */
         close:function(obj){
             var theDialog = this.getDialog(obj);
             if(theDialog){
@@ -96,6 +185,14 @@
                 theDialog.close.apply(theDialog, rest);
             }
         },
+        /**
+         * Shows a dialog.
+         * @method show
+         * @param {object|string} obj The object (or moduleId) to display as a dialog.
+         * @param {object} [activationData] The data that should be passed to the object upon activation.
+         * @param {string} [context] The name of the dialog context to use. Uses the default context if none is specified.
+         * @return {Promise} A promise that resolves when the dialog is closed and returns any data passed at the time of closing.
+         */
         show: function(obj, activationData, context) {
             var that = this;
             var dialogContext = contexts[context || 'default'];
@@ -135,6 +232,14 @@
                 });
             }).promise();
         },
+        /**
+         * Shows a message box.
+         * @method show
+         * @param {string} message The message to display in the dialog.
+         * @param {string} [title] The title message.
+         * @param {string[]} [options] The options to provide to the user.
+         * @return {Promise} A promise that resolves when the message box is closed and returns the selected option.
+         */
         showMessage:function(message, title, options){
             if(system.isString(this.MessageBox)){
                 return dialog.show(this.MessageBox, [
@@ -146,6 +251,11 @@
 
             return dialog.show(new this.MessageBox(message, title, options));
         },
+        /**
+         * Installs this module into Durandal. Adds `app.showDialog` and `app.showMessage` convenience methods.
+         * @method install
+         * @param {object} [config] Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box.
+         */
         install:function(config){
             app.showDialog = function(obj, activationData, context) {
                 return dialog.show(obj, activationData, context);
@@ -167,9 +277,17 @@
         }
     };
 
+    /**
+     * @class DialogContext
+     */
     dialog.addContext('default', {
         blockoutOpacity: .2,
         removeDelay: 200,
+        /**
+         * In this function, you are expected to add a DOM element to the tree which will serve as the "host" for the modal's composed view. You must add a property called host to the modalWindow object which references the dom element. It is this host which is passed to the composition module.
+         * @method addHost
+         * @param {Dialog} theDialog The dialog model.
+         */
         addHost: function(theDialog) {
             var body = $('body');
             var blockout = $('<div class="modalBlockout"></div>')
@@ -196,6 +314,11 @@
                 html.scrollTop(oldScrollTop); // necessary for Firefox
             }
         },
+        /**
+         * This function is expected to remove any DOM machinery associated with the specified dialog and do any other necessary cleanup.
+         * @method removeHost
+         * @param {Dialog} theDialog The dialog model.
+         */
         removeHost: function(theDialog) {
             $(theDialog.host).css('opacity', 0);
             $(theDialog.blockout).css('opacity', 0);
@@ -217,6 +340,12 @@
                 }
             }
         },
+        /**
+         * This function is called after the modal is fully composed into the DOM, allowing your implementation to do any final modifications, such as positioning or animation. You can obtain the original dialog object by using `getDialog` on context.model.
+         * @method compositionComplete
+         * @param {DOMElement} child The dialog view.
+         * @param {object} context The composition context.
+         */
         compositionComplete: function (child, context) {
             var $child = $(child);
             var width = $child.width();
