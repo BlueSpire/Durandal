@@ -1,3 +1,10 @@
+/**
+ * Enables automatic observability of plain javascript object for ES5 compatible browsers.
+ * @module observable
+ * @requires system
+ * @requires viewModelBinder
+ * @requires knockout
+ */
 define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(system, viewModelBinder, ko) {
     var observableModule,
         toString = Object.prototype.toString,
@@ -7,6 +14,11 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
         additiveArrayFunctions = ['push', 'unshift'],
         arrayProto = Array.prototype,
         observableArrayFunctions = ko.observableArray.fn;
+
+    /**
+     * You can call observable(obj, propertyName) to get the observable function for the specified property on the object.
+     * @class ObservableModule
+     */
 
     function shouldIgnorePropertyName(propertyName){
         var first = propertyName[0];
@@ -101,6 +113,11 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
         }
     }
 
+    /**
+     * Converts an entire object into an observable object by re-writing its attributes using ES5 getters and setters. Attributes beginning with '_' or '$' are ignored.
+     * @method convertObject
+     * @param {object} obj The target object to convert.
+     */
     function convertObject(obj){
         var lookup, value;
 
@@ -139,6 +156,14 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
         system.log('Converted', obj);
     }
 
+    /**
+     * Converts a normal property into an observable property using ES5 getters and setters.
+     * @method convertProperty
+     * @param {object} obj The target object on which the property to convert lives.
+     * @param {string} propertyName The name of the property to convert.
+     * @param {object} [original] The original value of the property. If not specified, it will be retrieved from the object.
+     * @return {KnockoutObservable} The underlying observable.
+     */
     function convertProperty(obj, propertyName, original){
         var observable,
             isArray,
@@ -193,6 +218,14 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
         return observable;
     }
 
+    /**
+     * Defines a computed property using ES5 getters and setters.
+     * @method defineProperty
+     * @param {object} obj The target object on which to create the property.
+     * @param {string} propertyName The name of the property to define.
+     * @param {function|object} evaluatorOrOptions The Knockout computed function or computed options object.
+     * @return {KnockoutComputed} The underlying computed observable.
+     */
     function defineProperty(obj, propertyName, evaluatorOrOptions) {
         var ko = this,
             computedOptions = { owner: obj, deferEvaluation: true },
@@ -246,6 +279,11 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
     observableModule.defineProperty = defineProperty;
     observableModule.convertProperty = convertProperty;
     observableModule.convertObject = convertObject;
+
+    /**
+     * Installs the plugin into the view model binder's `beforeBind` hook so that objects are automatically converted before being bound.
+     * @method install
+     */
     observableModule.install = function() {
         var original = viewModelBinder.beforeBind;
 
