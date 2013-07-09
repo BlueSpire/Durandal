@@ -109,11 +109,6 @@
 
         function activateRoute(activator, instance, instruction) {
             rootRouter.navigatingBack = !rootRouter.explicitNavigation && currentActivation != instruction.fragment;
-
-            if(rootRouter.navigatingBack){
-                system.log('Navigating Back');
-            }
-
             router.trigger('router:route:activating', instance, instruction);
 
             activator.activateItem(instance, instruction.params).then(function(succeeded, failData) {
