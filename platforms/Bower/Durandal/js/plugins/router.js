@@ -3,6 +3,18 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
+/**
+ * Connects the history module's url and history tracking support to Durandal's activation and composition engine allowing you to easily build navigation-style applications.
+ * @module router
+ * @requires system
+ * @requires app
+ * @requires activator
+ * @requires events
+ * @requires composition
+ * @requires history
+ * @requires knockout
+ * @requires jquery
+ */
 define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/events', 'durandal/composition', 'plugins/history', 'knockout', 'jquery'], function(system, app, activator, events, composition, history, ko, $) {
     var optionalParam = /\((.*?)\)/g;
     var namedParam = /(\(\?)?:\w+/g;
@@ -36,6 +48,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
     }
 
+    /**
+     * @class Router
+     * @uses Events
+     */
     var createRouter = function() {
         var queue = [],
             isProcessing = ko.observable(false),
@@ -44,10 +60,30 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             activeItem = activator.create();
 
         var router = {
+            /**
+             * The route handlers that are registered. Each handler consists of a `routePattern` and a `callback`.
+             * @property {object[]} handlers
+             */
             handlers: [],
+            /**
+             * The route configs that are registered.
+             * @property {object[]} routes
+             */
             routes: [],
+            /**
+             * The route configurations that have been designated as displayable in a nav ui (nav:true).
+             * @property {KnockoutObservableArray} navigationModel
+             */
             navigationModel: ko.observableArray([]),
+            /**
+             * The active item/screen based on the current navigation state.
+             * @property {Activator} activeItem
+             */
             activeItem: activeItem,
+            /**
+             * Indicates that the router (or a child router) is currently in the process of navigating.
+             * @property {KnockoutComputed} isNavigating
+             */
             isNavigating: ko.computed(function() {
                 var current = activeItem();
                 var processing = isProcessing();
@@ -61,6 +97,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         };
 
         events.includeIn(router);
+
         activeItem.settings.areSameItem = function () {
             return false;
         };
@@ -285,6 +322,12 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             });
         }
 
+        /**
+         * Parses a query string into an object.
+         * @method parseQueryString
+         * @param {string} queryString The query string to parse.
+         * @return {object} An object keyed according to the query string parameters.
+         */
         router.parseQueryString = function (queryString) {
             var queryObject, pairs;
 
@@ -313,15 +356,22 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return queryObject;
         };
 
-        // Add a route to be tested when the fragment changes. Routes added later
-        // may override previous routes.
+        /**
+         * Add a route to be tested when the url fragment changes.
+         * @method route
+         * @param {RegEx} routePattern The route pattern to test against.
+         * @param {function} callback The callback to execute when the route pattern is matched.
+         */
         router.route = function(routePattern, callback) {
             router.handlers.push({ routePattern: routePattern, callback: callback });
         };
 
-        // Attempt to load the current URL fragment. If a route succeeds with a
-        // match, returns `true`. If no defined routes matches the fragment,
-        // returns `false`.
+        /**
+         * Attempt to load the specified URL fragment. If a route succeeds with a match, returns `true`. If no defined routes matches the fragment, returns `false`.
+         * @method loadUrl
+         * @param {string} fragment The URL fragment to find a match for.
+         * @return {boolean} True if a match was found, false otherwise.
+         */
         router.loadUrl = function(fragment) {
             var handlers = router.handlers,
                 queryString = null,
@@ -355,6 +405,12 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return false;
         };
 
+        /**
+         * Updates the document title based on the activated module instance, the routing instruction and the app.title.
+         * @method updateDocumentTitle
+         * @param {object} instance The activated module.
+         * @param {object} instruction The routing instruction associated with the action. It has a `config` property that references the original route mapping config.
+         */
         router.updateDocumentTitle = function(instance, instruction) {
             if (instruction.config.title) {
                 if (app.title) {
@@ -367,11 +423,27 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
         };
 
+        /**
+         * Save a fragment into the hash history, or replace the URL state if the
+         * 'replace' option is passed. You are responsible for properly URL-encoding
+         * the fragment in advance.
+         * The options object can contain `trigger: true` if you wish to have the
+         * route callback be fired (not usually desirable), or `replace: true`, if
+         * you wish to modify the current URL without adding an entry to the history.
+         * @method navigate
+         * @param {string} fragment The url fragment to navigate to.
+         * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option.
+         * @return {boolean} Returns true/false from loading the url.
+         */
         router.navigate = function(fragment, options) {
             rootRouter.explicitNavigation = true;
             return history.navigate(fragment, options);
         };
 
+        /**
+         * Navigates back in the browser history.
+         * @method navigateBack
+         */
         router.navigateBack = function() {
             history.history.back();
         };
@@ -388,14 +460,32 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
         };
 
+        /**
+         * Converts a route to a hash suitable for binding to a link's href.
+         * @method convertRouteToHash
+         * @param {string} route
+         * @return {string} The hash.
+         */
         router.convertRouteToHash = function(route) {
             return "#" + route;
         };
 
+        /**
+         * Converts a route to a module id. This is only called if no module id is supplied as part of the route mapping.
+         * @method convertRouteToModuleId
+         * @param {string} route
+         * @return {string} The module id.
+         */
         router.convertRouteToModuleId = function(route) {
             return stripParametersFromRoute(route);
         };
 
+        /**
+         * Converts a route to a displayable title. This is only callef if no title is specified as part of the route mapping.
+         * @method convertRouteToTitle
+         * @param {string} route
+         * @return {string} The title.
+         */
         router.convertRouteToTitle = function(route) {
             var value = stripParametersFromRoute(route);
             return value.substring(0, 1).toUpperCase() + value.substring(1);
@@ -545,6 +635,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         return router;
     };
 
+    /**
+     * @class RouterModule
+     * @extends Router
+     * @static
+     */
     rootRouter = createRouter();
     rootRouter.explicitNavigation = false;
     rootRouter.navigatingBack = false;
