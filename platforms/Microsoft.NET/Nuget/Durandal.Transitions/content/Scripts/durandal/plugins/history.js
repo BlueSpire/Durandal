@@ -3,6 +3,12 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
+/**
+ * Abstracts away the low level details of working with browser history and url changes in order to provide a solid foundation for a router.
+ * @module history
+ * @requires system
+ * @requires jquery
+ */
 define(['durandal/system', 'jquery'], function (system, $) {
     // Cached regex for stripping a leading hash/slash and trailing space.
     var routeStripper = /^[#\/]|\s+$/g;
@@ -28,8 +34,21 @@ define(['durandal/system', 'jquery'], function (system, $) {
         }
     };
 
+    /**
+     * @class HistoryModule
+     * @static
+     */
     var history = {
+        /**
+         * The setTimeout interval used when the browser does not support hash change events.
+         * @property {string} interval
+         * @default 50
+         */
         interval: 50,
+        /**
+         * Indicates whether or not the history module is actively tracking history.
+         * @property {string} active
+         */
         active: false
     };
     
@@ -38,16 +57,25 @@ define(['durandal/system', 'jquery'], function (system, $) {
         history.location = window.location;
         history.history = window.history;
     }
-    
-    // Gets the true hash value. Cannot use location.hash directly due to bug
-    // in Firefox where location.hash will always be decoded.
+
+    /**
+     * Gets the true hash value. Cannot use location.hash directly due to a bug in Firefox where location.hash will always be decoded.
+     * @method getHash
+     * @param {string} [window] The optional window instance
+     * @return {string} The hash.
+     */
     history.getHash = function(window) {
         var match = (window || history).location.href.match(/#(.*)$/);
         return match ? match[1] : '';
     };
     
-    // Get the cross-browser normalized URL fragment, either from the URL,
-    // the hash, or the override.
+    /**
+     * Get the cross-browser normalized URL fragment, either from the URL, the hash, or the override.
+     * @method getFragment
+     * @param {string} fragment The fragment.
+     * @param {boolean} forcePushState Should we force push state?
+     * @return {string} he fragment.
+     */
     history.getFragment = function(fragment, forcePushState) {
         if (fragment == null) {
             if (history._hasPushState || !history._wantsHashChange || forcePushState) {
@@ -64,8 +92,12 @@ define(['durandal/system', 'jquery'], function (system, $) {
         return fragment.replace(routeStripper, '');
     };
 
-    // Activate the hash change handling, returning `true` if the current URL matches
-    // an existing route, and `false` otherwise.
+    /**
+     * Activate the hash change handling, returning `true` if the current URL matches an existing route, and `false` otherwise.
+     * @method activate
+     * @param {HistoryOptions} options.
+     * @return {boolean|undefined} Returns true/false from loading the url unless the silent option was selected.
+     */
     history.activate = function(options) {
         if (history.active) {
             throw new Error("History has already been activated.");
@@ -131,18 +163,23 @@ define(['durandal/system', 'jquery'], function (system, $) {
             return history.loadUrl();
         }
     };
-    
-    // Disable history, perhaps temporarily. Not useful in a real app,
-    // but possibly useful for unit testing Routers.
+
+    /**
+     * Disable history, perhaps temporarily. Not useful in a real app, but possibly useful for unit testing Routers.
+     * @method deactivate
+     */
     history.deactivate = function() {
         $(window).off('popstate', history.checkUrl).off('hashchange', history.checkUrl);
         clearInterval(history._checkUrlInterval);
         history.active = false;
     };
-    
-    // Checks the current URL to see if it has changed, and if it has,
-    // calls `loadUrl`, normalizing across the hidden iframe.
-    history.checkUrl = function(e) {
+
+    /**
+     * Checks the current URL to see if it has changed, and if it has, calls `loadUrl`, normalizing across the hidden iframe.
+     * @method checkUrl
+     * @return {boolean} Returns true/false from loading the url.
+     */
+    history.checkUrl = function() {
         var current = history.getFragment();
         if (current === history.fragment && history.iframe) {
             current = history.getFragment(history.getHash(history.iframe));
@@ -159,7 +196,11 @@ define(['durandal/system', 'jquery'], function (system, $) {
         history.loadUrl();
     };
     
-    // Attempt to load the current URL fragment. Pass it to options.routeHandler
+    /**
+     * Attempts to load the current URL fragment. A pass-through to options.routeHandler.
+     * @method loadUrl
+     * @return {boolean} Returns true/false from the route handler.
+     */
     history.loadUrl = function(fragmentOverride) {
         var fragment = history.fragment = history.getFragment(fragmentOverride);
 
@@ -167,14 +208,19 @@ define(['durandal/system', 'jquery'], function (system, $) {
             history.options.routeHandler(fragment) :
             false;
     };
-    
-    // Save a fragment into the hash history, or replace the URL state if the
-    // 'replace' option is passed. You are responsible for properly URL-encoding
-    // the fragment in advance.
-    //
-    // The options object can contain `trigger: true` if you wish to have the
-    // route callback be fired (not usually desirable), or `replace: true`, if
-    // you wish to modify the current URL without adding an entry to the history.
+
+    /**
+     * Save a fragment into the hash history, or replace the URL state if the
+     * 'replace' option is passed. You are responsible for properly URL-encoding
+     * the fragment in advance.
+     * The options object can contain `trigger: true` if you wish to have the
+     * route callback be fired (not usually desirable), or `replace: true`, if
+     * you wish to modify the current URL without adding an entry to the history.
+     * @method navigate
+     * @param {string} fragment The url fragment to navigate to.
+     * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option.
+     * @return {boolean} Returns true/false from loading the url.
+     */
     history.navigate = function(fragment, options) {
         if (!history.active) {
             return false;
@@ -223,6 +269,39 @@ define(['durandal/system', 'jquery'], function (system, $) {
             return history.loadUrl(fragment);
         }
     };
+
+    /**
+     * @class HistoryOptions
+     * @static
+     */
+
+    /**
+     * The function that will be called back when the fragment changes.
+     * @property {function} routeHandler
+     */
+
+    /**
+     * The url root used to extract the fragment when using push state.
+     * @property {string} root
+     */
+
+    /**
+     * Use hash change when present.
+     * @property {boolean} hashChange
+     * @default true
+     */
+
+    /**
+     * Use push state when present.
+     * @property {boolean} pushState
+     * @default false
+     */
+
+    /**
+     * Prevents loading of the current url when activating history.
+     * @property {boolean} silent
+     * @default false
+     */
 
     return history;
 });
