@@ -47,6 +47,61 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      * @class Router
      * @uses Events
      */
+
+    /**
+     * Triggered when the navigation logic has completed.
+     * @event router:navigation:complete
+     * @param {object} instance The activated instance.
+     * @param {object} instruction The routing instruction.
+     * @param {Router} router The router.
+     */
+
+    /**
+     * Triggered when the navigation has been cancelled.
+     * @event router:navigation:cancelled
+     * @param {object} instance The activated instance.
+     * @param {object} instruction The routing instruction.
+     * @param {Router} router The router.
+     */
+
+    /**
+     * Triggered right before a route is activated.
+     * @event router:route:activating
+     * @param {object} instance The activated instance.
+     * @param {object} instruction The routing instruction.
+     * @param {Router} router The router.
+     */
+
+    /**
+     * Triggered right before a route is configured.
+     * @event router:route:before-config
+     * @param {object} config The route config.
+     * @param {Router} router The router.
+     */
+
+    /**
+     * Triggered just after a route is configured.
+     * @event router:route:after-config
+     * @param {object} config The route config.
+     * @param {Router} router The router.
+     */
+
+    /**
+     * Triggered when the view for the activated instance is attached.
+     * @event router:navigation:attached
+     * @param {object} instance The activated instance.
+     * @param {object} instruction The routing instruction.
+     * @param {Router} router The router.
+     */
+
+    /**
+     * Triggered when the composition that the activated instance participates in is complete.
+     * @event router:navigation:composition-complete
+     * @param {object} instance The activated instance.
+     * @param {object} instruction The routing instruction.
+     * @param {Router} router The router.
+     */
+
     var createRouter = function() {
         var queue = [],
             isProcessing = ko.observable(false),
@@ -146,7 +201,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         function activateRoute(activator, instance, instruction) {
             rootRouter.navigatingBack = !rootRouter.explicitNavigation && currentActivation != instruction.fragment;
-            router.trigger('router:route:activating', instance, instruction);
+            router.trigger('router:route:activating', instance, instruction, router);
 
             activator.activateItem(instance, instruction.params).then(function(succeeded, failData) {
                 if (succeeded) {
@@ -486,10 +541,18 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return value.substring(0, 1).toUpperCase() + value.substring(1);
         };
 
-        // Manually bind a single named route to a module. For example:
-        //
-        //     router.map('search/:query/p:num', 'viewmodels/search');
-        //
+        /**
+         * Maps route patterns to modules.
+         * @method map
+         * @param {string|object|object[]} route A route, config or array of configs.
+         * @param {object} [config] The config for the specified route.
+         * @chainable
+         * @example
+         router.map([
+            { route: '', title:'Home', moduleId: 'homeScreen', nav: true },
+            { route: 'customer/:id', moduleId: 'customerDetails'}
+         ]);
+         */
         router.map = function(route, config) {
             if (system.isArray(route)) {
                 for (var i = 0; i < route.length; i++) {
@@ -514,6 +577,12 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return mapRoute(config);
         };
 
+        /**
+         * Builds an observable array designed to bind a navigation UI to. The model will exist in the `navigationModel` property.
+         * @method buildNavigationModel
+         * @param {number} defaultOrder The default order to use for navigation visible routes that don't specify an order. The defualt is 100.
+         * @chainable
+         */
         router.buildNavigationModel = function(defaultOrder) {
             var nav = [], routes = router.routes;
             defaultOrder = defaultOrder || 100;
@@ -537,6 +606,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return router;
         };
 
+        /**
+         * Configures how the router will handle unknown routes.
+         * @method mapUnknownRoutes
+         * @param {string|function} [config] If not supplied, then the router will map routes to modules with the same name.
+         * If a string is supplied, it represents the module id to route all unknown routes to.
+         * Finally, if config is a function, it will be called back with the route instruction containing the route info. The function can then modify the instruction by adding a moduleId and the router will take over from there.
+         * @chainable
+         */
         router.mapUnknownRoutes = function(config) {
             var route = "*catchall";
             var routePattern = routeStringToRegExp(route);
@@ -582,12 +659,21 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return router;
         };
 
+        /**
+         * Resets the router by removing handlers, routes and previously configured options.
+         * @method reset
+         */
         router.reset = function() {
             router.handlers = [];
             router.routes = [];
             delete router.options;
         };
 
+        /**
+         * Makes all configured routes and/or module ids relative to a certain base url.
+         * @method makeRelative
+         * @param {string|object} settings If string, the value is used as the base for routes and module ids. If an object, you can specify route and/or moduleId separately.
+         */
         router.makeRelative = function(settings){
             if(system.isString(settings)){
                 settings = {
@@ -621,6 +707,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return this;
         };
 
+        /**
+         * Creates a child router.
+         * @method createChildRouter
+         * @return {Router} The child router.
+         */
         router.createChildRouter = function() {
             var childRouter = createRouter();
             childRouter.parent = router;
@@ -639,6 +730,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     rootRouter.explicitNavigation = false;
     rootRouter.navigatingBack = false;
 
+    /**
+     * Activates the router and the underlying history tracking mechanism.
+     * @method activate
+     * @return {Promise} A promise that resolves when the router is ready.
+     */
     rootRouter.activate = function(options) {
         return system.defer(function(dfd) {
             startDeferred = dfd;
@@ -650,10 +746,18 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         }).promise();
     };
 
+    /**
+     * Disable history, perhaps temporarily. Not useful in a real app, but possibly useful for unit testing Routers.
+     * @method deactivate
+     */
     rootRouter.deactivate = function() {
         history.deactivate();
     };
 
+    /**
+     * Installs the router's custom ko binding handler.
+     * @method install
+     */
     rootRouter.install = function(){
         ko.bindingHandlers.router = {
             init: function() {
