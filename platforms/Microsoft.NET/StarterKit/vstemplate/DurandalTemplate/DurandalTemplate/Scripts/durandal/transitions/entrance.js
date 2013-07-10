@@ -3,6 +3,13 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
+/**
+ * The entrance transition module.
+ * @module entrance
+ * @requires system
+ * @requires composition
+ * @requires jquery
+ */
 define(['durandal/system', 'durandal/composition', 'jquery'], function(system, composition, $) {
     var fadeOutDuration = 100;
     var endValues = {
@@ -17,6 +24,10 @@ define(['durandal/system', 'durandal/composition', 'jquery'], function(system, c
         display: ''
     };
 
+    /**
+     * @class EntranceModule
+     * @constructor
+     */
     var entrance = function(context) {
         return system.defer(function(dfd) {
             function endTransition() {

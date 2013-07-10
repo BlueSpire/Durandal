@@ -1,4 +1,11 @@
-﻿define(['durandal/system', 'durandal/composition', 'jquery'], function(system, composition, $) {
+﻿/**
+ * The entrance transition module.
+ * @module entrance
+ * @requires system
+ * @requires composition
+ * @requires jquery
+ */
+define(['durandal/system', 'durandal/composition', 'jquery'], function(system, composition, $) {
     var fadeOutDuration = 100;
     var endValues = {
         marginRight: 0,
@@ -12,6 +19,10 @@
         display: ''
     };
 
+    /**
+     * @class EntranceModule
+     * @constructor
+     */
     var entrance = function(context) {
         return system.defer(function(dfd) {
             function endTransition() {

@@ -11,6 +11,7 @@
 define(['durandal/system'], function(system) {
     /**
      * @class SerializerModule
+     * @static
      */
     return {
         /**
