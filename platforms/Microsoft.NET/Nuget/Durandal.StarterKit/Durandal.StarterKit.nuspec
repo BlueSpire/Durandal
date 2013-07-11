@@ -6,7 +6,7 @@
         <title>Durandal StarterKit</title>
         <authors>Rob Eisenberg</authors>
         <owners>EisenbergEffect</owners>
-        <licenseUrl>https://raw.github.com/EisenbergEffect/Durandal/master/License.txt</licenseUrl>
+        <licenseUrl>https://raw.github.com/BlueSpire/Durandal/master/License.txt</licenseUrl>
         <projectUrl>http://www.durandaljs.com</projectUrl>
         <iconUrl>http://durandaljs.com/images/icon_128.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
