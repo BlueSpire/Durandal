@@ -45,7 +45,7 @@ Durandal is built on jQuery, Knockout and RequireJS. So, you have all the power 
 available to you to build your application. Additionally, this template uses SammyJS for navigation. It also
 provides you with a powerful CSS framework to get started with: Bootstrap, which has been augmented
 with Font-Awesome to supply you with hundreds of font-based (vector) icons applicable with a simple 
-CSS class. Durandal builds on top of this by providng you with a consistent API specifically designed for
+CSS class. Durandal builds on top of this by providing you with a consistent API specifically designed for
 SPA development. The API uses promises for all asynchronous code, highly favors modularization and
 composition, and gives you a simple convention for organizing and easily optimizing your project. All of Durandal is
 provided as AMD modules, each of which has it's API documented on web site at http://durandaljs.com/pages/docs. 
