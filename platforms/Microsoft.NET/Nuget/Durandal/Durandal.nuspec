@@ -22,7 +22,7 @@ Features
 -App Bundling and Optimization
 -Use any Backend Technology
 -Built on top of jQuery, Knockout &amp; RequireJS.
--Integrates with popular CSS libraries such as Bootstrap.
+-Integrates with popular CSS libraries such as Bootstrap and Foundation.
 -Make your own templatable and data-bindable widgets.</description>
         <summary>Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain.</summary>
         <copyright>Copyright (c) 2012 Blue Spire Consulting, Inc.</copyright>
