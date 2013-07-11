@@ -9,6 +9,6 @@
             "./src/plugins/js/",
             "./src/transitions/js/"
         ],
-        "outdir": "./dist/apidocs"
+        "outdir": "./docs/api"
     }
 }
