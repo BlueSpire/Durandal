@@ -3,18 +3,12 @@
         'text': '../Scripts/text',
         'durandal': '../Scripts/durandal',
         'plugins': '../Scripts/durandal/plugins',
-        'transitions': '../Scripts/durandal/transitions',
-        'knockout': '../Scripts/knockout-2.2.1',
-        'bootstrap': '../Scripts/bootstrap',
-        'jquery': '../Scripts/jquery-1.9.1'
-    },
-    shim: {
-        'bootstrap': {
-            deps: ['jquery'],
-            exports: 'jQuery'
-        }
+        'transitions': '../Scripts/durandal/transitions'
     }
 });
+
+define('jquery', [], function() { return jQuery; });
+define('knockout', [], function () { return ko; });
 
 define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (system, app, viewLocator) {
     //>>excludeStart("build", true);
