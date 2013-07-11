@@ -48,6 +48,24 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
     }
 
+    function compareArrays(first, second) {
+        if (!first || !second){
+            return false;
+        }
+
+        if (first.length != second.length) {
+            return false;
+        }
+
+        for (var i = 0, len = first.length; i < len; i++) {
+            if (first[i] != second[i]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * @class Router
      * @uses Events
@@ -155,7 +173,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         activeItem.settings.areSameItem = function (currentItem, newItem, currentActivationData, newActivationData) {
             if (currentItem == newItem) {
-                return ko.utils.compareArrays(currentActivationData, newActivationData);
+                return compareArrays(currentActivationData, newActivationData);
             }
 
             return false;
