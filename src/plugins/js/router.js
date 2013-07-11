@@ -686,6 +686,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @method reset
          */
         router.reset = function() {
+            currentInstruction = currentActivation = undefined;
             router.handlers = [];
             router.routes = [];
             delete router.options;
