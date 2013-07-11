@@ -148,7 +148,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         events.includeIn(router);
 
-        activeItem.settings.areSameItem = function () {
+        activeItem.settings.areSameItem = function (currentItem, newItem, currentActivationData, newActivationData) {
+            if (currentItem == newItem) {
+                return ko.utils.compareArrays(currentActivationData, newActivationData);
+            }
+
             return false;
         };
 

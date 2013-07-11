@@ -186,6 +186,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
      */
     function createActivator(initialActiveItem, settings) {
         var activeItem = ko.observable(null);
+        var activeData;
 
         settings = ensureSettings(settings);
 
@@ -261,10 +262,10 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          * Activates the specified item.
          * @method activateItem
          * @param {object} newItem The item to activate.
-         * @param {object} activationData Data associated with the activation.
+         * @param {object} newActivationData Data associated with the activation.
          * @return {promise}
          */
-        computed.activateItem = function (newItem, activationData) {
+        computed.activateItem = function (newItem, newActivationData) {
             var viaSetter = computed.viaSetter;
             computed.viaSetter = false;
 
@@ -277,7 +278,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 computed.isActivating(true);
 
                 var currentItem = activeItem();
-                if (settings.areSameItem(currentItem, newItem, activationData)) {
+                if (settings.areSameItem(currentItem, newItem, activeData, newActivationData)) {
                     computed.isActivating(false);
                     dfd.resolve(true);
                     return;
@@ -285,16 +286,17 @@ define(['durandal/system', 'knockout'], function (system, ko) {
 
                 computed.canDeactivateItem(currentItem, settings.closeOnDeactivate).then(function (canDeactivate, canDeactivateData) {
                     if (canDeactivate) {
-                        computed.canActivateItem(newItem, activationData).then(function (canActivate, canActivateData) {
+                        computed.canActivateItem(newItem, newActivationData).then(function (canActivate, canActivateData) {
                             if (canActivate) {
                                 system.defer(function (dfd2) {
                                     deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2);
                                 }).promise().then(function () {
-                                    newItem = settings.beforeActivate(newItem, activationData);
+                                    newItem = settings.beforeActivate(newItem, newActivationData);
                                     activate(newItem, activeItem, function (result) {
+                                        activeData = newActivationData;
                                         computed.isActivating(false);
                                         dfd.resolve(result);
-                                    }, activationData);
+                                    }, newActivationData);
                                 });
                             } else {
                                 if (viaSetter) {
@@ -540,10 +542,11 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          * @method areSameItem
          * @param {object} currentItem
          * @param {object} newItem
-         * @param {object} activationData
+         * @param {object} currentActivationData
+         * @param {object} newActivationData
          * @return {boolean}
          */
-        areSameItem: function (currentItem, newItem, activationData) {
+        areSameItem: function (currentItem, newItem, currentActivationData, newActivationData) {
             return currentItem == newItem;
         },
         /**
