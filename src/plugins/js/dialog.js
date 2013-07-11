@@ -351,9 +351,10 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * This function is called after the modal is fully composed into the DOM, allowing your implementation to do any final modifications, such as positioning or animation. You can obtain the original dialog object by using `getDialog` on context.model.
          * @method compositionComplete
          * @param {DOMElement} child The dialog view.
+         * @param {DOMElement} parent The parent view.
          * @param {object} context The composition context.
          */
-        compositionComplete: function (child, context) {
+        compositionComplete: function (child, parent, context) {
             var $child = $(child);
             var width = $child.width();
             var height = $child.height();

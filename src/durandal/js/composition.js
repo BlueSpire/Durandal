@@ -110,20 +110,20 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
             if (context.composingNewView && context.model) {
                 if (context.model.compositionComplete) {
                     composition.current.complete(function () {
-                        context.model.compositionComplete(context.child, context);
+                        context.model.compositionComplete(context.child, context.parent, context);
                     });
                 }
 
                 if (context.model.detached) {
                     ko.utils.domNodeDisposal.addDisposeCallback(context.child, function () {
-                        context.model.detached(context.child, context);
+                        context.model.detached(context.child, context.parent, context);
                     });
                 }
             }
 
             if (context.compositionComplete) {
                 composition.current.complete(function () {
-                    context.compositionComplete(context.child, context);
+                    context.compositionComplete(context.child, context.parent, context);
                 });
             }
         }
