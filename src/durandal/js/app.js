@@ -14,16 +14,14 @@ define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'duran
 
     function loadPlugins(){
         return system.defer(function(dfd){
-            var results = [], i;
-
             if(allPluginIds.length == 0){
                 dfd.resolve();
                 return;
             }
 
-            system.acquire.apply(system, allPluginIds).then(function(){
-                for(i = 0; i < arguments.length; i++){
-                    var currentModule = arguments[i];
+            system.acquire(allPluginIds).then(function(loaded){
+                for(var i = 0; i < loaded.length; i++){
+                    var currentModule = loaded[i];
 
                     if(currentModule.install){
                         var config = allPluginConfigs[i];
@@ -31,16 +29,14 @@ define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'duran
                             config = {};
                         }
 
-                        var result = currentModule.install(config);
-                        results.push(result);
-                        delete currentModule.install;
+                        currentModule.install(config);
                         system.log('Plugin:Installed ' + allPluginIds[i]);
                     }else{
                         system.log('Plugin:Loaded ' + allPluginIds[i]);
                     }
                 }
 
-                $.when(results).then(dfd.resolve);
+                dfd.resolve();
             }).fail(function(err){
                 system.error('Failed to load plugins. Details: ' + err.message);
             });

@@ -229,18 +229,32 @@ define(['require', 'jquery'], function(require, $) {
             });
         },
         /**
-         * Uses require.js to obtain a module. This function returns a promise which resolves with the module instance. You can pass more than one module id to this function. If more than one is passed, then the promise will resolve with one callback parameter per module.
+         * Uses require.js to obtain a module. This function returns a promise which resolves with the module instance. You can pass more than one module id to this function or an array of ids. If more than one or an array is passed, then the promise will resolve with an array of module instances.
          * @method acquire
-         * @param {string} moduleId* The id(s) of the modules to load.
+         * @param {string|string[]} moduleId The id(s) of the modules to load.
          * @return {Promise} A promise for the loaded module(s).
          */
         acquire: function() {
-            var modules = slice.call(arguments, 0);
+            var modules,
+                first = arguments[0],
+                arrayRequest = false;
+
+            if(system.isArray(first)){
+                modules = first;
+                arrayRequest = true;
+            }else{
+                modules = slice.call(arguments, 0);
+            }
+
             return this.defer(function(dfd) {
                 require(modules, function() {
                     var args = arguments;
                     setTimeout(function() {
-                        dfd.resolve.apply(dfd, args);
+                        if(args.length > 1 || arrayRequest){
+                            dfd.resolve(slice.call(args, 0));
+                        }else{
+                            dfd.resolve(args[0]);
+                        }
                     }, 1);
                 }, function(err){
                     dfd.reject(err);
@@ -379,8 +393,8 @@ define(['require', 'jquery'], function(require, $) {
      */
 
     /**
-     * Determines if the specified object is a RegExp.
-     * @method isRegExp
+     * Determines if the specified object is a boolean.
+     * @method isBoolean
      * @param {object} object The object to check.
      * @return {boolean} True if matches the type, false otherwise.
      */

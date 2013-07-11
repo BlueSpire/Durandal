@@ -7,6 +7,13 @@ namespace $rootnamespace$ {
       bundles.IgnoreList.Clear();
       AddDefaultIgnorePatterns(bundles.IgnoreList);
 
+	  bundles.Add(
+		new ScriptBundle("~/Scripts/vendor.js")
+			.Include("~/Scripts/jquery-{version}.js")
+			.Include("~/Scripts/bootstrap.js")
+			.Include("~/Scripts/knockout-{version}.js")
+		);
+
       bundles.Add(
         new StyleBundle("~/Content/css")
           .Include("~/Content/ie10mobile.css")
