@@ -214,7 +214,14 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                                             dialogCount--;
                                             dialogContext.removeHost(theDialog);
                                             delete instance.__dialog__;
-                                            dfd.resolve.apply(dfd, args);
+
+                                            if(args.length == 0){
+                                                dfd.resolve();
+                                            }else if(args.length == 1){
+                                                dfd.resolve(args[0])
+                                            }else{
+                                                dfd.resolve.apply(dfd, args);
+                                            }
                                         }
                                     });
                                 }

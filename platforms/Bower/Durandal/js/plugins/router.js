@@ -224,7 +224,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     if (previousActivation == instance) {
                         router.attached();
                     }
-                } else if(failData.redirect){
+                } else if(failData && failData.redirect){
                     redirect(failData.redirect);
                 }else{
                     cancelNavigation(instance, instruction);
