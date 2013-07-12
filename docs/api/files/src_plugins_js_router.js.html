@@ -854,6 +854,7 @@ define([&#x27;durandal/system&#x27;, &#x27;durandal/app&#x27;, &#x27;durandal/ac
          * @method reset
          */
         router.reset = function() {
+            currentInstruction = currentActivation = undefined;
             router.handlers = [];
             router.routes = [];
             delete router.options;

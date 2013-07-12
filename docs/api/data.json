@@ -428,7 +428,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src\\plugins\\js\\router.js",
-            "line": 746,
+            "line": 747,
             "description": "Connects the history module's url and history tracking support to Durandal's activation and composition engine allowing you to easily build navigation-style applications.",
             "requires": [
                 "system",
@@ -809,7 +809,7 @@
             "module": "router",
             "namespace": "",
             "file": "src\\plugins\\js\\router.js",
-            "line": 746,
+            "line": 747,
             "extends": "Router",
             "static": 1
         },
@@ -3727,7 +3727,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 694,
+            "line": 695,
             "description": "Makes all configured routes and/or module ids relative to a certain base url.",
             "itemtype": "method",
             "name": "makeRelative",
@@ -3743,7 +3743,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 732,
+            "line": 733,
             "description": "Creates a child router.",
             "itemtype": "method",
             "name": "createChildRouter",
@@ -3756,7 +3756,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 755,
+            "line": 756,
             "description": "Activates the router and the underlying history tracking mechanism.",
             "itemtype": "method",
             "name": "activate",
@@ -3769,7 +3769,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 771,
+            "line": 772,
             "description": "Disable history, perhaps temporarily. Not useful in a real app, but possibly useful for unit testing Routers.",
             "itemtype": "method",
             "name": "deactivate",
@@ -3778,7 +3778,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 779,
+            "line": 780,
             "description": "Installs the router's custom ko binding handler.",
             "itemtype": "method",
             "name": "install",
