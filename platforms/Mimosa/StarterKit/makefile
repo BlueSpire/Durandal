@@ -40,13 +40,13 @@ dist:
 	@mimosa clean --force
 	@$(build) -om
 	rm -Rf dist
-    cp -R public dist
-    cp views\index-optimize.html dist\index.html
+	cp -R public dist
+	cp views/index-optimize.html dist/index.html
 
 distribute:
 	@echo "[x] Building and distributing application..."
 	@mimosa clean --force
 	@$(build) -om
 	rm -Rf dist
-    cp -R public dist
-    cp views\index-optimize.html dist\index.html
+	cp -R public dist
+	cp views/index-optimize.html dist/index.html
