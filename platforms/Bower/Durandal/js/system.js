@@ -358,6 +358,16 @@ define(['require', 'jquery'], function(require, $) {
     };
 
     /**
+     * Determines if the specified object is a promise.
+     * @method isPromise
+     * @param {object} object The object to check.
+     * @return {boolean} True if matches the type, false otherwise.
+     */
+    system.isPromise = function(obj) {
+        return obj && system.isFunction(obj.then);
+    };
+
+    /**
      * Determines if the specified object is a function arguments object.
      * @method isArguments
      * @param {object} object The object to check.

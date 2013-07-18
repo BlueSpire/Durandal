@@ -18,7 +18,8 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
         arrayMethods = ['pop', 'reverse', 'sort', 'shift', 'splice'],
         additiveArrayFunctions = ['push', 'unshift'],
         arrayProto = Array.prototype,
-        observableArrayFunctions = ko.observableArray.fn;
+        observableArrayFunctions = ko.observableArray.fn,
+        logConversion = false;
 
     /**
      * You can call observable(obj, propertyName) to get the observable function for the specified property on the object.
@@ -158,7 +159,30 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
             }
         }
 
-        system.log('Converted', obj);
+        if(logConversion) {
+            system.log('Converted', obj);
+        }
+    }
+
+    function innerSetter(observable, newValue, isArray) {
+        var val;
+        observable(newValue);
+        val = observable.peek();
+
+        //if this was originally an observableArray, then always check to see if we need to add/replace the array methods (if newValue was an entirely new array)
+        if (isArray) {
+            if (!val.destroyAll) {
+                //don't allow null, force to an empty array
+                if (!val) {
+                    val = [];
+                    observable(val);
+                }
+
+                makeObservableArray(val, observable);
+            }
+        } else {
+            convertObject(val);
+        }
     }
 
     /**
@@ -188,6 +212,18 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
             }else{
                 return null;
             }
+        } else if(system.isPromise(original)) {
+            observable = ko.observable();
+
+            original.then(function (result) {
+                if(system.isArray(result)) {
+                    var oa = ko.observableArray(result);
+                    makeObservableArray(result, oa);
+                    result = oa;
+                }
+
+                observable(result);
+            });
         } else {
             observable = ko.observable(original);
             convertObject(original);
@@ -197,24 +233,13 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
             configurable: true,
             enumerable: true,
             get: observable,
-            set: ko.isWriteableObservable(observable) ? (function(newValue) {
-                var val;
-                observable(newValue);
-                val = observable.peek();
-
-                //if this was originally an observableArray, then always check to see if we need to add/replace the array methods (if newValue was an entirely new array)
-                if (isArray) {
-                    if (!val.destroyAll) {
-                        //don't allow null, force to an empty array
-                        if (!val) {
-                            val = [];
-                            observable(val);
-                        }
-
-                        makeObservableArray(val, observable);
-                    }
+            set: ko.isWriteableObservable(observable) ? (function (newValue) {
+                if (newValue && system.isPromise(newValue)) {
+                    newValue.then(function (result) {
+                        innerSetter(observable, result, system.isArray(result));
+                    });
                 } else {
-                    convertObject(val);
+                    innerSetter(observable, newValue, isArray);
                 }
             }) : undefined
         });
@@ -289,16 +314,18 @@ define(['durandal/system', 'durandal/viewModelBinder', 'knockout'], function(sys
      * Installs the plugin into the view model binder's `beforeBind` hook so that objects are automatically converted before being bound.
      * @method install
      */
-    observableModule.install = function() {
+    observableModule.install = function(options) {
         var original = viewModelBinder.beforeBind;
 
         viewModelBinder.beforeBind = function(obj, view, instruction) {
-            if(instruction.applyBindings){
+            if(instruction.applyBindings && ! instruction.skipConversion){
                 convertObject(obj);
             }
 
             original(obj, view);
         };
+
+        logConversion = options.logConversion;
     };
 
     return observableModule;

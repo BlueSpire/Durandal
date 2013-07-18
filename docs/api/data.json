@@ -409,7 +409,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src\\plugins\\js\\observable.js",
-            "line": 18,
+            "line": 19,
             "description": "Enables automatic observability of plain javascript object for ES5 compatible browsers.",
             "requires": [
                 "system",
@@ -779,7 +779,7 @@
             "module": "observable",
             "namespace": "",
             "file": "src\\plugins\\js\\observable.js",
-            "line": 18,
+            "line": 19,
             "description": "You can call observable(obj, propertyName) to get the observable function for the specified property on the object."
         },
         "Router": {
@@ -1949,6 +1949,26 @@
         {
             "file": "src\\durandal\\js\\system.js",
             "line": 355,
+            "description": "Determines if the specified object is a promise.",
+            "itemtype": "method",
+            "name": "isPromise",
+            "params": [
+                {
+                    "name": "object",
+                    "description": "The object to check.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "True if matches the type, false otherwise.",
+                "type": "Boolean"
+            },
+            "class": "SystemModule",
+            "module": "system"
+        },
+        {
+            "file": "src\\durandal\\js\\system.js",
+            "line": 365,
             "description": "Determines if the specified object is a function arguments object.",
             "itemtype": "method",
             "name": "isArguments",
@@ -1968,7 +1988,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 362,
+            "line": 372,
             "description": "Determines if the specified object is a function.",
             "itemtype": "method",
             "name": "isFunction",
@@ -1988,7 +2008,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 369,
+            "line": 379,
             "description": "Determines if the specified object is a string.",
             "itemtype": "method",
             "name": "isString",
@@ -2008,7 +2028,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 376,
+            "line": 386,
             "description": "Determines if the specified object is a number.",
             "itemtype": "method",
             "name": "isNumber",
@@ -2028,7 +2048,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 383,
+            "line": 393,
             "description": "Determines if the specified object is a date.",
             "itemtype": "method",
             "name": "isDate",
@@ -2048,7 +2068,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 390,
+            "line": 400,
             "description": "Determines if the specified object is a boolean.",
             "itemtype": "method",
             "name": "isBoolean",
@@ -3173,7 +3193,7 @@
         },
         {
             "file": "src\\plugins\\js\\observable.js",
-            "line": 116,
+            "line": 117,
             "description": "Converts an entire object into an observable object by re-writing its attributes using ES5 getters and setters. Attributes beginning with '_' or '$' are ignored.",
             "itemtype": "method",
             "name": "convertObject",
@@ -3189,7 +3209,7 @@
         },
         {
             "file": "src\\plugins\\js\\observable.js",
-            "line": 159,
+            "line": 183,
             "description": "Converts a normal property into an observable property using ES5 getters and setters.",
             "itemtype": "method",
             "name": "convertProperty",
@@ -3220,7 +3240,7 @@
         },
         {
             "file": "src\\plugins\\js\\observable.js",
-            "line": 221,
+            "line": 246,
             "description": "Defines a computed property using ES5 getters and setters.",
             "itemtype": "method",
             "name": "defineProperty",
@@ -3250,7 +3270,7 @@
         },
         {
             "file": "src\\plugins\\js\\observable.js",
-            "line": 283,
+            "line": 308,
             "description": "Installs the plugin into the view model binder's `beforeBind` hook so that objects are automatically converted before being bound.",
             "itemtype": "method",
             "name": "install",
