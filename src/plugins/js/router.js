@@ -634,20 +634,21 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @param {string|function} [config] If not supplied, then the router will map routes to modules with the same name.
          * If a string is supplied, it represents the module id to route all unknown routes to.
          * Finally, if config is a function, it will be called back with the route instruction containing the route info. The function can then modify the instruction by adding a moduleId and the router will take over from there.
+         * @param {string} [replaceRoute] If config is a module id, then you can optionally provide a route to replace the url with.
          * @chainable
          */
-        router.mapUnknownRoutes = function(config) {
-            var route = "*catchall";
-            var routePattern = routeStringToRegExp(route);
+        router.mapUnknownRoutes = function(config, replaceRoute) {
+            var catchAllRoute = "*catchall";
+            var catchAllPattern = routeStringToRegExp(catchAllRoute);
             
-            router.route(routePattern, function (fragment, queryString) {
-                var paramInfo = createParams(routePattern, fragment, queryString);
+            router.route(catchAllPattern, function (fragment, queryString) {
+                var paramInfo = createParams(catchAllPattern, fragment, queryString);
                 var instruction = {
                     fragment: fragment,
                     queryString: queryString,
                     config: {
-                        route: route,
-                        routePattern: routePattern
+                        route: catchAllRoute,
+                        routePattern: catchAllPattern
                     },
                     params: paramInfo.params,
                     queryParams: paramInfo.queryParams
@@ -657,6 +658,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     instruction.config.moduleId = fragment;
                 } else if (system.isString(config)) {
                     instruction.config.moduleId = config;
+                    if(replaceRoute){
+                        history.navigate(replaceRoute, { trigger:false, replace:true });
+                    }
                 } else if (system.isFunction(config)) {
                     var result = config(instruction);
                     if (result && result.then) {
@@ -669,8 +673,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     }
                 } else {
                     instruction.config = config;
-                    instruction.config.route = route;
-                    instruction.config.routePattern = routePattern;
+                    instruction.config.route = catchAllRoute;
+                    instruction.config.routePattern = catchAllPattern;
                 }
 
                 router.trigger('router:route:before-config', instruction.config, router);
@@ -682,7 +686,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         };
 
         /**
-         * Resets the router by removing handlers, routes and previously configured options.
+         * Resets the router by removing handlers, routes, event handlers and previously configured options.
          * @method reset
          */
         router.reset = function() {
