@@ -1,5 +1,6 @@
 $srcDir = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
 $distDir = [IO.Path]::GetFullPath( (join-path $srcDir "../dist") )
+$Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($False)
 
 Remove-Item $distDir -Force -Recurse
 
@@ -16,13 +17,15 @@ function buildDurandal(){
   foreach($file in Get-ChildItem $moduleDirectory){
     $filePath = $moduleDirectory + "/" + $file;
     $outputPath = $outputFolder + "/"+ $file.name
-    
-    Get-Content $startFragment, $filePath | Set-Content $outputPath
+    $fileContent = Get-Content $startFragment, $filePath
+
+    [System.IO.File]::WriteAllLines($outputPath, $fileContent, $Utf8NoBomEncoding)
   }
 
   $outputFolder = $distDir + "/durandal/css/";
   if ( -not (Test-Path $outputFolder) ) {New-Item $outputFolder  -Type Directory  | Out-Null}
-  Copy-Item "durandal/css/durandal.css" ($distDir + "/durandal/css/")
+  $fileContent = Get-Content "durandal/css/durandal.css"
+  [System.IO.File]::WriteAllLines($outputFolder + "durandal.css", $fileContent, $Utf8NoBomEncoding)
 
   $outputFolder = $distDir + "/durandal/images/";
   if ( -not (Test-Path $outputFolder) ) {New-Item $outputFolder  -Type Directory  | Out-Null}
@@ -37,10 +40,11 @@ function buildOptionalModules($folderName){
   if ( -not (Test-Path $outputFolder) ) {New-Item $outputFolder  -Type Directory  | Out-Null}
 
   foreach($file in Get-ChildItem $moduleDirectory){
-      $filePath = $moduleDirectory + "/" + $file;
-      $outputPath =  $outputFolder + "/" + $file.name
+    $filePath = $moduleDirectory + "/" + $file;
+    $outputPath =  $outputFolder + "/" + $file.name
+    $fileContent = Get-Content $startFragment, $filePath
 
-      Get-Content $startFragment, $filePath | Set-Content $outputPath
+    [System.IO.File]::WriteAllLines($outputPath, $fileContent, $Utf8NoBomEncoding)
   }
 }
 
