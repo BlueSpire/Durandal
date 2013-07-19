@@ -694,6 +694,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             currentInstruction = currentActivation = undefined;
             router.handlers = [];
             router.routes = [];
+            router.off();
             delete router.options;
         };
 

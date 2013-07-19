@@ -12,8 +12,9 @@
  * @requires activator
  * @requires viewEngine
  * @requires jquery
+ * @requires knockout
  */
-define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/activator', 'durandal/viewEngine', 'jquery'], function (system, app, composition, activator, viewEngine, $) {
+define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/activator', 'durandal/viewEngine', 'jquery', 'knockout'], function (system, app, composition, activator, viewEngine, $, ko) {
     var contexts = {},
         dialogCount = 0,
         dialog;
@@ -336,8 +337,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
             $(theDialog.blockout).css('opacity', 0);
 
             setTimeout(function() {
-                $(theDialog.host).remove();
-                $(theDialog.blockout).remove();
+                ko.removeNode(theDialog.host);
+                ko.removeNode(theDialog.blockout);
             }, this.removeDelay);
 
             if (!dialog.isOpen()) {
