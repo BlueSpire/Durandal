@@ -29,6 +29,8 @@ MSSCCPRJ.SCC
 Packages/
 *.db
 
+docs/api*
+
 !src/weyland/bin*
 !src/weyland/lib/commands/build*
 !src/weyland/lib/dsl/build*
