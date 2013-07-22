@@ -1,5 +1,5 @@
-﻿define(['durandal/viewModelBinder', 'durandal/system', 'knockout'], function (sut, system, ko) {
-    describe('durandal/viewModelBinder', function(){
+﻿define(['durandal/binder', 'durandal/system', 'knockout'], function (sut, system, ko) {
+    describe('durandal/binder', function(){
 
         var obj = {
                 name:'test module'

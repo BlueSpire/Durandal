@@ -201,6 +201,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\durandal\activator.js" />
     <Content Include="Scripts\durandal\app.js" />
+    <Content Include="Scripts\durandal\binder.js" />
     <Content Include="Scripts\durandal\composition.js" />
     <Content Include="Scripts\durandal\events.js" />
     <Content Include="Scripts\durandal\plugins\dialog.js" />
@@ -219,7 +220,6 @@
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\durandal\viewEngine.js" />
     <Content Include="Scripts\durandal\viewLocator.js" />
-    <Content Include="Scripts\durandal\viewModelBinder.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\knockout-2.3.0.debug.js" />

@@ -47,12 +47,12 @@ Features
         <file src="content\Scripts\durandal\plugins\widget.js" target="content\Scripts\durandal\plugins\widget.js" />
         <file src="content\Scripts\durandal\activator.js" target="content\Scripts\durandal\activator.js" />
         <file src="content\Scripts\durandal\app.js" target="content\Scripts\durandal\app.js" />
+        <file src="content\Scripts\durandal\binder.js" target="content\Scripts\durandal\binder.js" />
         <file src="content\Scripts\durandal\composition.js" target="content\Scripts\durandal\composition.js" />
         <file src="content\Scripts\durandal\events.js" target="content\Scripts\durandal\events.js" />
         <file src="content\Scripts\durandal\system.js" target="content\Scripts\durandal\system.js" />
         <file src="content\Scripts\durandal\viewEngine.js" target="content\Scripts\durandal\viewEngine.js" />
         <file src="content\Scripts\durandal\viewLocator.js" target="content\Scripts\durandal\viewLocator.js" />
-        <file src="content\Scripts\durandal\viewModelBinder.js" target="content\Scripts\durandal\viewModelBinder.js" />
         <file src="content\Scripts\almond-custom.js" target="content\Scripts\almond-custom.js" />
         <file src="content\Scripts\text.js" target="content\Scripts\text.js" />
     </files>
