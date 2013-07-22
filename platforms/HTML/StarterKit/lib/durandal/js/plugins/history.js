@@ -100,7 +100,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
      */
     history.activate = function(options) {
         if (history.active) {
-            throw new Error("History has already been activated.");
+            system.error("History has already been activated.");
         }
 
         history.active = true;

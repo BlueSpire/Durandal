@@ -12,8 +12,7 @@ define(['require', 'jquery'], function(require, $) {
         system,
         treatAsIE8 = false,
         nativeIsArray = Array.isArray,
-        slice = Array.prototype.slice,
-        unexpectedErrorId = 'DURANDAL UNEXPECTED ERROR';
+        slice = Array.prototype.slice;
 
     //see http://patik.com/blog/complete-cross-browser-console-log/
     // Tell IE9 to use its built-in console
@@ -80,12 +79,12 @@ define(['require', 'jquery'], function(require, $) {
         } catch (ignore) { }
     };
 
-    var logError = function(error, id) {
+    var logError = function(error) {
         if(error instanceof Error){
             throw error;
         }
 
-        throw new Error(error, id || unexpectedErrorId);
+        throw new Error(error);
     };
 
     /**
