@@ -43,7 +43,7 @@ define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'duran
 
                 dfd.resolve();
             }).fail(function(err){
-                system.error('Failed to load plugins. Details: ' + err.message);
+                system.error('Failed to load plugin(s). Details: ' + err.message);
             });
         }).promise();
     }

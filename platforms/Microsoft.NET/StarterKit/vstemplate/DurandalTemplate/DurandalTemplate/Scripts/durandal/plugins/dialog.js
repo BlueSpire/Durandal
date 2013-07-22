@@ -87,6 +87,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
             if (system.isString(objOrModuleId)) {
                 system.acquire(objOrModuleId).then(function (module) {
                     dfd.resolve(system.resolveObject(module));
+                }).fail(function(err){
+                    system.error('Failed to load dialog module (' + objOrModuleId + '). Details: ' + err.message);
                 });
             } else {
                 dfd.resolve(objOrModuleId);

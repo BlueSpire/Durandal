@@ -327,6 +327,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 system.acquire(instruction.config.moduleId).then(function(module) {
                     var instance = system.resolveObject(module);
                     ensureActivation(activeItem, instance, instruction);
+                }).fail(function(err){
+                    system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message);
                 });
             }
         }

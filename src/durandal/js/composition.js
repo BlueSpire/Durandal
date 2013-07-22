@@ -345,6 +345,8 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
 
                         context.triggerAttach();
                     });
+                }).fail(function(err){
+                    system.error('Failed to load transition (' + transitionModuleId + '). Details: ' + err.message);
                 });
             } else {
                 if (context.child != context.activeView) {
@@ -511,6 +513,8 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 system.acquire(context.strategy).then(function (strategy) {
                     context.strategy = strategy;
                     composition.executeStrategy(context);
+                }).fail(function(err){
+                    system.error('Failed to load view strategy (' + context.strategy + '). Details: ' + err.message);
                 });
             } else {
                 this.executeStrategy(context);
@@ -556,6 +560,8 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/viewModelBinder', '
                 system.acquire(settings.model).then(function (module) {
                     settings.model = system.resolveObject(module);
                     composition.inject(settings);
+                }).fail(function(err){
+                    system.error('Failed to load composed module (' + settings.model + '). Details: ' + err.message);
                 });
             } else {
                 composition.inject(settings);
