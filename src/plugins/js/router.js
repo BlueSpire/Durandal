@@ -225,7 +225,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             rootRouter.navigatingBack = !rootRouter.explicitNavigation && currentActivation != instruction.fragment;
             router.trigger('router:route:activating', instance, instruction, router);
 
-            activator.activateItem(instance, instruction.params).then(function(succeeded, failData) {
+            activator.activateItem(instance, instruction.params).then(function(succeeded) {
                 if (succeeded) {
                     var previousActivation = currentActivation;
                     completeNavigation(instance, instruction);
@@ -241,8 +241,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     if (previousActivation == instance) {
                         router.attached();
                     }
-                } else if(failData && failData.redirect){
-                    redirect(failData.redirect);
+                } else if(activator.settings.lifecycleData && activator.settings.lifecycleData.redirect){
+                    redirect(activator.settings.lifecycleData.redirect);
                 }else{
                     cancelNavigation(instance, instruction);
                 }
