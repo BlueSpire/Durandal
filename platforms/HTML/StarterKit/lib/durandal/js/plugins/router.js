@@ -560,7 +560,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         };
 
         /**
-         * Converts a route to a displayable title. This is only callef if no title is specified as part of the route mapping.
+         * Converts a route to a displayable title. This is only called if no title is specified as part of the route mapping.
          * @method convertRouteToTitle
          * @param {string} route
          * @return {string} The title.
@@ -774,9 +774,26 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         return system.defer(function(dfd) {
             startDeferred = dfd;
             rootRouter.options = system.extend({ routeHandler: rootRouter.loadUrl }, rootRouter.options, options);
+
             history.activate(rootRouter.options);
-            $(document).on('click', 'a', function(){
+
+            $(document).delegate("a", 'click', function(evt){
                 rootRouter.explicitNavigation = true;
+
+                if(history._hasPushState){
+                    if(!evt.altKey && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey){
+                        // Get the anchor href and protcol
+                        var href = $(this).attr("href");
+                        var protocol = this.protocol + "//";
+
+                        // Ensure the protocol is not part of URL, meaning its relative.
+                        // Stop the event bubbling to ensure the link will not cause a page refresh.
+                        if (href.slice(protocol.length) !== protocol) {
+                            evt.preventDefault();
+                            history.navigate(href, true);
+                        }
+                    }
+                }
             });
         }).promise();
     };
