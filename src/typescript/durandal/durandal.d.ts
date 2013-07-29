@@ -327,11 +327,11 @@ interface IDurandalViewModelActiveItem {
     /**
       * Checks whether or not the activator itself can be deactivated...that is whether or not it's current item can be deactivated.
       */
-    canDeactivate(): JQueryPromise;
+    canDeactivate(close?): JQueryPromise;
     /**
       *  Deactivates the activator...interpreted as deactivating its current item.
       */
-    deactivate(): JQueryDeferred;
+    deactivate(close?): JQueryDeferred;
     /**
       * Adds canActivate, activate, canDeactivate and deactivate functions to the provided model which pass through to the corresponding functions on the activator.
       */
