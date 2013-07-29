@@ -82,6 +82,10 @@ declare module "durandal/app" {
       * Provides a function which can be used as a callback to trigger the events. This is useful in combination with jQuery events which may need to trigger the aggregator's events.
       */
     export var proxy: (events) => Function;
+    /**
+      * Configures one or more plugins to be loaded and installed into the application.
+      */    
+    export var configurePlugins: (config: any, baseUrl?: string) => void;	
 }
 
 declare module "durandal/composition" {
