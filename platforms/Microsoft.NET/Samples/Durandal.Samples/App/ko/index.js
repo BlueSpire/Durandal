@@ -2,7 +2,7 @@
     var childRouter = router.createChildRouter()
         .makeRelative({
             moduleId:'ko',
-            route:'knockout-samples'
+            route:true
         }).map([
             { route: '',                moduleId: 'helloWorld/index',       title: 'Hello World',           type: 'intro' },
             { route: 'helloWorld',      moduleId: 'helloWorld/index',       title: 'Hello World',           type: 'intro',      nav: true},
