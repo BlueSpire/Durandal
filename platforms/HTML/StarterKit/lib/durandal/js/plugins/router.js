@@ -216,7 +216,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             router.activeInstruction(currentInstruction);
 
             if (currentInstruction) {
-                router.navigate(currentInstruction.fragment, { trigger: false });
+                router.navigate(currentInstruction.fragment, false);
             }
 
             isProcessing(false);
@@ -535,7 +535,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * you wish to modify the current URL without adding an entry to the history.
          * @method navigate
          * @param {string} fragment The url fragment to navigate to.
-         * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option.
+         * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option. Trigger is `true` by default.
          * @return {boolean} Returns true/false from loading the url.
          */
         router.navigate = function(fragment, options) {
@@ -844,7 +844,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                         // Stop the event bubbling to ensure the link will not cause a page refresh.
                         if (!href || (href.charAt(0) !== "#" && href.slice(protocol.length) !== protocol)) {
                             evt.preventDefault();
-                            history.navigate(href, true);
+                            history.navigate(href);
                         }
                     }
                 }
