@@ -161,6 +161,12 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 						&& current.router.isNavigating() ? true : false;
             	return  processing || currentRouterIsProcesing;
             }),
+            /**
+             * An observable surfacing the active routing instruction that is currently being processed or has recently finished processing.
+             * The instruction object has `config`, `fragment`, `queryString`, `params` and `queryParams` properties.
+             * @property {KnockoutObservable} activeInstruction
+             */
+            activeInstruction:ko.observable(null),
             __router__:true
         };
 
@@ -201,6 +207,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         function cancelNavigation(instance, instruction) {
             system.log('Navigation Cancelled');
+
+            router.activeInstruction(currentInstruction);
 
             if (currentInstruction) {
                 router.navigate(currentInstruction.fragment, { trigger: false });
@@ -282,6 +290,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         }
 
         function ensureActivation(activator, instance, instruction) {
+            router.activeInstruction(instruction);
+
             if (router.guardRoute) {
                 handleGuardedRoute(activator, instance, instruction);
             } else {
