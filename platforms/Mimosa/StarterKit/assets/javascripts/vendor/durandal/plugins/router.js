@@ -761,7 +761,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             if(settings.route && system.isString(settings.route) && !endsWith(settings.route, '/')){
                 settings.route += '/';
-            }else if(!!settings.route){
+            }else if(system.isBoolean(settings.route) && settings.route){
                 relativeToParentRouter = true;
             }
 
