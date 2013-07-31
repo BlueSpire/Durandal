@@ -146,7 +146,11 @@ define(['require', 'jquery'], function(require, $) {
             obj.__moduleId__ = id;
         },
         /**
-         * Resolves the default object instance for a module. If the module is an object, the module is returned. If the module is a function, that function is called with `new` and it's result is returned.
+         * Resolves the default object instance for a module.
+         * If the module is a function, that function is called with `new` and it's result is returned.
+         * If the module is an export object (AMD), a function named '[moduleId]' or '[moduleId]View' created with 'new' and returned.
+         * If the module is an export object (AMD), a instance named '[moduleId]' or '[moduleId]View' is returned.
+         * If the module is an object, the instance is returned.
          * @method resolveObject
          * @param {object} module The module to use to get/create the default object for.
          * @return {object} The default object for the module.
@@ -155,7 +159,44 @@ define(['require', 'jquery'], function(require, $) {
             if (system.isFunction(module)) {
                 return new module();
             } else {
-                return module;
+                var afterDash = function (str) {
+                    var dashIndex = str.lastIndexOf("/", str.length - 1);
+                    return str.substr(dashIndex + 1, str.length - dashIndex);
+                };
+
+                var findPropCaseInsensitive = function(obj, propName) {
+                    var propLower = propName.toLowerCase();
+                    for (var prop in obj) {
+                        if (prop.toLowerCase() === propLower) {
+                            return prop;
+                        }
+                    }
+                    return null;
+                };
+
+                var instance = module;
+                var moduleId = system.getModuleId(module);
+                
+                var possibleExports = [afterDash(moduleId), afterDash(moduleId) + "View"];
+                
+                for (var pi = 0; pi < possibleExports.length; pi++) {
+                    var prop = findPropCaseInsensitive(module, possibleExports[pi]);
+
+                    if (system.isFunction(module[prop])) {
+                        instance = new module[prop]();
+                        break;
+                    }
+                    else if (system.isObject(module[prop])) {
+                        instance = module[prop];
+                        break;
+                    }
+                }
+                
+                if (instance !== module) {
+                    system.setModuleId(instance, moduleId);
+                }
+                
+                return instance;
             }
         },
         /**
