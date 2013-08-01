@@ -1,5 +1,6 @@
 ﻿define(["require", "exports", 'durandal/system'], function(require, exports, __system__) {
     var system = __system__;
+    
 
     function test_system() {
         console.log(system.version);

@@ -7,6 +7,12 @@
 /// <reference path="../jquery/jquery.d.ts" />
 /// <reference path="../knockout/knockout.d.ts" />
 
+/**
+ * The system module encapsulates the most basic features used by other modules.
+ * @module system
+ * @requires require
+ * @requires jquery
+ */
 declare module 'durandal/system' {
     /**
      * Durandal's version.
@@ -225,6 +231,100 @@ declare module 'durandal/system' {
     export function isBoolean(obj: any): boolean;
 }
 
+/**
+ * The viewEngine module provides information to the viewLocator module which is used to locate the view's source file. The viewEngine also transforms a view id into a view instance.
+ * @module viewEngine
+ * @requires system
+ * @requires jquery
+ */
+declare module "durandal/viewEngine" {
+    /**
+     * The file extension that view source files are expected to have.
+     * @property {string} viewExtension
+     * @default .html
+    */
+    export var viewExtension: string;
+
+    /**
+     * The name of the RequireJS loader plugin used by the viewLocator to obtain the view source. (Use requirejs to map the plugin's full path).
+     * @property {string} viewPlugin
+     * @default text
+    */
+    export var viewPlugin: string;
+
+    /**
+     * Determines if the url is a url for a view, according to the view engine.
+     * @method isViewUrl
+     * @param {string} url The potential view url.
+     * @return {boolean} True if the url is a view url, false otherwise.
+    */
+    export function isViewUrl(url: string):boolean;
+    
+    /**
+     * Converts a view url into a view id.
+     * @method convertViewUrlToViewId
+     * @param {string} url The url to convert.
+     * @return {string} The view id.
+    */
+    export function convertViewUrlToViewId(url: string): string;
+
+    /**
+     * Converts a view id into a full RequireJS path.
+     * @method convertViewIdToRequirePath
+     * @param {string} viewId The view id to convert.
+     * @return {string} The require path.
+    */
+    export function convertViewIdToRequirePath(viewId: string): string;
+
+    /**
+     * Parses the view engine recognized markup and returns DOM elements.
+     * @method parseMarkup
+     * @param {string} markup The markup to parse.
+     * @return {HTMLElement[]} The elements.
+    */
+    export function parseMarkup(markup: string):HTMLElement[];
+
+    /**
+     * Calls `parseMarkup` and then pipes the results through `ensureSingleElement`.
+     * @method processMarkup
+     * @param {string} markup The markup to process.
+     * @return {HTMLElement} The view.
+    */
+    export function processMarkup(markup: string): HTMLElement;
+
+    /**
+     * Converts an array of elements into a single element. White space and comments are removed. If a single element does not remain, then the elements are wrapped.
+     * @method ensureSingleElement
+     * @param {HTMLElement[]} allElements The elements.
+     * @return {HTMLElement} A single element.
+    */
+    export function ensureSingleElement(allElements: HTMLElement[]): HTMLElement;
+
+    /**
+     * Creates the view associated with the view id.
+     * @method createView
+     * @param {string} viewId The view id whose view should be created.
+     * @return {JQueryPromise<HTMLElement>} A promise of the view.
+    */
+    export function createView(viewId: string): JQueryPromise<HTMLElement>;
+
+    /**
+     * Called when a view cannot be found to provide the opportunity to locate or generate a fallback view. Mainly used to ease development.
+     * @method createFallbackView
+     * @param {string} viewId The view id whose view should be created.
+     * @param {string} requirePath The require path that was attempted.
+     * @param {Error} requirePath The error that was returned from the attempt to locate the default view.
+     * @return {Promise} A promise for the fallback view.
+    */
+    export function createFallbackView(viewId: string, requirePath: string, err: Error): JQueryPromise<HTMLElement>;
+}
+
+
+
+
+
+
+
 declare module "durandal/app" {
     /**
       * Sets the title for the app. You must set this before calling start. This will set the document title and the default message box header. It is also used internally by the router to set the document title when pages change.
@@ -362,37 +462,6 @@ declare module "durandal/modalDialog" {
       * This API uses the composition module to compose your obj into a modal popover. It also uses the viewModel module to check and enforce any screen lifecycle needs that obj may have. A promise is returned which will be resolved when the modal dialog is dismissed. The obj is the view model for your modal dialog, or a moduleId for the view model to load. Your view model instance will have a single property added to it by this mechanism called modal which represents the dialog infrastructure itself. This modal object has a single function called close which can be invoked to close the modal. You may also pass data to close which will be returned via the promise mechanism. The modal object also references it's owner, activator, the composition settings it was created with and its display context. Speaking of context, this parameter represents the display context or modal style. By default, there is one context registered with the system, named 'default'. If no context is specified, the default context with be used to display the modal. You can also specify activationData which is an arbitrary object that will be passed to your modal's activate function, if it has one.
       */
     export var show: (obj: any, activationData: any, context: any) => JQueryPromise;
-}
-
-declare module "durandal/viewEngine" {
-    /**
-      * The file extension that view source files are expected to have.
-      */
-    export var viewExtension: string;
-    /**
-      * The name of the RequireJS loader plugin used by the viewLocator to obtain the view source. (Use requirejs to map the plugin's full path).
-      */
-    export var viewPlugin: string;
-    /**
-      * Returns true if the potential string is a url for a view, according to the view engine.
-      */
-    export var isViewUrl: (url: string) => boolean;
-    /**
-      * Converts a view url into a view id.
-      */
-    export var convertViewUrlToViewId: (url: string) => string;
-    /**
-      * Converts a view id into a full RequireJS path.
-      */
-    export var convertViewIdToRequirePath: (viewId: string) => string;
-    /**
-      * Parses some markup and turns it into a dom element.
-      */
-    export var parseMarkup: (markup: string) => HTMLElement;
-    /**
-      * Returns a promise for a dom element identified by the viewId parameter.
-      */
-    export var createView: (viewId: string) => JQueryPromise;
 }
 
 declare module "durandal/viewLocator" {

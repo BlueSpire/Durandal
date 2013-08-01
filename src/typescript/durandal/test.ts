@@ -3,6 +3,7 @@
 /// <reference path="durandal.d.ts"/>
 
 import system = module('durandal/system');
+import viewEngine = module('durandal/viewEngine');
 
 function test_system() {
     console.log(system.version);
