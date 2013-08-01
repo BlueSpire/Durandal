@@ -726,6 +726,115 @@ declare module 'durandal/viewLocator' {
     export function locateView(viewUrlOrId: string, area?: string, elementsToSearch?: HTMLElement[]): JQueryPromise<HTMLElement>;
 }
 
+interface CompositionTransation {
+    /**
+     * Registers a callback which will be invoked when the current composition transaction has completed. The transaction includes all parent and children compositions.
+     * @method complete
+     * @param {function} callback The callback to be invoked when composition is complete.
+    */
+    complete(callback: Function): void;
+}
+
+interface CompositionContext {
+    mode: string;
+    parent: HTMLElement;
+    activeView: HTMLElement;
+    triggerAttach(): void;
+    bindingContext?: KnockoutBindingContext;
+    cacheViews?: boolean;
+    viewElements?: HTMLElement[];
+    model?: any;
+    view?: any;
+    area?: string;
+    preserveContext?: boolean;
+    activate?: boolean;
+    strategy? (context: CompositionContext): JQueryPromise<HTMLElement>;
+    composingNewView: boolean;
+    child: HTMLElement;
+    beforeBind?: (child: HTMLElement, context: CompositionContext) => any;
+    tranistion?: string;
+}
+
+/**
+ * The composition module encapsulates all functionality related to visual composition.
+ * @module composition
+ * @requires system
+ * @requires viewLocator
+ * @requires binder
+ * @requires viewEngine
+ * @requires activator
+ * @requires jquery
+ * @requires knockout
+ */
+declare module 'durandal/composition' {
+    /**
+     * Converts a transition name to its moduleId.
+     * @method convertTransitionToModuleId
+     * @param {string} name The name of the transtion.
+     * @return {string} The moduleId.
+    */
+    export function convertTransitionToModuleId(name: string): string;
+
+    /**
+     * The name of the transition to use in all composigions.
+     * @property {string} defaultTransitionName
+     * @default null
+    */
+    export var defaultTransitionName: string;
+
+    /**
+     * Represents the currently executing composition transaction.
+     * @property {CompositionTransaction} current
+     */
+    export var current: CompositionTransation;
+
+    /**
+     * Registers a binding handler that will be invoked when the current composition transaction is complete.
+     * @method addBindingHandler
+     * @param {string} name The name of the binding handler.
+     * @param {object} [config] The binding handler instance. If none is provided, the name will be used to look up an existing handler which will then be converted to a composition handler.
+     * @param {function} [initOptionsFactory] If the registered binding needs to return options from its init call back to knockout, this function will server as a factory for those options. It will receive the same parameters that the init function does.
+    */
+    export function addBindingHandler(name, config?: KnockoutBindingHandler, initOptionsFactory?: (element?: HTMLElement, valueAccessor?: any, allBindingsAccessor?: any, viewModel?: any, bindingContext?: KnockoutBindingContext) => any);
+
+    /**
+     * Gets an object keyed with all the elements that are replacable parts, found within the supplied elements. The key will be the part name and the value will be the element itself.
+     * @method getParts
+     * @param {DOMElement[]} elements The elements to search for parts.
+     * @return {object} An object keyed by part.
+    */
+    export function getParts(elements: HTMLElement[]): any;
+
+    /**
+     * Gets an object keyed with all the elements that are replacable parts, found within the supplied element. The key will be the part name and the value will be the element itself.
+     * @method getParts
+     * @param {DOMElement} element The element to search for parts.
+     * @return {object} An object keyed by part.
+    */
+    export function getParts(element: HTMLElement): any;
+
+    /**
+     * Eecutes the default view location strategy.
+     * @method defaultStrategy
+     * @param {object} context The composition context containing the model and possibly existing viewElements.
+     * @return {promise} A promise for the view.
+    */
+    export var defaultStrategy: (context: CompositionContext) => JQueryPromise<HTMLElement>;
+
+    /**
+     * Initiates a composition.
+     * @method compose
+     * @param {DOMElement} element The DOMElement or knockout virtual element that serves as the parent for the composition.
+     * @param {object} settings The composition settings.
+     * @param {object} [bindingContext] The current binding context.
+    */
+    export function compose(element: HTMLElement, settings: CompositionContext, bindingContext: KnockoutBindingContext): void;
+}
+
+
+
+
+
 
 
 
@@ -775,48 +884,7 @@ declare module "durandal/app" {
     export var proxy: (events) => Function;
 }
 
-declare module "durandal/composition" {
-    /**
-      * sets activate: true on every compose binding
-      */
-    export var activateDuringComposition: boolean;
-    /**
-      * changes the convention for finding where transitions are located
-      */
-    export var convertTransitionToModuleId: (name: string) => string;
-    /**
-      * sets a default transition for all compositions
-      */
-    export var defaultTransitionName: string;
-    /**
-      * the default implementation for switching the content during composition
-      */
-    export var switchContent: (parent: HTMLElement, newChild: HTMLElement, settings: any) => void;
-    /**
-      * the default implementation on binding and showing content during composition
-      */
-    export var bindAndShow: (element: HTMLElement, view: HTMLElement, settings: any) => void;
-    /**
-      * the default strategy which is: return viewLocator.locateViewForObject(settings.model, settings.viewElements);
-      */
-    export var defaultStrategy: (settings: any) => JQueryPromise;
-    /**
-      * the default method for getting settings from the binding handler compose.
-      */
-    export var getSettings: (valueAccessor: any) => any;
-    /**
-      * the default method for executing a strategy during composition
-      */
-    export var executeStrategy: (element: HTMLElement, settings: any) => void;
-    /**
-      * the default method for injecting during composition
-      */
-    export var inject: (element: HTMLElement, settings: any) => void;
-    /**
-      * the default method for composing
-      */
-    export var compose: (element: HTMLElement, settings: any, bindingContext: any) => void;
-}
+
 
 declare module "durandal/http" {
     /**
@@ -867,14 +935,6 @@ declare module "durandal/modalDialog" {
       */
     export var show: (obj: any, activationData: any, context: any) => JQueryPromise;
 }
-
-
-
-
-
-
-
-
 
 /**
   * A router plugin, currently based on SammyJS. The router abstracts away the core configuration of Sammy and re-interprets it in terms of durandal's composition and activation mechanism. To use the router, you must require it, configure it and bind it in the UI.

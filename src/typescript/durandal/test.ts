@@ -8,6 +8,7 @@ import Events = module('durandal/events');
 import binder = module('durandal/binder');
 import activator = module('durandal/activator');
 import viewLocator = module('durandal/viewLocator');
+import composition = module('durandal/composition');
 
 function test_system() {
     console.log(system.version);
