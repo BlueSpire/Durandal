@@ -7,6 +7,7 @@ import viewEngine = module('durandal/viewEngine');
 import Events = module('durandal/events');
 import binder = module('durandal/binder');
 import activator = module('durandal/activator');
+import viewLocator = module('durandal/viewLocator');
 
 function test_system() {
     console.log(system.version);

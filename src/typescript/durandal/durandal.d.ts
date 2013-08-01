@@ -655,8 +655,76 @@ declare module 'durandal/activator' {
     export function isActivator(object: any): boolean;
 }
 
+/**
+ * The viewLocator module collaborates with the viewEngine module to provide views (literally dom sub-trees) to other parts of the framework as needed. The primary consumer of the viewLocator is the composition module.
+ * @module viewLocator
+ * @requires system
+ * @requires viewEngine
+ */
+declare module 'durandal/viewLocator' {
+    /**
+     * Allows you to set up a convention for mapping module folders to view folders. It is a convenience method that customizes `convertModuleIdToViewId` and `translateViewIdToArea` under the covers.
+     * @method useConvention
+     * @param {string} [modulesPath] A string to match in the path and replace with the viewsPath. If not specified, the match is 'viewmodels'.
+     * @param {string} [viewsPath] The replacement for the modulesPath. If not specified, the replacement is 'views'.
+     * @param {string} [areasPath] Partial views are mapped to the "views" folder if not specified. Use this parameter to change their location.
+    */
+    export function useConvention(modulesPath?: string, viewsPath?: string, areasPath?: string): void;
+    
+    /**
+     * Maps an object instance to a view instance.
+     * @method locateViewForObject
+     * @param {object} obj The object to locate the view for.
+     * @param {DOMElement[]} [elementsToSearch] An existing set of elements to search first.
+     * @return {Promise} A promise of the view.
+    */
+    export function locateViewForObject(obj: any, elementsToSearch?: HTMLElement[]): JQueryPromise<HTMLElement>;
+    
+    /**
+     * Converts a module id into a view id. By default the ids are the same.
+     * @method convertModuleIdToViewId
+     * @param {string} moduleId The module id.
+     * @return {string} The view id.
+    */
+    export function convertModuleIdToViewId(moduleId: string): string;
 
+    /**
+     * If no view id can be determined, this function is called to genreate one. By default it attempts to determine the object's type and use that.
+     * @method determineFallbackViewId
+     * @param {object} obj The object to determine the fallback id for.
+     * @return {string} The view id.
+    */
+    export function determineFallbackViewId(obj: any): string;
 
+    /**
+     * Takes a view id and translates it into a particular area. By default, no translation occurs.
+     * @method translateViewIdToArea
+     * @param {string} viewId The view id.
+     * @param {string} area The area to translate the view to.
+     * @return {string} The translated view id.
+    */
+    export function translateViewIdToArea(viewId: string, area: string): string;
+    
+    /**
+     * Locates the specified view.
+     * @method locateView
+     * @param {string|DOMElement} view A view. It will be immediately returned.
+     * @param {string} [area] The area to translate the view to.
+     * @param {DOMElement[]} [elementsToSearch] An existing set of elements to search first.
+     * @return {Promise} A promise of the view.
+    */
+    export function locateView(view: HTMLElement, area?: string, elementsToSearch?: HTMLElement[]): JQueryPromise<HTMLElement>;
+    
+    /**
+     * Locates the specified view.
+     * @method locateView
+     * @param {string|DOMElement} viewUrlOrId A view url or view id to locate.
+     * @param {string} [area] The area to translate the view to.
+     * @param {DOMElement[]} [elementsToSearch] An existing set of elements to search first.
+     * @return {Promise} A promise of the view.
+    */
+    export function locateView(viewUrlOrId: string, area?: string, elementsToSearch?: HTMLElement[]): JQueryPromise<HTMLElement>;
+}
 
 
 
@@ -800,32 +868,6 @@ declare module "durandal/modalDialog" {
     export var show: (obj: any, activationData: any, context: any) => JQueryPromise;
 }
 
-declare module "durandal/viewLocator" {
-    /**
-      * Allows you to set up a convention for mapping module folders to view folders. modulesPath is a string in the path that will be replaced by viewsPath. Partial views will be mapped to the "views" folder unless an areasPath is specified. All parameters are optional. If none are specified, the convention will map modules in a "viewmodels" folder to views in a "views" folder.
-      */
-    export var useConvention: (modulesPath?: string, viewsPath?: string, areasPath?: string) => string;
-    /**
-      * This function takes in an object instance, which it then maps to a view id. That id is then passed to the locateView function and it is processed as above. If elementsToSearch are provided, those are passed along to locateView. Following is a description of how locateViewForObject determines the view for a given object instance.
-      */
-    export var locateViewForObject: (obj: {}, elementsToSearch: HTMLElement[]) => JQueryPromise;
-    /**
-      * This function does nothing by default which is why editCustomer.js is mapped to editCustomer.html (both have the same underlying id of editCustomer). Replace this function with your own implementation to easily create your own mapping logic based on moduleId.
-      */
-    export var convertModuleIdToViewId: (moduleId: string) => string;
-    /**
-      * As mentioned above, if no view id can be determined, the system falls back to attempting to determine the object's type and then uses that. This function contains the implementation of that fallback behavior. Replace it if you desire something different. Under normal usage however, this function should not be called.
-      */
-    export var determineFallbackViewId: (obj: any) => string;
-    /**
-      * When a view area is specified, it along with the requested view id will be passed to this function, allowing you to customize the path of your view. You can specify area as part of the locateView call, but more commonly you would specify it as part of a compose binding. Any compose binding that does not include a model, but only a view, has a default area of 'partial'.
-      */
-    export var translateViewIdToArea: (viewId: string, area?: string) => string;
-    /**
-      * The viewOrUrlOrId parameter represents a url/id for the view. The file extension is not necessary (ie. .html). When this function is called, the viewEngine will be used to construct the view. The viewEngine is passed the finalized id and returns a constructed DOM sub-tree, which is returned from this function. If the viewOrUrlOrId is not a string but is actually a DOM node, then the DOM node will be immediately returned. Optionally, you can pass an area string and it along with the url will be passed to the view locator's translateViewIdToArea before constructing the final id to pass to the view engine. If you provide an array of DOM elements for elementsToSearch, before we call the view engine, we will search the existing array for a match and return it if found.
-      */
-    export var locateView: (viewOrUrlOrId: any, area: string, elementsToSearch: HTMLElement[]) => JQueryPromise;
-}
 
 
 
