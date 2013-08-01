@@ -7,39 +7,222 @@
 /// <reference path="../jquery/jquery.d.ts" />
 /// <reference path="../knockout/knockout.d.ts" />
 
-declare module "durandal/system" {
+declare module 'durandal/system' {
     /**
-      * Returns the module id associated with the specified object
-      */
-    export var getModuleId: (obj: any) => string;
+     * Durandal's version.
+     * @property {string} version
+     */
+    export var version: string;
+
     /**
-      * Sets the module id on the module.
-      */
-    export var setModuleId: (obj, id: string) => void;
+     * A noop function.
+     * @method noop
+     */
+    export var noop: Function;
+
     /**
-      * Call this function to enable or disable Durandal's debug mode. Calling it with no parameters will return true if the framework is currently in debug mode, false otherwise.
-      */
-    export var debug: (debug?: boolean) => boolean;
+     * Gets the module id for the specified object.
+     * @method getModuleId
+     * @param {object} obj The object whose module id you wish to determine.
+     * @return {string} The module id.
+     */
+    export function getModuleId(obj: any): string;
+
     /**
-      * Checks if the obj is an array
-      */
-    export var isArray: (obj: any) => boolean;
+     * Sets the module id for the specified object.
+     * @method setModuleId
+     * @param {object} obj The object whose module id you wish to set.
+     * @param {string} id The id to set for the specified object.
+     */
+    export function setModuleId(obj, id: string): void;
+
     /**
-      * Logs data to the console. Pass any number of parameters to be logged. Log output is not processed if the framework is not running in debug mode.
-      */
-    export var log: (...msgs: any[]) => void;
+     * Resolves the default object instance for a module. If the module is an object, the module is returned. If the module is a function, that function is called with `new` and it's result is returned.
+     * @method resolveObject
+     * @param {object} module The module to use to get/create the default object for.
+     * @return {object} The default object for the module.
+     */
+    export function resolveObject(module: any): any;
+
     /**
-      * Creates a deferred object which can be used to create a promise. Optionally pass a function action to perform which will be passed an object used in resolving the promise.
-      */
-    export var defer: (action?: Function) => JQueryDeferred;
+     * Gets/Sets whether or not Durandal is in debug mode.
+     * @method debug
+     * @param {boolean} [enable] Turns on/off debugging.
+     * @return {boolean} Whether or not Durandal is current debugging.
+     */
+    export function debug(enable?: boolean): boolean;
+
     /**
-      * Creates a simple V4 UUID. This should not be used as a PK in your database. It can be used to generate internal, unique ids.
-      */
-    export var guid: () => string;
+     * Logs data to the console. Pass any number of parameters to be logged. Log output is not processed if the framework is not running in debug mode.
+     * @method log
+     * @param {object} info* The objects to log.
+     */
+    export function log(...msgs: any[]): void;
+
     /**
-      * Uses require.js to obtain a module. This function returns a promise which resolves with the module instance. You can pass more than one module id to this function. If more than one is passed, then the promise will resolve with one callback parameter per module.
-      */
-    export var acquire: (...modules: string[]) => JQueryPromise;
+     * Logs an error.
+     * @method error
+     * @param {string} obj The error to report.
+     */
+    export function error(error: string): void;
+
+    /**
+     * Logs an error.
+     * @method error
+     * @param {Error} obj The error to report.
+     */
+    export function error(error: Error): void;
+
+    /**
+     * Asserts a condition by throwing an error if the condition fails.
+     * @method assert
+     * @param {boolean} condition The condition to check.
+     * @param {string} message The message to report in the error if the condition check fails.
+     */
+    export function assert(condition: boolean, message: string): void;
+
+    /**
+     * Creates a deferred object which can be used to create a promise. Optionally pass a function action to perform which will be passed an object used in resolving the promise.
+     * @method defer
+     * @param {function} [action] The action to defer. You will be passed the deferred object as a paramter.
+     * @return {JQueryDeferred} The deferred object.
+     */
+    export function defer<T>(action?: (dfd: JQueryDeferred<T>) => void ): JQueryDeferred<T>;
+
+    /**
+     * Creates a simple V4 UUID. This should not be used as a PK in your database. It can be used to generate internal, unique ids. For a more robust solution see [node-uuid](https://github.com/broofa/node-uuid).
+     * @method guid
+     * @return {string} The guid.
+     */
+    export function guid(): string;
+
+    /**
+     * Uses require.js to obtain a module. This function returns a promise which resolves with the module instance.
+     * @method acquire
+     * @param {string} moduleId The id of the module to load.
+     * @return {JQueryPromise} A promise for the loaded module.
+     */
+    export function acquire(moduleId: string): JQueryPromise<any>;
+
+    /**
+     * Uses require.js to obtain an array of modules. This function returns a promise which resolves with the modules instances in an array.
+     * @method acquire
+     * @param {string[]} moduleIds The ids of the modules to load.
+     * @return {JQueryPromise} A promise for the loaded module.
+     */
+    export function acquire(modules: string[]): JQueryPromise<any[]>;
+
+    /**
+     * Uses require.js to obtain multiple modules. This function returns a promise which resolves with the module instances in an array.
+     * @method acquire
+     * @param {string} moduleIds* The ids of the modules to load.
+     * @return {JQueryPromise} A promise for the loaded module.
+     */
+    export function acquire(...moduleIds: string[]): JQueryPromise<any[]>;
+
+    /**
+     * Extends the first object with the properties of the following objects.
+     * @method extend
+     * @param {object} obj The target object to extend.
+     * @param {object} extension* Uses to extend the target object.
+    */
+    export function extend(obj: any, ...extensions: any[]): any;
+    
+    /**
+     * Uses a setTimeout to wait the specified milliseconds.
+     * @method wait
+     * @param {number} milliseconds The number of milliseconds to wait.
+     * @return {JQueryPromise}
+    */
+    export function wait(milliseconds: number): JQueryPromise;
+
+    /**
+     * Gets all the owned keys of the specified object.
+     * @method keys
+     * @param {object} object The object whose owned keys should be returned.
+     * @return {string[]} The keys.
+     */
+    export function keys(obj: any): string[];
+
+    /**
+     * Determines if the specified object is an html element.
+     * @method isElement
+     * @param {object} object The object to check.
+     * @return {boolean} True if matches the type, false otherwise.
+     */
+    export function isElement(obj: any): boolean;
+
+    /**
+     * Determines if the specified object is an array.
+     * @method isArray
+     * @param {object} object The object to check.
+     * @return {boolean} True if matches the type, false otherwise.
+     */
+    export function isArray(obj: any): boolean;
+
+    /**
+     * Determines if the specified object is a boolean.
+     * @method isBoolean
+     * @param {object} object The object to check.
+     * @return {boolean} True if matches the type, false otherwise.
+     */
+    export function isObject(obj: any): boolean;
+
+    /**
+     * Determines if the specified object is a promise.
+     * @method isPromise
+     * @param {object} object The object to check.
+     * @return {boolean} True if matches the type, false otherwise.
+     */
+    export function isPromise(obj: any): boolean;
+
+    /**
+     * Determines if the specified object is a function arguments object.
+     * @method isArguments
+     * @param {object} object The object to check.
+     * @return {boolean} True if matches the type, false otherwise.
+     */
+    export function isArguments(obj: any): boolean;
+
+    /**
+     * Determines if the specified object is a function.
+     * @method isFunction
+     * @param {object} object The object to check.
+     * @return {boolean} True if matches the type, false otherwise.
+     */
+    export function isFunction(obj: any): boolean;
+
+    /**
+     * Determines if the specified object is a string.
+     * @method isString
+     * @param {object} object The object to check.
+     * @return {boolean} True if matches the type, false otherwise.
+     */
+    export function isString(obj: any): boolean;
+
+    /**
+     * Determines if the specified object is a number.
+     * @method isNumber
+     * @param {object} object The object to check.
+     * @return {boolean} True if matches the type, false otherwise.
+     */
+    export function isNumber(obj: any): boolean;
+
+    /**
+     * Determines if the specified object is a date.
+     * @method isDate
+     * @param {object} object The object to check.
+     * @return {boolean} True if matches the type, false otherwise.
+     */
+    export function isDate(obj: any): boolean;
+
+    /**
+     * Determines if the specified object is a boolean.
+     * @method isBoolean
+     * @param {object} object The object to check.
+     * @return {boolean} True if matches the type, false otherwise.
+     */
+    export function isBoolean(obj: any): boolean;
 }
 
 declare module "durandal/app" {
