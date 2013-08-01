@@ -532,19 +532,19 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          * @property {string[]} affirmations
          * @default ['yes', 'ok', 'true']
          */
-        affirmations:['yes', 'ok', 'true'],
+        affirmations: ['yes', 'ok', 'true'],
         /**
          * Interprets the response of a `canActivate` or `canDeactivate` call using the known affirmative values in the `affirmations` array.
          * @method interpretResponse
          * @param {object} value
          * @return {boolean}
          */
-        interpretResponse: function (value) {
-            if(system.isObject(value)){
+        interpretResponse: function(value) {
+            if(system.isObject(value)) {
                 value = value.can || false;
             }
 
-            if (system.isString(value)) {
+            if(system.isString(value)) {
                 return ko.utils.arrayIndexOf(this.affirmations, value.toLowerCase()) !== -1;
             }
 
@@ -559,7 +559,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          * @param {object} newActivationData
          * @return {boolean}
          */
-        areSameItem: function (currentItem, newItem, currentActivationData, newActivationData) {
+        areSameItem: function(currentItem, newItem, currentActivationData, newActivationData) {
             return currentItem == newItem;
         },
         /**
@@ -567,7 +567,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          * @method beforeActivate
          * @param {object} newItem
          */
-        beforeActivate: function (newItem) {
+        beforeActivate: function(newItem) {
             return newItem;
         },
         /**
@@ -577,12 +577,12 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          * @param {boolean} close Whether or not the previous item was closed.
          * @param {function} setter The activate item setter function.
          */
-        afterDeactivate: function (oldItem, close, setter) {
-            if (close && setter) {
+        afterDeactivate: function(oldItem, close, setter) {
+            if(close && setter) {
                 setter(null);
             }
         }
-    }
+    };
 
     /**
      * @class ActivatorModule

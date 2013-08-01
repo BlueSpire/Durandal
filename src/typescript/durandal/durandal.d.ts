@@ -481,6 +481,186 @@ declare module 'durandal/binder' {
     export function bind(obj: any, view: HTMLElement): BindingInstruction;
 }
 
+interface ActivatorSettings {
+    /**
+     * The default value passed to an object's deactivate function as its close parameter.
+     * @property {boolean} closeOnDeactivate
+     * @default true
+    */
+    closeOnDeactivate: boolean;
+
+    /**
+     * Lower-cased words which represent a truthy value.
+     * @property {string[]} affirmations
+     * @default ['yes', 'ok', 'true']
+    */
+    affirmations: string[];
+
+    /**
+     * Interprets the response of a `canActivate` or `canDeactivate` call using the known affirmative values in the `affirmations` array.
+     * @method interpretResponse
+     * @param {object} value
+     * @return {boolean}
+    */
+    interpretResponse(value: any): boolean;
+
+    /**
+     * Determines whether or not the current item and the new item are the same.
+     * @method areSameItem
+     * @param {object} currentItem
+     * @param {object} newItem
+     * @param {object} currentActivationData
+     * @param {object} newActivationData
+     * @return {boolean}
+    */
+    areSameItem(currentItem: any, newItem: any, currentActivationData: any, newActivationData: any): boolean;
+
+    /**
+     * Called immediately before the new item is activated.
+     * @method beforeActivate
+     * @param {object} newItem
+    */
+    beforeActivate(newItem: any): any;
+
+    /**
+     * Called immediately after the old item is deactivated.
+     * @method afterDeactivate
+     * @param {object} oldItem The previous item.
+     * @param {boolean} close Whether or not the previous item was closed.
+     * @param {function} setter The activate item setter function.
+    */
+    afterDeactivate(oldItem: any, close: boolean, setter: Function): void;
+}
+
+interface Activator<T> extends KnockoutComputed<T> {
+    /**
+     * The settings for this activator.
+     * @property {ActivatorSettings} settings
+    */
+    settings: ActivatorSettings;
+
+    /**
+     * An observable which indicates whether or not the activator is currently in the process of activating an instance.
+     * @method isActivating
+     * @return {boolean}
+    */
+    isActivating: KnockoutObservable<boolean>;
+    
+    /**
+     * Determines whether or not the specified item can be deactivated.
+     * @method canDeactivateItem
+     * @param {object} item The item to check.
+     * @param {boolean} close Whether or not to check if close is possible.
+     * @return {promise}
+    */
+    canDeactivateItem(item: T, close: boolean): JQueryPromise<boolean>;
+
+    /**
+     * Deactivates the specified item.
+     * @method deactivateItem
+     * @param {object} item The item to deactivate.
+     * @param {boolean} close Whether or not to close the item.
+     * @return {promise}
+    */
+    deactivateItem(item: T, close: boolean): JQueryPromise<boolean>;
+
+    /**
+     * Determines whether or not the specified item can be activated.
+     * @method canActivateItem
+     * @param {object} item The item to check.
+     * @param {object} activationData Data associated with the activation.
+     * @return {promise}
+    */
+    canActivateItem(newItem: T, activationData?: any): JQueryPromise<boolean>;
+
+    /**
+     * Activates the specified item.
+     * @method activateItem
+     * @param {object} newItem The item to activate.
+     * @param {object} newActivationData Data associated with the activation.
+     * @return {promise}
+    */
+    activateItem(newItem: T, activationData?: any): JQueryPromise<boolean>;
+
+    /**
+     * Determines whether or not the activator, in its current state, can be activated.
+     * @method canActivate
+     * @return {promise}
+    */
+    canActivate(): JQueryPromise<boolean>;
+
+    /**
+     * Activates the activator, in its current state.
+     * @method activate
+     * @return {promise}
+    */
+    activate(): JQueryPromise<boolean>;
+
+    /**
+     * Determines whether or not the activator, in its current state, can be deactivated.
+     * @method canDeactivate
+     * @return {promise}
+    */
+    canDeactivate(close: boolean): JQueryPromise<boolean>;
+
+    /**
+     * Deactivates the activator, in its current state.
+     * @method deactivate
+     * @return {promise}
+    */
+    deactivate(close: boolean): JQueryPromise<boolean>;
+
+    /**
+      * Adds canActivate, activate, canDeactivate and deactivate functions to the provided model which pass through to the corresponding functions on the activator.
+      */
+    includeIn(includeIn: any): void;
+
+    /**
+      * Sets up a collection representing a pool of objects which the activator will activate. See below for details. Activators without an item bool always close their values on deactivate. Activators with an items pool only deactivate, but do not close them.
+      */
+    forItems(items): Activator<T>;
+}
+
+/**
+ * The activator module encapsulates all logic related to screen/component activation.
+ * An activator is essentially an asynchronous state machine that understands a particular state transition protocol.
+ * The protocol ensures that the following series of events always occur: `canDeactivate` (previous state), `canActivate` (new state), `deactivate` (previous state), `activate` (new state).
+ * Each of the _can_ callbacks may return a boolean, affirmative value or promise for one of those. If either of the _can_ functions yields a false result, then activation halts.
+ * @module activator
+ * @requires system
+ * @requires knockout
+ */
+declare module 'durandal/activator' {
+    /**
+     * The default settings used by activators.
+     * @property {ActivatorSettings} defaults
+    */
+    export var defaults: ActivatorSettings;
+    
+    /**
+    * Creates a new activator.
+     * @method create
+     * @param {object} [initialActiveItem] The item which should be immediately activated upon creation of the ativator.
+     * @param {ActivatorSettings} [settings] Per activator overrides of the default activator settings.
+     * @return {Activator} The created activator.
+    */
+    export function create<T>(initialActiveItem?: T, settings?: ActivatorSettings): Activator<T>;
+
+    /**
+     * Determines whether or not the provided object is an activator or not.
+     * @method isActivator
+     * @param {object} object Any object you wish to verify as an activator or not.
+     * @return {boolean} True if the object is an activator; false otherwise.
+    */
+    export function isActivator(object: any): boolean;
+}
+
+
+
+
+
+
+
 declare module "durandal/app" {
     /**
       * Sets the title for the app. You must set this before calling start. This will set the document title and the default message box header. It is also used internally by the router to set the document title when pages change.
@@ -647,99 +827,12 @@ declare module "durandal/viewLocator" {
     export var locateView: (viewOrUrlOrId: any, area: string, elementsToSearch: HTMLElement[]) => JQueryPromise;
 }
 
-declare module "durandal/viewModel" {
-    /**
-      * A property which is the home to some basic settings and functions that control how all activators work. These are used to create the instance settings object for each activator. They can be overriden on a per-instance-basis by passing a settings object when creating an activator or by accessing the settings property of the activator. To change them for all activators, change them on the defaults property. The two most common customizations are presented below. See the source for additional information.
-      */
-    export var defaults: IViewModelDefaults;
-    /**
-      * This creates a computed observable which enforces a lifecycle on all values the observable is set to. When creating the activator, you can specify an initialActiveItem to activate. You can also specify a settings object. Use of the settings object is for advanced scenarios and will not be detailed much here.
-      */
-    export var activator: {
-        (): IDurandalViewModelActiveItem;
-        (initialActiveItem: any, settings?: IViewModelDefaults): IDurandalViewModelActiveItem;
-    };
-}
 
 
 
-interface IViewModelDefaults {
-    /**
-      * When the activator attempts to activate an item as described below, it will only activate the new item, by default, if it is a different instance than the current. Overwrite this function to change that behavior.
-      */
-    areSameItem(currentItem, newItem, activationData): boolean;
-    /**
-      * default is true
-      */
-    closeOnDeactivate: boolean;
-    /**
-      * Interprets values returned from guard methods like canActivate and canDeactivate by transforming them into bools. The default implementation translates string values "Yes" and "Ok" as true...and all other string values as false. Non string values evaluate according to the truthy/falsey values of JavaScript. Replace this function with your own to expand or set up different values. This transformation is used by the activator internally and allows it to work smoothly in the common scenario where a deactivated item needs to show a message box to prompt the user before closing. Since the message box returns a promise that resolves to the button option the user selected, it can be automatically processed as part of the activator's guard check.
-      */
-    interpretResponse(value: any): boolean;
-    /**
-      * called before activating a module
-      */
-    beforeActivate(newItem: any): any;
-    /**
-      * called after deactivating a module
-      */
-    afterDeactivate(): any;
-}
 
-interface IDurandalViewModelActiveItem {
-    /**
-      * knockout observable
-      */
-    (val?): any;
-    /**
-      * A property which is the home to some basic settings and functions that control how all activators work. These are used to create the instance settings object for each activator. They can be overriden on a per-instance-basis by passing a settings object when creating an activator or by accessing the settings property of the activator. To change them for all activators, change them on the defaults property. The two most common customizations are presented below. See the source for additional information.
-      */
-    settings: IViewModelDefaults;
-    /**
-      * This observable is set internally by the activator during the activation process. It can be used to determine if an activation is currently happening.
-      */
-    isActivating(val?: boolean): boolean;
-    /**
-      * Pass a specific item as well as an indication of whether it should be closed, and this function will tell you the answer.
-      */
-    canDeactivateItem(item, close): JQueryPromise;
-    /**
-      * Deactivates the specified item (optionally closing it). Deactivation follows the lifecycle and thus only works if the item can be deactivated.
-      */
-    deactivateItem(item, close): JQueryDeferred;
-    /**
-      * Determines if a specific item can be activated. You can pass an arbitrary object to this function, which will be passed to the item's canActivate function , if present. This is useful if you are manually controlling activation and you want to provide some context for the operation.
-      */
-    canActivateItem(newItem, activationData?): JQueryPromise;
-    /**
-      * Activates a specific item. Activation follows the lifecycle and thus only occurs if possible. activationData functions as stated above.
-      */
-    activateItem(newItem, activationData?): JQueryPromise;
-    /**
-      * Checks whether or not the activator itself can be activated...that is whether or not it's current item or initial value can be activated.
-      */
-    canActivate(): JQueryPromise;
-    /**
-      * Activates the activator...that is..it activates it's current item or initial value.
-      */
-    activate(): JQueryPromise;
-    /**
-      * Checks whether or not the activator itself can be deactivated...that is whether or not it's current item can be deactivated.
-      */
-    canDeactivate(): JQueryPromise;
-    /**
-      *  Deactivates the activator...interpreted as deactivating its current item.
-      */
-    deactivate(): JQueryDeferred;
-    /**
-      * Adds canActivate, activate, canDeactivate and deactivate functions to the provided model which pass through to the corresponding functions on the activator.
-      */
-    includeIn(includeIn: any): JQueryPromise;
-    /**
-      * Sets up a collection representing a pool of objects which the activator will activate. See below for details. Activators without an item bool always close their values on deactivate. Activators with an items pool only deactivate, but do not close them.
-      */
-    forItems(items): IDurandalViewModelActiveItem;
-}
+
+
 
 /**
   * A router plugin, currently based on SammyJS. The router abstracts away the core configuration of Sammy and re-interprets it in terms of durandal's composition and activation mechanism. To use the router, you must require it, configure it and bind it in the UI.
@@ -805,7 +898,7 @@ declare module "durandal/plugins/router" {
     /**
       * An observable whose value is the currently active item/module/page.
       */
-    export var activeItem: IDurandalViewModelActiveItem;
+    export var activeItem: Activator<any>;
     /**
       * An observable whose value is the currently active route.
       */

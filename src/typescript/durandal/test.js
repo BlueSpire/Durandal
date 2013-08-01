@@ -1,8 +1,9 @@
-﻿define(["require", "exports", 'durandal/system', 'durandal/events'], function(require, exports, __system__, __Events__) {
+﻿define(["require", "exports", 'durandal/system', 'durandal/events', 'durandal/activator'], function(require, exports, __system__, __Events__, __activator__) {
     var system = __system__;
     
     var Events = __Events__;
     
+    var activator = __activator__;
 
     function test_system() {
         console.log(system.version);
@@ -75,5 +76,13 @@
         ev.trigger('test:event', { prop: 'value' });
 
         Events.includeIn({});
+    }
+
+    function test_activator() {
+        var content = activator.create();
+
+        content.activateItem({}).then(function (result) {
+            console.log(result);
+        });
     }
 });

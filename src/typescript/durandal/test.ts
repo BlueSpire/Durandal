@@ -6,6 +6,7 @@ import system = module('durandal/system');
 import viewEngine = module('durandal/viewEngine');
 import Events = module('durandal/events');
 import binder = module('durandal/binder');
+import activator = module('durandal/activator');
 
 function test_system() {
     console.log(system.version);
@@ -77,4 +78,12 @@ function test_Events() {
     ev.trigger('test:event', { prop: 'value' });
 
     Events.includeIn({});
+}
+
+function test_activator() {
+    var content = activator.create();
+
+    content.activateItem({}).then(result => {
+        console.log(result);
+    });
 }
