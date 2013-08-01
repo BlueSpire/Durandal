@@ -419,7 +419,67 @@ declare module 'durandal/events' {
     export = Events;
 }
 
+interface BindingInstruction {
+    applyBindings: bool;
+}
 
+/**
+ * The binder joins an object instance and a DOM element tree by applying databinding and/or invoking binding lifecycle callbacks (binding and bindingComplete).
+ * @module binder
+ * @requires system
+ * @requires knockout
+ */
+declare module 'durandal/binder' {
+    /**
+     * Called before every binding operation. Does nothing by default.
+     * @method beforeBind
+     * @param {object} data The data that is about to be bound.
+     * @param {DOMElement} view The view that is about to be bound.
+     * @param {object} instruction The object that carries the binding instructions.
+    */
+    export var beforeBind: (data:any, view:HTMLElement, instruction:BindingInstruction) => void;
+
+    /**
+     * Called after every binding operation. Does nothing by default.
+     * @method afterBind
+     * @param {object} data The data that has just been bound.
+     * @param {DOMElement} view The view that has just been bound.
+     * @param {object} instruction The object that carries the binding instructions.
+    */
+    export var afterBind: (data: any, view: HTMLElement, instruction: BindingInstruction) => void;
+
+    /**
+     * Indicates whether or not the binding system should throw errors or not.
+     * @property {boolean} throwOnErrors
+     * @default false The binding system will not throw errors by default. Instead it will log them.
+    */
+    export var throwOnErrors: boolean;
+
+    /**
+     * Gets the binding instruction that was associated with a view when it was bound.
+     * @method getBindingInstruction
+     * @param {DOMElement} view The view that was previously bound.
+     * @return {object} The object that carries the binding instructions.
+    */
+    export function getBindingInstruction(view: HTMLElement): BindingInstruction;
+
+    /**
+     * Binds the view, preserving the existing binding context. Optionally, a new context can be created, parented to the previous context.
+     * @method bindContext
+     * @param {KnockoutBindingContext} bindingContext The current binding context.
+     * @param {DOMElement} view The view to bind.
+     * @param {object} [obj] The data to bind to, causing the creation of a child binding context if present.
+    */
+    export function bindContext(bindingContext: KnockoutBindingContext, view: HTMLElement, obj?: any): BindingInstruction;
+    
+    /**
+     * Binds the view, preserving the existing binding context. Optionally, a new context can be created, parented to the previous context.
+     * @method bind
+     * @param {object} obj The data to bind to.
+     * @param {DOMElement} view The view to bind.
+    */
+    export function bind(obj: any, view: HTMLElement): BindingInstruction;
+}
 
 declare module "durandal/app" {
     /**
@@ -601,16 +661,7 @@ declare module "durandal/viewModel" {
     };
 }
 
-declare module "durandal/viewModelBinder" {
-    /**
-      * Applies bindings to a view using a pre-existing bindingContext. This is used by the composition module when a view is supplied without a model. It allows the parent binding context to be preserved. If the optional obj parameter is supplied, a new binding context will be created that is a child of bindingContext with its model set to obj. This is used by the widget framework to provide the widget binding while allowing templated parts to access their surrounding scope.
-      */
-    export var bindContext: (bindingContext: KnockoutBindingContext, view: HTMLElement, obj?: any) => void;
-    /**
-      * Databinds obj, which can be an arbitrary object, to view which is a dom sub-tree. If obj has a function called setView, then, following binding, this function will be called, providing obj with an opportunity to interact directly with the dom fragment that it is bound to.
-      */
-    export var bind: (obj: any, view: HTMLElement) => void;
-}
+
 
 interface IViewModelDefaults {
     /**

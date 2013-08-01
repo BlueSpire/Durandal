@@ -2,6 +2,7 @@
     var system = __system__;
     
     var Events = __Events__;
+    
 
     function test_system() {
         console.log(system.version);

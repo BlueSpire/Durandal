@@ -5,6 +5,7 @@
 import system = module('durandal/system');
 import viewEngine = module('durandal/viewEngine');
 import Events = module('durandal/events');
+import binder = module('durandal/binder');
 
 function test_system() {
     console.log(system.version);
