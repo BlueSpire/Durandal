@@ -1,6 +1,7 @@
-﻿define(["require", "exports", 'durandal/system'], function(require, exports, __system__) {
+﻿define(["require", "exports", 'durandal/system', 'durandal/events'], function(require, exports, __system__, __Events__) {
     var system = __system__;
     
+    var Events = __Events__;
 
     function test_system() {
         console.log(system.version);
@@ -61,5 +62,17 @@
         check = system.isObject(extended);
         check = system.isPromise(extended);
         check = system.isString(extended);
+    }
+
+    function test_Events() {
+        var ev = new Events();
+
+        ev.on('test:event').then(function (arg) {
+            console.log(arg);
+        });
+
+        ev.trigger('test:event', { prop: 'value' });
+
+        Events.includeIn({});
     }
 });

@@ -237,7 +237,7 @@ declare module 'durandal/system' {
  * @requires system
  * @requires jquery
  */
-declare module "durandal/viewEngine" {
+declare module 'durandal/viewEngine' {
     /**
      * The file extension that view source files are expected to have.
      * @property {string} viewExtension
@@ -319,9 +319,105 @@ declare module "durandal/viewEngine" {
     export function createFallbackView(viewId: string, requirePath: string, err: Error): JQueryPromise<HTMLElement>;
 }
 
+/**
+* Represents an event subscription.
+* @class Subscription
+*/
+interface EventSubscription {
+    /**
+     * Attaches a callback to the event subscription.
+     * @method then
+     * @param {function} callback The callback function to invoke when the event is triggered.
+     * @param {object} [context] An object to use as `this` when invoking the `callback`.
+     * @chainable
+     */
+    then(thenCallback: Function, context?: any): EventSubscription;
 
+    /**
+     * Attaches a callback to the event subscription.
+     * @method on
+     * @param {function} [callback] The callback function to invoke when the event is triggered. If `callback` is not provided, the previous callback will be re-activated.
+     * @param {object} [context] An object to use as `this` when invoking the `callback`.
+     * @chainable
+     */
+    on(thenCallback: Function, context?: any): EventSubscription;
 
+    /**
+     * Cancels the subscription.
+     * @method off
+     * @chainable
+     */
+    off(): EventSubscription;
+}
 
+/**
+ * Creates an object with eventing capabilities.
+ * @class Events
+*/
+declare class Events {
+    constructor();
+
+    /**
+     * Creates a subscription or registers a callback for the specified event.
+     * @method on
+     * @param {string} events One or more events, separated by white space.
+     * @return {Subscription} A subscription is returned.
+     */
+    on(events: string): EventSubscription; 
+
+    /**
+     * Creates a subscription or registers a callback for the specified event.
+     * @method on
+     * @param {string} events One or more events, separated by white space.
+     * @param {function} [callback] The callback function to invoke when the event is triggered.
+     * @param {object} [context] An object to use as `this` when invoking the `callback`.
+     * @return {Events} The events object is returned for chaining.
+     */
+    on(events: string, callback: Function, context?: any): Events;
+
+    /**
+     * Removes the callbacks for the specified events.
+     * @method off
+     * @param {string} [events] One or more events, separated by white space to turn off. If no events are specified, then the callbacks will be removed.
+     * @param {function} [callback] The callback function to remove. If `callback` is not provided, all callbacks for the specified events will be removed.
+     * @param {object} [context] The object that was used as `this`. Callbacks with this context will be removed.
+     * @chainable
+     */
+    off(events: string, callback: Function, context?: any): Events;
+
+    /**
+     * Triggers the specified events.
+     * @method trigger
+     * @param {string} [events] One or more events, separated by white space to trigger.
+     * @chainable
+     */
+    trigger(events: string, ...eventArgs:any[]): Events;
+
+    /**
+     * Creates a function that will trigger the specified events when called. Simplifies proxying jQuery (or other) events through to the events object.
+     * @method proxy
+     * @param {string} events One or more events, separated by white space to trigger by invoking the returned function.
+     * @return {function} Calling the function will invoke the previously specified events on the events object.
+     */
+    proxy(events: string): Function;
+
+    /**
+     * Adds eventing capabilities to the specified object.
+     * @method includeIn
+     * @param {object} targetObject The object to add eventing capabilities to.
+     */
+    static includeIn(targetObject: any): void;
+}
+
+/**
+ * Durandal events originate from backbone.js but also combine some ideas from signals.js as well as some additional improvements.
+ * Events can be installed into any object and are installed into the `app` module by default for convenient app-wide eventing.
+ * @module events
+ * @requires system
+ */
+declare module 'durandal/events' {
+    export = Events;
+}
 
 
 
@@ -765,16 +861,3 @@ declare module "durandal/widget" {
       */
     export function convertKindToViewId(kind): string;
 }
-
-interface IEventSubscription
-{
-    /**
-      * This function adding callback to event subscription
-      */
-    then(thenCallback: any): void;
-
-    /**
-      * This function removing current subscription from event handlers
-      */
-     off(): void;
- }

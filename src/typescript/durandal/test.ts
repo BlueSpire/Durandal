@@ -4,6 +4,7 @@
 
 import system = module('durandal/system');
 import viewEngine = module('durandal/viewEngine');
+import Events = module('durandal/events');
 
 function test_system() {
     console.log(system.version);
@@ -63,4 +64,16 @@ function test_system() {
     check = system.isObject(extended);
     check = system.isPromise(extended);
     check = system.isString(extended);
+}
+
+function test_Events() {
+    var ev = new Events();
+    
+    ev.on('test:event').then(arg => {
+        console.log(arg);
+    });
+
+    ev.trigger('test:event', { prop: 'value' });
+
+    Events.includeIn({});
 }
