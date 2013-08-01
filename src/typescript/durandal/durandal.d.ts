@@ -282,7 +282,7 @@ declare module "durandal/viewEngine" {
      * @param {string} markup The markup to parse.
      * @return {HTMLElement[]} The elements.
     */
-    export function parseMarkup(markup: string):HTMLElement[];
+    export function parseMarkup(markup: string):Node[];
 
     /**
      * Calls `parseMarkup` and then pipes the results through `ensureSingleElement`.
@@ -298,7 +298,7 @@ declare module "durandal/viewEngine" {
      * @param {HTMLElement[]} allElements The elements.
      * @return {HTMLElement} A single element.
     */
-    export function ensureSingleElement(allElements: HTMLElement[]): HTMLElement;
+    export function ensureSingleElement(allElements: Node[]): HTMLElement;
 
     /**
      * Creates the view associated with the view id.
