@@ -945,6 +945,182 @@ declare module 'durandal/app' {
     export function proxy(events: string): Function;
 }
 
+/**
+* Models a message box's message, title and options.
+* @class MessageBox
+*/
+declare class MessageBox {
+    constructor(message: string, title: string, options: string[]);
+
+    /**
+     * Selects an option and closes the message box, returning the selected option through the dialog system's promise.
+     * @method selectOption
+     * @param {string} dialogResult The result to select.
+     */
+    selectOptions(dialogResult: string): void;
+
+    /**
+     * Provides the view to the composition system.
+     * @method getView
+     * @return {DOMElement} The view of the message box.
+     */
+    getView(): HTMLElement;
+
+    /**
+     * The title to be used for the message box if one is not provided.
+     * @property {string} defaultTitle
+     * @default Application
+     * @static
+     */
+    static defaultTitle: string;
+
+    /**
+     * The options to display in the message box of none are specified.
+     * @property {string[]} defaultOptions
+     * @default ['Ok']
+     * @static
+     */
+    static defaultOptions: string[];
+
+    /**
+     * The markup for the message box's view.
+     * @property {string} defaultViewMarkup
+     * @static
+     */
+    static defaultViewMarkup: string;
+}
+
+interface DialogContext {
+    /**
+     * In this function, you are expected to add a DOM element to the tree which will serve as the "host" for the modal's composed view. You must add a property called host to the modalWindow object which references the dom element. It is this host which is passed to the composition module.
+     * @method addHost
+     * @param {Dialog} theDialog The dialog model.
+    */
+    addHost(theDialog: Dialog);
+
+    /**
+     * This function is expected to remove any DOM machinery associated with the specified dialog and do any other necessary cleanup.
+     * @method removeHost
+     * @param {Dialog} theDialog The dialog model.
+    */
+    removeHost(theDialog: Dialog);
+
+    /**
+     * This function is called after the modal is fully composed into the DOM, allowing your implementation to do any final modifications, such as positioning or animation. You can obtain the original dialog object by using `getDialog` on context.model.
+     * @method compositionComplete
+     * @param {DOMElement} child The dialog view.
+     * @param {DOMElement} parent The parent view.
+     * @param {object} context The composition context.
+    */
+    compositionComplete(child:HTMLElement, parent: HTMLElement, context: CompositionContext);
+}
+
+interface Dialog {
+    owner: any;
+    context: DialogContext;
+    activator: Activator<any>;
+    close(): JQueryPromise;
+    settings: CompositionContext;
+}
+
+/**
+ * The dialog module enables the display of message boxes, custom modal dialogs and other overlays or slide-out UI abstractions. Dialogs are constructed by the composition system which interacts with a user defined dialog context. The dialog module enforced the activator lifecycle.
+ * @module dialog
+ * @requires system
+ * @requires app
+ * @requires composition
+ * @requires activator
+ * @requires viewEngine
+ * @requires jquery
+ * @requires knockout
+ */
+declare module "plugins/dialog" {
+    /**
+     * The constructor function used to create message boxes.
+     * @property {MessageBox} MessageBox
+    */
+    export var MessageBox: MessageBox;
+
+    /**
+     * The css zIndex that the last dialog was displayed at.
+     * @property {int} currentZIndex
+    */
+    export var currentZIndex: number;
+
+    /**
+     * Gets the next css zIndex at which a dialog should be displayed.
+     * @method getNextZIndex
+     * @param {int} The zIndex.
+    */
+    export function getNextZIndex(): number;
+
+    /**
+     * Determines whether or not there are any dialogs open.
+     * @method isOpen
+     * @return {boolean} True if a dialog is open. false otherwise.
+    */
+    export function isOpen(): boolean;
+
+    /**
+     * Gets the dialog context by name or returns the default context if no name is specified.
+     * @method getContext
+     * @param {string} [name] The name of the context to retrieve.
+     * @return {DialogContext} True context.
+    */
+    export function getContext(name: string): DialogContext;
+
+    /**
+     * Adds (or replaces) a dialog context.
+     * @method addContext
+     * @param {string} name The name of the context to add.
+     * @param {DialogContext} dialogContext The context to add.
+    */
+    export function addContext(name: string, modalContext: DialogContext): void;
+    
+    /**
+     * Gets the dialog model that is associated with the specified object.
+     * @method getDialog
+     * @param {object} obj The object for whom to retrieve the dialog.
+     * @return {Dialog} The dialog model.
+    */
+    export function getDialog(obj: any): Dialog;
+
+    /**
+     * Closes the dialog associated with the specified object.
+     * @method close
+     * @param {object} obj The object whose dialog should be closed.
+     * @param {object} result* The results to return back to the dialog caller after closing.
+    */
+    export function close(obj: any): void;
+
+    /**
+     * Shows a dialog.
+     * @method show
+     * @param {object|string} obj The object (or moduleId) to display as a dialog.
+     * @param {object} [activationData] The data that should be passed to the object upon activation.
+     * @param {string} [context] The name of the dialog context to use. Uses the default context if none is specified.
+     * @return {Promise} A promise that resolves when the dialog is closed and returns any data passed at the time of closing.
+    */
+    export function show(obj: any, activationData?: any, context?: string): JQueryPromise;
+
+    /**
+     * Shows a message box.
+     * @method showMessage
+     * @param {string} message The message to display in the dialog.
+     * @param {string} [title] The title message.
+     * @param {string[]} [options] The options to provide to the user.
+     * @return {Promise} A promise that resolves when the message box is closed and returns the selected option.
+    */
+    export function showMessage(message: string, title?: string, options?: string[]): JQueryPromise<string>;
+
+    /**
+     * Installs this module into Durandal; called by the framework. Adds `app.showDialog` and `app.showMessage` convenience methods.
+     * @method install
+     * @param {object} [config] Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box.
+    */
+    export function install(config: any): void;
+}
+
 
 
 
@@ -968,36 +1144,7 @@ declare module "durandal/http" {
     export var post: (url: string, data: Object) => JQueryPromise;
 }
 
-declare module "durandal/modalDialog" {
-    /**
-      * the default is 1050
-      */
-    export var currentZIndex: number;
-    /**
-      * This is a helper function which can be used in the creation of custom modal contexts. Each time it is called, it returns a successively higher zIndex value than the last time.
-      */
-    export var getNextZIndex: () => number;
-    /**
-      * This is a helper function which will tell you if any modals are currently open.
-      */
-    export var isModalOpen: () => boolean;
-    /**
-      * You may wish to customize modal displays or add additional contexts in order to display modals in different ways. To alter the default context, you would acquire it by calling getContext() and then alter it's pipeline. If you don't provide a value for name it returns the default context.
-      */
-    export var getContext: (name: string) => any;
-    /**
-      * Pass a name and an object which defines the proper modal display pipeline via the functions described in the next section. This creates a new modal context or "modal style."
-      */
-    export var addContext: (name: string, modalContext: any) => JQueryPromise;
-    /**
-      * creates a settings obj from the supplied params
-      */
-    export var createCompositionSettings: (obj: any, modalContext: any) => any;
-    /**
-      * This API uses the composition module to compose your obj into a modal popover. It also uses the viewModel module to check and enforce any screen lifecycle needs that obj may have. A promise is returned which will be resolved when the modal dialog is dismissed. The obj is the view model for your modal dialog, or a moduleId for the view model to load. Your view model instance will have a single property added to it by this mechanism called modal which represents the dialog infrastructure itself. This modal object has a single function called close which can be invoked to close the modal. You may also pass data to close which will be returned via the promise mechanism. The modal object also references it's owner, activator, the composition settings it was created with and its display context. Speaking of context, this parameter represents the display context or modal style. By default, there is one context registered with the system, named 'default'. If no context is specified, the default context with be used to display the modal. You can also specify activationData which is an arbitrary object that will be passed to your modal's activate function, if it has one.
-      */
-    export var show: (obj: any, activationData: any, context: any) => JQueryPromise;
-}
+
 
 /**
   * A router plugin, currently based on SammyJS. The router abstracts away the core configuration of Sammy and re-interprets it in terms of durandal's composition and activation mechanism. To use the router, you must require it, configure it and bind it in the UI.

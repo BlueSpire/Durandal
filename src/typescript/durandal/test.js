@@ -7,6 +7,7 @@
     
     
     var app = __app__;
+    
 
     function test_system() {
         console.log(system.version);

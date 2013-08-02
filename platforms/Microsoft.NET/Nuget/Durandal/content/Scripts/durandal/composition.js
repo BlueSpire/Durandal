@@ -227,6 +227,12 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             return 'transitions/' + name;
         },
         /**
+         * The name of the transition to use in all composigions.
+         * @property {string} defaultTransitionName
+         * @default null
+         */
+        defaultTransitionName: null,
+        /**
          * Represents the currently executing composition transaction.
          * @property {CompositionTransaction} current
          */

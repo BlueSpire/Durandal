@@ -10,6 +10,7 @@ import activator = module('durandal/activator');
 import viewLocator = module('durandal/viewLocator');
 import composition = module('durandal/composition');
 import app = module('durandal/app');
+import dialog = module('plugins/dialog');
 
 function test_system() {
     console.log(system.version);

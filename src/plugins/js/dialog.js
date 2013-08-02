@@ -262,7 +262,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
             return dialog.show(new this.MessageBox(message, title, options));
         },
         /**
-         * Installs this module into Durandal. Adds `app.showDialog` and `app.showMessage` convenience methods.
+         * Installs this module into Durandal; called by the framework. Adds `app.showDialog` and `app.showMessage` convenience methods.
          * @method install
          * @param {object} [config] Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box.
          */
