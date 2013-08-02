@@ -1034,7 +1034,7 @@ interface Dialog {
  * @requires jquery
  * @requires knockout
  */
-declare module "plugins/dialog" {
+declare module 'plugins/dialog' {
     /**
      * The constructor function used to create message boxes.
      * @property {MessageBox} MessageBox
@@ -1121,7 +1121,139 @@ declare module "plugins/dialog" {
     export function install(config: any): void;
 }
 
+interface HistoryOptions {
+    /**
+     * The function that will be called back when the fragment changes.
+     * @property {function} routeHandler
+     */
+    routeHandler: (fragment: string) => void;
 
+    /**
+     * The url root used to extract the fragment when using push state.
+     * @property {string} root
+     */
+    root?: string;
+
+    /**
+     * Use hash change when present.
+     * @property {boolean} hashChange
+     * @default true
+     */
+    hashChange?: boolean;
+
+    /**
+     * Use push state when present.
+     * @property {boolean} pushState
+     * @default false
+     */
+    pushState?: boolean;
+
+    /**
+     * Prevents loading of the current url when activating history.
+     * @property {boolean} silent
+     * @default false
+     */
+    silent?: boolean;
+}
+
+interface NavigationOptions {
+    trigger: boolean;
+    replace: boolean;
+}
+
+/**
+ * This module is based on Backbone's core history support. It abstracts away the low level details of working with browser history and url changes in order to provide a solid foundation for a router.
+ * @module history
+ * @requires system
+ * @requires jquery
+ */
+declare module 'plugins/history' {
+    /**
+     * The setTimeout interval used when the browser does not support hash change events.
+     * @property {string} interval
+     * @default 50
+    */
+    export var interval: number;
+
+    /**
+     * Indicates whether or not the history module is actively tracking history.
+     * @property {string} active
+    */
+    export var active: boolean;
+
+    /**
+     * Gets the true hash value. Cannot use location.hash directly due to a bug in Firefox where location.hash will always be decoded.
+     * @method getHash
+     * @param {string} [window] The optional window instance
+     * @return {string} The hash.
+     */
+    export function getHash(window?: Window): string;
+
+    /**
+     * Get the cross-browser normalized URL fragment, either from the URL, the hash, or the override.
+     * @method getFragment
+     * @param {string} fragment The fragment.
+     * @param {boolean} forcePushState Should we force push state?
+     * @return {string} he fragment.
+     */
+    export function getFragment(fragment: string, forcePushState: boolean): string;
+
+    /**
+     * Activate the hash change handling, returning `true` if the current URL matches an existing route, and `false` otherwise.
+     * @method activate
+     * @param {HistoryOptions} options.
+     * @return {boolean|undefined} Returns true/false from loading the url unless the silent option was selected.
+     */
+    export function activate(options: HistoryOptions): boolean;
+
+    /**
+     * Disable history, perhaps temporarily. Not useful in a real app, but possibly useful for unit testing Routers.
+     * @method deactivate
+     */
+    export function deactivate(): void;
+
+    /**
+     * Checks the current URL to see if it has changed, and if it has, calls `loadUrl`, normalizing across the hidden iframe.
+     * @method checkUrl
+     * @return {boolean} Returns true/false from loading the url.
+     */
+    export function checkUrl(): boolean;
+
+    /**
+     * Attempts to load the current URL fragment. A pass-through to options.routeHandler.
+     * @method loadUrl
+     * @return {boolean} Returns true/false from the route handler.
+     */
+    export function loadUrl(): boolean;
+
+    /**
+     * Save a fragment into the hash history, or replace the URL state if the
+     * 'replace' option is passed. You are responsible for properly URL-encoding
+     * the fragment in advance.
+     * The options object can contain `trigger: true` if you wish to have the
+     * route callback be fired (not usually desirable), or `replace: true`, if
+     * you wish to modify the current URL without adding an entry to the history.
+     * @method navigate
+     * @param {string} fragment The url fragment to navigate to.
+     * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option. Trigger is `true` by default.
+     * @return {boolean} Returns true/false from loading the url.
+     */
+    export function navigate(fragment: string, trigger?: boolean): boolean;
+
+    /**
+     * Save a fragment into the hash history, or replace the URL state if the
+     * 'replace' option is passed. You are responsible for properly URL-encoding
+     * the fragment in advance.
+     * The options object can contain `trigger: true` if you wish to have the
+     * route callback be fired (not usually desirable), or `replace: true`, if
+     * you wish to modify the current URL without adding an entry to the history.
+     * @method navigate
+     * @param {string} fragment The url fragment to navigate to.
+     * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option. Trigger is `true` by default.
+     * @return {boolean} Returns true/false from loading the url.
+     */
+    export function navigate(fragment: string, options: NavigationOptions): boolean;
+}
 
 
 

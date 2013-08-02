@@ -221,14 +221,14 @@ define(['durandal/system', 'jquery'], function (system, $) {
             return false;
         }
 
-        if(options === undefined){
+        if(options === undefined) {
             options = {
-                trigger:true
-            }
-        }else if(system.isBoolean(options)){
+                trigger: true
+            };
+        }else if(system.isBoolean(options)) {
             options = {
-                trigger:options
-            }
+                trigger: options
+            };
         }
 
         fragment = history.getFragment(fragment || '');
