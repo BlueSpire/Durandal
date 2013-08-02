@@ -1121,7 +1121,7 @@ declare module 'plugins/dialog' {
      * @method install
      * @param {object} [config] Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box.
     */
-    export function install(config: any): void;
+    export function install(config: Object): void;
 }
 
 /**
@@ -1300,6 +1300,55 @@ declare module 'plugins/http' {
     */
     export function post(url: string, data: Object): JQueryPromise;
 }
+
+/**
+ * Enables automatic observability of plain javascript object for ES5 compatible browsers. Also, converts promise properties into observables that are updated when the promise resolves.
+ * @module observable
+ * @requires system
+ * @requires binder
+ * @requires knockout
+ */
+declare module 'plugins/observable' {
+    function observable(obj: any, property: string): KnockoutObservable;
+
+    module observable {
+        /**
+         * Converts an entire object into an observable object by re-writing its attributes using ES5 getters and setters. Attributes beginning with '_' or '$' are ignored.
+         * @method convertObject
+         * @param {object} obj The target object to convert.
+         */
+        export function convertObject(obj: any): void;
+
+        /**
+         * Converts a normal property into an observable property using ES5 getters and setters.
+         * @method convertProperty
+         * @param {object} obj The target object on which the property to convert lives.
+         * @param {string} propertyName The name of the property to convert.
+         * @param {object} [original] The original value of the property. If not specified, it will be retrieved from the object.
+         * @return {KnockoutObservable} The underlying observable.
+         */
+        export function convertProperty(obj: any, propertyName: string, original?: any): KnockoutObservable;
+
+        /**
+         * Defines a computed property using ES5 getters and setters.
+         * @method defineProperty
+         * @param {object} obj The target object on which to create the property.
+         * @param {string} propertyName The name of the property to define.
+         * @param {function|object} evaluatorOrOptions The Knockout computed function or computed options object.
+         * @return {KnockoutComputed} The underlying computed observable.
+         */
+        export function defineProperty<T>(obj: any, propertyName: string, evaluatorOrOptions?: KnockoutComputedDefine<T>);
+
+        /**
+         * Installs the plugin into the view model binder's `beforeBind` hook so that objects are automatically converted before being bound.
+         * @method install
+         */
+        export function install(config: Object): void;
+    }
+
+    export = observable;
+}
+
 
 
 

@@ -1,4 +1,4 @@
-﻿define(["require", "exports", 'durandal/system', 'durandal/events', 'durandal/activator', 'durandal/app'], function(require, exports, __system__, __Events__, __activator__, __app__) {
+﻿define(["require", "exports", 'durandal/system', 'durandal/events', 'durandal/activator', 'durandal/app', 'plugins/observable'], function(require, exports, __system__, __Events__, __activator__, __app__, __observable__) {
     var system = __system__;
     
     var Events = __Events__;
@@ -10,6 +10,7 @@
     
     
     
+    var observable = __observable__;
 
     function test_system() {
         console.log(system.version);

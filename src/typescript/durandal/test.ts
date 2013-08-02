@@ -13,6 +13,7 @@ import app = module('durandal/app');
 import dialog = module('plugins/dialog');
 import history = module('plugins/history');
 import http = module('plugins/http');
+import observable = module('plugins/observable');
 
 function test_system() {
     console.log(system.version);
