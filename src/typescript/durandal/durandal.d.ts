@@ -831,58 +831,121 @@ declare module 'durandal/composition' {
     export function compose(element: HTMLElement, settings: CompositionContext, bindingContext: KnockoutBindingContext): void;
 }
 
-
-
-
-
-
-
-
-declare module "durandal/app" {
+/**
+ * The app module controls app startup, plugin loading/configuration and root visual display.
+ * @module app
+ * @requires system
+ * @requires viewEngine
+ * @requires composition
+ * @requires events
+ * @requires jquery
+ */
+declare module 'durandal/app' {
     /**
-      * Sets the title for the app. You must set this before calling start. This will set the document title and the default message box header. It is also used internally by the router to set the document title when pages change.
-      */
+     * The title of your application.
+     * @property {string} title
+    */
     export var title: string;
+    
     /**
-      *  simple helper function that wraps a call to modalDialog.show()
-      */
-    export var showModal: (obj, activationData?, context?) => JQueryPromise;
+     * Shows a dialog via the dialog plugin.
+     * @method showDialog
+     * @param {object|string} obj The object (or moduleId) to display as a dialog.
+     * @param {object} [activationData] The data that should be passed to the object upon activation.
+     * @param {string} [context] The name of the dialog context to use. Uses the default context if none is specified.
+     * @return {Promise} A promise that resolves when the dialog is closed and returns any data passed at the time of closing.
+    */
+    export function showDialog(obj: any, activationData?: any, context?: string):JQueryPromise;
+
     /**
-      * A simple helper function that translates to return modalDialog.show(new MessageBox(message, title, options));
-      */
-    export var showMessage: (message: string, title?: string, options?: any) => JQueryPromise;
+     * Shows a message box via the dialog plugin.
+     * @method showMessage
+     * @param {string} message The message to display in the dialog.
+     * @param {string} [title] The title message.
+     * @param {string[]} [options] The options to provide to the user.
+     * @return {Promise} A promise that resolves when the message box is closed and returns the selected option.
+    */
+    export function showMessage(message: string, title?: string, options?: string[]): JQueryPromise<string>;
+    
     /**
-      * Call this function to bootstrap the Durandal framework. It returns a promise which is resolved when the framework is configured and the dom is ready. At that point you are ready to set your root.
-      */
-    export var start: () => JQueryPromise;
+     * Configures one or more plugins to be loaded and installed into the application.
+     * @method configurePlugins
+     * @param {object} config Keys are plugin names. Values can be truthy, to simply install the plugin, or a configuration object to pass to the plugin.
+     * @param {string} [baseUrl] The base url to load the plugins from.
+    */
+    export function configurePlugins(config: any, baseUrl?: string): void;
+
     /**
-      * This sets the root view or view model and displays the composed application in the specified application host. 
-      * @param root parameter is required and can be anything that the composition module understands as a view or view model. This includes strings and objects. 
-      * @param transition If you have a splash screen, you may want to specify an optional transition to animate from the splash to your main shell. 
-      * @param applicationHost parameter is optional. If provided it should be an element id for the node into which the UI should be composed. If it is not provided the default is to look for an element with an id of "applicationHost".
-      */
-    export var setRoot: (root: any, transition?: string, applicationHost?: string) => void;
+     * Starts the application.
+     * @method start
+     * @return {promise}
+    */
+    export function start(): JQueryPromise;
+
     /**
-      * If you intend to run on mobile, you should also call app.adaptToDevice() before setting the root.
-      */
-    export var adaptToDevice: () => void;
+     * Sets the root module/view for the application.
+     * @method setRoot
+     * @param {string} root The root view or module.
+     * @param {string} [transition] The transition to use from the previous root (or splash screen) into the new root.
+     * @param {string} [applicationHost] The application host element id. By default the id 'applicationHost' will be used.
+    */
+    export function setRoot(root: any, transition?: string, applicationHost?: string): void;
+
     /**
-      * The events parameter is a space delimited string containing one or more event identifiers. When one of these events is triggered, the callback is called and passed the event data provided by the trigger. The special events value of "all" binds all events on the object to the callback. If a context is provided, it will be bound to this for the callback. If the callback is omitted, then a promise-like object is returned from on. This object represents a subscription and has a then function used to register callbacks.
-      */
-    export var on: (events: string, callback: Function, context?) => IEventSubscription;
+     * Sets the root module/view for the application.
+     * @method setRoot
+     * @param {string} root The root view or module.
+     * @param {string} [transition] The transition to use from the previous root (or splash screen) into the new root.
+     * @param {string} [applicationHost] The application host element. By default the id 'applicationHost' will be used.
+    */
+    export function setRoot(root: any, transition?: string, applicationHost?: HTMLElement): void;
+
     /**
-      * Unwires callbacks from events. If no context is specified, all callbacks with different contexts will be removed. If no callback is specified, all callbacks for the event will be removed. If no event is specified, all event callbacks on the object will be removed.
-      */
-    export var off: (events: string, callback: Function, context?) => any;
+     * Creates a subscription or registers a callback for the specified event.
+     * @method on
+     * @param {string} events One or more events, separated by white space.
+     * @return {Subscription} A subscription is returned.
+     */
+    export function on(events: string): EventSubscription;
+
     /**
-      * Triggers an event, or space-delimited list of events. Subsequent arguments to trigger will be passed along to the event callbacks.
-      */
-    export var trigger: (events: string, ...args: any[]) => any;
+     * Creates a subscription or registers a callback for the specified event.
+     * @method on
+     * @param {string} events One or more events, separated by white space.
+     * @param {function} [callback] The callback function to invoke when the event is triggered.
+     * @param {object} [context] An object to use as `this` when invoking the `callback`.
+     * @return {Events} The events object is returned for chaining.
+     */
+    export function on(events: string, callback: Function, context?: any): Events;
+
     /**
-      * Provides a function which can be used as a callback to trigger the events. This is useful in combination with jQuery events which may need to trigger the aggregator's events.
-      */
-    export var proxy: (events) => Function;
+     * Removes the callbacks for the specified events.
+     * @method off
+     * @param {string} [events] One or more events, separated by white space to turn off. If no events are specified, then the callbacks will be removed.
+     * @param {function} [callback] The callback function to remove. If `callback` is not provided, all callbacks for the specified events will be removed.
+     * @param {object} [context] The object that was used as `this`. Callbacks with this context will be removed.
+     * @chainable
+     */
+    export function off(events: string, callback: Function, context?: any): Events;
+
+    /**
+     * Triggers the specified events.
+     * @method trigger
+     * @param {string} [events] One or more events, separated by white space to trigger.
+     * @chainable
+     */
+    export function trigger(events: string, ...eventArgs:any[]): Events;
+
+    /**
+     * Creates a function that will trigger the specified events when called. Simplifies proxying jQuery (or other) events through to the events object.
+     * @method proxy
+     * @param {string} events One or more events, separated by white space to trigger by invoking the returned function.
+     * @return {function} Calling the function will invoke the previously specified events on the events object.
+     */
+    export function proxy(events: string): Function;
 }
+
+
 
 
 

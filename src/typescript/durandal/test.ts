@@ -9,6 +9,7 @@ import binder = module('durandal/binder');
 import activator = module('durandal/activator');
 import viewLocator = module('durandal/viewLocator');
 import composition = module('durandal/composition');
+import app = module('durandal/app');
 
 function test_system() {
     console.log(system.version);
@@ -87,5 +88,19 @@ function test_activator() {
 
     content.activateItem({}).then(result => {
         console.log(result);
+    });
+}
+
+function test_app() {
+    app.configurePlugins({
+        widgets: true,
+        dialog: true,
+        router: true
+    });
+
+    app.title = 'Test App';
+
+    app.start().then(() => {
+        app.setRoot('test');
     });
 }

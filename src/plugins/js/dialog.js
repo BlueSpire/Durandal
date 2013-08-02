@@ -244,7 +244,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
         },
         /**
          * Shows a message box.
-         * @method show
+         * @method showMessage
          * @param {string} message The message to display in the dialog.
          * @param {string} [title] The title message.
          * @param {string[]} [options] The options to provide to the user.

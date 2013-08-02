@@ -1,4 +1,4 @@
-﻿define(["require", "exports", 'durandal/system', 'durandal/events', 'durandal/activator'], function(require, exports, __system__, __Events__, __activator__) {
+﻿define(["require", "exports", 'durandal/system', 'durandal/events', 'durandal/activator', 'durandal/app'], function(require, exports, __system__, __Events__, __activator__, __app__) {
     var system = __system__;
     
     var Events = __Events__;
@@ -6,6 +6,7 @@
     var activator = __activator__;
     
     
+    var app = __app__;
 
     function test_system() {
         console.log(system.version);
@@ -85,6 +86,20 @@
 
         content.activateItem({}).then(function (result) {
             console.log(result);
+        });
+    }
+
+    function test_app() {
+        app.configurePlugins({
+            widgets: true,
+            dialog: true,
+            router: true
+        });
+
+        app.title = 'Test App';
+
+        app.start().then(function () {
+            app.setRoot('test');
         });
     }
 });
