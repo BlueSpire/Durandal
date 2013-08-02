@@ -419,10 +419,6 @@ declare module 'durandal/events' {
     export = Events;
 }
 
-interface BindingInstruction {
-    applyBindings: bool;
-}
-
 /**
  * The binder joins an object instance and a DOM element tree by applying databinding and/or invoking binding lifecycle callbacks (binding and bindingComplete).
  * @module binder
@@ -430,6 +426,10 @@ interface BindingInstruction {
  * @requires knockout
  */
 declare module 'durandal/binder' {
+    interface BindingInstruction {
+        applyBindings: bool;
+    }
+
     /**
      * Called before every binding operation. Does nothing by default.
      * @method beforeBind
@@ -481,146 +481,6 @@ declare module 'durandal/binder' {
     export function bind(obj: any, view: HTMLElement): BindingInstruction;
 }
 
-interface ActivatorSettings {
-    /**
-     * The default value passed to an object's deactivate function as its close parameter.
-     * @property {boolean} closeOnDeactivate
-     * @default true
-    */
-    closeOnDeactivate: boolean;
-
-    /**
-     * Lower-cased words which represent a truthy value.
-     * @property {string[]} affirmations
-     * @default ['yes', 'ok', 'true']
-    */
-    affirmations: string[];
-
-    /**
-     * Interprets the response of a `canActivate` or `canDeactivate` call using the known affirmative values in the `affirmations` array.
-     * @method interpretResponse
-     * @param {object} value
-     * @return {boolean}
-    */
-    interpretResponse(value: any): boolean;
-
-    /**
-     * Determines whether or not the current item and the new item are the same.
-     * @method areSameItem
-     * @param {object} currentItem
-     * @param {object} newItem
-     * @param {object} currentActivationData
-     * @param {object} newActivationData
-     * @return {boolean}
-    */
-    areSameItem(currentItem: any, newItem: any, currentActivationData: any, newActivationData: any): boolean;
-
-    /**
-     * Called immediately before the new item is activated.
-     * @method beforeActivate
-     * @param {object} newItem
-    */
-    beforeActivate(newItem: any): any;
-
-    /**
-     * Called immediately after the old item is deactivated.
-     * @method afterDeactivate
-     * @param {object} oldItem The previous item.
-     * @param {boolean} close Whether or not the previous item was closed.
-     * @param {function} setter The activate item setter function.
-    */
-    afterDeactivate(oldItem: any, close: boolean, setter: Function): void;
-}
-
-interface Activator<T> extends KnockoutComputed<T> {
-    /**
-     * The settings for this activator.
-     * @property {ActivatorSettings} settings
-    */
-    settings: ActivatorSettings;
-
-    /**
-     * An observable which indicates whether or not the activator is currently in the process of activating an instance.
-     * @method isActivating
-     * @return {boolean}
-    */
-    isActivating: KnockoutObservable<boolean>;
-    
-    /**
-     * Determines whether or not the specified item can be deactivated.
-     * @method canDeactivateItem
-     * @param {object} item The item to check.
-     * @param {boolean} close Whether or not to check if close is possible.
-     * @return {promise}
-    */
-    canDeactivateItem(item: T, close: boolean): JQueryPromise<boolean>;
-
-    /**
-     * Deactivates the specified item.
-     * @method deactivateItem
-     * @param {object} item The item to deactivate.
-     * @param {boolean} close Whether or not to close the item.
-     * @return {promise}
-    */
-    deactivateItem(item: T, close: boolean): JQueryPromise<boolean>;
-
-    /**
-     * Determines whether or not the specified item can be activated.
-     * @method canActivateItem
-     * @param {object} item The item to check.
-     * @param {object} activationData Data associated with the activation.
-     * @return {promise}
-    */
-    canActivateItem(newItem: T, activationData?: any): JQueryPromise<boolean>;
-
-    /**
-     * Activates the specified item.
-     * @method activateItem
-     * @param {object} newItem The item to activate.
-     * @param {object} newActivationData Data associated with the activation.
-     * @return {promise}
-    */
-    activateItem(newItem: T, activationData?: any): JQueryPromise<boolean>;
-
-    /**
-     * Determines whether or not the activator, in its current state, can be activated.
-     * @method canActivate
-     * @return {promise}
-    */
-    canActivate(): JQueryPromise<boolean>;
-
-    /**
-     * Activates the activator, in its current state.
-     * @method activate
-     * @return {promise}
-    */
-    activate(): JQueryPromise<boolean>;
-
-    /**
-     * Determines whether or not the activator, in its current state, can be deactivated.
-     * @method canDeactivate
-     * @return {promise}
-    */
-    canDeactivate(close: boolean): JQueryPromise<boolean>;
-
-    /**
-     * Deactivates the activator, in its current state.
-     * @method deactivate
-     * @return {promise}
-    */
-    deactivate(close: boolean): JQueryPromise<boolean>;
-
-    /**
-      * Adds canActivate, activate, canDeactivate and deactivate functions to the provided model which pass through to the corresponding functions on the activator.
-      */
-    includeIn(includeIn: any): void;
-
-    /**
-      * Sets up a collection representing a pool of objects which the activator will activate. See below for details. Activators without an item bool always close their values on deactivate. Activators with an items pool only deactivate, but do not close them.
-      */
-    forItems(items): Activator<T>;
-}
-
 /**
  * The activator module encapsulates all logic related to screen/component activation.
  * An activator is essentially an asynchronous state machine that understands a particular state transition protocol.
@@ -631,6 +491,146 @@ interface Activator<T> extends KnockoutComputed<T> {
  * @requires knockout
  */
 declare module 'durandal/activator' {
+    interface ActivatorSettings {
+        /**
+         * The default value passed to an object's deactivate function as its close parameter.
+         * @property {boolean} closeOnDeactivate
+         * @default true
+        */
+        closeOnDeactivate: boolean;
+
+        /**
+         * Lower-cased words which represent a truthy value.
+         * @property {string[]} affirmations
+         * @default ['yes', 'ok', 'true']
+        */
+        affirmations: string[];
+
+        /**
+         * Interprets the response of a `canActivate` or `canDeactivate` call using the known affirmative values in the `affirmations` array.
+         * @method interpretResponse
+         * @param {object} value
+         * @return {boolean}
+        */
+        interpretResponse(value: any): boolean;
+
+        /**
+         * Determines whether or not the current item and the new item are the same.
+         * @method areSameItem
+         * @param {object} currentItem
+         * @param {object} newItem
+         * @param {object} currentActivationData
+         * @param {object} newActivationData
+         * @return {boolean}
+        */
+        areSameItem(currentItem: any, newItem: any, currentActivationData: any, newActivationData: any): boolean;
+
+        /**
+         * Called immediately before the new item is activated.
+         * @method beforeActivate
+         * @param {object} newItem
+        */
+        beforeActivate(newItem: any): any;
+
+        /**
+         * Called immediately after the old item is deactivated.
+         * @method afterDeactivate
+         * @param {object} oldItem The previous item.
+         * @param {boolean} close Whether or not the previous item was closed.
+         * @param {function} setter The activate item setter function.
+        */
+        afterDeactivate(oldItem: any, close: boolean, setter: Function): void;
+    }
+
+    interface Activator<T> extends KnockoutComputed<T> {
+        /**
+         * The settings for this activator.
+         * @property {ActivatorSettings} settings
+        */
+        settings: ActivatorSettings;
+
+        /**
+         * An observable which indicates whether or not the activator is currently in the process of activating an instance.
+         * @method isActivating
+         * @return {boolean}
+        */
+        isActivating: KnockoutObservable<boolean>;
+        
+        /**
+         * Determines whether or not the specified item can be deactivated.
+         * @method canDeactivateItem
+         * @param {object} item The item to check.
+         * @param {boolean} close Whether or not to check if close is possible.
+         * @return {promise}
+        */
+        canDeactivateItem(item: T, close: boolean): JQueryPromise<boolean>;
+
+        /**
+         * Deactivates the specified item.
+         * @method deactivateItem
+         * @param {object} item The item to deactivate.
+         * @param {boolean} close Whether or not to close the item.
+         * @return {promise}
+        */
+        deactivateItem(item: T, close: boolean): JQueryPromise<boolean>;
+
+        /**
+         * Determines whether or not the specified item can be activated.
+         * @method canActivateItem
+         * @param {object} item The item to check.
+         * @param {object} activationData Data associated with the activation.
+         * @return {promise}
+        */
+        canActivateItem(newItem: T, activationData?: any): JQueryPromise<boolean>;
+
+        /**
+         * Activates the specified item.
+         * @method activateItem
+         * @param {object} newItem The item to activate.
+         * @param {object} newActivationData Data associated with the activation.
+         * @return {promise}
+        */
+        activateItem(newItem: T, activationData?: any): JQueryPromise<boolean>;
+
+        /**
+         * Determines whether or not the activator, in its current state, can be activated.
+         * @method canActivate
+         * @return {promise}
+        */
+        canActivate(): JQueryPromise<boolean>;
+
+        /**
+         * Activates the activator, in its current state.
+         * @method activate
+         * @return {promise}
+        */
+        activate(): JQueryPromise<boolean>;
+
+        /**
+         * Determines whether or not the activator, in its current state, can be deactivated.
+         * @method canDeactivate
+         * @return {promise}
+        */
+        canDeactivate(close: boolean): JQueryPromise<boolean>;
+
+        /**
+         * Deactivates the activator, in its current state.
+         * @method deactivate
+         * @return {promise}
+        */
+        deactivate(close: boolean): JQueryPromise<boolean>;
+
+        /**
+          * Adds canActivate, activate, canDeactivate and deactivate functions to the provided model which pass through to the corresponding functions on the activator.
+          */
+        includeIn(includeIn: any): void;
+
+        /**
+          * Sets up a collection representing a pool of objects which the activator will activate. See below for details. Activators without an item bool always close their values on deactivate. Activators with an items pool only deactivate, but do not close them.
+          */
+        forItems(items): Activator<T>;
+    }
+
     /**
      * The default settings used by activators.
      * @property {ActivatorSettings} defaults
@@ -726,35 +726,6 @@ declare module 'durandal/viewLocator' {
     export function locateView(viewUrlOrId: string, area?: string, elementsToSearch?: HTMLElement[]): JQueryPromise<HTMLElement>;
 }
 
-interface CompositionTransation {
-    /**
-     * Registers a callback which will be invoked when the current composition transaction has completed. The transaction includes all parent and children compositions.
-     * @method complete
-     * @param {function} callback The callback to be invoked when composition is complete.
-    */
-    complete(callback: Function): void;
-}
-
-interface CompositionContext {
-    mode: string;
-    parent: HTMLElement;
-    activeView: HTMLElement;
-    triggerAttach(): void;
-    bindingContext?: KnockoutBindingContext;
-    cacheViews?: boolean;
-    viewElements?: HTMLElement[];
-    model?: any;
-    view?: any;
-    area?: string;
-    preserveContext?: boolean;
-    activate?: boolean;
-    strategy? (context: CompositionContext): JQueryPromise<HTMLElement>;
-    composingNewView: boolean;
-    child: HTMLElement;
-    beforeBind?: (child: HTMLElement, context: CompositionContext) => any;
-    tranistion?: string;
-}
-
 /**
  * The composition module encapsulates all functionality related to visual composition.
  * @module composition
@@ -767,6 +738,35 @@ interface CompositionContext {
  * @requires knockout
  */
 declare module 'durandal/composition' {
+    interface CompositionTransation {
+        /**
+         * Registers a callback which will be invoked when the current composition transaction has completed. The transaction includes all parent and children compositions.
+         * @method complete
+         * @param {function} callback The callback to be invoked when composition is complete.
+        */
+        complete(callback: Function): void;
+    }
+
+    interface CompositionContext {
+        mode: string;
+        parent: HTMLElement;
+        activeView: HTMLElement;
+        triggerAttach(): void;
+        bindingContext?: KnockoutBindingContext;
+        cacheViews?: boolean;
+        viewElements?: HTMLElement[];
+        model?: any;
+        view?: any;
+        area?: string;
+        preserveContext?: boolean;
+        activate?: boolean;
+        strategy? (context: CompositionContext): JQueryPromise<HTMLElement>;
+        composingNewView: boolean;
+        child: HTMLElement;
+        beforeBind?: (child: HTMLElement, context: CompositionContext) => any;
+        tranistion?: string;
+    }
+
     /**
      * Converts a transition name to its moduleId.
      * @method convertTransitionToModuleId
@@ -873,7 +873,7 @@ declare module 'durandal/app' {
      * @param {object} config Keys are plugin names. Values can be truthy, to simply install the plugin, or a configuration object to pass to the plugin.
      * @param {string} [baseUrl] The base url to load the plugins from.
     */
-    export function configurePlugins(config: any, baseUrl?: string): void;
+    export function configurePlugins(config: Object, baseUrl?: string): void;
 
     /**
      * Starts the application.
@@ -946,84 +946,6 @@ declare module 'durandal/app' {
 }
 
 /**
-* Models a message box's message, title and options.
-* @class MessageBox
-*/
-declare class MessageBox {
-    constructor(message: string, title: string, options: string[]);
-
-    /**
-     * Selects an option and closes the message box, returning the selected option through the dialog system's promise.
-     * @method selectOption
-     * @param {string} dialogResult The result to select.
-     */
-    selectOptions(dialogResult: string): void;
-
-    /**
-     * Provides the view to the composition system.
-     * @method getView
-     * @return {DOMElement} The view of the message box.
-     */
-    getView(): HTMLElement;
-
-    /**
-     * The title to be used for the message box if one is not provided.
-     * @property {string} defaultTitle
-     * @default Application
-     * @static
-     */
-    static defaultTitle: string;
-
-    /**
-     * The options to display in the message box of none are specified.
-     * @property {string[]} defaultOptions
-     * @default ['Ok']
-     * @static
-     */
-    static defaultOptions: string[];
-
-    /**
-     * The markup for the message box's view.
-     * @property {string} defaultViewMarkup
-     * @static
-     */
-    static defaultViewMarkup: string;
-}
-
-interface DialogContext {
-    /**
-     * In this function, you are expected to add a DOM element to the tree which will serve as the "host" for the modal's composed view. You must add a property called host to the modalWindow object which references the dom element. It is this host which is passed to the composition module.
-     * @method addHost
-     * @param {Dialog} theDialog The dialog model.
-    */
-    addHost(theDialog: Dialog);
-
-    /**
-     * This function is expected to remove any DOM machinery associated with the specified dialog and do any other necessary cleanup.
-     * @method removeHost
-     * @param {Dialog} theDialog The dialog model.
-    */
-    removeHost(theDialog: Dialog);
-
-    /**
-     * This function is called after the modal is fully composed into the DOM, allowing your implementation to do any final modifications, such as positioning or animation. You can obtain the original dialog object by using `getDialog` on context.model.
-     * @method compositionComplete
-     * @param {DOMElement} child The dialog view.
-     * @param {DOMElement} parent The parent view.
-     * @param {object} context The composition context.
-    */
-    compositionComplete(child:HTMLElement, parent: HTMLElement, context: CompositionContext);
-}
-
-interface Dialog {
-    owner: any;
-    context: DialogContext;
-    activator: Activator<any>;
-    close(): JQueryPromise;
-    settings: CompositionContext;
-}
-
-/**
  * The dialog module enables the display of message boxes, custom modal dialogs and other overlays or slide-out UI abstractions. Dialogs are constructed by the composition system which interacts with a user defined dialog context. The dialog module enforced the activator lifecycle.
  * @module dialog
  * @requires system
@@ -1035,11 +957,92 @@ interface Dialog {
  * @requires knockout
  */
 declare module 'plugins/dialog' {
+    import activator = module('durandal/activator');
+    import composition = module('durandal/composition');
+
+    /**
+    * Models a message box's message, title and options.
+    * @class MessageBox
+    */
+    class Box {
+        constructor(message: string, title: string, options: string[]);
+
+        /**
+         * Selects an option and closes the message box, returning the selected option through the dialog system's promise.
+         * @method selectOption
+         * @param {string} dialogResult The result to select.
+         */
+        selectOptions(dialogResult: string): void;
+
+        /**
+         * Provides the view to the composition system.
+         * @method getView
+         * @return {DOMElement} The view of the message box.
+         */
+        getView(): HTMLElement;
+
+        /**
+         * The title to be used for the message box if one is not provided.
+         * @property {string} defaultTitle
+         * @default Application
+         * @static
+         */
+        static defaultTitle: string;
+
+        /**
+         * The options to display in the message box of none are specified.
+         * @property {string[]} defaultOptions
+         * @default ['Ok']
+         * @static
+         */
+        static defaultOptions: string[];
+
+        /**
+         * The markup for the message box's view.
+         * @property {string} defaultViewMarkup
+         * @static
+         */
+        static defaultViewMarkup: string;
+    }
+
+    interface DialogContext {
+        /**
+         * In this function, you are expected to add a DOM element to the tree which will serve as the "host" for the modal's composed view. You must add a property called host to the modalWindow object which references the dom element. It is this host which is passed to the composition module.
+         * @method addHost
+         * @param {Dialog} theDialog The dialog model.
+        */
+        addHost(theDialog: Dialog);
+
+        /**
+         * This function is expected to remove any DOM machinery associated with the specified dialog and do any other necessary cleanup.
+         * @method removeHost
+         * @param {Dialog} theDialog The dialog model.
+        */
+        removeHost(theDialog: Dialog);
+
+        /**
+         * This function is called after the modal is fully composed into the DOM, allowing your implementation to do any final modifications, such as positioning or animation. You can obtain the original dialog object by using `getDialog` on context.model.
+         * @method compositionComplete
+         * @param {DOMElement} child The dialog view.
+         * @param {DOMElement} parent The parent view.
+         * @param {object} context The composition context.
+        */
+        compositionComplete(child: HTMLElement, parent: HTMLElement, context: composition.CompositionContext);
+    }
+
+    interface Dialog {
+        owner: any;
+        context: DialogContext;
+        activator: activator.Activator<any>;
+        close(): JQueryPromise;
+        settings: composition.CompositionContext;
+    }
+
     /**
      * The constructor function used to create message boxes.
      * @property {MessageBox} MessageBox
     */
-    export var MessageBox: MessageBox;
+    export var MessageBox: Box;
 
     /**
      * The css zIndex that the last dialog was displayed at.
@@ -1121,46 +1124,6 @@ declare module 'plugins/dialog' {
     export function install(config: any): void;
 }
 
-interface HistoryOptions {
-    /**
-     * The function that will be called back when the fragment changes.
-     * @property {function} routeHandler
-     */
-    routeHandler: (fragment: string) => void;
-
-    /**
-     * The url root used to extract the fragment when using push state.
-     * @property {string} root
-     */
-    root?: string;
-
-    /**
-     * Use hash change when present.
-     * @property {boolean} hashChange
-     * @default true
-     */
-    hashChange?: boolean;
-
-    /**
-     * Use push state when present.
-     * @property {boolean} pushState
-     * @default false
-     */
-    pushState?: boolean;
-
-    /**
-     * Prevents loading of the current url when activating history.
-     * @property {boolean} silent
-     * @default false
-     */
-    silent?: boolean;
-}
-
-interface NavigationOptions {
-    trigger: boolean;
-    replace: boolean;
-}
-
 /**
  * This module is based on Backbone's core history support. It abstracts away the low level details of working with browser history and url changes in order to provide a solid foundation for a router.
  * @module history
@@ -1168,6 +1131,46 @@ interface NavigationOptions {
  * @requires jquery
  */
 declare module 'plugins/history' {
+    interface HistoryOptions {
+        /**
+         * The function that will be called back when the fragment changes.
+         * @property {function} routeHandler
+         */
+        routeHandler: (fragment: string) => void;
+
+        /**
+         * The url root used to extract the fragment when using push state.
+         * @property {string} root
+         */
+        root?: string;
+
+        /**
+         * Use hash change when present.
+         * @property {boolean} hashChange
+         * @default true
+         */
+        hashChange?: boolean;
+
+        /**
+         * Use push state when present.
+         * @property {boolean} pushState
+         * @default false
+         */
+        pushState?: boolean;
+
+        /**
+         * Prevents loading of the current url when activating history.
+         * @property {boolean} silent
+         * @default false
+         */
+        silent?: boolean;
+    }
+
+    interface NavigationOptions {
+        trigger: boolean;
+        replace: boolean;
+    }
+
     /**
      * The setTimeout interval used when the browser does not support hash change events.
      * @property {string} interval
@@ -1255,25 +1258,47 @@ declare module 'plugins/history' {
     export function navigate(fragment: string, options: NavigationOptions): boolean;
 }
 
+/**
+ * Enables common http request scenarios.
+ * @module http
+ * @requires jquery
+ * @requires knockout
+ */
+declare module 'plugins/http' {
+    /**
+     * The name of the callback parameter to inject into jsonp requests by default.
+     * @property {string} callbackParam
+     * @default callback
+    */
+    export var callbackParam: string;
+    
+    /**
+     * Makes an HTTP GET request.
+     * @method get
+     * @param {string} url The url to send the get request to.
+     * @param {object} [query] An optional key/value object to transform into query string parameters.
+     * @return {Promise} A promise of the get response data.
+    */
+    export function get(url: string, query?: Object): JQueryPromise;
 
-
-declare module "durandal/http" {
     /**
-      * the default is 'callback'
-      */
-    export var defaultJSONPCallbackParam: string;
+     * Makes an JSONP request.
+     * @method jsonp
+     * @param {string} url The url to send the get request to.
+     * @param {object} [query] An optional key/value object to transform into query string parameters.
+     * @param {string} [callbackParam] The name of the callback parameter the api expects (overrides the default callbackParam).
+     * @return {Promise} A promise of the response data.
+    */
+    export function jsonp(url: string, query?: Object, callbackParam?: string): JQueryPromise;
+    
     /**
-      * Performs an HTTP GET request on the specified URL. This function returns a promise which resolves with the returned response data. You can optionally return a query object whose properties will be used to construct a query string.
-      */
-    export var get: (url: string, query: Object) => JQueryPromise;
-    /**
-      * Performs a JSONP request to the specified url. You can optionally include a query object whose properties will be used to construct the query string. Also, you can pass the name of the API's callback parameter. If none is specified, it defaults to "callback". This api returns a promise. If you are using a callback parameter other than "callback" consistently throughout your application, then you may want to set the http module's defaultJSONPCallbackParam so that you don't need to specify it on every request.
-      */
-    export var jsonp: (url: string, query: Object, callbackParam: string) => JQueryPromise;
-    /**
-      * Performs an HTTP POST request on the specified URL with the supplied data. The data object is converted to JSON and the request is sent with an application/json content type. Thie function returns a promise which resolves with the returned response data.
-      */
-    export var post: (url: string, data: Object) => JQueryPromise;
+     * Makes an HTTP POST request.
+     * @method post
+     * @param {string} url The url to send the post request to.
+     * @param {object} data The data to post. It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
+     * @return {Promise} A promise of the response data.
+    */
+    export function post(url: string, data: Object): JQueryPromise;
 }
 
 
@@ -1283,6 +1308,8 @@ declare module "durandal/http" {
   * Documentation at http://durandaljs.com/documentation/Router/
   */
 declare module "durandal/plugins/router" {
+    import activator = module('durandal/activator');
+
     /**
       * Parameters to the map function. or information on route url patterns, see the SammyJS documentation. But 
       * basically, you can have simple routes my/route/, parameterized routes customers/:id or Regex routes. If you 
@@ -1342,7 +1369,7 @@ declare module "durandal/plugins/router" {
     /**
       * An observable whose value is the currently active item/module/page.
       */
-    export var activeItem: Activator<any>;
+    export var activeItem: activator.Activator<any>;
     /**
       * An observable whose value is the currently active route.
       */

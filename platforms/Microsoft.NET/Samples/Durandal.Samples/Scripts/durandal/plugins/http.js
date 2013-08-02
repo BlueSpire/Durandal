@@ -25,7 +25,7 @@ define(['jquery', 'knockout'], function($, ko) {
          * Makes an HTTP GET request.
          * @method get
          * @param {string} url The url to send the get request to.
-         * @param {string} [query] An optional key/value object to transform into query string parameters.
+         * @param {object} [query] An optional key/value object to transform into query string parameters.
          * @return {Promise} A promise of the get response data.
          */
         get:function(url, query) {
@@ -35,7 +35,7 @@ define(['jquery', 'knockout'], function($, ko) {
          * Makes an JSONP request.
          * @method jsonp
          * @param {string} url The url to send the get request to.
-         * @param {string} [query] An optional key/value object to transform into query string parameters.
+         * @param {object} [query] An optional key/value object to transform into query string parameters.
          * @param {string} [callbackParam] The name of the callback parameter the api expects (overrides the default callbackParam).
          * @return {Promise} A promise of the response data.
          */

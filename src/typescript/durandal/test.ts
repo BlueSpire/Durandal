@@ -12,6 +12,7 @@ import composition = module('durandal/composition');
 import app = module('durandal/app');
 import dialog = module('plugins/dialog');
 import history = module('plugins/history');
+import http = module('plugins/http');
 
 function test_system() {
     console.log(system.version);
