@@ -320,43 +320,14 @@ declare module 'durandal/viewEngine' {
 }
 
 /**
-* Represents an event subscription.
-* @class Subscription
-*/
-interface EventSubscription {
-    /**
-     * Attaches a callback to the event subscription.
-     * @method then
-     * @param {function} callback The callback function to invoke when the event is triggered.
-     * @param {object} [context] An object to use as `this` when invoking the `callback`.
-     * @chainable
-     */
-    then(thenCallback: Function, context?: any): EventSubscription;
-
-    /**
-     * Attaches a callback to the event subscription.
-     * @method on
-     * @param {function} [callback] The callback function to invoke when the event is triggered. If `callback` is not provided, the previous callback will be re-activated.
-     * @param {object} [context] An object to use as `this` when invoking the `callback`.
-     * @chainable
-     */
-    on(thenCallback: Function, context?: any): EventSubscription;
-
-    /**
-     * Cancels the subscription.
-     * @method off
-     * @chainable
-     */
-    off(): EventSubscription;
-}
-
-/**
  * Durandal events originate from backbone.js but also combine some ideas from signals.js as well as some additional improvements.
  * Events can be installed into any object and are installed into the `app` module by default for convenient app-wide eventing.
  * @module events
  * @requires system
  */
 declare module 'durandal/events' {
+    import ts = module('durandal/typescript');
+
     /**
      * Creates an object with eventing capabilities.
      * @class Events
@@ -370,7 +341,7 @@ declare module 'durandal/events' {
          * @param {string} events One or more events, separated by white space.
          * @return {Subscription} A subscription is returned.
          */
-        on(events: string): EventSubscription;
+        on(events: string): ts.EventSubscription;
 
         /**
          * Creates a subscription or registers a callback for the specified event.
@@ -842,6 +813,7 @@ declare module 'durandal/composition' {
  */
 declare module 'durandal/app' {
     import Events = module('durandal/events');
+    import ts = module('durandal/typescript');
 
     /**
      * The title of your application.
@@ -908,7 +880,7 @@ declare module 'durandal/app' {
      * @param {string} events One or more events, separated by white space.
      * @return {Subscription} A subscription is returned.
      */
-    export function on(events: string): EventSubscription;
+    export function on(events: string): ts.EventSubscription;
 
     /**
      * Creates a subscription or registers a callback for the specified event.
@@ -1565,151 +1537,204 @@ declare module 'plugins/widget' {
     export function create(element: HTMLElement, settings: WidgetSettings, bindingContext?: KnockoutBindingContext);
 }
 
-
 /**
-  * A router plugin, currently based on SammyJS. The router abstracts away the core configuration of Sammy and re-interprets it in terms of durandal's composition and activation mechanism. To use the router, you must require it, configure it and bind it in the UI.
-  * Documentation at http://durandaljs.com/documentation/Router/
-  */
-declare module "durandal/plugins/router" {
+ * Connects the history module's url and history tracking support to Durandal's activation and composition engine allowing you to easily build navigation-style applications.
+ * @module router
+ * @requires system
+ * @requires app
+ * @requires activator
+ * @requires events
+ * @requires composition
+ * @requires history
+ * @requires knockout
+ * @requires jquery
+ */
+declare module 'plugins/router' {
     import activator = module('durandal/activator');
+    import Events = module('durandal/events');
+    import ts = module('durandal/typescript');
 
-    /**
-      * Parameters to the map function. or information on route url patterns, see the SammyJS documentation. But 
-      * basically, you can have simple routes my/route/, parameterized routes customers/:id or Regex routes. If you 
-      * have a parameter in your route, then the activation data passed to your module's activate function will have a 
-      * property for every parameter in the route (rather than the splat array, which is only present for automapped 
-      * routes).
-      */
-    interface IRouteInfo {
-        url: string;
-        moduleId: string;
-        name: string;
-        /** used to set the document title */
-        caption: string;
-        /** determines whether or not to include it in the router's visibleRoutes array for easy navigation UI binding */
-        visible: boolean;
-        settings: Object;
-        hash: string;
-        /** only present on visible routes to track if they are active in the nav */
-        isActive?: KnockoutComputed<boolean>;
-    }
-    /**
-      * Parameters to the map function. e only required parameter is url the rest can be derived. The derivation 
-      * happens by stripping parameters from the url and casing where appropriate. You can always explicitly provide 
-      * url, name, moduleId, caption, settings, hash and visible. In 99% of situations, you should not need to provide 
-      * hash; it's just there to simplify databinding for you. Most of the time you may want to teach the router how 
-      * to properly derive the moduleId and name based on a url. If you want to do that, overwrite.
-      */
-    interface IRouteInfoParameters {
-        /** your url pattern. The only required parameter */
-        url: any;
-        /** if not supplied, router.convertRouteToName derives it */
-        moduleId?: string;
-        /** if not supplied, router.convertRouteToModuleId derives it */
-        name?: string;
-        /** used to set the document title */
-        caption?: string;
-        /** determines whether or not to include it in the router's visibleRoutes array for easy navigation UI binding */
-        visible?: boolean;
-        settings?: Object;
-    }
-    /**
-      * observable that is called when the router is ready
-      */
-    export var ready: KnockoutObservable<boolean>;
-    /**
-      * An observable array containing all route info objects.
-      */
-    export var allRoutes: KnockoutObservableArray<IRouteInfo>;
-    /**
-      * An observable array containing route info objects configured with visible:true (or by calling the mapNav function).
-      */
-    export var visibleRoutes: KnockoutObservableArray<IRouteInfo>;
-    /**
-      * An observable boolean which is true while navigation is in process; false otherwise.
-      */
-    export var isNavigating: KnockoutObservable<boolean>;
-    /**
-      * An observable whose value is the currently active item/module/page.
-      */
-    export var activeItem: activator.Activator<any>;
-    /**
-      * An observable whose value is the currently active route.
-      */
-    export var activeRoute: KnockoutObservable<IRouteInfo>;
-    /**
-      * called after an a new module is composed
-      */
-    export var afterCompose: () => void;
-    /**
-      * Returns the activatable instance from the supplied module.
-      */
-    export var getActivatableInstance: (routeInfo: IRouteInfo, params: any, module: any) => any;
-    /**
-      * Causes the router to move backwards in page history.
-      */
-    export var navigateBack: () => void;
-    /**
-      * Use router default convention.
-      */
-    export var useConvention: () => void;
-    /**
-      * Causes the router to navigate to a specific url.
-      */
-    export var navigateTo: (url: string) => void;
-    /**
-      * replaces the windows.location w/ the url
-      */
-    export var replaceLocation: (url: string) => void;
-    /**
-      * akes a route in and returns a calculated name.
-      */
-    export var convertRouteToName: (route: string) => string;
-    /**
-      * Takes a route in and returns a calculated moduleId. Simple transformations of this can be done via the useConvention function above. For more advanced transformations, you can override this function.
-      */
-    export var convertRouteToModuleId: (url: string) => string;
-    /**
-      * This can be overwritten to provide your own convention for automatically converting routes to module ids.
-      */
-    export var autoConvertRouteToModuleId: (url: string) => string;
-    /**
-      * This should not normally be overwritten. But advanced users can override this to completely transform the developer's routeInfo input into the final version used to configure the router.
-      */
-    export var prepareRouteInfo: (info: IRouteInfo) => void;
-    /**
-      * This should not normally be overwritten. But advanced users can override this to completely transform the developer's routeInfo input into the final version used to configure the router.
-      */
-    export var handleInvalidRoute: (route: IRouteInfo, parameters: any) => void;
-    /**
-      * Once the router is required, you can call router.mapAuto(). This is the most basic configuration option. When you call this function (with no parameters) it tells the router to directly correlate route parameters to module names in the viewmodels folder.
-      */
-    export var mapAuto: (path?: string) => void;
-    /**
-      * Works the same as mapRoute except that routes are automatically added to the visibleRoutes array.
-      */
-    export var mapNav: (url: string, moduleId?: string, name?: string) => IRouteInfo;
-    /**
-      * You can pass a single routeInfo to this function, or you can pass the basic configuration parameters. url is your url pattern, moduleId is the module path this pattern will map to, name is used as the document title and visible determines whether or not to include it in the router's visibleRoutes array for easy navigation UI binding.
-      */
-    export var mapRoute: {
-        (route: IRouteInfoParameters): IRouteInfo;
-        (url: string, moduleId?: string, name?: string, visible?: boolean): IRouteInfo;
-    }
-    /**
-      * This function takes an array of routeInfo objects or a single routeInfo object and uses it to configure the router. The finalized routeInfo (or array of infos) is returned.
-      */
-    export var map: {
-        (routeOrRouteArray: IRouteInfoParameters): IRouteInfo;
-        (routeOrRouteArray: IRouteInfoParameters[]): IRouteInfo[];
-    }
-    /**
-      * After you've configured the router, you need to activate it. This is usually done in your shell. The activate function of the router returns a promise that resolves when the router is ready to start. To use the router, you should add an activate function to your shell and return the result from that. The application startup infrastructure of Durandal will detect your shell's activate function and call it at the appropriate time, waiting for it's promise to resolve. This allows Durandal to properly orchestrate the timing of composition and databinding along with animations and splash screen display.
-      */
-    export var activate: (defaultRoute: string) => JQueryPromise;
-    /**
-      * Before any route is activated, the guardRoute funtion is called. You can plug into this function to add custom logic to allow, deny or redirect based on the requested route. To allow, return true. To deny, return false. To redirect, return a string with the hash or url. You may also return a promise for any of these values.
-      */
-    export var guardRoute: (routeInfo: IRouteInfo, params: any, instance: any) => any;
+    var RootRouter: ts.RootRouter;
+
+    export = RootRouter;
 }
 
+/**
+ * Interface definitions used by other modules which were not possible to define within those modules due to TypeScript limitations.
+ */
+declare module 'durandal/typescript' {
+    import activator = module('durandal/activator');
+    import history = module('plugins/history');
+
+    /**
+    * Represents an event subscription.
+    * @class Subscription
+    */
+    export interface EventSubscription {
+        /**
+         * Attaches a callback to the event subscription.
+         * @method then
+         * @param {function} callback The callback function to invoke when the event is triggered.
+         * @param {object} [context] An object to use as `this` when invoking the `callback`.
+         * @chainable
+         */
+        then(thenCallback: Function, context?: any): EventSubscription;
+
+        /**
+         * Attaches a callback to the event subscription.
+         * @method on
+         * @param {function} [callback] The callback function to invoke when the event is triggered. If `callback` is not provided, the previous callback will be re-activated.
+         * @param {object} [context] An object to use as `this` when invoking the `callback`.
+         * @chainable
+         */
+        on(thenCallback: Function, context?: any): EventSubscription;
+
+        /**
+         * Cancels the subscription.
+         * @method off
+         * @chainable
+         */
+        off(): EventSubscription;
+    }
+
+    export interface RouteConfiguration { }
+
+    export interface RouteInstruction {
+        config: RouteConfiguration;
+    }
+
+    export interface Router {
+        /**
+         * The route handlers that are registered. Each handler consists of a `routePattern` and a `callback`.
+         * @property {object[]} handlers
+        */
+        handlers: { routePattern: RegExp; callback: (fragment: string) => void; }[];
+
+        /**
+         * The route configs that are registered.
+         * @property {object[]} routes
+        */
+        routes: RouteConfiguration[];
+
+        /**
+         * The active item/screen based on the current navigation state.
+         * @property {Activator} activeItem
+        */
+        activeItem: activator.Activator<any>;
+
+        /**
+         * The route configurations that have been designated as displayable in a nav ui (nav:true).
+         * @property {KnockoutObservableArray} navigationModel
+        */
+        navigationModel: KnockoutObservableArray<RouteConfiguration>;
+
+        /**
+         * Indicates that the router (or a child router) is currently in the process of navigating.
+         * @property {KnockoutComputed} isNavigating
+        */
+        isNavigating: KnockoutComputed<boolean>;
+
+        /**
+         * An observable surfacing the active routing instruction that is currently being processed or has recently finished processing.
+         * The instruction object has `config`, `fragment`, `queryString`, `params` and `queryParams` properties.
+         * @property {KnockoutObservable} activeInstruction
+        */
+        activeInstruction: KnockoutObservable<RouteInstruction>;
+
+        /**
+         * Parses a query string into an object.
+         * @method parseQueryString
+         * @param {string} queryString The query string to parse.
+         * @return {object} An object keyed according to the query string parameters.
+         */
+        parseQueryString(queryString: string): Object;
+
+        /**
+         * Add a route to be tested when the url fragment changes.
+         * @method route
+         * @param {RegEx} routePattern The route pattern to test against.
+         * @param {function} callback The callback to execute when the route pattern is matched.
+         */
+        route(routePattern: RegExp, callback: (fragment: string) => void ): void;
+
+        /**
+         * Attempt to load the specified URL fragment. If a route succeeds with a match, returns `true`. If no defined routes matches the fragment, returns `false`.
+         * @method loadUrl
+         * @param {string} fragment The URL fragment to find a match for.
+         * @return {boolean} True if a match was found, false otherwise.
+         */
+        loadUrl(fragment: string): boolean;
+
+        /**
+         * Updates the document title based on the activated module instance, the routing instruction and the app.title.
+         * @method updateDocumentTitle
+         * @param {object} instance The activated module.
+         * @param {object} instruction The routing instruction associated with the action. It has a `config` property that references the original route mapping config.
+         */
+        updateDocumentTitle(instance: Object, instruction: RouteInstruction): void;
+
+        /**
+        * Save a fragment into the hash history, or replace the URL state if the
+        * 'replace' option is passed. You are responsible for properly URL-encoding
+        * the fragment in advance.
+        * The options object can contain `trigger: true` if you wish to have the
+        * route callback be fired (not usually desirable), or `replace: true`, if
+        * you wish to modify the current URL without adding an entry to the history.
+        * @method navigate
+        * @param {string} fragment The url fragment to navigate to.
+        * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option. Trigger is `true` by default.
+        * @return {boolean} Returns true/false from loading the url.
+        */
+        navigate(fragment: string, trigger?: boolean): boolean;
+
+        /**
+         * Save a fragment into the hash history, or replace the URL state if the
+         * 'replace' option is passed. You are responsible for properly URL-encoding
+         * the fragment in advance.
+         * The options object can contain `trigger: true` if you wish to have the
+         * route callback be fired (not usually desirable), or `replace: true`, if
+         * you wish to modify the current URL without adding an entry to the history.
+         * @method navigate
+         * @param {string} fragment The url fragment to navigate to.
+         * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option. Trigger is `true` by default.
+         * @return {boolean} Returns true/false from loading the url.
+         */
+        navigate(fragment: string, options: history.NavigationOptions): boolean;
+
+        /**
+         * Navigates back in the browser history.
+         * @method navigateBack
+         */
+        navigateBack(): void;
+
+        /**
+         * Converts a route to a hash suitable for binding to a link's href.
+         * @method convertRouteToHash
+         * @param {string} route
+         * @return {string} The hash.
+         */
+        convertRouteToHash(route: string): string;
+
+        /**
+         * Converts a route to a module id. This is only called if no module id is supplied as part of the route mapping.
+         * @method convertRouteToModuleId
+         * @param {string} route
+         * @return {string} The module id.
+         */
+        convertRouteToModuleId(route: string): string;
+
+        /**
+         * Converts a route to a displayable title. This is only called if no title is specified as part of the route mapping.
+         * @method convertRouteToTitle
+         * @param {string} route
+         * @return {string} The title.
+         */
+        convertRouteToTitle(route: string): string;
+
+        //map
+    }
+
+    export interface RootRouter extends Router {
+        activate();
+    }
+}

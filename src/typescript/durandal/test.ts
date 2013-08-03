@@ -16,6 +16,7 @@ import http = module('plugins/http');
 import observable = module('plugins/observable');
 import serializer = module('plugins/serializer');
 import widget = module('plugins/widget');
+import router = module('plugins/router');
 
 function test_system() {
     console.log(system.version);
@@ -109,4 +110,11 @@ function test_app() {
     app.start().then(() => {
         app.setRoot('test');
     });
+}
+
+function test_router(){
+    router.activate();
+    router.createChildRouter();
+
+    router.handlers[0].routePattern;
 }

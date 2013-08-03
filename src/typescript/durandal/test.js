@@ -1,4 +1,4 @@
-﻿define(["require", "exports", 'durandal/system', 'durandal/events', 'durandal/activator', 'durandal/app', 'plugins/observable'], function(require, exports, __system__, __Events__, __activator__, __app__, __observable__) {
+﻿define(["require", "exports", 'durandal/system', 'durandal/events', 'durandal/activator', 'durandal/app', 'plugins/observable', 'plugins/router'], function(require, exports, __system__, __Events__, __activator__, __app__, __observable__, __router__) {
     var system = __system__;
     
     var Events = __Events__;
@@ -13,6 +13,7 @@
     var observable = __observable__;
     
     
+    var router = __router__;
 
     function test_system() {
         console.log(system.version);
@@ -107,5 +108,12 @@
         app.start().then(function () {
             app.setRoot('test');
         });
+    }
+
+    function test_router() {
+        router.activate();
+        router.createChildRouter();
+
+        router.handlers[0].routePattern;
     }
 });
