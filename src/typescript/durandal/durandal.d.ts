@@ -1492,7 +1492,78 @@ declare module 'plugins/serializer' {
     export function deserialize<T>(text: string, settings?: DeserializerOptions): T;
 }
 
+/**
+ * Layers the widget sugar on top of the composition system.
+ * @module widget
+ * @requires system
+ * @requires composition
+ * @requires jquery
+ * @requires knockout
+ */
+declare module 'plugins/widget' {
+    interface WidgetSettings {
+        kind: string;
+        model?: any;
+        view?: any;
+    }
 
+    /**
+     * Creates a ko binding handler for the specified kind.
+     * @method registerKind
+     * @param {string} kind The kind to create a custom binding handler for.
+    */
+    export function registerKind(kind: string);
+
+    /**
+     * Maps views and module to the kind identifier if a non-standard pattern is desired.
+     * @method mapKind
+     * @param {string} kind The kind name.
+     * @param {string} [viewId] The unconventional view id to map the kind to.
+     * @param {string} [moduleId] The unconventional module id to map the kind to.
+    */
+    export function mapKind(kind: string, viewId?: string, moduleId?: string);
+
+    /**
+     * Maps a kind name to it's module id. First it looks up a custom mapped kind, then falls back to `convertKindToModulePath`.
+     * @method mapKindToModuleId
+     * @param {string} kind The kind name.
+     * @return {string} The module id.
+    */
+    export function mapKindToModuleId(kind: string): string;
+
+    /**
+     * Converts a kind name to it's module path. Used to conventionally map kinds who aren't explicitly mapped through `mapKind`.
+     * @method convertKindToModulePath
+     * @param {string} kind The kind name.
+     * @return {string} The module path.
+    */
+    export function convertKindToModulePath(kind: string): string;
+
+    /**
+     * Maps a kind name to it's view id. First it looks up a custom mapped kind, then falls back to `convertKindToViewPath`.
+     * @method mapKindToViewId
+     * @param {string} kind The kind name.
+     * @return {string} The view id.
+    */
+    export function mapKindToViewId(kind: string): string;
+
+    /**
+     * Converts a kind name to it's view id. Used to conventionally map kinds who aren't explicitly mapped through `mapKind`.
+     * @method convertKindToViewPath
+     * @param {string} kind The kind name.
+     * @return {string} The view id.
+    */
+    export function convertKindToViewPath(kind: string): string;
+
+    /**
+     * Creates a widget.
+     * @method create
+     * @param {DOMElement} element The DOMElement or knockout virtual element that serves as the target element for the widget.
+     * @param {object} settings The widget settings.
+     * @param {object} [bindingContext] The current binding context.
+    */
+    export function create(element: HTMLElement, settings: WidgetSettings, bindingContext?: KnockoutBindingContext);
+}
 
 
 /**
@@ -1642,29 +1713,3 @@ declare module "durandal/plugins/router" {
     export var guardRoute: (routeInfo: IRouteInfo, params: any, instance: any) => any;
 }
 
-declare module "durandal/widget" {
-    /**
-      * Use this function to create a widget through code. The element should reference a dom element that the widget will be created on. The settings can be either a string or an object. If it's a string, it should specify the widget kind. If it's an object, it represents settings that will be passed along to the widget. This object should have a kind property used to identify the widget kind to create. Optionally, you can specify a bindingContext of which you want the widget's binding context to be created as a child.
-      */
-    export function create(element: any, settings: any, bindingContext?: any);
-    /**
-      * By default, you can create widgets in html by using the widget binding extension. Calling registerKind allows you to easily create a custom binding handler for your widget kind. Without calling registerKind you might declare a widget binding for an expander control with
-      */
-    export function registerKind(kind: string);
-    /**
-      * Use this to re-map a widget kind identifier to a new viewId or moduleId representing the 'skin' and 'behavior' respectively.
-      */
-    export function mapKind(kind: string, viewId?: string, moduleId?: string);
-    /**
-      * Developers implementing widgets may wish to use this function to acquire the resolved template parts for a widget. Pass a single dom element or an array of elements and get back an object keyed by part name whose values are the dom elements corresponding to each part in that scope.
-      */
-    export function getParts(elements: any): any;
-    /**
-      * (overrridable) Replace this to re-interpret the kind id as a module path. By default it does a lookup for any custom maps added through mapKind and then falls back to the path "durandal/widgets/{kind}/controller".
-      */
-    export function convertKindToModuleId(kind): string;
-    /**
-      * (overridable) Replace this to re-interpret the kind id as a view id. The default does a lookup for any custom maps added through mapKind and then falls back to the path "durandal/widgets/{kind}/view".
-      */
-    export function convertKindToViewId(kind): string;
-}
