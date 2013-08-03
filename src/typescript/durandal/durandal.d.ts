@@ -351,71 +351,71 @@ interface EventSubscription {
 }
 
 /**
- * Creates an object with eventing capabilities.
- * @class Events
-*/
-declare class Events {
-    constructor();
-
-    /**
-     * Creates a subscription or registers a callback for the specified event.
-     * @method on
-     * @param {string} events One or more events, separated by white space.
-     * @return {Subscription} A subscription is returned.
-     */
-    on(events: string): EventSubscription; 
-
-    /**
-     * Creates a subscription or registers a callback for the specified event.
-     * @method on
-     * @param {string} events One or more events, separated by white space.
-     * @param {function} [callback] The callback function to invoke when the event is triggered.
-     * @param {object} [context] An object to use as `this` when invoking the `callback`.
-     * @return {Events} The events object is returned for chaining.
-     */
-    on(events: string, callback: Function, context?: any): Events;
-
-    /**
-     * Removes the callbacks for the specified events.
-     * @method off
-     * @param {string} [events] One or more events, separated by white space to turn off. If no events are specified, then the callbacks will be removed.
-     * @param {function} [callback] The callback function to remove. If `callback` is not provided, all callbacks for the specified events will be removed.
-     * @param {object} [context] The object that was used as `this`. Callbacks with this context will be removed.
-     * @chainable
-     */
-    off(events: string, callback: Function, context?: any): Events;
-
-    /**
-     * Triggers the specified events.
-     * @method trigger
-     * @param {string} [events] One or more events, separated by white space to trigger.
-     * @chainable
-     */
-    trigger(events: string, ...eventArgs:any[]): Events;
-
-    /**
-     * Creates a function that will trigger the specified events when called. Simplifies proxying jQuery (or other) events through to the events object.
-     * @method proxy
-     * @param {string} events One or more events, separated by white space to trigger by invoking the returned function.
-     * @return {function} Calling the function will invoke the previously specified events on the events object.
-     */
-    proxy(events: string): Function;
-
-    /**
-     * Adds eventing capabilities to the specified object.
-     * @method includeIn
-     * @param {object} targetObject The object to add eventing capabilities to.
-     */
-    static includeIn(targetObject: any): void;
-}
-
-/**
  * Durandal events originate from backbone.js but also combine some ideas from signals.js as well as some additional improvements.
  * Events can be installed into any object and are installed into the `app` module by default for convenient app-wide eventing.
  * @module events
  * @requires system
  */
 declare module 'durandal/events' {
+    /**
+     * Creates an object with eventing capabilities.
+     * @class Events
+    */
+    class Events {
+        constructor();
+
+        /**
+         * Creates a subscription or registers a callback for the specified event.
+         * @method on
+         * @param {string} events One or more events, separated by white space.
+         * @return {Subscription} A subscription is returned.
+         */
+        on(events: string): EventSubscription;
+
+        /**
+         * Creates a subscription or registers a callback for the specified event.
+         * @method on
+         * @param {string} events One or more events, separated by white space.
+         * @param {function} [callback] The callback function to invoke when the event is triggered.
+         * @param {object} [context] An object to use as `this` when invoking the `callback`.
+         * @return {Events} The events object is returned for chaining.
+         */
+        on(events: string, callback: Function, context?: any): Events;
+
+        /**
+         * Removes the callbacks for the specified events.
+         * @method off
+         * @param {string} [events] One or more events, separated by white space to turn off. If no events are specified, then the callbacks will be removed.
+         * @param {function} [callback] The callback function to remove. If `callback` is not provided, all callbacks for the specified events will be removed.
+         * @param {object} [context] The object that was used as `this`. Callbacks with this context will be removed.
+         * @chainable
+         */
+        off(events: string, callback: Function, context?: any): Events;
+
+        /**
+         * Triggers the specified events.
+         * @method trigger
+         * @param {string} [events] One or more events, separated by white space to trigger.
+         * @chainable
+         */
+        trigger(events: string, ...eventArgs: any[]): Events;
+
+        /**
+         * Creates a function that will trigger the specified events when called. Simplifies proxying jQuery (or other) events through to the events object.
+         * @method proxy
+         * @param {string} events One or more events, separated by white space to trigger by invoking the returned function.
+         * @return {function} Calling the function will invoke the previously specified events on the events object.
+         */
+        proxy(events: string): Function;
+
+        /**
+         * Adds eventing capabilities to the specified object.
+         * @method includeIn
+         * @param {object} targetObject The object to add eventing capabilities to.
+         */
+        static includeIn(targetObject: any): void;
+    }
+
     export = Events;
 }
 
@@ -841,6 +841,8 @@ declare module 'durandal/composition' {
  * @requires jquery
  */
 declare module 'durandal/app' {
+    import Events = module('durandal/events');
+
     /**
      * The title of your application.
      * @property {string} title
@@ -1347,6 +1349,147 @@ declare module 'plugins/observable' {
     }
 
     export = observable;
+}
+
+/**
+ * Serializes and deserializes data to/from JSON.
+ * @module serializer
+ * @requires system
+ */
+declare module 'plugins/serializer' {
+    interface SerializerOptions {
+        /**
+         * The default replacer function used during serialization. By default properties starting with '_' or '$' are removed from the serialized object.
+         * @method replacer
+         * @param {string} key The object key to check.
+         * @param {object} value The object value to check.
+         * @return {object} The value to serialize.
+        */
+        replacer?: (key: string, value: any) => any;
+
+        /**
+         * The amount of space to use for indentation when writing out JSON.
+         * @property {string|number} space
+         * @default undefined
+        */
+        space: any;
+    }
+
+    interface DeserializerOptions {
+        /**
+         * Gets the type id for an object instance, using the configured `typeAttribute`.
+         * @param {object} object The object to serialize.
+         * @return {string} The type.
+        */
+        getTypeId: (object: any) => string;
+
+        /**
+         * Gets the constructor based on the type id.
+         * @param {string} typeId The type id.
+         * @return {Function} The constructor.
+        */
+        getConstructor: (typeId: string) => () => any;
+
+        /**
+         * The default reviver function used during deserialization. By default is detects type properties on objects and uses them to re-construct the correct object using the provided constructor mapping.
+         * @param {string} key The attribute key.
+         * @param {object} value The object value associated with the key.
+         * @return {object} The value.
+        */
+        reviver: (key: string, value: any) => any;
+    }
+
+    /**
+     * The name of the attribute that the serializer should use to identify an object's type.
+     * @property {string} typeAttribute
+     * @default type
+    */
+    export var typeAttribute: string;
+
+    /**
+     * The amount of space to use for indentation when writing out JSON.
+     * @property {string|number} space
+     * @default undefined
+    */
+    export var space: any;
+
+    /**
+     * The default replacer function used during serialization. By default properties starting with '_' or '$' are removed from the serialized object.
+     * @method replacer
+     * @param {string} key The object key to check.
+     * @param {object} value The object value to check.
+     * @return {object} The value to serialize.
+    */
+    export function replacer(key: string, value: any): any;
+
+    /**
+     * Serializes the object.
+     * @method serialize
+     * @param {object} object The object to serialize.
+     * @param {object} [settings] Settings can specify a replacer or space to override the serializer defaults.
+     * @return {string} The JSON string.
+    */
+    export function serialize(object: any, settings?: string);
+
+    /**
+     * Serializes the object.
+     * @method serialize
+     * @param {object} object The object to serialize.
+     * @param {object} [settings] Settings can specify a replacer or space to override the serializer defaults.
+     * @return {string} The JSON string.
+    */
+    export function serialize(object: any, settings?: number);
+
+    /**
+     * Serializes the object.
+     * @method serialize
+     * @param {object} object The object to serialize.
+     * @param {object} [settings] Settings can specify a replacer or space to override the serializer defaults.
+     * @return {string} The JSON string.
+    */
+    export function serialize(object: any, settings?: SerializerOptions);
+
+    /**
+     * Gets the type id for an object instance, using the configured `typeAttribute`.
+     * @method getTypeId
+     * @param {object} object The object to serialize.
+     * @return {string} The type.
+    */
+    export function getTypeId(object: any): string;
+
+    /**
+     * Maps type ids to object constructor functions. Keys are type ids and values are functions.
+     * @property {object} typeMap.
+    */
+    export var typeMap: any;
+
+    /**
+    * Adds a type id/constructor function mampping to the `typeMap`.
+    * @method registerType
+    * @param {string} typeId The type id.
+    * @param {function} constructor The constructor.
+    */
+    export function registerType(typeId: string, constructor: () => any);
+
+    /**
+     * The default reviver function used during deserialization. By default is detects type properties on objects and uses them to re-construct the correct object using the provided constructor mapping.
+     * @method reviver
+     * @param {string} key The attribute key.
+     * @param {object} value The object value associated with the key.
+     * @param {function} getTypeId A custom function used to get the type id from a value.
+     * @param {object} getConstructor A custom function used to get the constructor function associated with a type id.
+     * @return {object} The value.
+    */
+    export function reviver(key: string, value: any, getTypeId: (value: any) => string, getConstructor: (string) => () => any): any;
+
+    /**
+     * Deserialize the JSON.
+     * @method deserialize
+     * @param {text} string The JSON string.
+     * @param {DeserializerOptions} settings Settings can specify a reviver, getTypeId function or getConstructor function.
+     * @return {object} The deserialized object.
+    */
+    export function deserialize<T>(text: string, settings?: DeserializerOptions): T;
 }
 
 

@@ -14,6 +14,7 @@ import dialog = module('plugins/dialog');
 import history = module('plugins/history');
 import http = module('plugins/http');
 import observable = module('plugins/observable');
+import serializer = module('plugins/serializer');
 
 function test_system() {
     console.log(system.version);

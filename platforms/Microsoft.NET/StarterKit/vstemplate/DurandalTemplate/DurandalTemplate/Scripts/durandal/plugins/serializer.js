@@ -53,8 +53,8 @@ define(['durandal/system'], function(system) {
         serialize: function(object, settings) {
             settings = (settings === undefined) ? {} : settings;
 
-            if(system.isString(settings) || system.isNumber(settings)){
-                settings = { space:settings }
+            if(system.isString(settings) || system.isNumber(settings)) {
+                settings = { space: settings };
             }
 
             return JSON.stringify(object, settings.replacer || this.replacer, settings.space || this.space);
@@ -98,8 +98,8 @@ define(['durandal/system'], function(system) {
          * @method reviver
          * @param {string} key The attribute key.
          * @param {object} value The object value associated with the key.
-         * @param {function} [getTypeId] A custom function used to get the type id from a value.
-         * @param {object} [getConstructor] A custom function used to get the constructor function associated with a type id.
+         * @param {function} getTypeId A custom function used to get the type id from a value.
+         * @param {object} getConstructor A custom function used to get the constructor function associated with a type id.
          * @return {object} The value.
          */
         reviver: function(key, value, getTypeId, getConstructor) {
@@ -120,11 +120,11 @@ define(['durandal/system'], function(system) {
         /**
          * Deserialize the JSON.
          * @method deserialize
-         * @param {string} string The JSON string.
+         * @param {string} text The JSON string.
          * @param {object} [settings] Settings can specify a reviver, getTypeId function or getConstructor function.
-         * @return {string} The JSON string.
+         * @return {object} The deserialized object.
          */
-        deserialize: function(string, settings) {
+        deserialize: function(text, settings) {
             var that = this;
             settings = settings || {};
 
@@ -132,7 +132,7 @@ define(['durandal/system'], function(system) {
             var getConstructor = settings.getConstructor || function(id) { return that.typeMap[id]; };
             var reviver = settings.reviver || function(key, value) { return that.reviver(key, value, getTypeId, getConstructor); };
 
-            return JSON.parse(string, reviver);
+            return JSON.parse(text, reviver);
         }
     };
 });

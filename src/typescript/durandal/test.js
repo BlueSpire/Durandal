@@ -11,6 +11,7 @@
     
     
     var observable = __observable__;
+    
 
     function test_system() {
         console.log(system.version);
