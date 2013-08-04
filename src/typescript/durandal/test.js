@@ -16,7 +16,7 @@
     var router = __router__;
 
     function test_system() {
-        console.log(system.version);
+        system.log(system.version);
 
         system.noop = function () {
         };
@@ -30,6 +30,7 @@
         var isDebugging = system.debug();
 
         system.log(1, '2', { prop: 3 });
+        system.log(system.version);
 
         system.error('Error');
         system.error(new Error('This is an error message.'));

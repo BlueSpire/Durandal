@@ -19,7 +19,7 @@ import widget = module('plugins/widget');
 import router = module('plugins/router');
 
 function test_system() {
-    console.log(system.version);
+    system.log(system.version);
 
     system.noop = () => { };
 
@@ -32,6 +32,7 @@ function test_system() {
     var isDebugging = system.debug();
 
     system.log(1, '2', { prop: 3 });
+    system.log(system.version);
 
     system.error('Error');
     system.error(new Error('This is an error message.'));
