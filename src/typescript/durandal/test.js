@@ -111,9 +111,9 @@
     }
 
     function test_router() {
-        router.activate();
-        router.createChildRouter();
-
-        router.handlers[0].routePattern;
+        router.activate().then(function () {
+            router.createChildRouter();
+            router.handlers[0].routePattern;
+        });
     }
 });

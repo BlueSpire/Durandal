@@ -113,8 +113,8 @@ function test_app() {
 }
 
 function test_router(){
-    router.activate();
-    router.createChildRouter();
-
-    router.handlers[0].routePattern;
+    router.activate().then(() => {
+        router.createChildRouter();
+        router.handlers[0].routePattern;
+    });
 }

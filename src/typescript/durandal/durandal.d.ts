@@ -1597,10 +1597,26 @@ declare module 'durandal/typescript' {
         off(): EventSubscription;
     }
 
-    export interface RouteConfiguration { }
+    export interface RouteConfiguration {
+        title?: string;
+        moduleId?: string;
+        hash?: string;
+        routePattern?: RegExp;
+        isActive?: KnockoutComputed<boolean>;
+    }
 
     export interface RouteInstruction {
+        fragment: string;
+        queryString: string;
         config: RouteConfiguration;
+        params: any[];
+        queryParams: Object;
+    }
+
+    export interface RelativeRouteSettings {
+        moduleId?: string;
+        route?: string;
+        fromParent?: boolean;
     }
 
     export interface Router {
@@ -1731,10 +1747,152 @@ declare module 'durandal/typescript' {
          */
         convertRouteToTitle(route: string): string;
 
-        //map
+        /**
+         * Maps route patterns to modules.
+         * @method map
+         * @param {string} route A route.
+         * @chainable
+         */
+        map(route: string): Router;
+
+        /**
+         * Maps route patterns to modules.
+         * @method map
+         * @param {string} route A route pattern.
+         * @param {string} moduleId The module id to map the route to.
+         * @chainable
+         */
+        map(route: string, moduleId: string): Router;
+
+        /**
+         * Maps route patterns to modules.
+         * @method map
+         * @param {RegExp} route A route pattern.
+         * @param {string} moduleId The module id to map the route to.
+         * @chainable
+         */
+        map(route: RegExp, moduleId: string): Router;
+
+        /**
+         * Maps route patterns to modules.
+         * @method map
+         * @param {string} route A route pattern.
+         * @param {RouteConfiguration} config The route's configuration.
+         * @chainable
+         */
+        map(route: string, config: RouteConfiguration): Router;
+
+        /**
+         * Maps route patterns to modules.
+         * @method map
+         * @param {RegExp} route A route pattern.
+         * @param {RouteConfiguration} config The route's configuration.
+         * @chainable
+         */
+        map(route: RegExp, config: RouteConfiguration): Router;
+
+        /**
+         * Maps route patterns to modules.
+         * @method map
+         * @param {RouteConfiguration} config The route's configuration.
+         * @chainable
+         */
+        map(config: RouteConfiguration): Router;
+
+        /**
+         * Maps route patterns to modules.
+         * @method map
+         * @param {RouteConfiguration[]} configs An array of route configurations.
+         * @chainable
+         */
+        map(configs: RouteConfiguration[]): Router;
+
+        /**
+         * Builds an observable array designed to bind a navigation UI to. The model will exist in the `navigationModel` property.
+         * @method buildNavigationModel
+         * @param {number} defaultOrder The default order to use for navigation visible routes that don't specify an order. The defualt is 100.
+         * @chainable
+         */
+        buildNavigationModel(defaultOrder?: number): Router;
+
+        /**
+         * Configures the router to map unknown routes to modules at the same path.
+         * @method mapUnknownRoutes
+         * @chainable
+         */
+        mapUnknownRoutes(): Router;
+
+        /**
+         * Configures the router use the specified module id for all unknown routes.
+         * @method mapUnknownRoutes
+         * @param {string} notFoundModuleId Represents the module id to route all unknown routes to.
+         * @param {string} [replaceRoute] Optionally provide a route to replace the url with.
+         * @chainable
+         */
+        mapUnknownRoutes(notFoundModuleId: string, replaceRoute?: string): Router;
+
+        /**
+         * Configures how the router will handle unknown routes.
+         * @method mapUnknownRoutes
+         * @param {function} callback Called back with the route instruction containing the route info. The function can then modify the instruction by adding a moduleId and the router will take over from there.
+         * @chainable
+         */
+        mapUnknownRoutes(callback: (instruction: RouteInstruction) => void ): Router;
+
+        /**
+         * Configures how the router will handle unknown routes.
+         * @method mapUnknownRoutes
+         * @param {RouteConfiguration} config The route configuration to use for unknown routes.
+         * @chainable
+         */
+        mapUnknownRoutes(config: RouteConfiguration): Router;
+
+        /**
+         * Resets the router by removing handlers, routes, event handlers and previously configured options.
+         * @method reset
+         */
+        reset(): void;
+
+        /**
+         * Makes all configured routes and/or module ids relative to a certain base url.
+         * @method makeRelative
+         * @param {string} settings The value is used as the base for routes and module ids.
+         */
+        makeRelative(settings: string): Router;
+
+        /**
+         * Makes all configured routes and/or module ids relative to a certain base url.
+         * @method makeRelative
+         * @param {RelativeRouteSettings} settings If an object, you can specify `route` and `moduleId` separately. In place of specifying route, you can set `fromParent:true` to make routes automatically relative to the parent router's active route.
+         */
+        makeRelative(settings: RelativeRouteSettings): Router;
+
+        /**
+         * Creates a child router.
+         * @method createChildRouter
+         * @return {Router} The child router.
+         */
+        createChildRouter(): Router;
     }
 
     export interface RootRouter extends Router {
-        activate();
+        /**
+         * Activates the router and the underlying history tracking mechanism.
+         * @method activate
+         * @return {Promise} A promise that resolves when the router is ready.
+         */
+        activate(options?: history.HistoryOptions): JQueryPromise;
+
+        /**
+         * Disable history, perhaps temporarily. Not useful in a real app, but possibly useful for unit testing Routers.
+         * @method deactivate
+         */
+        deactivate(): void;
+
+        /**
+         * Installs the router's custom ko binding handler.
+         * @method install
+         */
+        install(): void;
     }
 }
