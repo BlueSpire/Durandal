@@ -1,0 +1,12 @@
+{
+  "author": "",
+  "name": "mocha-generator",
+  "version": "0.0.0",
+  "main": "main.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

@@ -1,0 +1,5 @@
+src/
+.git/
+.DS_Store
+node_modules
+mimosa-config.coffee
