@@ -132,11 +132,11 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          * @param {object} [obj] The data to bind to, causing the creation of a child binding context if present.
          */
         bindContext: function(bindingContext, view, obj) {
-            if (obj) {
+            if (obj && bindingContext) {
                 bindingContext = bindingContext.createChildContext(obj);
             }
 
-            return doBind(obj, view, bindingContext, obj || bindingContext.$data);
+            return doBind(obj, view, bindingContext, obj || (bindingContext ? bindingContext.$data : null));
         },
         /**
          * Binds the view, preserving the existing binding context. Optionally, a new context can be created, parented to the previous context.
