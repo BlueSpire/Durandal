@@ -622,10 +622,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @param {object} [config] The config for the specified route.
          * @chainable
          * @example
-         router.map([
-             { route: '', title:'Home', moduleId: 'homeScreen', nav: true },
-             { route: 'customer/:id', moduleId: 'customerDetails'}
-         ]);
+ router.map([
+    { route: '', title:'Home', moduleId: 'homeScreen', nav: true },
+    { route: 'customer/:id', moduleId: 'customerDetails'}
+ ]);
          */
         router.map = function(route, config) {
             if (system.isArray(route)) {
