@@ -108,13 +108,13 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
         MessageBox:MessageBox,
         /**
          * The css zIndex that the last dialog was displayed at.
-         * @property {int} currentZIndex
+         * @property {number} currentZIndex
          */
         currentZIndex: 1050,
         /**
          * Gets the next css zIndex at which a dialog should be displayed.
          * @method getNextZIndex
-         * @param {int} The zIndex.
+         * @return {number} The next usable zIndex.
          */
         getNextZIndex: function () {
             return ++this.currentZIndex;

@@ -665,7 +665,7 @@ declare module 'durandal/composition' {
     export function convertTransitionToModuleId(name: string): string;
 
     /**
-     * The name of the transition to use in all composigions.
+     * The name of the transition to use in all compositions.
      * @default null
     */
     export var defaultTransitionName: string;
@@ -914,7 +914,7 @@ declare module 'plugins/dialog' {
 
     /**
      * Gets the next css zIndex at which a dialog should be displayed.
-     * @param {int} The zIndex.
+     * @returns {number} The next usable zIndex.
     */
     export function getNextZIndex(): number;
 
