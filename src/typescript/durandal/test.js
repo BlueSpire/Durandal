@@ -1,4 +1,7 @@
-﻿define(["require", "exports", 'durandal/system', 'durandal/events', 'durandal/activator', 'durandal/app', 'plugins/observable', 'plugins/router'], function(require, exports, __system__, __Events__, __activator__, __app__, __observable__, __router__) {
+﻿/// <reference path="../jquery/jquery.d.ts" />
+/// <reference path="../knockout/knockout.d.ts" />
+/// <reference path="durandal.d.ts"/>
+define(["require", "exports", 'durandal/system', 'durandal/events', 'durandal/activator', 'durandal/app', 'plugins/observable', 'plugins/router'], function(require, exports, __system__, __Events__, __activator__, __app__, __observable__, __router__) {
     var system = __system__;
     
     var Events = __Events__;
@@ -115,6 +118,7 @@
         router.activate().then(function () {
             router.createChildRouter();
             router.handlers[0].routePattern;
+            router.install();
         });
     }
 });

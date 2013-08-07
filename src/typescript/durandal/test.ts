@@ -2,21 +2,21 @@
 /// <reference path="../knockout/knockout.d.ts" />
 /// <reference path="durandal.d.ts"/>
 
-import system = module('durandal/system');
-import viewEngine = module('durandal/viewEngine');
-import Events = module('durandal/events');
-import binder = module('durandal/binder');
-import activator = module('durandal/activator');
-import viewLocator = module('durandal/viewLocator');
-import composition = module('durandal/composition');
-import app = module('durandal/app');
-import dialog = module('plugins/dialog');
-import history = module('plugins/history');
-import http = module('plugins/http');
-import observable = module('plugins/observable');
-import serializer = module('plugins/serializer');
-import widget = module('plugins/widget');
-import router = module('plugins/router');
+import system = require('durandal/system');
+import viewEngine = require('durandal/viewEngine');
+import Events = require('durandal/events');
+import binder = require('durandal/binder');
+import activator = require('durandal/activator');
+import viewLocator = require('durandal/viewLocator');
+import composition = require('durandal/composition');
+import app = require('durandal/app');
+import dialog = require('plugins/dialog');
+import history = require('plugins/history');
+import http = require('plugins/http');
+import observable = require('plugins/observable');
+import serializer = require('plugins/serializer');
+import widget = require('plugins/widget');
+import router = require('plugins/router');
 
 function test_system() {
     system.log(system.version);
@@ -48,7 +48,7 @@ function test_system() {
     var uuid = system.guid();
 
     system.acquire('some/module').then(someModule => {
-        var s = <system>someModule;
+        var s = someModule;
         s.log('acquired');
     });
 
@@ -117,5 +117,6 @@ function test_router(){
     router.activate().then(() => {
         router.createChildRouter();
         router.handlers[0].routePattern;
+        router.install();
     });
 }

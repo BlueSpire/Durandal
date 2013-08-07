@@ -285,7 +285,7 @@ declare module 'durandal/viewEngine' {
  * @requires system
  */
 declare module 'durandal/events' {
-    import ts = module('durandal/typescript');
+    import ts = require('durandal/typescript');
 
     /**
      * Creates an object with eventing capabilities.
@@ -350,7 +350,7 @@ declare module 'durandal/events' {
  */
 declare module 'durandal/binder' {
     interface BindingInstruction {
-        applyBindings: bool;
+        applyBindings: boolean;
     }
 
     /**
@@ -722,8 +722,8 @@ declare module 'durandal/composition' {
  * @requires jquery
  */
 declare module 'durandal/app' {
-    import Events = module('durandal/events');
-    import ts = module('durandal/typescript');
+    import Events = require('durandal/events');
+    import ts = require('durandal/typescript');
 
     /**
      * The title of your application.
@@ -829,8 +829,8 @@ declare module 'durandal/app' {
  * @requires knockout
  */
 declare module 'plugins/dialog' {
-    import activator = module('durandal/activator');
-    import composition = module('durandal/composition');
+    import activator = require('durandal/activator');
+    import composition = require('durandal/composition');
 
     /**
     * Models a message box's message, title and options.
@@ -1380,9 +1380,9 @@ declare module 'plugins/widget' {
  * @requires jquery
  */
 declare module 'plugins/router' {
-    import activator = module('durandal/activator');
-    import Events = module('durandal/events');
-    import ts = module('durandal/typescript');
+    import activator = require('durandal/activator');
+    import Events = require('durandal/events');
+    import ts = require('durandal/typescript');
 
     var RootRouter: ts.RootRouter;
 
@@ -1393,8 +1393,8 @@ declare module 'plugins/router' {
  * Interface definitions used by other modules which were not possible to define within those modules due to TypeScript limitations.
  */
 declare module 'durandal/typescript' {
-    import activator = module('durandal/activator');
-    import history = module('plugins/history');
+    import activator = require('durandal/activator');
+    import history = require('plugins/history');
 
     /**
     * Represents an event subscription.
