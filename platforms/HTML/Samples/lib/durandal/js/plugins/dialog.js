@@ -48,6 +48,17 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
     };
 
     /**
+     * Configures a custom view to use when displaying message boxes.
+     * @method setViewUrl
+     * @param {string} viewUrl The view url relative to the base url which the view locator will use to find the message box's view.
+     * @static
+     */
+    MessageBox.setViewUrl = function(viewUrl){
+        delete MessageBox.prototype.getView;
+        MessageBox.prototype.viewUrl = viewUrl;
+    };
+
+    /**
      * The title to be used for the message box if one is not provided.
      * @property {string} defaultTitle
      * @default Application
