@@ -1,0 +1,25 @@
+digraph G { 
+  "activator";
+  "system";
+  "composition";
+  "events";
+  "viewEngine";
+  "activator";
+  "binder";
+  "viewLocator";
+  "activator" -> "system";
+  "app" -> "composition";
+  "app" -> "events";
+  "app" -> "system";
+  "app" -> "viewEngine";
+  "binder" -> "system";
+  "composition" -> "activator";
+  "composition" -> "binder";
+  "composition" -> "system";
+  "composition" -> "viewEngine";
+  "composition" -> "viewLocator";
+  "events" -> "system";
+  "viewEngine" -> "system";
+  "viewLocator" -> "system";
+  "viewLocator" -> "viewEngine";
+}
