@@ -553,7 +553,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @method navigateBack
          */
         router.navigateBack = function() {
-            history.history.back();
+            history.navigateBack();
         };
 
         router.attached = function() {

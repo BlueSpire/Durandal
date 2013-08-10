@@ -277,6 +277,14 @@ define(['durandal/system', 'jquery'], function (system, $) {
     };
 
     /**
+     * Navigates back in the browser history.
+     * @method navigateBack
+     */
+    history.navigateBack = function() {
+        history.history.back();
+    };
+
+    /**
      * @class HistoryOptions
      * @static
      */
