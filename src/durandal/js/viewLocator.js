@@ -54,29 +54,30 @@ define(['durandal/system', 'durandal/viewEngine'], function (system, viewEngine)
          * Maps an object instance to a view instance.
          * @method locateViewForObject
          * @param {object} obj The object to locate the view for.
+         * @param {string} [area] The area to translate the view to.
          * @param {DOMElement[]} [elementsToSearch] An existing set of elements to search first.
          * @return {Promise} A promise of the view.
          */
-        locateViewForObject: function(obj, elementsToSearch) {
+        locateViewForObject: function(obj, area, elementsToSearch) {
             var view;
 
             if (obj.getView) {
                 view = obj.getView();
                 if (view) {
-                    return this.locateView(view, null, elementsToSearch);
+                    return this.locateView(view, area, elementsToSearch);
                 }
             }
 
             if (obj.viewUrl) {
-                return this.locateView(obj.viewUrl, null, elementsToSearch);
+                return this.locateView(obj.viewUrl, area, elementsToSearch);
             }
 
             var id = system.getModuleId(obj);
             if (id) {
-                return this.locateView(this.convertModuleIdToViewId(id), null, elementsToSearch);
+                return this.locateView(this.convertModuleIdToViewId(id), area, elementsToSearch);
             }
 
-            return this.locateView(this.determineFallbackViewId(obj), null, elementsToSearch);
+            return this.locateView(this.determineFallbackViewId(obj), area, elementsToSearch);
         },
         /**
          * Converts a module id into a view id. By default the ids are the same.
