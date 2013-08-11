@@ -61,7 +61,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             }
 
             instruction = normalizeBindingInstruction(instruction);
-            viewModelBinder.beforeBind(data, view, instruction);
+            viewModelBinder.binding(data, view, instruction);
 
             if(instruction.applyBindings){
                 system.log('Binding', viewName, data);
@@ -70,7 +70,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 ko.utils.domData.set(view, koBindingContextKey, { $data:obj });
             }
 
-            viewModelBinder.afterBind(data, view, instruction);
+            viewModelBinder.bindingComplete(data, view, instruction);
 
             if (obj && obj.bindingComplete) {
                 obj.bindingComplete(view);
@@ -95,20 +95,20 @@ define(['durandal/system', 'knockout'], function (system, ko) {
     return viewModelBinder = {
         /**
          * Called before every binding operation. Does nothing by default.
-         * @method beforeBind
+         * @method binding
          * @param {object} data The data that is about to be bound.
          * @param {DOMElement} view The view that is about to be bound.
          * @param {object} instruction The object that carries the binding instructions.
          */
-        beforeBind: system.noop,
+        binding: system.noop,
         /**
          * Called after every binding operation. Does nothing by default.
-         * @method afterBind
+         * @method bindingComplete
          * @param {object} data The data that has just been bound.
          * @param {DOMElement} view The view that has just been bound.
          * @param {object} instruction The object that carries the binding instructions.
          */
-        afterBind: system.noop,
+        bindingComplete: system.noop,
         /**
          * Indicates whether or not the binding system should throw errors or not.
          * @property {boolean} throwOnErrors

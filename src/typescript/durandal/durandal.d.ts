@@ -359,7 +359,7 @@ declare module 'durandal/binder' {
      * @param {DOMElement} view The view that is about to be bound.
      * @param {object} instruction The object that carries the binding instructions.
     */
-    export var beforeBind: (data:any, view:HTMLElement, instruction:BindingInstruction) => void;
+    export var binding: (data:any, view:HTMLElement, instruction:BindingInstruction) => void;
 
     /**
      * Called after every binding operation. Does nothing by default.
@@ -367,7 +367,7 @@ declare module 'durandal/binder' {
      * @param {DOMElement} view The view that has just been bound.
      * @param {object} instruction The object that carries the binding instructions.
     */
-    export var afterBind: (data: any, view: HTMLElement, instruction: BindingInstruction) => void;
+    export var bindingComplete: (data: any, view: HTMLElement, instruction: BindingInstruction) => void;
 
     /**
      * Indicates whether or not the binding system should throw errors or not.
@@ -572,10 +572,11 @@ declare module 'durandal/viewLocator' {
     /**
      * Maps an object instance to a view instance.
      * @param {object} obj The object to locate the view for.
+     * @param {string} [area] The area to translate the view to.
      * @param {DOMElement[]} [elementsToSearch] An existing set of elements to search first.
      * @returns {Promise} A promise of the view.
     */
-    export function locateViewForObject(obj: any, elementsToSearch?: HTMLElement[]): JQueryPromise<HTMLElement>;
+    export function locateViewForObject(obj: any, area:string, elementsToSearch?: HTMLElement[]): JQueryPromise<HTMLElement>;
     
     /**
      * Converts a module id into a view id. By default the ids are the same.
@@ -650,10 +651,12 @@ declare module 'durandal/composition' {
         area?: string;
         preserveContext?: boolean;
         activate?: boolean;
-        strategy? (context: CompositionContext): JQueryPromise<HTMLElement>;
+        strategy?: (context: CompositionContext) => JQueryPromise<HTMLElement>;
         composingNewView: boolean;
         child: HTMLElement;
-        beforeBind?: (child: HTMLElement, parent: HTMLElement, context: CompositionContext) => any;
+        binding?: (child: HTMLElement, parent: HTMLElement, context: CompositionContext) => void;
+        attached?: (child: HTMLElement, parent: HTMLElement, context: CompositionContext) => void;
+        compositionComplete?: (child: HTMLElement, parent: HTMLElement, context: CompositionContext) => void;
         tranistion?: string;
     }
 
@@ -870,6 +873,13 @@ declare module 'plugins/dialog' {
          * @static
          */
         static defaultViewMarkup: string;
+
+        /**
+         * Configures a custom view to use when displaying message boxes.
+         * @param {string} viewUrl The view url relative to the base url which the view locator will use to find the message box's view.
+         * @static
+         */
+        static setViewUrl(url:string):void;
     }
 
     interface DialogContext {
@@ -1093,6 +1103,11 @@ declare module 'plugins/history' {
      * @returns {boolean} Returns true/false from loading the url.
      */
     export function navigate(fragment: string, options: NavigationOptions): boolean;
+
+    /**
+     * Navigates back in the browser history.
+     */
+    export function navigateBack(): void;
 }
 
 /**

@@ -317,8 +317,8 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
     observableModule.install = function(options) {
         var original = binder.beforeBind;
 
-        binder.beforeBind = function(obj, view, instruction) {
-            if(instruction.applyBindings && ! instruction.skipConversion){
+        binder.binding = function(obj, view, instruction) {
+            if(instruction.applyBindings && !instruction.skipConversion){
                 convertObject(obj);
             }
 
