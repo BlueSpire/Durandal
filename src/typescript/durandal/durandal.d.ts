@@ -653,7 +653,7 @@ declare module 'durandal/composition' {
         strategy? (context: CompositionContext): JQueryPromise<HTMLElement>;
         composingNewView: boolean;
         child: HTMLElement;
-        beforeBind?: (child: HTMLElement, context: CompositionContext) => any;
+        beforeBind?: (child: HTMLElement, parent: HTMLElement, context: CompositionContext) => any;
         tranistion?: string;
     }
 

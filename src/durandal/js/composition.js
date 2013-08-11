@@ -392,7 +392,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
             tryActivate(context, function () {
                 if (context.beforeBind) {
-                    context.beforeBind(child, context);
+                    context.beforeBind(context.child, context.parent, context);
                 }
 
                 if (context.preserveContext && context.bindingContext) {
