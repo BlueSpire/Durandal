@@ -213,8 +213,8 @@ define(['durandal/system', 'jquery'], function (system, $) {
      * Save a fragment into the hash history, or replace the URL state if the
      * 'replace' option is passed. You are responsible for properly URL-encoding
      * the fragment in advance.
-     * The options object can contain `trigger: true` if you wish to have the
-     * route callback be fired (not usually desirable), or `replace: true`, if
+     * The options object can contain `trigger: false` if you wish to not have the
+     * route callback be fired, or `replace: true`, if
      * you wish to modify the current URL without adding an entry to the history.
      * @method navigate
      * @param {string} fragment The url fragment to navigate to.
