@@ -1,32 +1,47 @@
 exports.config =
-  minMimosaVersion:'0.10.0'
+  minMimosaVersion:'0.14.10'
 
-  modules: ['server', 'require', 'minify', 'live-reload', 'combine', 'mimosa-requirebuild-textplugin-include', 'skeleton']
+  modules: ['server', 'require', 'minify', 'live-reload', 'combine', 'mimosa-requirebuild-textplugin-include', 'bower']
+
+  watch:
+    javascriptDir: 'javascripts/app'
+
+  bower:
+    bowerDir:
+      clean:false
+    copy:
+      mainOverrides:
+        "knockout.js":["knockout.js","knockout-2.3.0.debug.js"]
+        "bootstrap": [
+          "docs/assets/js/bootstrap.js"
+          "docs/assets/css/bootstrap.css"
+          "docs/assets/css/bootstrap-responsive.css"
+        ]
 
   combine:
     folders: [
       {
         folder:'stylesheets'
         output:'stylesheets/styles.css'
-        order: ['bootstrap.css', 'bootstrap-responsive.css', 'font-awesome.css', 'durandal.css', 'starterkit.css']
+        order: [
+          'vendor/bootstrap/bootstrap.css'
+          'vendor/bootstrap/bootstrap-responsive.css'
+          'vendor/font-awesome.css'
+          'durandal.css'
+          'starterkit.css'
+        ]
       }
     ]
 
-  watch:
-    javascriptDir: 'javascripts/app'
-
   server:
-    port: 3000
     defaultServer:
       enabled: true
       onePager: true
-
     views:
       compileWith: 'html'
       extension: 'html'
 
   requireBuildTextPluginInclude:
-    pluginPath: 'text'
     extensions: ['html']
 
   require:
