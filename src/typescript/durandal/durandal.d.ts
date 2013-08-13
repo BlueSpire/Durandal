@@ -1082,12 +1082,12 @@ declare module 'plugins/history' {
      * Save a fragment into the hash history, or replace the URL state if the
      * 'replace' option is passed. You are responsible for properly URL-encoding
      * the fragment in advance.
-     * The options object can contain `trigger: true` if you wish to have the
-     * route callback be fired (not usually desirable), or `replace: true`, if
+     * The options object can contain `trigger: false` if you wish to not have the
+     * route callback be fired, or `replace: true`, if
      * you wish to modify the current URL without adding an entry to the history.
      * @param {string} fragment The url fragment to navigate to.
      * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option. Trigger is `true` by default.
-     * @returns {boolean} Returns true/false from loading the url.
+     * @return {boolean} Returns true/false from loading the url.
      */
     export function navigate(fragment: string, trigger?: boolean): boolean;
 
@@ -1095,12 +1095,12 @@ declare module 'plugins/history' {
      * Save a fragment into the hash history, or replace the URL state if the
      * 'replace' option is passed. You are responsible for properly URL-encoding
      * the fragment in advance.
-     * The options object can contain `trigger: true` if you wish to have the
-     * route callback be fired (not usually desirable), or `replace: true`, if
+     * The options object can contain `trigger: false` if you wish to not have the
+     * route callback be fired, or `replace: true`, if
      * you wish to modify the current URL without adding an entry to the history.
      * @param {string} fragment The url fragment to navigate to.
      * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option. Trigger is `true` by default.
-     * @returns {boolean} Returns true/false from loading the url.
+     * @return {boolean} Returns true/false from loading the url.
      */
     export function navigate(fragment: string, options: NavigationOptions): boolean;
 
@@ -1522,28 +1522,28 @@ declare module 'durandal/typescript' {
         updateDocumentTitle(instance: Object, instruction: RouteInstruction): void;
 
         /**
-        * Save a fragment into the hash history, or replace the URL state if the
-        * 'replace' option is passed. You are responsible for properly URL-encoding
-        * the fragment in advance.
-        * The options object can contain `trigger: true` if you wish to have the
-        * route callback be fired (not usually desirable), or `replace: true`, if
-        * you wish to modify the current URL without adding an entry to the history.
-        * @param {string} fragment The url fragment to navigate to.
-        * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option. Trigger is `true` by default.
-        * @returns {boolean} Returns true/false from loading the url.
-        */
+         * Save a fragment into the hash history, or replace the URL state if the
+         * 'replace' option is passed. You are responsible for properly URL-encoding
+         * the fragment in advance.
+         * The options object can contain `trigger: false` if you wish to not have the
+         * route callback be fired, or `replace: true`, if
+         * you wish to modify the current URL without adding an entry to the history.
+         * @param {string} fragment The url fragment to navigate to.
+         * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option. Trigger is `true` by default.
+         * @return {boolean} Returns true/false from loading the url.
+         */
         navigate(fragment: string, trigger?: boolean): boolean;
 
         /**
          * Save a fragment into the hash history, or replace the URL state if the
          * 'replace' option is passed. You are responsible for properly URL-encoding
          * the fragment in advance.
-         * The options object can contain `trigger: true` if you wish to have the
-         * route callback be fired (not usually desirable), or `replace: true`, if
+         * The options object can contain `trigger: false` if you wish to not have the
+         * route callback be fired, or `replace: true`, if
          * you wish to modify the current URL without adding an entry to the history.
          * @param {string} fragment The url fragment to navigate to.
          * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option. Trigger is `true` by default.
-         * @returns {boolean} Returns true/false from loading the url.
+         * @return {boolean} Returns true/false from loading the url.
          */
         navigate(fragment: string, options: history.NavigationOptions): boolean;
 
