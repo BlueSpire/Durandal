@@ -15,7 +15,6 @@ exports.config = function(weyland) {
                 name:'../lib/require/almond-custom', //to deploy with require.js, use the build's name here instead
                 insertRequire:['main'], //not needed for require
                 baseUrl : 'app',
-                mainConfigFile:'app/main.js', //not needed for require
                 wrap:true, //not needed for require
                 paths : {
                     'text': '../lib/require/text',
