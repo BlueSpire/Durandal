@@ -1,12 +1,12 @@
 ﻿requirejs.config({
     paths: {
-        'text': '../vendor/text',
+        'text': '../vendor/requirejs-text/text',
+        'knockout': '../vendor/knockout.js/knockout',
+        'jquery': '../vendor/jquery/jquery',
+        'bootstrap': '../vendor/bootstrap/bootstrap',
         'durandal':'../vendor/durandal',
         'plugins' : '../vendor/durandal/plugins',
-        'transitions' : '../vendor/durandal/transitions',
-        'knockout': '../vendor/knockout-2.2.1',
-        'bootstrap': '../vendor/bootstrap',
-        'jquery': '../vendor/jquery-1.9.1'
+        'transitions' : '../vendor/durandal/transitions'
     },
     shim: {
         'bootstrap': {
