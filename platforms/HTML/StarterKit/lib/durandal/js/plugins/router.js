@@ -125,6 +125,13 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      * @param {Router} router The router.
      */
 
+    /**
+     * Triggered when the router does not find a matching route.
+     * @event router:route:not-found
+     * @param {string} fragment The url fragment.
+     * @param {Router} router The router.
+     */
+
     var createRouter = function() {
         var queue = [],
             isProcessing = ko.observable(false),
@@ -497,6 +504,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
 
             system.log('Route Not Found');
+            router.trigger('router:route:not-found', fragment, router);
 
             if (currentInstruction) {
                 history.navigate(currentInstruction.fragment, { trigger:false, replace:true });
@@ -740,6 +748,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         /**
          * Resets the router by removing handlers, routes, event handlers and previously configured options.
          * @method reset
+         * @chainable
          */
         router.reset = function() {
             currentInstruction = currentActivation = undefined;
@@ -747,12 +756,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             router.routes = [];
             router.off();
             delete router.options;
+            return router;
         };
 
         /**
          * Makes all configured routes and/or module ids relative to a certain base url.
          * @method makeRelative
          * @param {string|object} settings If string, the value is used as the base for routes and module ids. If an object, you can specify `route` and `moduleId` separately. In place of specifying route, you can set `fromParent:true` to make routes automatically relative to the parent router's active route.
+         * @chainable
          */
         router.makeRelative = function(settings){
             if(system.isString(settings)){
@@ -774,7 +785,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 router.relativeToParentRouter = true;
             }
 
-            this.on('router:route:before-config').then(function(config){
+            router.on('router:route:before-config').then(function(config){
                 if(settings.moduleId){
                     config.moduleId = settings.moduleId + config.moduleId;
                 }
@@ -788,7 +799,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 }
             });
 
-            return this;
+            return router;
         };
 
         /**

@@ -1665,18 +1665,21 @@ declare module 'durandal/typescript' {
 
         /**
          * Resets the router by removing handlers, routes, event handlers and previously configured options.
+         * @chainable
          */
-        reset(): void;
+        reset(): Router;
 
         /**
          * Makes all configured routes and/or module ids relative to a certain base url.
          * @param {string} settings The value is used as the base for routes and module ids.
+         * @chainable
          */
         makeRelative(settings: string): Router;
 
         /**
          * Makes all configured routes and/or module ids relative to a certain base url.
          * @param {RelativeRouteSettings} settings If an object, you can specify `route` and `moduleId` separately. In place of specifying route, you can set `fromParent:true` to make routes automatically relative to the parent router's active route.
+         * @chainable
          */
         makeRelative(settings: RelativeRouteSettings): Router;
 
