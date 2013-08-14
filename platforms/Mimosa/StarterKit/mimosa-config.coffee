@@ -1,33 +1,61 @@
 exports.config =
-  minMimosaVersion:'0.10.0'
+  # 0.14.11 is needed for optimization to work properly
+  minMimosaVersion:'0.14.11'
 
-  modules: ['server', 'require', 'minify', 'live-reload', 'combine', 'mimosa-requirebuild-textplugin-include', 'skeleton']
+  modules: [
+    'server'
+    'require'
+    'minify'
+    'live-reload'
+    'combine'
+    'requirebuild-include'
+    'requirebuild-textplugin-include'
+    'bower'
+  ]
+
+  watch:
+    javascriptDir: 'javascripts/app'
+
+  requireBuildTextPluginInclude:
+    pluginPath: 'text'
+    extensions: ['html']
+
+  requireBuildInclude:
+    folder:"javascripts"
+    patterns: ['app/**/*.js', 'vendor/durandal/**/*.js']
+
+  bower:
+    copy:
+      mainOverrides:
+        "knockout.js":["knockout.js","knockout-2.3.0.debug.js"]
+        "bootstrap": [
+          "docs/assets/js/bootstrap.js"
+          "docs/assets/css/bootstrap.css"
+          "docs/assets/css/bootstrap-responsive.css"
+        ]
 
   combine:
     folders: [
       {
         folder:'stylesheets'
         output:'stylesheets/styles.css'
-        order: ['bootstrap.css', 'bootstrap-responsive.css', 'font-awesome.css', 'durandal.css', 'starterkit.css']
+        order: [
+          'vendor/bootstrap/bootstrap.css'
+          'vendor/bootstrap/bootstrap-responsive.css'
+          'vendor/font-awesome.css'
+          'durandal.css'
+          'starterkit.css'
+        ]
       }
     ]
 
-  watch:
-    javascriptDir: 'javascripts/app'
-
   server:
-    port: 3000
     defaultServer:
       enabled: true
       onePager: true
-
     views:
       compileWith: 'html'
       extension: 'html'
-
-  requireBuildTextPluginInclude:
-    pluginPath: 'text'
-    extensions: ['html']
 
   require:
     optimize:
@@ -37,11 +65,3 @@ exports.config =
         stubModules: ['text']
         pragmas:
           build: true
-        paths:
-          'text': '../vendor/text',
-          'durandal': '../vendor/durandal',
-          'plugins': '../vendor/durandal/plugins',
-          'transitions': '../vendor/durandal/transitions',
-          'knockout': '../vendor/knockout-2.2.1',
-          'bootstrap': '../vendor/bootstrap',
-          'jquery': '../vendor/jquery-1.9.1'
