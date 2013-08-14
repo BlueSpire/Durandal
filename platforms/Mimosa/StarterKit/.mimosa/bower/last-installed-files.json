@@ -1,0 +1,10 @@
+[
+  "assets/javascripts/vendor/knockout.js/knockout.js",
+  "assets/javascripts/vendor/knockout.js/knockout-2.3.0.debug.js",
+  "assets/javascripts/vendor/jquery/jquery.js",
+  "assets/javascripts/vendor/requirejs/require.js",
+  "assets/javascripts/vendor/requirejs-text/text.js",
+  "assets/javascripts/vendor/bootstrap/bootstrap.js",
+  "assets/stylesheets/vendor/bootstrap/bootstrap.css",
+  "assets/stylesheets/vendor/bootstrap/bootstrap-responsive.css"
+]

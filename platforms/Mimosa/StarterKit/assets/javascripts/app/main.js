@@ -4,7 +4,6 @@
         'knockout': '../vendor/knockout.js/knockout',
         'jquery': '../vendor/jquery/jquery',
         'bootstrap': '../vendor/bootstrap/bootstrap',
-
         'durandal':'../vendor/durandal',
         'plugins' : '../vendor/durandal/plugins',
         'transitions' : '../vendor/durandal/transitions'

@@ -1,14 +1,30 @@
 exports.config =
-  minMimosaVersion:'0.14.10'
+  # 0.14.11 is needed for optimization to work properly
+  minMimosaVersion:'0.14.11'
 
-  modules: ['server', 'require', 'minify', 'live-reload', 'combine', 'mimosa-requirebuild-textplugin-include', 'bower']
+  modules: [
+    'server'
+    'require'
+    'minify'
+    'live-reload'
+    'combine'
+    'requirebuild-include'
+    'requirebuild-textplugin-include'
+    'bower'
+  ]
 
   watch:
     javascriptDir: 'javascripts/app'
 
+  requireBuildTextPluginInclude:
+    pluginPath: 'text'
+    extensions: ['html']
+
+  requireBuildInclude:
+    folder:"javascripts"
+    patterns: ['app/**/*.js', 'vendor/durandal/**/*.js']
+
   bower:
-    bowerDir:
-      clean:false
     copy:
       mainOverrides:
         "knockout.js":["knockout.js","knockout-2.3.0.debug.js"]
@@ -41,9 +57,6 @@ exports.config =
       compileWith: 'html'
       extension: 'html'
 
-  requireBuildTextPluginInclude:
-    extensions: ['html']
-
   require:
     optimize:
       overrides:
@@ -52,11 +65,3 @@ exports.config =
         stubModules: ['text']
         pragmas:
           build: true
-        paths:
-          'text': '../vendor/text',
-          'durandal': '../vendor/durandal',
-          'plugins': '../vendor/durandal/plugins',
-          'transitions': '../vendor/durandal/transitions',
-          'knockout': '../vendor/knockout-2.2.1',
-          'bootstrap': '../vendor/bootstrap',
-          'jquery': '../vendor/jquery-1.9.1'
