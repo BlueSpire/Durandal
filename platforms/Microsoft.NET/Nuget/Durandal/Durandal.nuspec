@@ -55,5 +55,6 @@ Features
         <file src="content\Scripts\durandal\viewLocator.js" target="content\Scripts\durandal\viewLocator.js" />
         <file src="content\Scripts\almond-custom.js" target="content\Scripts\almond-custom.js" />
         <file src="content\Scripts\text.js" target="content\Scripts\text.js" />
+        <file src="content\weyland-config.js" target="content\weyland-config.js" />
     </files>
 </package>
