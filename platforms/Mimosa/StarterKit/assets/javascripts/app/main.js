@@ -1,4 +1,4 @@
-﻿requirejs.config({
+requirejs.config({
     paths: {
         'text': '../vendor/requirejs-text/text',
         'knockout': '../vendor/knockout.js/knockout',

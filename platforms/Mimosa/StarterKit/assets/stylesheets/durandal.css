@@ -6,21 +6,21 @@
 
 .modalBlockout {
     position: fixed;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background: black;
     opacity: 0;
-    
+
     pointer-events: auto;
-    
+
     -webkit-backface-visibility: hidden;
-    
-    -webkit-transition: opacity 0.1s linear; 
-	-moz-transition: opacity 0.1s linear; 
+
+    -webkit-transition: opacity 0.1s linear;
+	-moz-transition: opacity 0.1s linear;
 	-o-transition: opacity 0.1s linear;
-	transition: opacity 0.1s linear; 
+	transition: opacity 0.1s linear;
 }
 
 .modalHost {
@@ -28,11 +28,11 @@
     left: 50%;
     position: fixed;
     opacity: 0;
-    
+
     -webkit-backface-visibility: hidden;
 
-    -webkit-transition: opacity 0.1s linear; 
-	-moz-transition: opacity 0.1s linear; 
+    -webkit-transition: opacity 0.1s linear;
+	-moz-transition: opacity 0.1s linear;
 	-o-transition: opacity 0.1s linear;
 	transition: opacity 0.1s linear;
 }

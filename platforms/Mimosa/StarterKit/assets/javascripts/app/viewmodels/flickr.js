@@ -1,4 +1,4 @@
-﻿define(['plugins/http', 'durandal/app', 'knockout'], function (http, app, ko) {
+define(['plugins/http', 'durandal/app', 'knockout'], function (http, app, ko) {
     //Note: This module exports an object.
     //That means that every module that "requires" it will get the same object instance.
     //If you wish to be able to create multiple instances, instead export a function.
