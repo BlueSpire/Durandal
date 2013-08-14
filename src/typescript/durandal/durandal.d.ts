@@ -1688,6 +1688,14 @@ declare module 'durandal/typescript' {
          * @returns {Router} The child router.
          */
         createChildRouter(): Router;
+
+        /**
+         * Inspects routes and modules before activation. Can be used to protect access by cancelling navigation or redirecting.
+         * @param {object} instance The module instance that is about to be activated by the router.
+         * @param {object} instruction The route instruction. The instruction object has config, fragment, queryString, params and queryParams properties.
+         * @returns {Promise|Boolean|String} If a boolean, determines whether or not the route should activate or be cancelled. If a string, causes a redirect to the specified route. Can also be a promise for either of these value types.
+         */
+        guardRoute?:(instance:Object, instruction:RouteInstruction) => any;
     }
 
     export interface RootRouter extends Router {
