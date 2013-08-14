@@ -11,6 +11,7 @@ exports.config =
     'requirebuild-include'
     'requirebuild-textplugin-include'
     'bower'
+    'lint'
   ]
 
   watch:
