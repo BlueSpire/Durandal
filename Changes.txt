@@ -15,11 +15,14 @@ multiple ids are passed then the promise resolves with an array of modules. syst
 -Added "fadeOnly" option to the entrance transition. Removing some bogus styles after the transition completes.
 -Removed app.adaptToDevice()...which was causing lots of confusion.
 -Removed the optimizer. It is now replaced by Weyland.
--New samples and starter kits available for: raw HTML, Bower, .NET (Nuget and VSIX), Yeowman (not yet complete) and Mimosa (not yet complete).
+-New samples and starter kits available for: raw HTML, Bower, .NET (Nuget and VSIX), and Mimosa.
 -Added support for Bower
 -Added more knockout samples
 -Better support for Q integration
 -Added api docs via YUIDoc
+-Lots of bug fixes
+-Updated docs and conversion guide
+-Official TypeScript defition file
 
 1.2.0
 
