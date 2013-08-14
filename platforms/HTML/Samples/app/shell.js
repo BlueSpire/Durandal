@@ -3,7 +3,7 @@
         router: router,
         activate: function () {
             return router.map([
-                { route: '',                            moduleId: 'hello/index',            title: 'Hello World',       nav: true },
+                { route: ['', 'home'],                  moduleId: 'hello/index',            title: 'Hello World',       nav: true },
                 { route: 'view-composition',            moduleId: 'viewComposition/index',  title: 'View Composition',  nav: true },
                 { route: 'modal',                       moduleId: 'modal/index',            title: 'Modal Dialogs',     nav: true },
                 { route: 'event-aggregator',            moduleId: 'eventAggregator/index',  title: 'Events',            nav: true },

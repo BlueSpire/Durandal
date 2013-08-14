@@ -383,10 +383,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             };
         }
 
-        function mapRoute(config) {
+        function configureRoute(config){
             router.trigger('router:route:before-config', config, router);
 
-            if (!system.isRegExp(config.route)) {
+            if (!system.isRegExp(config)) {
                 config.title = config.title || router.convertRouteToTitle(config.route);
                 config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
                 config.hash = config.hash || router.convertRouteToHash(config.route);
@@ -409,6 +409,21 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     queryParams:paramInfo.queryParams
                 });
             });
+        };
+
+        function mapRoute(config) {
+            if(system.isArray(config.route)){
+                for(var i = 0, length = config.route.length; i < length; i++){
+                    var current = system.extend({}, config);
+                    current.route = config.route[i];
+                    if(i > 0){
+                        delete current.nav;
+                    }
+                    configureRoute(current);
+                }
+            }else{
+                configureRoute(config);
+            }
 
             return router;
         }
