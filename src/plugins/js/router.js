@@ -407,8 +407,13 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         }
 
         function addActiveFlag(config) {
+            if(config.isActive){
+                return;
+            }
+
             config.isActive = ko.computed(function() {
-                return activeItem() && activeItem().__moduleId__ == config.moduleId;
+                var theItem = activeItem();
+                return theItem && theItem.__moduleId__ == config.moduleId;
             });
         }
 
