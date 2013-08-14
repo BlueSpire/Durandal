@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Durandal.Transitions</id>
-        <version>2.0.0-pre</version>
+        <version>2.0.0</version>
         <title>Durandal Transitions</title>
         <authors>Rob Eisenberg,John Papa</authors>
         <owners>EisenbergEffect</owners>
@@ -17,7 +17,7 @@ This is a collection of transitions designed to work with Durandal's composition
         <copyright>Copyright (c) 2012 Blue Spire Consulting, Inc.</copyright>
         <tags>JavaScript JS Durandal HTML CSS MVC MVVM MVP Web SPA RIA Knockout RequireJS jQuery Transitions</tags>
         <dependencies>
-            <dependency id="Durandal" version="2.0.0-pre" />
+            <dependency id="Durandal" version="2.0.0" />
         </dependencies>
     </metadata>
     <files>
