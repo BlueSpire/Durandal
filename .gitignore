@@ -31,8 +31,7 @@ Packages/
 
 docs/api*
 
-!src/weyland/bin*
-!src/weyland/lib/commands/build*
-!src/weyland/lib/dsl/build*
 !build.bat
 !*.ps1
+
+!platforms/Microsoft.NET/StarterKit/vsix/DurandalMvcSpaTemplateVsix/packages
