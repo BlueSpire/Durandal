@@ -315,7 +315,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
      * @method install
      */
     observableModule.install = function(options) {
-        var original = binder.beforeBind;
+        var original = binder.binding;
 
         binder.binding = function(obj, view, instruction) {
             if(instruction.applyBindings && !instruction.skipConversion){
