@@ -68,6 +68,8 @@
           <package id="Durandal.StarterKit" version="2.0.0" skipAssemblyReferences="true" />
           <package id="Durandal" version="2.0.0" skipAssemblyReferences="true" />
           <package id="Durandal.Transitions" version="2.0.0" skipAssemblyReferences="true" />
+          <package id="RequireJS" version="2.1.8" skipAssemblyReferences="true" />
+          <package id="RequireJS.Text" version="2.0.7" skipAssemblyReferences="true" />
           <package id="FontAwesome" version="3.2.1" skipAssemblyReferences="true" />
           <package id="jQuery" version="1.9.1" skipAssemblyReferences="true" />
           <package id="knockoutjs" version="2.3.0" skipAssemblyReferences="true" />
