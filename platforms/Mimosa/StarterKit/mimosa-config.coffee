@@ -1,6 +1,6 @@
 exports.config =
-  # 0.14.11 is needed for optimization to work properly
-  minMimosaVersion:'0.14.11'
+  # 0.14.12 is needed for optimization to work properly
+  minMimosaVersion:'0.14.12'
 
   modules: [
     'server'
