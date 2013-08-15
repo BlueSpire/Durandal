@@ -31,6 +31,7 @@ Features
             <dependency id="knockoutjs" version="2.3.0" />
             <dependency id="RequireJS" version="2.1.8" />
             <dependency id="jQuery" version="1.9.1" />
+            <dependency id="RequireJS.Text" version="2.0.7" />
         </dependencies>
     </metadata>
     <files>
@@ -54,7 +55,6 @@ Features
         <file src="content\Scripts\durandal\viewEngine.js" target="content\Scripts\durandal\viewEngine.js" />
         <file src="content\Scripts\durandal\viewLocator.js" target="content\Scripts\durandal\viewLocator.js" />
         <file src="content\Scripts\almond-custom.js" target="content\Scripts\almond-custom.js" />
-        <file src="content\Scripts\text.js" target="content\Scripts\text.js" />
         <file src="content\weyland-config.js" target="content\weyland-config.js" />
     </files>
 </package>
