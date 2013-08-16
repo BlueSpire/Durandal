@@ -21,11 +21,13 @@ Durandal Release Checklist
 	* Include License.txt
 9. Update Website with New Downloads
 10. Test Mimosa
-11. Publish Mimosa Skeleton via Github
-12. Publish Bower 
+11. Publish Bower 
 	* Include License and Readme
-	* Via Github
-	* Via Bower
+	* Test Locally
+	* Update Github
+	* Github Tag
+	* (Register with Bower)
+12. Publish Mimosa Skeleton via Github
 13. Publish Nugets
 14. Publish VSIX
 15. Release on Github
