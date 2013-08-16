@@ -30,3 +30,4 @@ Packages/
 *.db
 
 !skeletons/vsix/DurandalMvcSpaTemplateVsix/packages/
+!documentation/Building-with-Weyland/
