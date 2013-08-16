@@ -54,6 +54,22 @@ define(['jquery', 'knockout'], function($, ko) {
             });
         },
         /**
+         * Makes an HTTP PUT request.
+         * @method put
+         * @param {string} url The url to send the put request to.
+         * @param {object} data The data to put. It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
+         * @return {Promise} A promise of the response data.
+         */
+        put:function(url, data) {
+            return $.ajax({
+                url: url,
+                data: ko.toJSON(data),
+                type: 'PUT',
+                contentType: 'application/json',
+                dataType: 'json'
+            });
+        },
+        /**
          * Makes an HTTP POST request.
          * @method post
          * @param {string} url The url to send the post request to.
@@ -67,6 +83,20 @@ define(['jquery', 'knockout'], function($, ko) {
                 type: 'POST',
                 contentType: 'application/json',
                 dataType: 'json'
+            });
+        },
+                /**
+         * Makes an HTTP DELETE request.
+         * @method remove
+         * @param {string} url The url to send the delete request to.
+         * @param {object} [query] An optional key/value object to transform into query string parameters.
+         * @return {Promise} A promise of the get response data.
+         */
+        remove:function(url, query) {
+            return $.ajax({
+                url: url,
+                data: query,
+                type: 'DELETE'
             });
         }
     };
