@@ -13,7 +13,7 @@
 		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
-		
+
 		<meta http-equiv="X-Powered-By" content="DocPad v6.38.1"/>
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
@@ -62,29 +62,32 @@
 								<a href="/pages/docs" property="dc:title">Docs</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/videos" class="">
-								<a href="/pages/videos" property="dc:title">Videos</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/pages/training" class="">
-								<a href="/pages/training" property="dc:title">Training</a>
-							</li>
-						
 							<li typeof="sioc:Page" about="/pages/support" class="">
-								<a href="/pages/support" property="dc:title">Support</a>
+								<a href="/pages/support" property="dc:title">Support/Training</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/merchandise" class="">
-								<a href="/pages/merchandise" property="dc:title">Merchandise</a>
+							<li typeof="sioc:Page" about="/pages/consultation" class="">
+								<a href="/pages/consultation" property="dc:title">Consultation</a>
 							</li>
 						
+							<li typeof="sioc:Page" about="/pages/showcase" class="">
+								<a href="/pages/showcase" property="dc:title">Showcase</a>
+							</li>
+						
+						<li class="donate">
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						      <input type="hidden" name="cmd" value="_s-xclick">
+						      <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+						      <input class="btn btn-small btn-success" type="submit" name="submit" value="Donate">
+						    </form>
+						</li>
 					</ul>
 
 					<ul class="nav pull-right">
 						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+							<a href="https://bluespire.zendesk.com" class="support">Login</a>
 						</li>
-					</ul>  
+					</ul>
 				
 		    </div>
 		</div>
@@ -107,6 +110,9 @@
     <li>
       Combine <em>observables</em> with the <em>compose</em> binding to achieve dynamically changing composition.
     </li>
+    <li>
+      Leverage the various compositon settings to enhance the flexibility and reusability of your components.
+    </li>
   </ul>
 </blockquote>
 
@@ -117,7 +123,7 @@ This is nothing unique to Durandal, but is provided entirely by the AMD mechanis
 By leveraging object and function modules with declarative module dependencies, you can implement object modularization and composition in a way that will help you to easily solve some very complex problems.</p>
 <h3>Visual Composition</h3>
 <p>Visual compositon allows you to break down your views into re-usable components and to connect them with their composed, object counterparts.
-This functionality is a central and unique feature of Durandal and is provided by the <a href="/documentation/Composition">Composition Module</a>.
+This functionality is a central and unique feature of Durandal and is provided by the <a href="/documentation/api#module/composition">Composition Module</a>.
 While you can use the composition module directly to achieve this in code, the most common way of leveraging it will be through the <em>compose binding</em>.
 If you create widgets or use modal dialogs, you will also be leveraging it indirectly. In fact, everything you see presented in the browser&#39;s view is run through Durandal&#39;s composition pipeline.</p>
 <p>Let&#39;s see how composition works, by first looking at app startup. Here&#39;s some code from a stripped down <em>main.js</em> file:</p>
@@ -125,7 +131,6 @@ If you create widgets or use modal dialogs, you will also be leveraging it indir
     var app = require(&#39;durandal/app&#39;);
 
     app.start().then(function () {
-        app.adaptToDevice();
         app.setRoot(&#39;shell&#39;, &#39;entrance&#39;);
     });
 });</pre><p>Notice the call to <em>setRoot</em>. This actually invokes the composition engine. What is the result?</p>
@@ -181,8 +186,105 @@ Well, the compose binding can take an observable, like so:</p>
 </li>
 </ul>
 <p>The important thing to remember in this case is that this is an <em>observable</em>. So any time your <em>activeScreen</em> property changes, the composition engine will re-compose that part of the DOM.
-This enables extremely powerful dynamic, changing composition of any part of the dom simply through data-binding. 
-There&#39;s lots more the composition engine can do. To dig in deeper have a look at the <a href="/documentation/Composition">reference documentation</a> and study the sample and starter kit.</p>
+This enables extremely powerful dynamic, changing composition of any part of the DOM simply through data-binding. </p>
+<p>That&#39;s just a quick summary though. There&#39;s lots more the composition engine can do. Let&#39;s look broadly at the various configurations:</p>
+<h4>Composing a String Value</h4>
+<p>If the compose binding resolves to a string, it is assumed to be an identifier either for a module or for a view. If the string ends in an extension recognized by the view engine, then the <a href="/documentation/api#module/viewLocator">viewLocator module</a> is used by invoking its <a href="/documentation/api#module/viewLocator/method/locateView">locateView</a> function, which returns the identified view partial, actualized as a DOM fragment. The <a href="/documentation/api#module/binder">binder module</a> is then used to bind that view to the <em>bindingContext</em> and it is injected into the element that the <em>compose</em> binding exists on. </p>
+<blockquote>
+<p><strong>Note:</strong> When no model is specified, the view is interpreted to be a partial view. In this case, the infrastructure sets the <em>area</em> to &#39;partial&#39;. See <em>Areas</em> below for more information.</p>
+</blockquote>
+<p>If it is not recognized by the <a href="/documentation/api#module/viewLocator">viewLocator</a>, then it is assumed to be a module id. RequireJS is then used to require the module. Once this is done, the <a href="/documentation/api#module/viewLocator">viewLocator</a> is used to locate the conventional view for the module, the <a href="/documentation/api#module/binder">binder</a> is used to bind them, and it is injected into the element.</p>
+<blockquote>
+<p><strong>Note:</strong> If the module that is resolved by RequireJS is a function, rather than an abject, the function will be invoked with the <em>new</em> modifier.</p>
+</blockquote>
+<p><strong>Binding Examples</strong></p>
+<ol>
+<li><p><code>data-bind=&quot;compose: &#39;myView.html&#39;&quot;</code> - Locates the view, realizes it, binds it to the parent binding context and composes it into the DOM node on which the binding is declared.</p>
+</li>
+<li><p><code>data-bind=&quot;compose: &#39;shell&#39;&quot;</code> - Uses RequireJS to get the <em>shell module</em>, locates the view conventionally, binds it and injects it into the DOM node on which the binding is declared.</p>
+</li>
+<li><p><code>data-bind=&quot;compose: someProperty&quot;</code> - Evaluates the binding to obtain the result of <em>someProperty</em>. If it is a string, follows the rules specified above to complete the composition with the bound view being injected on the dom node that declares this binding.</p>
+</li>
+</ol>
+<h4>Composing an Object Instance</h4>
+<p>If this is the case, the <a href="/documentation/api#module/viewLocator">viewLocator</a> is used to locate the the conventional view for the module, the <a href="/documentation/api#module/binder">binder</a> is used to bind them, and it is injected into the specified <em>element</em>.</p>
+<p><strong>Binding Examples</strong></p>
+<ol>
+<li><code>data-bind=&quot;compose: someProperty&quot;</code> - Evaluates the binding to obtain the result of <em>someProperty</em> which, if it is an object instance (and not a string), will follow the process above to finalize the composition process with the bound view being injected on the DOM node that declares this binding.</li>
+</ol>
+<h4>Composing Explicit Models and Views</h4>
+<p>If a <em>view</em> property exists, but no <em>model</em> property, the view will be resolved and bound to the <em>bindingContext</em>, then injected into the <em>element</em>. If a <em>model</em> property exists, but no <em>view</em> property, the <a href="/documentation/api#module/viewLocator">viewLocator</a> will be used to locate the conventional view, they will be bound, then injected into the <em>element</em>. If both <em>model</em> and <em>view</em> properties exist, then they will be bound and injected into the <em>element</em>. Bear in mind, if the <em>model</em> is a string, it will be assumed to be a module id and will be resolved with RequireJS. Likewise, if the <em>view</em> is a string, it will be resoled with the <a href="/documentation/api#module/viewLocator">viewLocator</a> before binding. Note: When a view is specified in this way, the view&#39;s file extension is not required.</p>
+<p><strong>Binding Examples</strong></p>
+<ol>
+<li><p><code>data-bind=&quot;compose: { model:someModelProperty }&quot;</code> - The value of <em>someModelProperty</em> is used with the <em>viewLocator</em> to obtain a view. They are then bound and the view is injected into the DOM node.</p>
+</li>
+<li><p><code>data-bind=&quot;compose: { view:someViewProperty }&quot;</code> - The value of <em>someViewProperty</em> is evaluated. If it is a string, the <em>viewLocator</em> is used to locate the view; otherwise it is assumed to be a view. The resultant view is injected into the DOM node.</p>
+</li>
+<li><p><code>data-bind=&quot;compose: { model:someModelProperty, view:someViewProperty }&quot;</code> - The value of <em>someModelProperty</em> is resolved. The value of <em>someViewProperty</em> is resolved and a view is constructed as indicated in 2. The two are then bound and injected into the DOM node.</p>
+</li>
+<li><p><code>data-bind=&quot;compose: { model:someModelProperty, view:&#39;myView.html&#39; }&quot;</code> - The value of <em>someModelProperty</em> is resolved. The <em>viewLocator</em> is then used to obtain the view indicated by <em>view</em>. They are then bound and the view is injected into the DOM node.</p>
+</li>
+<li><p><code>data-bind=&quot;compose: { model:&#39;shell&#39;, view:someViewProperty }&quot;</code> - RequireJS is used to resolve the <em>shell module</em>. The value of <em>someViewProperty</em> is resolved and a view is returned as described in 2. The view is then bound to the resolved module and injected into the DOM node.</p>
+</li>
+<li><p><code>data-bind=&quot;compose: { model:&#39;shell&#39;, &#39;myView.html&#39; }&quot;</code> - RequireJS is used to resolve the <em>shell module</em>. The <em>viewLocator</em> is then used to obtain the view indicated by <em>view</em>. The view is then bound to the resolved module and injected into the DOM node.</p>
+</li>
+</ol>
+<h4>Using a Custom View Location Strategy</h4>
+<p>By default, if no view is specified, the <a href="/documentation/api#module/viewLocator">viewLocator</a> is used to locate the conventional view for the specified <em>model</em>. However, settings can contain a <em>strategy</em> property which specifies a custom function capable of resolving the view to be used instead. The signature of the function should be <code>function strategy(settings) : promise</code> The <em>settings</em> parameter will contain all the composition configuration information, however, at this stage in the pipeline, the <em>model</em> property will always be an object instance. Any strings will already have been resolved to modules. This allows your custom strategy to resolve the view based on the model instance and any other custom properties you may have previously declared on the settings object. The custom strategy function should return a promise which resolves the realized view as a dom fragment ready for binding and insertion into the dom. If the <em>strategy</em> is a string, it is assumed to be a module id and RequireJS will be used to require the custom strategy.</p>
+<p><strong>Binding Examples</strong></p>
+<ol>
+<li><code>data-bind=&quot;compose: { model:$data, strategy:&#39;myCustomViewStrategy&#39; }&quot;</code> - Uses RequireJS to resolve a module with id of &quot;myCustomViewStrategy&quot;. This strategy is then invoked for <em>$data</em> to find the view. The resultant view is then bound to <em>$data</em> and injected into the node on which the binding is declared.</li>
+</ol>
+<h4>Containerless Composition</h4>
+<p>The composition features presented here all work with Knockout&#39;s containerless comment syntax as well, so the following is valid: </p>
+<p><code>&lt;!-- ko compose: activeItem--&gt;&lt;!--/ko--&gt;</code></p>
+<h3>Additional Settings</h3>
+<h4>Transition</h4>
+<p>When the composition mechanism switches nodes in and out of the DOM, it can use a <em>transition</em>. To specify a transition, add the <em>transition</em> value to your compose binding. It should be set to a transition name. To create a custom transition, create a folder <em>transitions</em> and place a module there named according to the transition identifier you wish to specify in your compose binding. The default Durandal starter templates use RequireJS to map the transitions into your durandal scripts folder. The transition module you create is a function module with a signature as follows <code>function (settings) : promise</code> <em>settings</em> are all the resolved composition settings passed from the binding along with the <em>parent</em> and <em>child</em> nodes. You should return a promise from your transition that resolves when the transition is complete. You can set a default transition for all compositions by setting the composition module&#39;s <a href="/documentation/api#module/composition/property/defaultTransitionName">defaultTransitionName</a> property.</p>
+<blockquote>
+<p><strong>Note:</strong> Transitions are expected to be located in a <em>transitions</em> folder under the durandal folder as stated above. However, you can easily change this conventional location. To do so either use RequireJS path configuration or override the compose module&#39;s <a href="/documentation/api#module/composition/method/convertTransitionToModuleId">convertTransitionToModuleId</a> function.</p>
+<p><strong>Note:</strong> Transitions will not be run if the previous view and the new view are the exact same instance. However, it is possible that while they are not the same instance, they are actually the same view (same html source). In this case the transition will be run. If you wish to disable transitions in this case, then set the composition setting <code>skipTransitionOnSameViewId</code> to <em>true</em>.</p>
+</blockquote>
+<h4>Cache Views</h4>
+<p>In certain case, you may be able to turn on a special optimization. Set <code>cacheViews:true</code> on your compose binding and Durandal will not remove old views from the DOM. Instead, it will match view models with existing views and simply run the transition. This allows the framework to bypass html parsing, apply bindings and DOM insertion when the view already exists. This will only happen if the bound object instance is the same as the existing view, otherwise the view will need to be re-created.</p>
+<blockquote>
+<p><strong>Note:</strong> See below for details on how this affects <em>viewAttached</em>.</p>
+</blockquote>
+<h4>Activate</h4>
+<p>By default, if your bound object instance has an <code>activate</code> function, the composition engine will exeucte it prior to calling the <a href="/documentation/api#module/binder">binder</a>. If you don&#39;t want this to happen, set <code>activate:false</code> on your compose binding.</p>
+<blockquote>
+<p><strong>Note:</strong> If you are using an <a href="/documentation/api#module/activator">activator</a>, it will control the activation call and you should not attempt to manipulate it via the compose binding.</p>
+</blockquote>
+<h4>Preserve Context</h4>
+<p>Whenever a compose happens, an isolated binding context is created around that composed view and view model. So, from inside that view, you cannot reach outside to a different model object. We believe this is really important for encapsulation because we&#39;ve seen some really bad architectural things happen when you can &quot;accidentally&quot; reference things outside of the scope. As a result, things are encapsulated by default. If you want, you can set <code>preserveContext:true</code> on the binding to &quot;connect&quot; the new composition to its parent and enable walking up the tree from inside the child composition, but that is not the default. The exceptions to that are when you compose only a view without a module. This is obvious because it must bind to the parent context or else not bind at all. The other exception is inside templated parts. These parts can reach the outer scope in which they are actually declared, because from a developers point of view, the parts &quot;appear&quot; to actually be in that scope and they often need to access it.</p>
+<h4>Area</h4>
+<p>You can specify an <em>area</em> to pass along with your model to the view locator. This can be used to help further specify sub-group organization of views. For example, you might have a set of readonly views and a set of editing views for models. Setting (or binding) the area property can help the view locator select different views in different scenarios. By default, whenever a view is composed without a model, the composition framework sets <em>area</em> to &quot;partial&quot;.</p>
+<h4>Activation Data</h4>
+<p>If you set the <em>activationData</em> property of a compose binding, the value you set will be passed through to the bound module&#39;s <em>activate</em> callback.</p>
+<h4>Mode</h4>
+<p>The default composition mode interprets the child elements of a composition site as &quot;splash&quot; or &quot;loader&quot; content and completely overwrites it once the new view is ready to be composed into place. However, this is not the only mode. By setting <code>mode:&#39;inline&#39;</code> you can tell the composition engine that the module you are binding should actually be bound directly against the child elements, without searching for an external view. Here&#39;s an example:</p>
+<pre class="prettyprint linenums">&lt;!--ko compose: { model:&#39;myModel&#39;, mode:&#39;inline&#39;}--&gt;
+    &lt;h3 data-bind=&quot;text: someProperty&quot;&gt;&lt;/h3&gt;
+&lt;!--/ko--&gt;</pre><p>In this case, the compositoin system will locate the &quot;myModel&quot; module and then it will databind it against the <code>h3</code> inside the composition element.</p>
+<p>You can also use <code>mode:&#39;templated&#39;</code>. This mode allows you to create replacable parts in your view, which can be overridden at the composition site. Let say we have the following view:</p>
+<pre class="prettyprint linenums">&lt;div&gt;
+    &lt;h2&gt;My View&lt;/h2&gt;
+    &lt;span data-bind=&quot;text: someProperty&quot;&gt;&lt;/span&gt;
+    &lt;div data-part=&quot;content&quot;&gt;Some default content goes here.&lt;/div&gt;
+&lt;/div&gt;</pre><p>Notice that the <code>div</code> is marked with <code>data-part=&quot;content&quot;</code>. This identifies this portion of the view as templatable or replaceable. When the composition system composes this view into the DOM, you can optionally provide your own content for this part. Here&#39;s an example of what a consumer of this view might look like:</p>
+<pre class="prettyprint linenums">&lt;!--ko compose: { view:&#39;myView.html&#39;, mode:&#39;templated&#39; }--&gt;
+    &lt;div data-part=&quot;content&quot;&gt;This is a view part override of the default content....&lt;/div&gt;
+&lt;!--/ko--&gt;</pre><p>When this composition activates, the myView.html will be located and it&#39;s content part will be replaced with the custom content specified.</p>
+<blockquote>
+<p><strong>Note:</strong> Widgets leverage templated parts by default and so their composition mode is always <code>templated</code>.</p>
+</blockquote>
+<h3>Hooks</h3>
+<p>There are three hooks into the composition pipeline which you can specify as callbacks on the composition settings object. Set <em>binding</em> to be called immediately before the <a href="/documentation/api#module/binder">binder</a> is called. The signature is <code>binding(child, parent, settings)</code> Set <em>attached</em> to be called immediately after the view is attached to the DOM. The signature is <code>attached(child, parent, settings)</code>. Set <em>compositionComplete</em> to be called back after the entire composition has finished (parents and children included). The signature is <code>compositionComplete(child, parent, settings)</code>. These aren&#39;t typically used in markup. They are intended to be used when utilizing the composition module in code. For example, they are used internally by the dialog plugin.</p>
+<h4>Composition Lifecycle</h4>
+<p>Whenever Durandal composes, it also checks your model for various callback functions at different points in the compositoin process. The sequence of callbacks is referred to as the <em>composition lifecycle</em>. The lifecycle is as follows: getView, activate, binding, bindingComplete, attached, compositionComplete, detached. You can find more information in the section on <a href="/documentation/Hooking-Lifecycle-Callbacks">Hooking Lifecycle Callbacks</a>.</p>
+<blockquote>
+<p><strong>Note:</strong> If you have set <code>cacheViews:true</code> then <em>attached</em> will only be called the first time the view is shown, on the initial bind, since technically the view is only attached once. If you wish to override this behavior, then set <code>alwaysTriggerAttach:true</code> on your composition binding.</p>
+</blockquote>
 
 </section>
 
@@ -190,8 +292,14 @@ There&#39;s lots more the composition engine can do. To dig in deeper have a loo
 		  <div class="container">
 		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
 		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
-		    <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		    <p>Site design crafted by <a href="https://twitter.com/@scriswell" target="_blank">@scriswell</a> of <a href="https://twitter.com/@The_UI_Guy" target="_blank">@The_UI_Guy</a> and <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
 		  </div>
+		  <br />
+		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	        <input type="hidden" name="cmd" value="_s-xclick">
+	        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+	        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Donate Now.">
+	      </form>
 		</footer>
 
 		<script src="/vendor/jquery.js"></script>
@@ -212,7 +320,7 @@ There&#39;s lots more the composition engine can do. To dig in deeper have a loo
 			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			  })();
-			</script>  
+			</script>
 		
 	</body>
 </html>

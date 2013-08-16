@@ -13,7 +13,7 @@
 		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
-		
+
 		<meta http-equiv="X-Powered-By" content="DocPad v6.38.1"/>
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
@@ -62,39 +62,46 @@
 								<a href="/pages/docs" property="dc:title">Docs</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/videos" class="">
-								<a href="/pages/videos" property="dc:title">Videos</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/pages/training" class="">
-								<a href="/pages/training" property="dc:title">Training</a>
-							</li>
-						
 							<li typeof="sioc:Page" about="/pages/support" class="">
-								<a href="/pages/support" property="dc:title">Support</a>
+								<a href="/pages/support" property="dc:title">Support/Training</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/merchandise" class="">
-								<a href="/pages/merchandise" property="dc:title">Merchandise</a>
+							<li typeof="sioc:Page" about="/pages/consultation" class="">
+								<a href="/pages/consultation" property="dc:title">Consultation</a>
 							</li>
 						
+							<li typeof="sioc:Page" about="/pages/showcase" class="">
+								<a href="/pages/showcase" property="dc:title">Showcase</a>
+							</li>
+						
+						<li class="donate">
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						      <input type="hidden" name="cmd" value="_s-xclick">
+						      <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+						      <input class="btn btn-small btn-success" type="submit" name="submit" value="Donate">
+						    </form>
+						</li>
 					</ul>
 
 					<ul class="nav pull-right">
 						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+							<a href="https://bluespire.zendesk.com" class="support">Login</a>
 						</li>
-					</ul>  
+					</ul>
 				
 		    </div>
 		</div>
 
-		<section class="container content">
-  <h1>Welcome to the Durandal Docs!</h1>
+		<div class="focus-banner">
+<section class="container content">
+    <h1>Welcome to the Durandal Docs!</h1>
     <h2>
     This is a branching off point for digging into the various aspects of Durandal. Here you will find information pertaining to how the framework is put together as well as how it is used to build apps.</p>
     </h2>
+</section>
+</div>
 
+<section class="container content" style="padding-top: 0;">
     <h3>Articles</h3>
         <ul>
         <li><a href="/documentation/Introduction">Introduction</a></li>
@@ -104,31 +111,47 @@
                 <li><a href="/documentation/Mimosa">With Mimosa</a> (Recommended for Node/Ruby/PHP)</li>
                 <li><a href="/documentation/NuGet">With NuGet</a> (Recommended for .NET)</li>
                 <li><a href="/documentation/Visual-Studio-Project-Template">With the Visual Studio MVC Project Template</a></li>
+                <li><a href="/documentation/Bower">Using Bower</a></li>
                 <li><a href="/documentation/Manual-Setup">Manual Setup</a></li>
             </ul>
         </li>
         <li><a href="/documentation/Understanding-the-Samples">Understanding the Samples</a></li>
+        <li><a href="/documentation/api">API Documentation</a></li>
         <li>Common Tasks
             <ul>
                 <li><a href="/documentation/Creating-A-Module">Creating a Module</a></li>
                 <li><a href="/documentation/Creating-A-View">Creating a View</a></li>
                 <li><a href="/documentation/Using-Composition">Using Composition</a></li>
                 <li><a href="/documentation/Adding-a-Splash-Screen">Adding a Splash Screen</a></li>
-                <li><a href="/documentation/Showing-Message-Boxes-And-Modals">Showing Message Boxes and Modals</a></li>
                 <li><a href="/documentation/Debugging">Debugging</a></li>
-                <li><a href="/documentation/Creating-A-Widget">Creating a Widget</a></li>
                 <li><a href="/documentation/Creating-A-Transition">Creating a Transition</a></li>
                 <li><a href="/documentation/Leveraging-Publish-Subscribe">Leveraging Publish/Subscribe</a></li>
                 <li><a href="/documentation/Interacting-with-the-DOM">Interacting with the DOM</a></li>
-                <li><a href="/documentation/Hooking-Lifecycle-Callbacks">Hooking Lifecycle Callbacks</a></li>
-                <li>Setting Up Routing</li>
-                <li><a href="/documentation/Customizing-the-Configuration">Customizing the Configuration</a></li>
+                <li><a href="/documentation/Hooking-Lifecycle-Callbacks">Hooking Composition and Activator Callbacks</a></li>
+                <li><a href="/documentation/Using-Activators">Using Activators</a></li>
+                <li><a href="/documentation/Conversion-Guide">Converting a Durandal 1.x Project to 2.0</a></li>
+            </ul>
+        </li>
+        <li>Leveraging Plugins
+            <ul>
+                <li><a href="/documentation/Showing-Message-Boxes-And-Modals">Showing Message Boxes and Modals</a></li>
+                <li><a href="/documentation/Creating-A-Widget">Creating a Widget</a></li>
+                <li><a href="/documentation/Using-The-Router">Using the Router</a></li>
+                <li><a href="/documentation/Talking-To-Data">Talking to Data</a></li>
+                <li><a href="/documentation/Binding-Plain-Javascript-Objects">Binding Plain Javascript Objects</a></li>
+            </ul>
+        </li>
+        <li>Customization
+            <ul>
+                <li><a href="/documentation/Customizing-Main">Customizing Main</a></li>
+                <li><a href="/documentation/Customizing-System">Customizing System</a></li>
+                <li><a href="/documentation/View-Location">View Location &amp; Customization</a></li>
             </ul>
         </li>
         <li>Build and Deploy
             <ul>
-                <li><a href="/documentation/Optimizing-On-Dot-Net">Optimizing on .NET</a></li>
                 <li><a href="/documentation/Optimizing-With-Mimosa">Optimizing with Mimosa</a></li>
+                <li><a href="/documentation/Building-with-Weyland">Building with Weyland</a></li>
                 <li><a href="/documentation/Using-Durandal-with-Almond">Using Durandal with Almond</a></li>
             </ul>
         </li>
@@ -143,56 +166,27 @@
             <ul>
                 <li><a href="/documentation/Native-Apps-With-PhoneGap-Cordova">Phone and Tablet Apps with PhoneGap</a></li>
                 <li><a href="/documentation/Native-Apps-With-Node-Webkit">Desktop Apps with Node-Webkit</a></li>
-                <li>Windows 8</li>
+                <li><a href="/documentation/Windows-8">Windows 8</a></li>
             </ul>
         </li>
-        <li>Tools
+        <!--<li>Tools
             <ul>
                 <li><a href="/documentation/dFiddle">dFiddle</a></li>
             </ul>
-        </li>
-    </ul>
-
-    <h3>Module Reference</h3>
-    <p>Durandal is distributed as a set of AMD modules intended to work with RequireJS. Below is a list of the modules that make up the framework. For a brief overview, read <a href="/documentation/Understanding-Durandal-Modules">Understanding Durandal's Modules</a>.</p>
-    <ul>
-        <li><a href="/documentation/App">App</a></li>
-        <li><a href="/documentation/Composition">Composition</a></li>
-        <li><a href="/documentation/Events">Events</a></li>
-        <li><a href="/documentation/HTTP">HTTP</a></li>
-        <li><a href="/documentation/Modal-Dialog">Modal Dialog</a></li>
-        <li><a href="/documentation/Message-Box">Message Box</a></li>
-        <li><a href="/documentation/System">System</a></li>
-        <li><a href="/documentation/View-Locator">View Locator</a></li>
-        <li><a href="/documentation/View-Engine">View Engine</a></li>
-        <li><a href="/documentation/View-Model-Binder">View Model Binder</a></li>
-        <li><a href="/documentation/View-Model">View Model</a></li>
-        <li><a href="/documentation/Widget">Widget</a></li>
-    </ul>
-
-    <h3>Plugin Reference</h3>
-    <p>In addition to the core framework, below you will find some plugins to extend the out-of-the-box functionality.</p>
-    <ul>
-        <li><a href="/documentation/Router">Router</a></li>
+        </li>-->
     </ul>
 
     <h3>Community</h3>
     <p>In addition to the official documentation and plugins, below you will find some great community contributions.</p>
     <ul>
-        <li>
+        <!--<li>
             <a href="https://gist.github.com/evanlarsen/4799019">Transition Helper</a> - Tons of transition animations for Durandal's composition mechanism.
-        </li>
+        </li>-->
         <li>
             <a href="https://github.com/rniemeyer/knockout-delegatedEvents">knockout-delegatedEvents</a> - A KO plugin that makes delegated events easy, without resorting to manual jQuery code.
         </li>
         <li>
             <a href="https://gist.github.com/hyle/1180607">Knockout Utility Signatures</a> - A brief gist showing all the KO utility functions and their signatures.
-        </li>
-        <li>
-            <a href="https://github.com/borisyankov/DefinitelyTyped/blob/master/durandal/durandal.d.ts">TypeScript Definition File</a> - Enables type hinting and compile checking for TypeScript project using Durandal.
-        </li>
-        <li>
-            <a href="https://github.com/jamesc88/Durandal_Serverside_Authentication/">Authentication Sample</a> - A .NET community authentication sample.
         </li>
     </ul>
 </section>
@@ -201,8 +195,14 @@
 		  <div class="container">
 		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
 		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
-		    <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		    <p>Site design crafted by <a href="https://twitter.com/@scriswell" target="_blank">@scriswell</a> of <a href="https://twitter.com/@The_UI_Guy" target="_blank">@The_UI_Guy</a> and <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
 		  </div>
+		  <br />
+		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	        <input type="hidden" name="cmd" value="_s-xclick">
+	        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+	        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Donate Now.">
+	      </form>
 		</footer>
 
 		<script src="/vendor/jquery.js"></script>
@@ -223,7 +223,7 @@
 			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			  })();
-			</script>  
+			</script>
 		
 	</body>
 </html>

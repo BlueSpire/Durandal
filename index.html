@@ -13,7 +13,7 @@
 		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
-		
+
 		<meta http-equiv="X-Powered-By" content="DocPad v6.38.1"/>
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
@@ -62,44 +62,47 @@
 								<a href="/pages/docs" property="dc:title">Docs</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/videos" class="">
-								<a href="/pages/videos" property="dc:title">Videos</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/pages/training" class="">
-								<a href="/pages/training" property="dc:title">Training</a>
-							</li>
-						
 							<li typeof="sioc:Page" about="/pages/support" class="">
-								<a href="/pages/support" property="dc:title">Support</a>
+								<a href="/pages/support" property="dc:title">Support/Training</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/merchandise" class="">
-								<a href="/pages/merchandise" property="dc:title">Merchandise</a>
+							<li typeof="sioc:Page" about="/pages/consultation" class="">
+								<a href="/pages/consultation" property="dc:title">Consultation</a>
 							</li>
 						
+							<li typeof="sioc:Page" about="/pages/showcase" class="">
+								<a href="/pages/showcase" property="dc:title">Showcase</a>
+							</li>
+						
+						<li class="donate">
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						      <input type="hidden" name="cmd" value="_s-xclick">
+						      <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+						      <input class="btn btn-small btn-success" type="submit" name="submit" value="Donate">
+						    </form>
+						</li>
 					</ul>
 
 					<ul class="nav pull-right">
 						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+							<a href="https://bluespire.zendesk.com" class="support">Login</a>
 						</li>
-					</ul>  
+					</ul>
 				
 		    </div>
 		</div>
 
 		<div class="jumbotron masthead">
-    <div class="container">
+    <div class="container home_page_banner">
       <h1>Durandal</h1>
       <p>Single Page Apps Done Right</p>
-      
+
       <ul class="masthead-links">
         <li>
           <a href="http://github.com/BlueSpire/Durandal">GitHub Project</a>
         </li>
         <li>
-          Version 1.2.0
+          Version 2.0.0
         </li>
       </ul>
     </div>
@@ -129,73 +132,131 @@
     </div>
 </div>
 
-<div class="container content home">
-    <h1>Meet Durandal</h1>
-    <h2>Your search for a SPA framework ends here.</h2>
+<section class="container content home" style="margin-top: 40px;">
 
     <div class="row-fluid">
-      <div class="span4">
-        <h4>Comfortable</h4>
-        <p>
-            We didn't try to re-invent the wheel. Durandal is built on libs you know and 
-            love like <a href="http://jquery.com/">jQuery</a>, <a href="http://knockoutjs.com/">Knockout</a> 
-            and <a href="http://requirejs.org/">RequireJS</a>. There's little to learn and building apps 
-            feels comfortable and familiar. Dive in and enjoy.</p>
-      </div>
-      <div class="span4">
-        <h4>Feature-rich</h4>
-        <p>
-            MVC? MVP? MVVM? Yes. Messaging, navigation, modals? Check. Durandal has the features you need to 
-            build whatever apps you can imagine; the apps of today and of tomorrow. Let your creativity soar.
-        </p>
-      </div>
-      <div class="span4">
-        <h4>Versatile</h4>
-        <p>
-            Building an Android phone app? An enterprise LOB targeted at Windows? A web gaming platform? No 
-            matter how large or small the app, it's effortless with Durandal....and we give you the tools to 
-            develop on any platform, for any platform.
-        </p>
+      <div class="span12">
+
+        <div class="row-fluid">
+
+        <div class="span5">
+          <h1 class="text-left">Meet Durandal</h1>
+          <h2 class="text-left">Your search for a SPA framework ends here.</h2>
+
+          <h4>Comfortable</h4>
+          <p>
+              We didn't try to re-invent the wheel. Durandal is built on libs you know and
+              love like <a href="http://jquery.com/">jQuery</a>, <a href="http://knockoutjs.com/">Knockout</a>
+              and <a href="http://requirejs.org/">RequireJS</a>. There's little to learn and building apps
+              feels comfortable and familiar. Dive in and enjoy.</p>
+
+          <h4>Feature-rich</h4>
+          <p>
+              MVC? MVP? MVVM? Yes. Messaging, navigation, modals? Check. Durandal has the features you need to
+              build whatever apps you can imagine; the apps of today and of tomorrow. Let your creativity soar.
+          </p>
+
+          <h4>Versatile</h4>
+          <p>
+              Building an Android phone app? An enterprise LOB targeted at Windows? A web gaming platform? No
+              matter how large or small the app, it's effortless with Durandal....and we give you the tools to
+              develop on any platform, for any platform.
+          </p>
+        </div>
+
+        <div class="span7 features">
+            <h3>Features</h3>
+
+            <div>
+                <ul>
+                    <li>Clean MV* Architecture</li>
+                    <li>JS &amp; HTML Modularity</li>
+                    <li>Simple App Lifecycle</li>
+                    <li>Eventing, Modals, Message Boxes, etc.</li>
+                    <li>Navigation &amp; Screen State Management</li>
+                    <li>Consistent Async Programming w/ Promises</li>
+                    <li>App Bundling and Optimization</li>
+                    <li>Use any Backend Technology</li>
+                    <li>Built on top of <a href="http://jquery.com/">jQuery</a>, <a href="http://knockoutjs.com/">Knockout</a> &amp; <a href="http://requirejs.org/">RequireJS</a></li>
+                    <li>Integrates with popular CSS libraries such as <a href="http://twitter.github.com/bootstrap/">Bootstrap</a> and <a href="http://foundation.zurb.com/">Foundation</a></li>
+                    <li>Make Your Own Templatable and Bindable Widgets</li>
+                </ul>
+
+                <a href="/documentation/Introduction" title="IE 6+, FF 2+, Safari 3.2+, Chrome 3+, Opera 10+">
+                  <img style="display: block; margin: 40px auto" src="/images/browser.png" />
+                </a>
+
+                <a class="btn btn-large btn-inverse" style="width: 90%" href="/pages/downloads" property="dc:title">Durandal Downloads</a>
+                <br />
+                <br />
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+                  <input type="hidden" name="cmd" value="_s-xclick">
+                  <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+                  <input class="btn btn-med btn-success" style="width: 100%" type="submit" name="submit" value="Help Grow Durandal. Donate Now.">
+                </form>
+            </div>
+        </div>
+
+       </div>
       </div>
     </div>
 
-    <a href="/documentation/Introduction" title="IE 6+, FF 2+, Safari 3.2+, Chrome 3+, Opera 10+">
-      <img style="display: block; margin: 40px auto" src="/images/browser.png" />
-    </a>
+</section>
 
-    <h3>Features</h3>
+<hr class="soften">
+<div class="content_alt">
+<section class="container content home">
+    <div class="row-fluid">
+        <div class="span12">
 
-    <div class="row features">
-        <ul>
-            <li>Clean MV* Architecture</li>
-            <li>JS &amp; HTML Modularity</li>
-            <li>Simple App Lifecycle</li>
-            <li>Eventing, Modals, Message Boxes, etc.</li>
-            <li>Navigation &amp; Screen State Management</li>
-            <li>Consistent Async Programming w/ Promises</li>
-            <li>App Bundling and Optimization</li>
-            <li>Use any Backend Technology</li>
-            <li>Built on top of <a href="http://jquery.com/">jQuery</a>, <a href="http://knockoutjs.com/">Knockout</a> &amp; <a href="http://requirejs.org/">RequireJS</a></li>
-            <li>Integrates with popular CSS libraries such as <a href="http://twitter.github.com/bootstrap/">Bootstrap</a></li>
-            <li>Make Your Own Templatable and Bindable Widgets</li>
-        </ul>
+          <div class="row-fluid">
+            <div class="span4">
+              <h1 class="text-left h1-subhead">Showcase</h1>
+              <h2 class="text-left">Projects Based on Durandal</h2>
+              <p>If you've got a project based on Durandal we want to help you show it off. View our Showcase to see examples of Durandal solutions.</p>
+              <a class="btn btn-small btn-inverse" href="/pages/showcase">View Showcase</a>
+              <br />
+              <br />
+            </div>
+
+            <div class="span7 offset1">
+              <h5 style="margin-top: 40px; color: #777;">SilverReader</h5>
+              <a style="display: block; clear: left; margin-bottom: 10px;" href="http://silverreader.com" target="_blank">Visit the SilverReader Project Website</a>
+              <div class="thumbnail text-center">
+                <a href="/pages/showcase">
+                  <img src="../images/showcase_silver_reader.png" alt="SilverReader" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
     </div>
+</section>
+</div>
 
-    <hr class="soften">
+<hr class="soften">
+
+<section class="container content home">
 
     <div class="marketing">
-        <h1>Technologists</h1>
-        <div class="row-fluid">
+        <h1 class="text-left h1-subhead">Technologist Testimonials</h1>
+        <div class="row-fluid" style="margin-top: 50px;">
             <blockquote>
               <p>Durandal is built to handle the plumbing and makes it easier for me to focus on building rich webs apps with JavaScript faster. Only when you've written SPA's without Durandal do you realize how much it saves you!</p>
               <small>John Papa, <cite title="Source Title">Author &amp; Microsoft Regional Director</cite></small>
             </blockquote>
 
             <blockquote>
+              <p>The MapsJS project team has been successfully using Durandal for its single page app-dev.  MapsJS is a free HTML5 map control for building complex cross-platform geospatial applications. Many of our larger customer projects required an SPA framework to minimize dev time and keep the projects well organized. We liked using Durandal so much that we decided to add support for it in our latest release.</p>
+              <small>Brian Hearn, <cite title="Source Title">MapsJS Lead Architect</cite></small>
+            </blockquote>
+
+            <blockquote>
               <p>Durandal is the missing piece in my Knockout SPA toolkit. It handles the infrastructure and lets me focus on delivering functionality. Powerful, yet lightweight, pluggable and built on proven patterns from WPF/Silverlight development.</p>
               <small>Hans Fjällemark, <cite title="Source Title">Freelancing HTML5 consultant - Tellurian Interactive</cite></small>
             </blockquote>
-      
+
             <blockquote>
               <p>Durandal brings capabilities from Caliburn.Micro to JavaScript clients that we sorely missed. Love the screen management and convention-based composition of Views and ViewModels.</p>
               <small>Ward Bell, <cite title="Source Title">V.P. of Technology - IdeaBlade</cite></small>
@@ -212,24 +273,42 @@
         </div>
     </div>
 
-    <div class="marketing">
-        <h1>Sponsors</h1>
+</section>
+
+<hr class="soften">
+<div class="content_alt">
+<section class="container content home">
+
+    <div class="row-fluid">
+      <div class="span12">
         <div class="row-fluid">
 
-          <a href="http://www.jetbrains.com/webstorm/" style="display:block; background:#fff url(http://www.jetbrains.com/webstorm/documentation/webstorm_banners/webstorm1/webstorm468x60_white.gif) no-repeat 10px 50%; border:solid 1px #0281b6; margin:40px auto;padding:0;text-decoration:none;text-indent:0;letter-spacing:-0.001em; width:466px; height:58px" alt="Advanced HTML/CSS/JavaScript Editor for hardcore web-developers" title="Advanced HTML/CSS/JavaScript Editor for hardcore web-developers">
-            <span style="margin: 5px 0 0 63px;padding: 0;float: left;font-size: 12px;cursor:pointer;  background-image:none;border:0;color: #0281b6; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">Proud user of</span>
-            <span style="margin:0 0 0 195px;padding:18px 0 2px 0; line-height:13px;font-size:13px;cursor:pointer;  background-image:none;border:0;display:block; width:265px; color:#0281b6; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">Advanced HTML/CSS/JavaScript Editor<br/>for hardcore web-developers</span>
-          </a>
+          <div class="span5">
+            <h1 class="text-left h1-subhead">Sponsors</h1>
+            <a href="http://www.jetbrains.com/webstorm/" style="display:block; background:#fff url(http://www.jetbrains.com/webstorm/documentation/webstorm_banners/webstorm1/webstorm468x60_white.gif) no-repeat 10px 50%; border:solid 1px #0281b6; margin:40px 0;padding:0;text-decoration:none;text-indent:0;letter-spacing:-0.001em; max-width:466px; min-height:58px" alt="Advanced HTML/CSS/JavaScript Editor for hardcore web-developers" title="Advanced HTML/CSS/JavaScript Editor for hardcore web-developers">
+              <span style="margin: 5px 0 0 63px;padding: 0;float: left;font-size: 12px;cursor:pointer;  background-image:none;border:0;color: #0281b6; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">Proud user of</span>
+              <span style="margin:0 0 0 195px;padding:18px 0 10px 0; line-height:13px;font-size:13px;cursor:pointer;  background-image:none;border:0;display:block; max-width:265px; color:#0281b6; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">Advanced HTML/CSS/JavaScript Editor<br/>for hardcore web-developers</span>
+            </a>
+          </div>
+
       </div>
     </div>
+
+</section>
 </div>
 
 		<footer class="footer">
 		  <div class="container">
 		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
 		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
-		    <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		    <p>Site design crafted by <a href="https://twitter.com/@scriswell" target="_blank">@scriswell</a> of <a href="https://twitter.com/@The_UI_Guy" target="_blank">@The_UI_Guy</a> and <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
 		  </div>
+		  <br />
+		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	        <input type="hidden" name="cmd" value="_s-xclick">
+	        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+	        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Donate Now.">
+	      </form>
 		</footer>
 
 		<script src="/vendor/jquery.js"></script>
@@ -250,7 +329,7 @@
 			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			  })();
-			</script>  
+			</script>
 		
 	</body>
 </html>

@@ -13,7 +13,7 @@
 		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
-		
+
 		<meta http-equiv="X-Powered-By" content="DocPad v6.38.1"/>
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
@@ -62,29 +62,32 @@
 								<a href="/pages/docs" property="dc:title">Docs</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/videos" class="">
-								<a href="/pages/videos" property="dc:title">Videos</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/pages/training" class="">
-								<a href="/pages/training" property="dc:title">Training</a>
-							</li>
-						
 							<li typeof="sioc:Page" about="/pages/support" class="">
-								<a href="/pages/support" property="dc:title">Support</a>
+								<a href="/pages/support" property="dc:title">Support/Training</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/merchandise" class="">
-								<a href="/pages/merchandise" property="dc:title">Merchandise</a>
+							<li typeof="sioc:Page" about="/pages/consultation" class="">
+								<a href="/pages/consultation" property="dc:title">Consultation</a>
 							</li>
 						
+							<li typeof="sioc:Page" about="/pages/showcase" class="">
+								<a href="/pages/showcase" property="dc:title">Showcase</a>
+							</li>
+						
+						<li class="donate">
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						      <input type="hidden" name="cmd" value="_s-xclick">
+						      <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+						      <input class="btn btn-small btn-success" type="submit" name="submit" value="Donate">
+						    </form>
+						</li>
 					</ul>
 
 					<ul class="nav pull-right">
 						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+							<a href="https://bluespire.zendesk.com" class="support">Login</a>
 						</li>
-					</ul>  
+					</ul>
 				
 		    </div>
 		</div>
@@ -104,29 +107,52 @@
     <li>
       Disable debug mode before releasing to production.
     </li>
+    <li>Configure development cache busing.</li>
   </ul>
 </blockquote>
 
 <h3>Explanation</h3>
-<p>Durandal logs much of it&#39;s internal activity using it&#39;s <code>system.log</code> function. It&#39;s also a great way for the application developer to add logging. It differs from a straight <code>console.log</code> in that it works correctly on every platform and output of this log is sent to the console only if debugging is enabled. You can turn debugging on manually at any time by requiring the <em>system</em> module and calling <code>debug(true)</code>. Likewise, you can disable debugging by passing false.</p>
+<p>Durandal logs much of it&#39;s internal activity using it&#39;s <a href="/documentation/api#module/system/method/log">system.log</a> function. It&#39;s also a great way for the application developer to add logging. It differs from a straight <code>console.log</code> in that it works correctly on every platform and output of this log is sent to the console only if debugging is enabled. You can turn debugging on manually at any time by requiring the <a href="/documentation/api#module/system">system</a> module and calling <a href="/documentation/api#module/system/method/debug">debug(true)</a>. Likewise, you can disable debugging by passing false.</p>
 <blockquote>
 <p><strong>Note:</strong> A common technique is to turn debugging on in your main.js. You can use r.js pragmas to make debug only enable when not optimized for deploy. Here&#39;s an example of how that would work: </p>
 </blockquote>
 <pre class="prettyprint linenums">    //&gt;&gt;excludeStart(&quot;build&quot;, true);
     system.debug(true);
-    //&gt;&gt;excludeEnd(&quot;build&quot;);</pre><p><em>The .NET optimizer automatically defines a &quot;build&quot; pragma as part of its default r.js configuration.</em></p>
-<blockquote>
-<p><strong>Note:</strong> During application development, make sure your browser is set up to ignore it&#39;s cache or you  may not get your latest JS/HTML changes.</p>
-</blockquote>
-
+    //&gt;&gt;excludeEnd(&quot;build&quot;);</pre><p><em>The Weyland tooling automatically defines a &quot;build&quot; pragma as part of its default r.js configuration.</em></p>
+<h3>Cache Busting</h3>
+<p>During application development, make sure your browser is set up to ignore it&#39;s cache or you may not get your latest JS/HTML changes. In Chrome, you can configure this through the developer tools. Check your preferred browser for a similar option. If no such option is available, then you may want to leverage RequireJS&#39;s <a href="http://requirejs.org/docs/api.html#config-urlArgs">urlArgs</a> configuration option. This appends extra query string arguments to every module or view request and can be useful for cache busting. Here&#39;s what your <code>main.js</code> configuration might look like:</p>
+<pre class="prettyprint linenums">requirejs.config({
+    urlArgs: &quot;bust=&quot; +  (new Date()).getTime(),
+    paths: {
+        &#39;text&#39;: &#39;../Scripts/text&#39;,
+        &#39;durandal&#39;: &#39;../Scripts/durandal&#39;,
+        &#39;plugins&#39;: &#39;../Scripts/durandal/plugins&#39;,
+        &#39;transitions&#39;: &#39;../Scripts/durandal/transitions&#39;
+    }
+});</pre><p>Be careful not to release a production application like this, as it will completely destroy the caching that is desired in production. For production, you might wish to do something like this:</p>
+<pre class="prettyprint linenums">requirejs.config({
+    urlArgs: &quot;version=1.2.3&quot;,
+    paths: {
+        &#39;text&#39;: &#39;../Scripts/text&#39;,
+        &#39;durandal&#39;: &#39;../Scripts/durandal&#39;,
+        &#39;plugins&#39;: &#39;../Scripts/durandal/plugins&#39;,
+        &#39;transitions&#39;: &#39;../Scripts/durandal/transitions&#39;
+    }
+});</pre>
 </section>
 
 		<footer class="footer">
 		  <div class="container">
 		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
 		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
-		    <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		    <p>Site design crafted by <a href="https://twitter.com/@scriswell" target="_blank">@scriswell</a> of <a href="https://twitter.com/@The_UI_Guy" target="_blank">@The_UI_Guy</a> and <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
 		  </div>
+		  <br />
+		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	        <input type="hidden" name="cmd" value="_s-xclick">
+	        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+	        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Donate Now.">
+	      </form>
 		</footer>
 
 		<script src="/vendor/jquery.js"></script>
@@ -147,7 +173,7 @@
 			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			  })();
-			</script>  
+			</script>
 		
 	</body>
 </html>

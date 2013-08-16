@@ -13,7 +13,7 @@
 		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
-		
+
 		<meta http-equiv="X-Powered-By" content="DocPad v6.38.1"/>
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
@@ -62,29 +62,32 @@
 								<a href="/pages/docs" property="dc:title">Docs</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/videos" class="">
-								<a href="/pages/videos" property="dc:title">Videos</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/pages/training" class="">
-								<a href="/pages/training" property="dc:title">Training</a>
-							</li>
-						
 							<li typeof="sioc:Page" about="/pages/support" class="">
-								<a href="/pages/support" property="dc:title">Support</a>
+								<a href="/pages/support" property="dc:title">Support/Training</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/merchandise" class="">
-								<a href="/pages/merchandise" property="dc:title">Merchandise</a>
+							<li typeof="sioc:Page" about="/pages/consultation" class="">
+								<a href="/pages/consultation" property="dc:title">Consultation</a>
 							</li>
 						
+							<li typeof="sioc:Page" about="/pages/showcase" class="">
+								<a href="/pages/showcase" property="dc:title">Showcase</a>
+							</li>
+						
+						<li class="donate">
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						      <input type="hidden" name="cmd" value="_s-xclick">
+						      <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+						      <input class="btn btn-small btn-success" type="submit" name="submit" value="Donate">
+						    </form>
+						</li>
 					</ul>
 
 					<ul class="nav pull-right">
 						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Support Login</a>
+							<a href="https://bluespire.zendesk.com" class="support">Login</a>
 						</li>
-					</ul>  
+					</ul>
 				
 		    </div>
 		</div>
@@ -102,30 +105,23 @@
         Create transitions by adding a module at <em>durandal/transitions/{your-transition-name}</em>.
     </li>
     <li>
-        A transition module is a function with the following signature <code>function(parent, newChild, settings):promise</code>.
-    </li>
-    <li>
-        Versatile transitions need to take view caching into consideration.
+        A transition module is a function with the following signature <code>function(context):promise</code>.
     </li>
   </ul>
 </blockquote>
 
 <h3>Explanation</h3>
-<p>A transition is a module which handles the adding and removing of views from the DOM.
-Once the composition mechanism has located and bound views, it will call into a transition to update the DOM, if one is configured.
+<p>A transition is a module which handles the animating of old and new DOM elements during a composition.
+Once the composition mechanism has located and bound views, it will call into a transition, if one is configured.
 Configuring a transition is done by setting the <em>transition</em> property of the compose binding to a valid transition name.
 The name provided is used to resolve a module at the path <em>durandal/transitions/{your-transition-name}</em>.
-This module is expected to be a function module with the following signature: <code>function(parent, newChild, settings):promise</code>.
-This function should display the <em>newChild</em> in the <em>parent</em> element and return a promise which it resolves after it&#39;s animation sequence is complete.
-Implementing a versatile transition can be a bit tricky, as several important factors need to be considered:</p>
-<ul>
-<li>There may not be a new view to show, only an old one to animate out.</li>
-<li>There may be an active  view to animate out (<code>settings.activeView</code>).</li>
-<li>The composition settings may have been configured to cach views (<code>settings.cacheViews</code>).</li>
-<li>The current view being composed, may already be in the DOM and may not be a new view...or it may (<code>settings.composingNewView</code>).</li>
-</ul>
-<p>A versatile transition must support all these possibilities. For an example of this, see the <em>entrance</em> transition that is provided.
-Also, <a href="https://gist.github.com/evanlarsen/4799019">see this gist</a> for a sample animation helper that makes it really easy to build css3-based transitions quickly and easily.</p>
+This module is expected to be a function module with the following signature: <code>function(context):promise</code>.
+This function should animate out the old view, represented by <code>context.activeView</code> and/or animate in the new view, represented by <code>context.child</code>. It should then return a promise which it resolves after it&#39;s animation sequence is complete.</p>
+<blockquote>
+<p><strong>Note: </strong> Either <em>activeView</em> or <em>child</em> may be null, if there is no previous view or no new view. So, make sure to take this into account when writing your transition.</p>
+<p><strong>Note: </strong> The transition may also want to call <code>context.triggerAttach()</code> to trigger the <em>attached</em> composition callback before the animation is complete. If it is not called by the transition, the composition system will invoke it after completion.</p>
+</blockquote>
+<p>For an example of this, see the <a href="https://github.com/BlueSpire/Durandal/blob/master/src/transitions/js/entrance.js">entrance transition</a> that is provided.</p>
 
 </section>
 
@@ -133,8 +129,14 @@ Also, <a href="https://gist.github.com/evanlarsen/4799019">see this gist</a> for
 		  <div class="container">
 		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
 		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
-		    <p>Site styled by <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		    <p>Site design crafted by <a href="https://twitter.com/@scriswell" target="_blank">@scriswell</a> of <a href="https://twitter.com/@The_UI_Guy" target="_blank">@The_UI_Guy</a> and <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
 		  </div>
+		  <br />
+		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	        <input type="hidden" name="cmd" value="_s-xclick">
+	        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+	        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Donate Now.">
+	      </form>
 		</footer>
 
 		<script src="/vendor/jquery.js"></script>
@@ -155,7 +157,7 @@ Also, <a href="https://gist.github.com/evanlarsen/4799019">see this gist</a> for
 			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			  })();
-			</script>  
+			</script>
 		
 	</body>
 </html>
