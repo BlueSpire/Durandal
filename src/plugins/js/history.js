@@ -74,7 +74,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
     history.getFragment = function(fragment, forcePushState) {
         if (fragment == null) {
             if (history._hasPushState || !history._wantsHashChange || forcePushState) {
-                fragment = history.location.pathname;
+                fragment = history.location.pathname + history.location.search;
                 var root = history.root.replace(trailingSlash, '');
                 if (!fragment.indexOf(root)) {
                     fragment = fragment.substr(root.length);
