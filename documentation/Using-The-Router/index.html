@@ -137,7 +137,7 @@
 <ol>
 <li>The router is added as a property on the shell, so that we can bind it in our shell&#39;s view. This allows the view to update based on what the current route is. (View markup discussed below.)</li>
 <li>We map route patterns by calling <a href="/documentation/api#class/Router/method/map">map()</a> and passing an array of configuration objects.</li>
-<li>We can optionally call <a href="/documentation/api#class/Router/method/buildNavigationModel">buildNavigationModel()</a> to take all routes marked with <code>nav:true</code> and create an array of their configuration data, suitable for binding in a navigatoin structure.</li>
+<li>We can optionally call <a href="/documentation/api#class/Router/method/buildNavigationModel">buildNavigationModel()</a> to take all routes marked with <code>nav:true</code> and create an array of their configuration data, suitable for binding in a navigation structure.</li>
 <li>We call <a href="/documentation/api#module/router/method/activate">activate()</a> on the router and return its promise from the shell&#39;s <code>activate</code> callback so that the composition engine will wait until the router is ready before displaying the shell.</li>
 </ol>
 <h4>Mapping Routes</h4>
