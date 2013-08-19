@@ -10,7 +10,7 @@ exports.config =
     'combine'
     'requirebuild-include'
     'requirebuild-textplugin-include'
-    'bower'
+    'bower@0.9.0'
     'lint'
   ]
 
