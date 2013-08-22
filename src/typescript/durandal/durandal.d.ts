@@ -122,7 +122,7 @@ declare module 'durandal/system' {
      * @param {number} milliseconds The number of milliseconds to wait.
      * @returns {JQueryPromise}
     */
-    export function wait(milliseconds: number): JQueryPromise;
+    export function wait(milliseconds: number): JQueryPromise<any>;
 
     /**
      * Gets all the owned keys of the specified object.
@@ -740,7 +740,7 @@ declare module 'durandal/app' {
      * @param {string} [context] The name of the dialog context to use. Uses the default context if none is specified.
      * @returns {Promise} A promise that resolves when the dialog is closed and returns any data passed at the time of closing.
     */
-    export function showDialog(obj: any, activationData?: any, context?: string):JQueryPromise;
+    export function showDialog(obj: any, activationData?: any, context?: string):JQueryPromise<any>;
 
     /**
      * Shows a message box via the dialog plugin.
@@ -763,7 +763,7 @@ declare module 'durandal/app' {
      * Starts the application.
      * @returns {promise}
     */
-    export function start(): JQueryPromise;
+    export function start(): JQueryPromise<any>;
 
     /**
      * Sets the root module/view for the application.
@@ -908,7 +908,7 @@ declare module 'plugins/dialog' {
         owner: any;
         context: DialogContext;
         activator: activator.Activator<any>;
-        close(): JQueryPromise;
+        close(): JQueryPromise<any>;
         settings: composition.CompositionContext;
     }
 
@@ -969,7 +969,7 @@ declare module 'plugins/dialog' {
      * @param {string} [context] The name of the dialog context to use. Uses the default context if none is specified.
      * @returns {Promise} A promise that resolves when the dialog is closed and returns any data passed at the time of closing.
     */
-    export function show(obj: any, activationData?: any, context?: string): JQueryPromise;
+    export function show(obj: any, activationData?: any, context?: string): JQueryPromise<any>;
 
     /**
      * Shows a message box.
@@ -1128,7 +1128,7 @@ declare module 'plugins/http' {
      * @param {object} [query] An optional key/value object to transform into query string parameters.
      * @returns {Promise} A promise of the get response data.
     */
-    export function get(url: string, query?: Object): JQueryPromise;
+    export function get(url: string, query?: Object): JQueryPromise<any>;
 
     /**
      * Makes an JSONP request.
@@ -1137,7 +1137,7 @@ declare module 'plugins/http' {
      * @param {string} [callbackParam] The name of the callback parameter the api expects (overrides the default callbackParam).
      * @returns {Promise} A promise of the response data.
     */
-    export function jsonp(url: string, query?: Object, callbackParam?: string): JQueryPromise;
+    export function jsonp(url: string, query?: Object, callbackParam?: string): JQueryPromise<any>;
     
     /**
      * Makes an HTTP POST request.
@@ -1145,7 +1145,7 @@ declare module 'plugins/http' {
      * @param {object} data The data to post. It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
      * @returns {Promise} A promise of the response data.
     */
-    export function post(url: string, data: Object): JQueryPromise;
+    export function post(url: string, data: Object): JQueryPromise<any>;
 }
 
 /**
@@ -1155,7 +1155,7 @@ declare module 'plugins/http' {
  * @requires knockout
  */
 declare module 'plugins/observable' {
-    function observable(obj: any, property: string): KnockoutObservable;
+    function observable(obj: any, property: string): KnockoutObservable<any>;
 
     module observable {
         /**
@@ -1171,7 +1171,7 @@ declare module 'plugins/observable' {
          * @param {object} [original] The original value of the property. If not specified, it will be retrieved from the object.
          * @returns {KnockoutObservable} The underlying observable.
          */
-        export function convertProperty(obj: any, propertyName: string, original?: any): KnockoutObservable;
+        export function convertProperty(obj: any, propertyName: string, original?: any): KnockoutObservable<any>;
 
         /**
          * Defines a computed property using ES5 getters and setters.
@@ -1703,7 +1703,7 @@ declare module 'durandal/typescript' {
          * Activates the router and the underlying history tracking mechanism.
          * @returns {Promise} A promise that resolves when the router is ready.
          */
-        activate(options?: history.HistoryOptions): JQueryPromise;
+        activate(options?: history.HistoryOptions): JQueryPromise<any>;
 
         /**
          * Disable history, perhaps temporarily. Not useful in a real app, but possibly useful for unit testing Routers.
