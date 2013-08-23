@@ -1,4 +1,8 @@
-﻿2.0.0
+﻿2.0.1
+-Fix Issue #259: Fragment doesn't include query when using push state
+-Fix Issue #258:  Absolute links not working when using push state
+
+2.0.0
 -Massive reorganization of the github repo. The reorg was done to cleanly separate the library, samples and starter kit source from the platform targets and to facilitate a cleaner build process with less manual "fixup" as the list of supported platforms expands.
 -Durandal now expects to live along side 3rd party script libraries, outside of your application code. All samples and starter kits have been updated to use requirejs.path to setup the correct mapping, per platform. Additionally, the framework no longer assumes that plugins or transitions are under the durandal folder. The starter kits all use requirejs.path to map them to their actual location.
 -Durandal no longer has any dependencies on globally defined variables. It now requires everything through the module system. This means that jQuery and Knockout must be defined in order for Durandal to function properly. The samples/starter kits all set up the proper configuration to make this happen. This allows you to keep ko/jquery in global scope by using an explicit define call, giving you the same expereience as 1.x or you can now use require.paths and shim config to keep everything out of the gloabl scope if you desire.

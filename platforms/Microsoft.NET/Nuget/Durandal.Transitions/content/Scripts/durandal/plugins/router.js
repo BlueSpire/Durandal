@@ -1,5 +1,5 @@
 /**
- * Durandal 2.0.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Durandal 2.0.1 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
@@ -879,13 +879,12 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                 if(history._hasPushState){
                     if(!evt.altKey && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey){
-                        // Get the anchor href and protcol
+                        // Get the anchor href
                         var href = $(this).attr("href");
-                        var protocol = this.protocol + "//";
 
                         // Ensure the protocol is not part of URL, meaning its relative.
                         // Stop the event bubbling to ensure the link will not cause a page refresh.
-                        if (!href || (href.charAt(0) !== "#" && href.slice(protocol.length) !== protocol)) {
+                        if (!href || !/^[a-z]+:/i.test(href)) {
                             evt.preventDefault();
                             history.navigate(href);
                         }
