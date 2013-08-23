@@ -21,9 +21,22 @@
         "docs/assets/js/bootstrap.js",
         "docs/assets/css/bootstrap.css",
         "docs/assets/css/bootstrap-responsive.css"
+      ],
+      "font-awesome": [
+        "css/font-awesome.css",
+        "css/font-awesome-ie7.css"
       ]
     },
-    "overridesObjects": {},
+    "overridesObjects": {
+      "font-awesome": {
+        "font": "../../font"
+      },
+      "durandal": {
+        "img": "../../images",
+        "js": "durandal",
+        "css": "durandal"
+      }
+    },
     "mainOverrides": {
       "knockout.js": [
         "knockout.js",
@@ -33,8 +46,22 @@
         "docs/assets/js/bootstrap.js",
         "docs/assets/css/bootstrap.css",
         "docs/assets/css/bootstrap-responsive.css"
+      ],
+      "font-awesome": [
+        {
+          "font": "../../font"
+        },
+        "css/font-awesome.css",
+        "css/font-awesome-ie7.css"
+      ],
+      "durandal": [
+        {
+          "img": "../../images",
+          "js": "durandal",
+          "css": "durandal"
+        }
       ]
     },
-    "pathMod": {}
+    "pathMod": null
   }
 }
