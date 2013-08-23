@@ -853,6 +853,22 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     rootRouter.navigatingBack = false;
 
     /**
+     * Verify that the target is the current window
+     * @method targetIsThisWindow
+     * @return {boolean} True if the event's target is the current window, false otherwise.
+     */
+    rootRouter.targetIsThisWindow = function(event) {
+        var targetWindow = $(event.target).attr('target');
+        
+        if (!targetWindow ||
+            targetWindow === window.name ||
+            targetWindow === '_self' ||
+            (targetWindow === 'top' && window === window.top)) { return true; }
+        
+        return false;
+    };
+
+    /**
      * Activates the router and the underlying history tracking mechanism.
      * @method activate
      * @return {Promise} A promise that resolves when the router is ready.
@@ -878,7 +894,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 rootRouter.explicitNavigation = true;
 
                 if(history._hasPushState){
-                    if(!evt.altKey && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey){
+                    if(!evt.altKey && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey && rootRouter.targetIsThisWindow(evt)){
                         // Get the anchor href and protcol
                         var href = $(this).attr("href");
                         var protocol = this.protocol + "//";
