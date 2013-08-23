@@ -2,6 +2,7 @@
 -Fix Issue #259: Fragment doesn't include query when using push state
 -Fix Issue #258: Absolute links not working when using push state
 -Fix Issue #254: Bad mainConfigFile entry in the default weyland-config of the Durandal nuget package
+-Fix Issue #267: Added missing generic type arguments in the Durandal.d.ts file
 
 2.0.0
 -Massive reorganization of the github repo. The reorg was done to cleanly separate the library, samples and starter kit source from the platform targets and to facilitate a cleaner build process with less manual "fixup" as the list of supported platforms expands.
@@ -27,7 +28,7 @@ multiple ids are passed then the promise resolves with an array of modules. syst
 -Added api docs via YUIDoc
 -Lots of bug fixes
 -Updated docs and conversion guide
--Official TypeScript defition file
+-Official TypeScript definition file
 
 1.2.0
 
