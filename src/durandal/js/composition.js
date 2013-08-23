@@ -344,7 +344,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                             }
                         }else if(context.activeView){
                             var instruction = binder.getBindingInstruction(context.activeView);
-                            if(instruction != undefined && !instruction.cacheViews){
+                            if(instruction && instruction.cacheViews != undefined && !instruction.cacheViews){
                                 ko.removeNode(context.activeView);
                             }
                         }

@@ -3,6 +3,7 @@
 -Fix Issue #258: Absolute links not working when using push state
 -Fix Issue #254: Bad mainConfigFile entry in the default weyland-config of the Durandal nuget package
 -Fix Issue #267: Added missing generic type arguments in the Durandal.d.ts file
+-Fix Issue #265: Undefined reference error when trying to remove the previous view binding instruction from the dom, which doesn't exist.
 
 2.0.0
 -Massive reorganization of the github repo. The reorg was done to cleanly separate the library, samples and starter kit source from the platform targets and to facilitate a cleaner build process with less manual "fixup" as the list of supported platforms expands.
