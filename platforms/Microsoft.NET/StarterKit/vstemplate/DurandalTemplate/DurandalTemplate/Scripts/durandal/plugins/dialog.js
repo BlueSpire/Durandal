@@ -195,7 +195,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * Closes the dialog associated with the specified object.
          * @method close
          * @param {object} obj The object whose dialog should be closed.
-         * @param {object} result* The results to return back to the dialog caller after closing.
+         * @param {object} results* The results to return back to the dialog caller after closing.
          */
         close:function(obj){
             var theDialog = this.getDialog(obj);

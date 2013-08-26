@@ -902,6 +902,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     }
                 }
             });
+
+            if(history.options.silent && startDeferred){
+                startDeferred.resolve();
+                startDeferred = null;
+            }
         }).promise();
     };
 

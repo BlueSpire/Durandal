@@ -8,6 +8,7 @@
 -Fix Issue #271: observable.defineProperty overwrites ko
 -Fix Issue #272: Add a condition on the target attribute so that when pushState is activated, there is a way to bypass the router.
 -Fix Issue #275: The close declaration in Durandal's TypeScript d.ts file would not allow for passing result parameters. Fixed by adding a rest argument called results.
+-Fix Issue #255: router.activate Promise never resolves with 'silent' activation
 
 2.0.0
 -Massive reorganization of the github repo. The reorg was done to cleanly separate the library, samples and starter kit source from the platform targets and to facilitate a cleaner build process with less manual "fixup" as the list of supported platforms expands.
