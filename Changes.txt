@@ -7,6 +7,7 @@
 -Fix Issue #261: Improving the Mimosa starter kit by adding bower support for font awesome and durandal
 -Fix Issue #271: observable.defineProperty overwrites ko
 -Fix Issue #272: Add a condition on the target attribute so that when pushState is activated, there is a way to bypass the router.
+-Fix Issue #275: The close declaration in Durandal's TypeScript d.ts file would not allow for passing result parameters. Fixed by adding a rest argument called results.
 
 2.0.0
 -Massive reorganization of the github repo. The reorg was done to cleanly separate the library, samples and starter kit source from the platform targets and to facilitate a cleaner build process with less manual "fixup" as the list of supported platforms expands.
