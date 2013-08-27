@@ -509,7 +509,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 var instruction = this.parent.activeInstruction();
                 coreFragment = instruction.params.join('/');
 
-                if(coreFragment && coreFragment[0] == '/'){
+                if(coreFragment && coreFragment.charAt(0) == '/'){
                     coreFragment = coreFragment.substr(1);
                 }
 
