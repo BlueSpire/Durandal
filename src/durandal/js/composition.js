@@ -249,22 +249,30 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
             handler = ko.bindingHandlers[name] = {
                 init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                    var data = {
-                        trigger:ko.observable(null)
-                    };
+                    if(compositionCount > 0){
+                        var data = {
+                            trigger:ko.observable(null)
+                        };
 
-                    composition.current.complete(function(){
+                        composition.current.complete(function(){
+                            if(config.init){
+                                config.init(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+                            }
+
+                            if(config.update){
+                                ko.utils.domData.set(element, dataKey, config);
+                                data.trigger('trigger');
+                            }
+                        });
+
+                        ko.utils.domData.set(element, dataKey, data);
+                    }else{
+                        ko.utils.domData.set(element, dataKey, config);
+
                         if(config.init){
                             config.init(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
                         }
-
-                        if(config.update){
-                            ko.utils.domData.set(element, dataKey, config);
-                            data.trigger('trigger');
-                        }
-                    });
-
-                    ko.utils.domData.set(element, dataKey, data);
+                    }
 
                     return initOptionsFactory(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
                 },
@@ -275,7 +283,9 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                         return data.update(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
                     }
 
-                    data.trigger();
+                    if(data.trigger){
+                        data.trigger();
+                    }
                 }
             };
 
