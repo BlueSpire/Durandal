@@ -113,7 +113,9 @@ function test_app() {
     });
 }
 
-function test_router(){
+function test_router() {
+    var currentActiveRoute = router.activeInstruction().config.route;
+
     router.activate().then(() => {
         router.createChildRouter();
         router.handlers[0].routePattern;

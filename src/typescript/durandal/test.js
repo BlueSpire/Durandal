@@ -115,6 +115,8 @@ define(["require", "exports", 'durandal/system', 'durandal/events', 'durandal/ac
     }
 
     function test_router() {
+        var currentActiveRoute = router.activeInstruction().config.route;
+
         router.activate().then(function () {
             router.createChildRouter();
             router.handlers[0].routePattern;

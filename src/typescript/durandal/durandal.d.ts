@@ -1443,6 +1443,7 @@ declare module 'durandal/typescript' {
         title?: string;
         moduleId?: string;
         hash?: string;
+        route?: string;
         routePattern?: RegExp;
         isActive?: KnockoutComputed<boolean>;
     }
