@@ -23,7 +23,8 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         compositionDataKey = 'durandal-composition-data',
         partAttributeName = 'data-part',
         partAttributeSelector = '[' + partAttributeName + ']',
-        bindableSettings = ['model', 'view', 'transition', 'area', 'strategy', 'activationData'];
+        bindableSettings = ['model', 'view', 'transition', 'area', 'strategy', 'activationData'],
+        visibilityKey = "durandal-visibility-data";
 
     function getHostState(parent) {
         var elements = [];
@@ -195,6 +196,15 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         for(i = 1,len = children.length; i < len; i++){
             ko.removeNode(children[i]);
         }
+    }
+
+    function hide(view) {
+        ko.utils.domData.set(view, visibilityKey, view.style.display);
+        view.style.display = "none";
+    }
+
+    function show(view) {
+        view.style.display = ko.utils.domData.get(view, visibilityKey);
     }
 
     /**
@@ -376,7 +386,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                         if(instruction.cacheViews != undefined && !instruction.cacheViews){
                             ko.removeNode(context.activeView);
                         }else{
-                            $(context.activeView).hide();
+                            hide(context.activeView);
                         }
                     }
 
@@ -389,7 +399,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                             removePreviousView(context.parent);
                         }
 
-                        $(context.child).show();
+                        show(context.child);
                     }
                 }
 
@@ -416,7 +426,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                             replaceParts(context);
                         }
 
-                        $(child).hide();
+                        hide(child);
                         ko.virtualElements.prepend(context.parent, child);
 
                         binder.bindContext(context.bindingContext, child, context.model);
@@ -438,7 +448,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                             replaceParts(context);
                         }
 
-                        $(child).hide();
+                        hide(child);
                         ko.virtualElements.prepend(context.parent, child);
 
                         binder.bind(modelToBind, child);
