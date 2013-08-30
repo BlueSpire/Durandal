@@ -150,12 +150,12 @@ var viewModel:{
 };
 
 observable.defineProperty(viewModel, &#39;fullName&#39;, function(){
-    returh this.firstName + &#39; &#39; + this.lastName;
+    return this.firstName + &#39; &#39; + this.lastName;
 });
 
 console.log(viewModel.fullName);</pre><p>The third argument to <a href="/documentation/api#module/observable/method/defineProperty">observable.defineProperty</a> functions just like the argument to a Knockout computed.</p>
 <h3>Promises</h3>
-<p>The observable module also understand promises. If you have an attribute that is an instance of a promise on your bound model, the observable module will convert this into a getter that returns the promised value. Under the covers it will register a callback with the promise and then update the observable for you. Here&#39;s an example of code you might write in light of this:</p>
+<p>The observable module also understands promises. If you have an attribute that is an instance of a promise on your bound model, the observable module will convert this into a getter that returns the promised value. Under the covers it will register a callback with the promise and then update the observable for you. Here&#39;s an example of code you might write in light of this:</p>
 <pre class="prettyprint linenums">define(function (require) {
     var server = require(&#39;services/server&#39;);
 

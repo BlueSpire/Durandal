@@ -9,7 +9,7 @@
 		<meta name="format-detection" content="telephone=no"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<title>Docs - dFiddle | Durandal</title>
+		<title>Docs - Automating Builds with Visual Studio | Durandal</title>
 		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
@@ -93,46 +93,36 @@
 		</div>
 
 		<section class="container content docs">
-  <h1>dFiddle</h1>
+  <h1>Automating Builds with Visual Studio</h1>
 <h4> </h4>
-<p>JSFiddle et al. are all great when there&#39;s a need to fiddle with CSS/JavaScript/HTML snippets or
-share code during discussions on stackoverflow or newsgroups. Unfortunately, due to the nature of Durandal which encourages you to break down apps into many smaller modules and then use 
-<a href="/documentation/Using-Composition">composition</a> to stitch them back together, those apps are no longer at their sweet spot. There&#39;s no easy
- way to deal with multiple smaller external files in tools like JSFiddle. <a href="https://github.com/dFiddle/dFiddle-2.0">dFiddle</a> to the rescue!</p>
-<h3>What is it?</h3>
-<p>A cut down version of [Durandal], hosted as a Github repo with only one gh-pages branch. By cutting things down to the bare
-minimum, dFiddle allows bringing up live Durandal <em>fiddles</em> in minutes.</p>
-<h3>Basic Usage</h3>
+<p>It is a recommened practice to optimize your application for deploy. If you are working in an environment based on MSBuild or using Visual Studio in your day to day development and testing, then you may wish to automate this process. Below you will find some simple instructions explaining how to do this.</p>
+<h4>Install Dependencies</h4>
 <ol>
-<li>Fork <a href="https://github.com/dFiddle/dFiddle-2.0">dFiddle</a> on GitHub (hint: there&#39;s a fork button in the upper right) and optionally
-clone it to your local machine.</li>
-<li>For each example in the Durandal Starter Kit you&#39;ll find a <em>fiddle</em> version that can be used as a starting
-point for your own code.</li>
-<li>You&#39;re in the mood for creating more examples? Great! Simply create sub-folders in a samples sub-category
-folders e.g. <code>samples/viewCompostion</code> and add it to <code>sampleGroups</code> in <code>index.js</code>. Check out
-<a href="https://github.com/dFiddle/dFiddle-2.0/blob/gh-pages/app/viewComposition/index.js#L28">https://github.com/dFiddle/dFiddle-2.0/blob/gh-pages/app/viewComposition/index.js#L28</a> for the exact syntax.</li>
+<li>Install NodeJS from <a href="http://nodejs.org">http://nodejs.org</a></li>
+<li>Install Weyland via NPM using the following command <code>npm install -g weyland</code></li>
 </ol>
-<h3>Advanced Usage</h3>
-<ol>
-<li>See above.</li>
-<li>Go free style by replacing every bit in the solution with your own code.</li>
-</ol>
-<blockquote>
-<p><strong>Note</strong>: If your are trying to get a BreezeJS application up and running you might be better off by
-hosting your solution on Microsoft Azure, as this would allow you to work with the ASP.NET Web API,
-which you would have to mock up on GitHub otherwise. The same goes for fiddles that leverage other data technologies.</p>
-</blockquote>
-<h3>Sharing the Fiddle</h3>
-<p>Once you make your first commit the live version will become available at an URL like
-<code>http://Your_User_Name.github.io/dFiddle-2.0</code>. The published Url can be found under Repo | Settings | GitHub
-Pages.
-According to GitHub, it may take up to <strong>ten minutes</strong> for changes to be visible.</p>
-<ul>
-<li>Share links to the the live version e.g. <a href="http://dfiddle.github.io/dFiddle-2.0/#master-detail/wizard">http://dfiddle.github.io/dFiddle-2.0/#master-detail/wizard</a></li>
-<li>Share links right down to a specific code line e.g. <a href="https://github.com/dFiddle/dFiddle-2.0/blob/gh-pages/app/masterDetail/wizard/index.js#L3">https://github.com/dFiddle/dFiddle-2.0/blob/gh-pages/app/masterDetail/wizard/index.js#L3</a></li>
-</ul>
-<p>Totally optional: Whenever you find a solution for a specific issue, send a pull request so that it can be integrated.</p>
-
+<h4>Add A Config File</h4>
+<p>At the project root create a js file named <em>weyland-config.js</em>
+You can use the config file from the Nuget or VSIX install as is, except remove this line or your build will fail: <code>mainConfigFile: &#39;App/main.js&#39;</code> (This is fixed as of 2.0.1.)</p>
+<h4>Add the Post Build Event</h4>
+<p>Go to the project&#39;s properties and select <code>Build Events</code>. In the post build event add the following:</p>
+<pre class="prettyprint linenums">cd $(ProjectDir)
+weyland build</pre><p>If you ony want to build when the Release configuration is selected, use the following:</p>
+<pre class="prettyprint linenums">if &#39;$(Configuration)&#39;==&#39;Release&#39; (
+    cd $(ProjectDir)
+    weyland build
+)</pre><p>Build your project. You should see the weyland build output in the Output window, with a last line similar to: &quot;Optimized build created at ...App\main-built.js&quot;</p>
+<h4>Include Generated Files</h4>
+<p>In the solution explorer, select &quot;Show All Files&quot;. Under the App folder, locate <em>main-built.js</em>.
+Right click and select &#39;Include in Project&#39;.</p>
+<h4>Auto-Load Debug vs. Release</h4>
+<p>Optionally, you can use the following code in your html page to automatically load the correct file (main.js vs. main-built.js).</p>
+<pre class="prettyprint linenums">@if (HttpContext.Current.IsDebuggingEnabled) {
+    &lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/require.js&quot; data-main=&quot;@Url.Content(&quot;~/App/main&quot;)&quot;&gt;&lt;/script&gt;
+}
+else {
+    &lt;script type=&quot;text/javascript&quot; src=&quot;~/App/main-built.js&quot;&gt;&lt;/script&gt;
+}</pre>
 </section>
 
 		<footer class="footer">

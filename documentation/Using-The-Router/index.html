@@ -137,7 +137,7 @@
 <ol>
 <li>The router is added as a property on the shell, so that we can bind it in our shell&#39;s view. This allows the view to update based on what the current route is. (View markup discussed below.)</li>
 <li>We map route patterns by calling <a href="/documentation/api#class/Router/method/map">map()</a> and passing an array of configuration objects.</li>
-<li>We can optionally call <a href="/documentation/api#class/Router/method/buildNavigationModel">buildNavigationModel()</a> to take all routes marked with <code>nav:true</code> and create an array of their configuration data, suitable for binding in a navigatoin structure.</li>
+<li>We can optionally call <a href="/documentation/api#class/Router/method/buildNavigationModel">buildNavigationModel()</a> to take all routes marked with <code>nav:true</code> and create an array of their configuration data, suitable for binding in a navigation structure.</li>
 <li>We call <a href="/documentation/api#module/router/method/activate">activate()</a> on the router and return its promise from the shell&#39;s <code>activate</code> callback so that the composition engine will wait until the router is ready before displaying the shell.</li>
 </ol>
 <h4>Mapping Routes</h4>
@@ -192,7 +192,7 @@
 
     &lt;div class=&quot;container-fluid page-host&quot; data-bind=&quot;router: { transition:&#39;entrance&#39; }&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;</pre><p>If you look at the JS, you will see that we are following much the same patterns as previously. Let&#39;s turn our attention to the bound view. First, notice the router binding at the bottom. The router binding looks for a property on your view model named <code>router</code> and automatically connects it into the composition system so that the active page is displayed at this location. (This is just a sugar over the <code>compose</code> binding). We&#39;ve also indicated a transition animation to play when navigating as well.</p>
-<p>There are some other interesting point in this view as well. Notice that <code>foreach</code> binding against the <code>navigationModel</code> property of the router. This is the array that was built when we called <a href="/documentation/api#class/Router/method/buildNavigationModel">buildNavigationModel()</a>. You can see here hot it can be used to build a simple nav header. Note that each navigable route in the model has an <code>isActive</code> flag which will be true when the associated route is active. The final thing to notice is that we have bound a simple spinner animation to the <a href="/documentation/api#class/Router/property/isNavigating">router.isNavigating</a>. As a result, we will show a spinner animation during navigation. This is particularly useful if modules that are navigated to utilize the <code>activate</code> callback to do asynchronous data loading.</p>
+<p>There are some other interesting points in this view as well. Notice that <code>foreach</code> binding against the <code>navigationModel</code> property of the router. This is the array that was built when we called <a href="/documentation/api#class/Router/method/buildNavigationModel">buildNavigationModel()</a>. You can see here how it can be used to build a simple nav header. Note that each navigable route in the model has an <code>isActive</code> flag which will be true when the associated route is active. The final thing to notice is that we have bound a simple spinner animation to the <a href="/documentation/api#class/Router/property/isNavigating">router.isNavigating</a>. As a result, we will show a spinner animation during navigation. This is particularly useful if modules that are navigated to utilize the <code>activate</code> callback to do asynchronous data loading.</p>
 <h3>Route Parameters and Query Strings</h3>
 <p>You know how to create route patterns that include parameters, but how do you receive those parameters in your module so you can act on them? As it turns out, all you have to do is implement the <code>activate</code> callback, with one argument per route parameter. When the router is about to activate your route, it will call both <code>canActivate</code> and <code>activate</code> passing you the values extracted from the url. So, if you had a route like this <code>customer/:customerId/orders/:orderId</code> then your activate signature would look like this: <code>activate(customerId, orderId)</code>. If the route has a query string, it will be passed as the last argument. It has the form of a hash; an object with one key per query string key.</p>
 <blockquote>
@@ -202,7 +202,7 @@
 <p>The primary way to trigger navigation is through the use of <code>a</code> tags with propper hashes. However, you can also trigger navigation through code with <a href="/documentation/api#class/Router/method/navigate">navigate</a>. To do this call <code>router.navigate(&#39;your/hash/here&#39;);</code> This will trigger a navigation and the associated module will be activated. If you wish to add a new history entry, but not trigger module activation, you can invoke <code>router.navigate(&#39;your/hash/here&#39;, false);</code> Finally, you may wish to simply replace the history entry. To do that and not trigger, you would invoke <code>router.navigate(&#39;your/hash/here&#39;, { replace: true, trigger: false });</code></p>
 <p>If you wish to trigger a back navigation, you can call <a href="/documentation/api#class/Router/method/navigateBack">router.navigateBack();</a>.</p>
 <h3>Handling Unknown Routes</h3>
-<p>The router has hooks for handling routes that have not been explicitly mapped. This can be used to display a &quot;Not Found&quot; view, automatically map urls to module ids, or even create your own convention-based routing scheme. Here&#39;s a few examples of how to use <a href="/documentation/api#class/Router/method/mapUnknownRoutes">mapUnknownRoutes()</a>.</p>
+<p>The router has hooks for handling routes that have not been explicitly mapped. This can be used to display a &quot;Not Found&quot; view, automatically map urls to module ids, or even create your own convention-based routing scheme. Here are a few examples of how to use <a href="/documentation/api#class/Router/method/mapUnknownRoutes">mapUnknownRoutes()</a>.</p>
 <p><figcaption>Mapping Unknowns to a Not Found Module</figcaption></p>
 <pre class="prettyprint linenums">router.mapUnknownRoutes(&#39;notfound&#39;, &#39;not-found&#39;);</pre><p>This would map all unidentified route patterns to a module with id <em>notfound</em> and it would then replace the browser history entry with the value &quot;not-found&quot;.</p>
 <p><figcaption>Automapping Routes to Modules</figcaption></p>
@@ -220,9 +220,9 @@
     },
     params: object[],
     queryParams: object
-}</pre><p>You can examine the <code>fragment</code>, <code>params</code> and <code>queryParams</code> to determine a module. Then, simply set <code>config.moduleId</code> and the router will handle the navigation from there. You can also return a promise from this callback, if you need to asynchronously determine the module to handle the request. It&#39;s probably also a good idea to set the <code>title</code> property on the confi as well.</p>
+}</pre><p>You can examine the <code>fragment</code>, <code>params</code> and <code>queryParams</code> to determine a module. Then, simply set <code>config.moduleId</code> and the router will handle the navigation from there. You can also return a promise from this callback, if you need to asynchronously determine the module to handle the request. It&#39;s probably also a good idea to set the <code>title</code> property on the config as well.</p>
 <h3>Child Routers</h3>
-<p>Your application has one main router, but can have multiple child routers. This provides you with a way to handle more complex deep-linking scenarios as well as encapsulate routes within features areas. Typically, the parent router will map a route with a splat. The child router will then work relative to that route, mapping its own set of routes. Let&#39;s look at an example from the samples, ellided for clarity:</p>
+<p>Your application has one main router, but can have multiple child routers. This provides you with a way to handle more complex deep-linking scenarios as well as encapsulate routes within features areas. Typically, the parent router will map a route with a splat. The child router will then work relative to that route, mapping its own set of routes. Let&#39;s look at an example from the samples, shortened for clarity:</p>
 <p><figcaption>Samples shell.js</figcaption></p>
 <pre class="prettyprint linenums">define([&#39;plugins/router&#39;], function (router) {
     return {
@@ -235,7 +235,7 @@
               .activate();
         }
     };
-});</pre><p>This shows that how the knockout samples are mapped at the root level with a splat route. Now, let&#39;s look at the module this route points to:</p>
+});</pre><p>This shows how the knockout samples are mapped at the root level with a splat route. Now, let&#39;s look at the module this route points to:</p>
 <p><figcaption>Samples ko/index.js</figcaption></p>
 <pre class="prettyprint linenums">define([&#39;plugins/router&#39;, &#39;knockout&#39;], function(router, ko) {
     var childRouter = router.createChildRouter()
@@ -251,7 +251,7 @@
         ]).buildNavigationModel();
 
     return {
-        router: childRouter
+        router: childRouter //the property on the view model should be called router
     };
 });</pre><p>We start by requiring the root router and calling <a href="/documentation/api#class/Router/method/createChildRouter">router.createChildRouter()</a>. This creates a new router. Notice that we have set it as a property on the module, called <em>router</em>. This follows the same pattern we used with the root router, and you can use the exact same binding in your child view. We then make use of an API called <a href="/documentation/api#class/Router/method/makeRelative">makeRelative</a> by passing it a simple configuration object. The <code>moduleId</code> parameter indicates that we want all modules in our route config to be prefixed with this, affectively making the modules relative to a folder. The second option <code>fromParent</code> makes all our routes relative to the parent router&#39;s route. In this case that means that <code>route:&#39;simpleList&#39;</code> will be relative to the parent route of <code>route:&#39;knockout-samples*details&#39;</code>. The result with be a match of <code>knockout-samples/simpleList</code>. If the <code>fromParent</code> setting doesn&#39;t work for your scenario, you can provide another options <code>route</code> which works like the <code>moduleId</code> option but provides an explicit relative route for all route patterns.</p>
 <p>Now, what happens when someone actually navigates to &quot;knockout-samples/simpleList&quot;? Here&#39;s how routing works in this scenario: First the pattern &quot;knockout-samples*details&quot; will be matched at the root router level. The root router will then cause a navigation to &quot;ko/index&quot;. The root router will then detect the presence of the <code>router</code> property on this module and assume that it hosts a child router. So, it will then pass control to the child router to match next. It will then match on the full pattern and activate the &quot;ko/simpleList/index&quot; module in its view.</p>
@@ -295,7 +295,7 @@
 <ul>
 <li><p><a href="/documentation/api#class/Router/property/activeInstruction">activeInstruction()</a> - An observable surfacing the active routing instruction that is currently being processed or has recently finished processing. The instruction object has config, fragment, queryString, params and queryParams properties.</p>
 </li>
-<li><p><a href="/documentation/api#class/Router/method/reset">rest()</a> - Resets the router by removing handlers, routes, event handlers and previously configured options.</p>
+<li><p><a href="/documentation/api#class/Router/method/reset">reset()</a> - Resets the router by removing handlers, routes, event handlers and previously configured options.</p>
 </li>
 </ul>
 

@@ -123,7 +123,7 @@ It may or may not use a transition as part of this process. Either way, once the
 <p>If your view is removed from the DOM, the <code>detached(view, parent)</code> callback is invoked.</p>
 <h3>Activator Lifecycle Callbacks</h3>
 <p>The hooks described above are checked and run as part of every call to <em>compose</em> whether through the API or the binding handler.
-There are another set of hooks cenetered less around the view composition aspects of Durandal and more around screen and component lifecycles.
+There is another set of hooks centered less around the view composition aspects of Durandal and more around screen and component lifecycles.
 These hooks are only checked/run when an <em>activator</em> is present. When is an activator present?</p>
 <ol>
 <li>The Router has an internal activator called &quot;activeItem&quot; which manages the current page.</li>
@@ -214,7 +214,7 @@ If present, it will be called. If it returns false, activation stops here.</li>
   <tr class="success">
     <td><code>detached()</code></td>
     <td>Composition</td>
-    <td>Notifies a c omposed object when its view is removed from the DOM.</td>
+    <td>Notifies a composed object when its view is removed from the DOM.</td>
   </tr>
 </table>
 

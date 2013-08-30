@@ -125,10 +125,13 @@ Events.includeIn(myObj);</pre><p>By doing this, <em>myObj</em> gains the followi
 <li><code>proxy</code> - Proxy this object&#39;s events.</li>
 </ul>
 <p>You can see the <a href="/documentation/api#module/events">events</a> module reference documentation for more detailed information on these.
-Some exmaples of using the <em>app</em> module&#39;s events are demonstrated below.</p>
+Some examples of using the <em>app</em> module&#39;s events are demonstrated below.</p>
+<blockquote>
+<p><strong>Note:</strong> The <em>eventList</em> that is passed to the functions above can be a list of events to publish or subscribe to. Whitespace is used to delimit events.</p>
+</blockquote>
 <h3>Using Application-Wide Messaging</h3>
 <p>By default, the <em>app</em> module has already had the events capability added to it. 
-This sets you up to do application-wide messaging out-of-the-box. In light of that, here&#39;s a few simple use cases:</p>
+This sets you up to do application-wide messaging out-of-the-box. In light of that, here are a few simple use cases:</p>
 <p><strong>Publishing an app-wide message.</strong></p>
 <pre class="prettyprint linenums">app.trigger(&#39;customer:new&#39;, newCustomer);</pre><p><strong>Subscribing to an app-wide message.</strong></p>
 <pre class="prettyprint linenums">app.on(&#39;customer:new&#39;).then(function(customer){

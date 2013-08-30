@@ -120,7 +120,7 @@
     }
 };</pre><p>In this example, any time the content is changed, through calls to <a href="/documentation/api#class/Activator/method/activateItem">activateItem</a>, the activation lifecycle will kick in on the old/new values.</p>
 <h3>Lifecycle</h3>
-<p>The activator enforces a lifecycle on all it&#39;s values. Other than that, it operates like a standard computed observable. Below is an explanation of the lifecycle events you can hook into for advanced screen scenarios. To participate in the lifecycle, implement any (or none) of the functions below on the object that you set the activator to:</p>
+<p>The activator enforces a lifecycle on all its values. Other than that, it operates like a standard computed observable. Below is an explanation of the lifecycle events you can hook into for advanced screen scenarios. To participate in the lifecycle, implement any (or none) of the functions below on the object that you set the activator to:</p>
 <ul>
 <li><p><code>function canActivate() : bool/promise</code> - Adding this function allows you to tell the activator whether or not it can be set to this value at the current time. You can return a bool value, for a synchronous response, or a promise that resolves to a bool, for an asynchronous check. </p>
 </li>

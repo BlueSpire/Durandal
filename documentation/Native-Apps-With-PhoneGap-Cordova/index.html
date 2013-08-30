@@ -126,6 +126,7 @@ Finally, you need to update the index.html file so that it points to your css, e
 <p><strong>Note:</strong> If you wish to run without needing to optimize, you may need to perform an additional step.
 For example, the PhoneGap Visual Studio 2012 template requires that you alter Plugins/File.cs by changing readResourceAsText, because it reads the views from the wrong location.
 You can see <a href="http://mikaelkoskinen.net/durandal-phonegap-windows-phone-8-tutorial/">this article</a> for more information.</p>
+<p><strong>Note:</strong> If you are pulling in JSON files locally using <code>http.get</code> you should switch to using <code>$.getJSON</code> instead to avoid some issues with the way PhoneGap serves local files without Content-Types.</p>
 </blockquote>
 
 </section>

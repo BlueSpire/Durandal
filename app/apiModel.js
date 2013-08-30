@@ -22,21 +22,21 @@ define(function(require){
 		switch(item.itemtype){
 			case 'property':
 				item.hash = '#' + type + '/' + owner.name + '/property/' + item.name;
-                item.srcHref = 'https://github.com/BlueSpire/Durandal/blob/master/' + item.file;
+                item.srcHref = 'https://github.com/BlueSpire/Durandal/blob/master/' + item.file.replace(/\\/g, '/');
                 item.lineHref = item.srcHref + "#L" + item.line;
 				owner.propertyLookup[item.name] = item;
 				owner.properties.push(item);
 				break;
 			case 'method':
 				item.hash = '#' + type + '/' + owner.name + '/method/' + item.name;
-                item.srcHref = 'https://github.com/BlueSpire/Durandal/blob/master/' + item.file;
+                item.srcHref = 'https://github.com/BlueSpire/Durandal/blob/master/' + item.file.replace(/\\/g, '/');
                 item.lineHref = item.srcHref + "#L" + item.line;
 				owner.methodLookup[item.name] = item;
 				owner.methods.push(item);
 				break;
 			case 'event':
 				item.hash = '#' + type + '/' + owner.name + '/event/' + item.name;
-                item.srcHref = 'https://github.com/BlueSpire/Durandal/blob/master/' + item.file;
+                item.srcHref = 'https://github.com/BlueSpire/Durandal/blob/master/' + item.file.replace(/\\/g, '/');
                 item.lineHref = item.srcHref + "#L" + item.line;
 				owner.eventLookup[item.name] = item;
 				owner.events.push(item);

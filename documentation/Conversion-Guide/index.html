@@ -350,7 +350,7 @@ define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLoc
     <td>----------------------</td>
     <td><code>compositionComplete()</code></td>
     <td>Composition</td>
-    <td>Notifies the new object when the wntire composition (all parents &amp; children) is complete.</td>
+    <td>Notifies the new object when the entire composition (all parents &amp; children) is complete.</td>
   </tr>
 </table>
 
@@ -381,6 +381,7 @@ define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLoc
 });</pre><p>Looking at the <code>map</code> API, the <em>route</em> is the pattern to match in the url and the <em>moduleId</em> is the module to activate when that pattern is matched. You can optionally configure a <em>title</em> to set the document to as well or a <em>hash</em> to use in databinding (if the generated hash based on the route isn&#39;t correct; usually if the route contains parameters or splats). Finally, you can specify <code>nav:true</code> to indicate that the route should be part of the navigation model used to databind the UI. If you provide a number, such as <code>nav:5</code>, then you can order the navigation model independently of the route configuration order. See the router&#39;s documentation for further details concerning the above APIs.</p>
 <blockquote>
 <p><strong>Note:</strong> Did you previously call <code>useConvention</code>? If so, that API has been removed. In its place is the <code>makeRelative</code> API. This can be used to tell the router that all moduleIds are relative to a certain path, or that all routes are relative to a certain base url. To achieve the same effect has <code>useConvention</code> you would call <code>router.makeRelative({moduleId:&#39;viewmodels&#39;});</code></p>
+<p><strong>Note:</strong> Did you previously call <code>activate</code> with a default route to navigate to? If so, please note that that has been deprecated. Instead, be sure to register a route with &#39;&#39; (empty string) as its pattern. This will designate the default route.</p>
 </blockquote>
 <h4>Update View</h4>
 <p>Because the router has changed, you will also need to update your shell&#39;s view. The router binding is simplified by the new router binding handler. Some minor changes to the bound navigation model are also necessary. Here&#39;s the view that corresponds to the previous module:</p>
@@ -433,14 +434,14 @@ define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLoc
 <p>If you are creating a custom model context, this has been affected by the changes to the composition system as detailed above. Modal contexts have <code>addHost()</code> and <code>removeHost()</code> as before. But the optional lifecycle callbacks have changed to <code>attached()</code> and <code>compositionComplete()</code>.</p>
 <p>The API <code>modalDialog.isModalOpen()</code> was renamed to <code>dialog.isOpen()</code>.</p>
 <h3>Fix Widgets</h3>
-<p>In 2.0, many of the features of widgets, such as templated parts, were pushed into the core infrastrcuture. Also, the core composition lifecycle was improved through greater consistency and extension points as discussed above. As a result, the widgets, which are built on top of these features, have also changed. As part of the process, we took the opportunity to fix some other issues. Here&#39;s how you get your widgets converted to 2.0:</p>
+<p>In 2.0, many of the features of widgets, such as templated parts, were pushed into the core infrastructure. Also, the core composition lifecycle was improved through greater consistency and extension points as discussed above. As a result, the widgets, which are built on top of these features, have also changed. As part of the process, we took the opportunity to fix some other issues. Here&#39;s how you get your widgets converted to 2.0:</p>
 <ol>
 <li>In 1.x, each widget resided in a folder and had a <em>controller.js</em> and a <em>view.html</em>. The only change to this structure and naming is that <em>controller.js</em> should now be named <em>viewmodel.js</em>. We felt this naming was more consistent with the rest of the framework.</li>
-<li>Widgets are no longer passed any information in the constructor function. Instead, a widget&#39;s settings are passed to its <code>activate</code> function. This makes widgets much more consistent with the way that normal composition works. With a widget, it&#39;s settings essentially become the composition&#39;s <em>activationData</em>.</li>
+<li>Widgets are no longer passed any information in the constructor function. Instead, a widget&#39;s settings are passed to its <code>activate</code> function. This makes widgets much more consistent with the way that normal composition works. With a widget, its settings essentially become the composition&#39;s <em>activationData</em>.</li>
 </ol>
 <p>If you customized widget mapping, have a look at the new API&#39;s <a href="/documentation/api#module/widget">map and convert methods</a>.</p>
 <h3>Fix Activators</h3>
-<p>Most developers don&#39;t use <em>activators</em> directly. However, if you use the <code>viewModel.activator()</code> API, it has changed. As mentioned above, the <code>viewModel</code> module has been renamed to <code>activator</code>. Additionally, the factory method has been renamed to <code>create</code>. So, the previous API call would now be <code>activator.create();</code>. If you used the <code>areSameItem</code> override, then you should know that it&#39;s signature has slightly changed: <code>areSameItem(currentItem, newItem, currentActivationData, newActivationData)</code>.</p>
+<p>Most developers don&#39;t use <em>activators</em> directly. However, if you use the <code>viewModel.activator()</code> API, it has changed. As mentioned above, the <code>viewModel</code> module has been renamed to <code>activator</code>. Additionally, the factory method has been renamed to <code>create</code>. So, the previous API call would now be <code>activator.create();</code>. If you used the <code>areSameItem</code> override, then you should know that its signature has slightly changed: <code>areSameItem(currentItem, newItem, currentActivationData, newActivationData)</code>.</p>
 <h3>Fix Custom Transitions</h3>
 <p>Due to improvements in the composition system, custom transitions have changed as well. On the whole, they are simpler to write now since you don&#39;t need to worry about view cache settings. If you have custom transitions, have a look at the built-in <code>entrance</code> transition and use it as a guide to updating your custom transitions.</p>
 <h3>Miscellany</h3>

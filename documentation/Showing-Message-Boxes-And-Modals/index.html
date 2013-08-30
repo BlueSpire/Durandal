@@ -174,7 +174,7 @@ MessageBox.prototype.selectOption = function (dialogResult) {
     &lt;div class=&quot;modal-footer&quot; data-bind=&quot;foreach: options&quot;&gt;
         &lt;button class=&quot;btn&quot; data-bind=&quot;click: function () { $parent.selectOption($data); }, text: $data, css: { &#39;btn-primary&#39;: $index() == 0, autofocus: $index() == 0 }&quot;&gt;&lt;/button&gt;
     &lt;/div&gt;
-&lt;/div&gt;</pre><p>As you can see, <a href="/documentation/api#module/dialog/class/MessageBox">MessageBox</a> is just a normal prototype-based class. It stores it&#39;s parameters and provides a function to select a particular option.
+&lt;/div&gt;</pre><p>As you can see, <a href="/documentation/api#module/dialog/class/MessageBox">MessageBox</a> is just a normal prototype-based class. It stores its parameters and provides a function to select a particular option.
 The view is located by the composition system and bound to it before displaying it in a modal style. The view uses a standard set of Knockout bindings along with some css classes.
 There&#39;s one important detail to notice. Have a look at the <a href="/documentation/api#class/MessageBox/method/selectOption">selectOption</a> function of the modal implementation.
 It uses the <a href="/documentation/api#module/dialog">dialog module&#39;s</a> <a href="/documentation/api#module/dialog/method/close">close</a> function to dismiss the dialog. The interesting thing about it is that you can pass it a value to return to its caller.

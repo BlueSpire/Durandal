@@ -107,12 +107,12 @@
     <li>
       Disable debug mode before releasing to production.
     </li>
-    <li>Configure development cache busing.</li>
+    <li>Configure development cache busting.</li>
   </ul>
 </blockquote>
 
 <h3>Explanation</h3>
-<p>Durandal logs much of it&#39;s internal activity using it&#39;s <a href="/documentation/api#module/system/method/log">system.log</a> function. It&#39;s also a great way for the application developer to add logging. It differs from a straight <code>console.log</code> in that it works correctly on every platform and output of this log is sent to the console only if debugging is enabled. You can turn debugging on manually at any time by requiring the <a href="/documentation/api#module/system">system</a> module and calling <a href="/documentation/api#module/system/method/debug">debug(true)</a>. Likewise, you can disable debugging by passing false.</p>
+<p>Durandal logs much of its internal activity using it&#39;s <a href="/documentation/api#module/system/method/log">system.log</a> function. It&#39;s also a great way for the application developer to add logging. It differs from a straight <code>console.log</code> in that it works correctly on every platform and output of this log is sent to the console only if debugging is enabled. You can turn debugging on manually at any time by requiring the <a href="/documentation/api#module/system">system</a> module and calling <a href="/documentation/api#module/system/method/debug">debug(true)</a>. Likewise, you can disable debugging by passing false.</p>
 <blockquote>
 <p><strong>Note:</strong> A common technique is to turn debugging on in your main.js. You can use r.js pragmas to make debug only enable when not optimized for deploy. Here&#39;s an example of how that would work: </p>
 </blockquote>
@@ -120,7 +120,7 @@
     system.debug(true);
     //&gt;&gt;excludeEnd(&quot;build&quot;);</pre><p><em>The Weyland tooling automatically defines a &quot;build&quot; pragma as part of its default r.js configuration.</em></p>
 <h3>Cache Busting</h3>
-<p>During application development, make sure your browser is set up to ignore it&#39;s cache or you may not get your latest JS/HTML changes. In Chrome, you can configure this through the developer tools. Check your preferred browser for a similar option. If no such option is available, then you may want to leverage RequireJS&#39;s <a href="http://requirejs.org/docs/api.html#config-urlArgs">urlArgs</a> configuration option. This appends extra query string arguments to every module or view request and can be useful for cache busting. Here&#39;s what your <code>main.js</code> configuration might look like:</p>
+<p>During application development, make sure your browser is set up to ignore its cache or you may not get your latest JS/HTML changes. In Chrome, you can configure this through the developer tools. Check your preferred browser for a similar option. If no such option is available, then you may want to leverage RequireJS&#39;s <a href="http://requirejs.org/docs/api.html#config-urlArgs">urlArgs</a> configuration option. This appends extra query string arguments to every module or view request and can be useful for cache busting. Here&#39;s what your <code>main.js</code> configuration might look like:</p>
 <pre class="prettyprint linenums">requirejs.config({
     urlArgs: &quot;bust=&quot; +  (new Date()).getTime(),
     paths: {

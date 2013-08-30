@@ -148,11 +148,11 @@ Now lets take a look at how we can do some basic visual composition inside of th
     &lt;div data-bind=&quot;compose:&#39;views/header.html&#39;&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;</pre><p>Here we are using the <em>compose</em> binding to inject a view. The composition system will locate &#39;views/header.html&#39; and inject it into the DOM inside the div.
 The header html view will be data-bound against the existing context (the shell module) since it&#39;s an explicit view composition, without a module.
-So, how do we specify that header actually has it&#39;s own view and module? Like this:</p>
+So, how do we specify that header actually has its own view and module? Like this:</p>
 <pre class="prettyprint linenums">&lt;div&gt;
     &lt;div data-bind=&quot;compose:&#39;viewmodels/header&#39;&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;</pre><p>When there is no view extension (according to the view engine) then the composition engine interprets this as a module Id.
-In this case, it will require the &#39;viewmodels/header&#39; module and then locate it&#39;s view (according to convention).
+In this case, it will require the &#39;viewmodels/header&#39; module and then locate its view (according to convention).
 The module and the view will be bound and the view will be injected into the div.</p>
 <p>This is all fine for construction of static components, but what about dynamic composition?
 Well, the compose binding can take an observable, like so:</p>
@@ -226,7 +226,7 @@ This enables extremely powerful dynamic, changing composition of any part of the
 </li>
 <li><p><code>data-bind=&quot;compose: { model:&#39;shell&#39;, view:someViewProperty }&quot;</code> - RequireJS is used to resolve the <em>shell module</em>. The value of <em>someViewProperty</em> is resolved and a view is returned as described in 2. The view is then bound to the resolved module and injected into the DOM node.</p>
 </li>
-<li><p><code>data-bind=&quot;compose: { model:&#39;shell&#39;, &#39;myView.html&#39; }&quot;</code> - RequireJS is used to resolve the <em>shell module</em>. The <em>viewLocator</em> is then used to obtain the view indicated by <em>view</em>. The view is then bound to the resolved module and injected into the DOM node.</p>
+<li><p><code>data-bind=&quot;compose: { model:&#39;shell&#39;, view:&#39;myView.html&#39; }&quot;</code> - RequireJS is used to resolve the <em>shell module</em>. The <em>viewLocator</em> is then used to obtain the view indicated by <em>view</em>. The view is then bound to the resolved module and injected into the DOM node.</p>
 </li>
 </ol>
 <h4>Using a Custom View Location Strategy</h4>
@@ -274,7 +274,7 @@ This enables extremely powerful dynamic, changing composition of any part of the
 &lt;/div&gt;</pre><p>Notice that the <code>div</code> is marked with <code>data-part=&quot;content&quot;</code>. This identifies this portion of the view as templatable or replaceable. When the composition system composes this view into the DOM, you can optionally provide your own content for this part. Here&#39;s an example of what a consumer of this view might look like:</p>
 <pre class="prettyprint linenums">&lt;!--ko compose: { view:&#39;myView.html&#39;, mode:&#39;templated&#39; }--&gt;
     &lt;div data-part=&quot;content&quot;&gt;This is a view part override of the default content....&lt;/div&gt;
-&lt;!--/ko--&gt;</pre><p>When this composition activates, the myView.html will be located and it&#39;s content part will be replaced with the custom content specified.</p>
+&lt;!--/ko--&gt;</pre><p>When this composition activates, the myView.html will be located and its content part will be replaced with the custom content specified.</p>
 <blockquote>
 <p><strong>Note:</strong> Widgets leverage templated parts by default and so their composition mode is always <code>templated</code>.</p>
 </blockquote>
