@@ -35,10 +35,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         return route.substring(0, length);
     }
 
-    function hasChildRouter(instance) {
-        return instance.router && instance.router.loadUrl;
-    }
-
     function endsWith(str, suffix) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
     }
@@ -186,6 +182,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             return false;
         };
+
+        function hasChildRouter(instance) {
+            return instance.router && instance.router.parent == router;
+        }
 
         function completeNavigation(instance, instruction) {
             system.log('Navigation Complete', instance, instruction);

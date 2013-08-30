@@ -14,6 +14,7 @@
 -Fix Issue #266: composition.bindAndShow overwrites the elements local display style
 -Fix Issue #268: TS Definition file Error - Exported variable 'router' has or is using or is using private type 'durandal/typescript.rootRouter'
 -Fix Issue #264: TS Definition missing activeInstruction().config.route
+-Fix Issue #281: Infinite Loop Navigation
 -Tweaking the .NET Index.cshtml so that it plays nicer when using the router in push state mode.
 
 2.0.0
