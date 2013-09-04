@@ -405,6 +405,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 config.title = config.title || router.convertRouteToTitle(config.route);
                 config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
                 config.hash = config.hash || router.convertRouteToHash(config.route);
+                if (config.hasSubRoutes == true) {
+                    config.route = config.route + '*subRoutes';
+                }
                 config.routePattern = routeStringToRegExp(config.route);
             }else{
                 config.routePattern = config.route;
