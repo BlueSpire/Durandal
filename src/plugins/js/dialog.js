@@ -1,4 +1,9 @@
 ﻿/**
+ * Durandal 2.0.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Available via the MIT license.
+ * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
+ */
+/**
  * The dialog module enables the display of message boxes, custom modal dialogs and other overlays or slide-out UI abstractions. Dialogs are constructed by the composition system which interacts with a user defined dialog context. The dialog module enforced the activator lifecycle.
  * @module dialog
  * @requires system
@@ -18,7 +23,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
      * Models a message box's message, title and options.
      * @class MessageBox
      */
-    var MessageBox = function(message, title, options) {
+    var MessageBox = function (message, title, options) {
         this.message = message;
         this.title = title || MessageBox.defaultTitle;
         this.options = options || MessageBox.defaultOptions;
@@ -38,7 +43,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
      * @method getView
      * @return {DOMElement} The view of the message box.
      */
-    MessageBox.prototype.getView = function(){
+    MessageBox.prototype.getView = function () {
         return viewEngine.processMarkup(MessageBox.defaultViewMarkup);
     };
 
@@ -48,7 +53,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
      * @param {string} viewUrl The view url relative to the base url which the view locator will use to find the message box's view.
      * @static
      */
-    MessageBox.setViewUrl = function(viewUrl){
+    MessageBox.setViewUrl = function (viewUrl) {
         delete MessageBox.prototype.getView;
         MessageBox.prototype.viewUrl = viewUrl;
     };
@@ -89,11 +94,11 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
     ].join('\n');
 
     function ensureDialogInstance(objOrModuleId) {
-        return system.defer(function(dfd) {
+        return system.defer(function (dfd) {
             if (system.isString(objOrModuleId)) {
                 system.acquire(objOrModuleId).then(function (module) {
                     dfd.resolve(system.resolveObject(module));
-                }).fail(function(err){
+                }).fail(function (err) {
                     system.error('Failed to load dialog module (' + objOrModuleId + '). Details: ' + err.message);
                 });
             } else {
@@ -111,7 +116,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * The constructor function used to create message boxes.
          * @property {MessageBox} MessageBox
          */
-        MessageBox:MessageBox,
+        MessageBox: MessageBox,
         /**
          * The css zIndex that the last dialog was displayed at.
          * @property {number} currentZIndex
@@ -130,7 +135,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @method isOpen
          * @return {boolean} True if a dialog is open. false otherwise.
          */
-        isOpen: function() {
+        isOpen: function () {
             return dialogCount > 0;
         },
         /**
@@ -139,7 +144,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {string} [name] The name of the context to retrieve.
          * @return {DialogContext} True context.
          */
-        getContext: function(name) {
+        getContext: function (name) {
             return contexts[name || 'default'];
         },
         /**
@@ -148,7 +153,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {string} name The name of the context to add.
          * @param {DialogContext} dialogContext The context to add.
          */
-        addContext: function(name, dialogContext) {
+        addContext: function (name, dialogContext) {
             dialogContext.name = name;
             contexts[name] = dialogContext;
 
@@ -157,10 +162,10 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 return this.show(obj, activationData, name);
             };
         },
-        createCompositionSettings: function(obj, dialogContext) {
+        createCompositionSettings: function (obj, dialogContext) {
             var settings = {
-                model:obj,
-                activate:false
+                model: obj,
+                activate: false
             };
 
             if (dialogContext.attached) {
@@ -179,8 +184,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {object} obj The object for whom to retrieve the dialog.
          * @return {Dialog} The dialog model.
          */
-        getDialog:function(obj){
-            if(obj){
+        getDialog: function (obj) {
+            if (obj) {
                 return obj.__dialog__;
             }
 
@@ -192,9 +197,9 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {object} obj The object whose dialog should be closed.
          * @param {object} result* The results to return back to the dialog caller after closing.
          */
-        close:function(obj){
+        close: function (obj) {
             var theDialog = this.getDialog(obj);
-            if(theDialog){
+            if (theDialog) {
                 var rest = Array.prototype.slice.call(arguments, 1);
                 theDialog.close.apply(theDialog, rest);
             }
@@ -207,12 +212,12 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {string} [context] The name of the dialog context to use. Uses the default context if none is specified.
          * @return {Promise} A promise that resolves when the dialog is closed and returns any data passed at the time of closing.
          */
-        show: function(obj, activationData, context) {
+        show: function (obj, activationData, context) {
             var that = this;
             var dialogContext = contexts[context || 'default'];
 
-            return system.defer(function(dfd) {
-                ensureDialogInstance(obj).then(function(instance) {
+            return system.defer(function (dfd) {
+                ensureDialogInstance(obj).then(function (instance) {
                     var dialogActivator = activator.create();
 
                     dialogActivator.activateItem(instance, activationData).then(function (success) {
@@ -229,11 +234,11 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                                             dialogContext.removeHost(theDialog);
                                             delete instance.__dialog__;
 
-                                            if(args.length == 0){
+                                            if (args.length == 0) {
                                                 dfd.resolve();
-                                            }else if(args.length == 1){
+                                            } else if (args.length == 1) {
                                                 dfd.resolve(args[0])
-                                            }else{
+                                            } else {
                                                 dfd.resolve.apply(dfd, args);
                                             }
                                         }
@@ -261,8 +266,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {string[]} [options] The options to provide to the user.
          * @return {Promise} A promise that resolves when the message box is closed and returns the selected option.
          */
-        showMessage:function(message, title, options){
-            if(system.isString(this.MessageBox)){
+        showMessage: function (message, title, options) {
+            if (system.isString(this.MessageBox)) {
                 return dialog.show(this.MessageBox, [
                     message,
                     title || MessageBox.defaultTitle,
@@ -277,21 +282,21 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @method install
          * @param {object} [config] Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box.
          */
-        install:function(config){
-            app.showDialog = function(obj, activationData, context) {
+        install: function (config) {
+            app.showDialog = function (obj, activationData, context) {
                 return dialog.show(obj, activationData, context);
             };
 
-            app.showMessage = function(message, title, options) {
+            app.showMessage = function (message, title, options) {
                 return dialog.showMessage(message, title, options);
             };
 
-            if(config.messageBox){
+            if (config.messageBox) {
                 dialog.MessageBox = config.messageBox;
             }
 
-            if(config.messageBoxView){
-                dialog.MessageBox.prototype.getView = function(){
+            if (config.messageBoxView) {
+                dialog.MessageBox.prototype.getView = function () {
                     return config.messageBoxView;
                 };
             }
@@ -309,7 +314,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @method addHost
          * @param {Dialog} theDialog The dialog model.
          */
-        addHost: function(theDialog) {
+        addHost: function (theDialog) {
             var body = $('body');
             var blockout = $('<div class="modalBlockout"></div>')
                 .css({ 'z-index': dialog.getNextZIndex(), 'opacity': this.blockoutOpacity })
@@ -340,11 +345,11 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @method removeHost
          * @param {Dialog} theDialog The dialog model.
          */
-        removeHost: function(theDialog) {
+        removeHost: function (theDialog) {
             $(theDialog.host).css('opacity', 0);
             $(theDialog.blockout).css('opacity', 0);
 
-            setTimeout(function() {
+            setTimeout(function () {
                 ko.removeNode(theDialog.host);
                 ko.removeNode(theDialog.blockout);
             }, this.removeDelay);
@@ -354,7 +359,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 var oldScrollTop = html.scrollTop(); // necessary for Firefox.
                 html.css("overflow-y", "").scrollTop(oldScrollTop);
 
-                if(theDialog.oldInlineMarginRight) {
+                if (theDialog.oldInlineMarginRight) {
                     $("body").css("margin-right", theDialog.oldBodyMarginRight);
                 } else {
                     $("body").css("margin-right", '');
@@ -369,27 +374,66 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {object} context The composition context.
          */
         compositionComplete: function (child, parent, context) {
-            var $child = $(child);
-            var width = $child.width();
-            var height = $child.height();
             var theDialog = dialog.getDialog(context.model);
+            var $child = $(child);
 
-            $child.css({
-                'margin-top': (-height / 2).toString() + 'px',
-                'margin-left': (-width / 2).toString() + 'px'
+            var setDialogPosition = function () {
+                //Setting a short timeout is need in IE8, otherwise we could do this straight away
+                setTimeout(function () {
+                    $child.css({ width: '', height: '' }); //Reset width and height
+                    var width = $child.outerWidth(false);
+                    var height = $child.outerHeight(false);
+                    var windowHeight = $(window).height();
+                    var constrainedHeight = Math.min(height, windowHeight);
+
+                    $child.css({
+                        'margin-top': (-constrainedHeight / 2).toString() + 'px',
+                        'margin-left': (-width / 2).toString() + 'px'
+                    }).outerWidth(width).outerHeight(constrainedHeight);
+
+                    if (height > windowHeight) {
+                        $child.css("overflow-y", "auto");
+                    } else {
+                        $child.css("overflow-y", "");
+                    }
+
+                    $(theDialog.host).css('opacity', 1);
+                    $child.css("visibility", "visible");
+                }, 1);
+            }
+
+            var loadables = $child.find("img").filter(function () {
+                //Remove images with known width and height
+                var $this = $(this);
+                return !(this.style.width && this.style.height) && !($this.attr("width") && $this.attr("height"));
+            }).each(function () {
+                if (this.complete) {
+                    //If an image is already complete let's set the dialog position
+                    setDialogPosition();
+                } else {
+                    //If not, let's wait that it loads
+                    $(this).on("load", setDialogPosition);
+                }
             });
+            if (loadables.length === 0) {
+                //If there is no need to wait for anything, let's set the window position straight away
+                setDialogPosition();
+            }
 
-            $(theDialog.host).css('opacity', 1);
-
-            if ($(child).hasClass('autoclose')) {
-                $(theDialog.blockout).click(function() {
+            if ($child.hasClass('autoclose')) {
+                $(theDialog.blockout).click(function () {
                     theDialog.close();
                 });
             }
 
-            $('.autofocus', child).each(function() {
+            $('.autofocus', child).each(function () {
                 $(this).focus();
             });
+        },
+
+        attached: function (view) {
+            //To prevent flickering in IE8, we set visibility to hidden first, and later restore it
+            $(view).css("visibility", "hidden");
         }
     });
 
