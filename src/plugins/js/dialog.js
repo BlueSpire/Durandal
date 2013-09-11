@@ -377,7 +377,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 return !(this.style.width && this.style.height) && !($this.attr("width") && $this.attr("height"));
             });
 
-            var areAllLoaded = function() {
+            var areAllLoaded = function () {
                 for (var i = 0; i < loadables.length; i++) {
                     if (!loadables.get(i).complete) {
                         return false;
@@ -386,11 +386,11 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 return true;
             };
 
-            var setDialogPosition = function() {
-                //Let's check that all images have been loaded
-                if (areAllLoaded()) {
-                    //Setting a short timeout is need in IE8, otherwise we could do this straight away
-                    setTimeout(function() {
+            var setDialogPosition = function () {
+                //Setting a short timeout is need in IE8, otherwise we could do this straight away
+                setTimeout(function () {
+                    //Let's check that all images have been loaded
+                    if (areAllLoaded()) {
                         $child.css({ width: '', height: '' }); //Reset width and height
                         var width = $child.outerWidth(false);
                         var height = $child.outerHeight(false);
@@ -410,8 +410,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
 
                         $(theDialog.host).css('opacity', 1);
                         $child.css("visibility", "visible");
-                    }, 1);
-                }
+                    }
+                }, 1);
             };
 
             if (loadables.length === 0) {
