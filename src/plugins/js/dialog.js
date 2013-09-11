@@ -229,11 +229,11 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                                             dialogContext.removeHost(theDialog);
                                             delete instance.__dialog__;
 
-                                            if(args.length == 0){
+                                            if (args.length === 0) {
                                                 dfd.resolve();
-                                            }else if(args.length == 1){
-                                                dfd.resolve(args[0])
-                                            }else{
+                                            } else if (args.length === 1) {
+                                                dfd.resolve(args[0]);
+                                            } else {
                                                 dfd.resolve.apply(dfd, args);
                                             }
                                         }
@@ -331,7 +331,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 var oldScrollTop = html.scrollTop();
                 $("html").css("overflow-y", "hidden");
                 var newBodyOuterWidth = $("body").outerWidth(true);
-                body.css("margin-right", (newBodyOuterWidth - oldBodyOuterWidth + parseInt(theDialog.oldBodyMarginRight)) + "px");
+                body.css("margin-right", (newBodyOuterWidth - oldBodyOuterWidth + parseInt(theDialog.oldBodyMarginRight, 10)) + "px");
                 html.scrollTop(oldScrollTop); // necessary for Firefox
             }
         },
@@ -377,20 +377,20 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 return !(this.style.width && this.style.height) && !($this.attr("width") && $this.attr("height"));
             });
 
-            var areAllLoaded = function () {
+            var areAllLoaded = function() {
                 for (var i = 0; i < loadables.length; i++) {
                     if (!loadables.get(i).complete) {
                         return false;
                     }
                 }
                 return true;
-            }
+            };
 
-            var setDialogPosition = function () {
+            var setDialogPosition = function() {
                 //Let's check that all images have been loaded
                 if (areAllLoaded()) {
                     //Setting a short timeout is need in IE8, otherwise we could do this straight away
-                    setTimeout(function () {
+                    setTimeout(function() {
                         $child.css({ width: '', height: '' }); //Reset width and height
                         var width = $child.outerWidth(false);
                         var height = $child.outerHeight(false);
@@ -412,13 +412,13 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                         $child.css("visibility", "visible");
                     }, 1);
                 }
-            }
+            };
 
             if (loadables.length === 0) {
                 //If there is no need to wait for anything, let's set the window position straight away
                 setDialogPosition();
             } else {
-                loadbles.each(function () {
+                loadables.each(function () {
                     if (this.complete) {
                         //If an image is already complete let's set the dialog position
                         setDialogPosition();
