@@ -8,7 +8,7 @@ namespace $rootnamespace$ {
       AddDefaultIgnorePatterns(bundles.IgnoreList);
 
 	  bundles.Add(
-		new ScriptBundle("~/Scripts/vendor.js")
+		new ScriptBundle("~/Scripts/vendor")
 			.Include("~/Scripts/jquery-{version}.js")
 			.Include("~/Scripts/bootstrap.js")
 			.Include("~/Scripts/knockout-{version}.js")
