@@ -377,10 +377,15 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 return !(this.style.width && this.style.height) && !($this.attr("width") && $this.attr("height"));
             });
 
+            $child.data("predefinedWidth", $child.get(0).style.width);
+
             var setDialogPosition = function () {
                 //Setting a short timeout is need in IE8, otherwise we could do this straight away
                 setTimeout(function () {
-                    $child.css({ width: '' }); //Reset width
+                    //We will clear and then set width for dialogs without width set 
+                    if (!$child.data("predefinedWidth")) {
+                        $child.css({ width: '' }); //Reset width
+                    }
                     var width = $child.outerWidth(false);
                     var height = $child.outerHeight(false);
                     var windowHeight = $(window).height();
@@ -389,7 +394,12 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                     $child.css({
                         'margin-top': (-constrainedHeight / 2).toString() + 'px',
                         'margin-left': (-width / 2).toString() + 'px'
-                    }).outerWidth(width);
+                    });
+
+                    if (!$child.data("predefinedWidth")) {
+                        //Ensure the correct width after margin-left has been set
+                        $child.outerWidth(width);
+                    }
 
                     if (height > windowHeight) {
                         $child.css("overflow-y", "auto");
