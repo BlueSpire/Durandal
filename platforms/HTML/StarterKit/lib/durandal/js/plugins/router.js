@@ -900,7 +900,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                         // Ensure the protocol is not part of URL, meaning its relative.
                         // Stop the event bubbling to ensure the link will not cause a page refresh.
-                        if (!href || !/^[a-z]+:/i.test(href)) {
+                        if (!href || !(href.charAt(0) === "#" || /^[a-z]+:/i.test(href))) {
                             evt.preventDefault();
                             history.navigate(href);
                         }
