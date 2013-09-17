@@ -15,6 +15,8 @@
 -Fix Issue #268: TS Definition file Error - Exported variable 'router' has or is using or is using private type 'durandal/typescript.rootRouter'
 -Fix Issue #264: TS Definition missing activeInstruction().config.route
 -Fix Issue #281: Infinite Loop Navigation
+-Fix Issue #292: Correctly position dialog in more scnenarios
+-Don't include a trailing slash on the root when the router navigates.
 -Tweaking the .NET Index.cshtml so that it plays nicer when using the router in push state mode.
 
 2.0.0

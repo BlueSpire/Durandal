@@ -425,7 +425,6 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 $(this).focus();
             });
         },
-
         attached: function (view) {
             //To prevent flickering in IE8, we set visibility to hidden first, and later restore it
             $(view).css("visibility", "hidden");
