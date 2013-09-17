@@ -26,8 +26,12 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         return first === '_' || first === '$';
     }
 
+    function isNode(obj) {
+        return !!(obj && obj.nodeType !== undefined && system.isNumber(obj.nodeType));
+    }
+
     function canConvertType(value) {
-        if (!value || system.isElement(value) || value.ko === ko || value.jquery) {
+        if (!value || isNode(value) || value.ko === ko || value.jquery) {
             return false;
         }
 
