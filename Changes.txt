@@ -17,6 +17,7 @@
 -Fix Issue #281: Infinite Loop Navigation
 -Fix Issue #292: Correctly position dialog in more scnenarios
 -Don't include a trailing slash on the root when the router navigates.
+-Fixing an improper node removal in one execution path of composition relating to rebinding views.
 -Tweaking the .NET Index.cshtml so that it plays nicer when using the router in push state mode.
 
 2.0.0

@@ -432,7 +432,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
                     if (currentModel != modelToBind) {
                         if (!context.composingNewView) {
-                            $(child).remove();
+                            ko.removeNode(child);
                             viewEngine.createView(child.getAttribute('data-view')).then(function(recreatedView) {
                                 composition.bindAndShow(recreatedView, context, true);
                             });
