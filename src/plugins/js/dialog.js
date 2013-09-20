@@ -341,8 +341,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {Dialog} theDialog The dialog model.
          */
         removeHost: function(theDialog) {
-            $(theDialog.host).css('display', 'none');
-            $(theDialog.blockout).css('display', 'none');
+            $(theDialog.host).css({ 'display': 'none', 'opacity': 0 });
+            $(theDialog.blockout).css({ 'display': 'none', 'opacity': 0 });
 
             setTimeout(function() {
                 ko.removeNode(theDialog.host);
