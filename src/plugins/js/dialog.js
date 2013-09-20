@@ -341,8 +341,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {Dialog} theDialog The dialog model.
          */
         removeHost: function(theDialog) {
-            $(theDialog.host).css('opacity', 0);
-            $(theDialog.blockout).css('opacity', 0);
+            $(theDialog.host).css({ 'display': 'none', 'opacity': 0 });
+            $(theDialog.blockout).css({ 'display': 'none', 'opacity': 0 });
 
             setTimeout(function() {
                 ko.removeNode(theDialog.host);
@@ -369,17 +369,18 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {object} context The composition context.
          */
         compositionComplete: function (child, parent, context) {
-            var $child = $(child);
-            var width = $child.width();
-            var height = $child.height();
             var theDialog = dialog.getDialog(context.model);
+            var $child = $(child);
+            var $host = $(theDialog.host);
+            var width = $host.width();
+            var height = $host.height();
 
-            $child.css({
-                'margin-top': (-height / 2).toString() + 'px',
-                'margin-left': (-width / 2).toString() + 'px'
+            $host.css({
+                'display': 'block',
+                'margin-top': -(height/2),
+                'margin-left': -(width/2),
+                'opacity': 1
             });
-
-            $(theDialog.host).css('opacity', 1);
 
             if ($(child).hasClass('autoclose')) {
                 $(theDialog.blockout).click(function() {

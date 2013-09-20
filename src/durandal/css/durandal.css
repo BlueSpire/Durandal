@@ -29,7 +29,7 @@
     position: fixed;
     opacity: 0;
     
-    -webkit-backface-visibility: hidden;
+    display: none;
 
     -webkit-transition: opacity 0.1s linear; 
 	-moz-transition: opacity 0.1s linear; 
