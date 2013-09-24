@@ -5,7 +5,7 @@ var fs = require('fs'),
 
 specFiles = fs.list('specs')
     .filter(function(item) {
-        return item.indexOf('spec.js') !== -1;
+        return item.match(/\w+.spec.js$/) !== null;
     })
     .map(function(item) {
         return 'specs/' + item.substring(0, item.length - 3);
