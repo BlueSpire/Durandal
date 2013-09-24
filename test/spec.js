@@ -28,3 +28,4 @@ page.onLoadFinished = function () {
 };
 
 page.open('spec.html');
+

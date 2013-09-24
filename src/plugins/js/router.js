@@ -467,15 +467,15 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 }
 
                 var parts = pair.split('='),
-		    key = parts[0],
-		    value = parts[1] && decodeURIComponent(parts[1].replace(/\+/g, ' '));
+                    key = parts[0],
+                    value = parts[1] && decodeURIComponent(parts[1].replace(/\+/g, ' '));
 
-		if (queryObject[key]) {
-		    queryObject[key] = [queryObject[key], value];
-		}
-		else {
-		    queryObject[key] = value;
-		}
+                if (queryObject[key]) {
+                    queryObject[key] = [queryObject[key], value];
+                }
+                else {
+                    queryObject[key] = value;
+                }
             }
 
             return queryObject;
