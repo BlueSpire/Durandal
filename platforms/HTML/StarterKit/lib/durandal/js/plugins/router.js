@@ -272,7 +272,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     startDeferred.resolve();
                     startDeferred = null;
                 }
-            });
+            }).fail(function(err){
+                system.error(err);
+            });;
         }
 
         /**
