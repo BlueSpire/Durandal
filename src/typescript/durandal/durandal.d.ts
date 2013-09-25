@@ -1021,6 +1021,11 @@ declare module 'plugins/history' {
          * @default false
          */
         silent?: boolean;
+
+        /**
+         * Override default history init behavior by navigating directly to this route.
+         */
+        startRoute?: string;
     }
 
     interface NavigationOptions {

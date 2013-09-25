@@ -155,7 +155,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
         }
 
         if (!history.options.silent) {
-            return history.loadUrl();
+            return history.loadUrl(options.startRoute);
         }
     };
 
