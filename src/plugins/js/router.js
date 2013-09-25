@@ -255,6 +255,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                     if (previousActivation == instance) {
                         router.attached();
+                        router.compositionComplete();
                     }
                 } else if(activator.settings.lifecycleData && activator.settings.lifecycleData.redirect){
                     redirect(activator.settings.lifecycleData.redirect);
@@ -587,15 +588,13 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         };
 
         router.attached = function() {
-            setTimeout(function() {
-                isProcessing(false);
-                router.trigger('router:navigation:attached', currentActivation, currentInstruction, router);
-                dequeueInstruction();
-            }, 10);
+            router.trigger('router:navigation:attached', currentActivation, currentInstruction, router);
         };
 
         router.compositionComplete = function(){
+            isProcessing(false);
             router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
+            dequeueInstruction();
         };
 
         /**
