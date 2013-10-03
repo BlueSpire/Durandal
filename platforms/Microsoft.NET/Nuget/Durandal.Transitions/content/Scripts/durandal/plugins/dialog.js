@@ -366,6 +366,10 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 }
             }
         },
+        attached: function (view) {
+            //To prevent flickering in IE8, we set visibility to hidden first, and later restore it
+            $(view).css("visibility", "hidden");
+        },
         /**
          * This function is called after the modal is fully composed into the DOM, allowing your implementation to do any final modifications, such as positioning or animation. You can obtain the original dialog object by using `getDialog` on context.model.
          * @method compositionComplete
@@ -414,6 +418,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
 
                     $(theDialog.host).css('opacity', 1);
                     $child.css("visibility", "visible");
+
+                    $child.find('.autofocus').first().focus();
                 }, 1);
             };
 
@@ -425,14 +431,6 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                     theDialog.close();
                 });
             }
-
-            $('.autofocus', child).each(function () {
-                $(this).focus();
-            });
-        },
-        attached: function (view) {
-            //To prevent flickering in IE8, we set visibility to hidden first, and later restore it
-            $(view).css("visibility", "hidden");
         }
     });
 
