@@ -314,7 +314,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             var parts = {};
 
             if (!system.isArray(elements)) {
-                elements = [elements];
+                elements = elements ? [elements] : [];
             }
 
             for (var i = 0; i < elements.length; i++) {

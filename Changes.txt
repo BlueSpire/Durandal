@@ -19,6 +19,7 @@
 -Fix Issues #266 and #305: Router 2.0 fails to render views when cacheViews is not defined/Navigating from one view to another hangs the application.
 -Fix Issue #310: Router Swallows errors from activate() promise
 -Fix Issue #319: dialog:autofocus was being called on last instead of first tagged element
+-Fix Issue #316: a Widget with no "parts" results in an exception being thrown
 -Don't include a trailing slash on the root when the router navigates.
 -Fixing an improper node removal in one execution path of composition relating to rebinding views.
 -Tweaking the .NET Index.cshtml so that it plays nicer when using the router in push state mode.
