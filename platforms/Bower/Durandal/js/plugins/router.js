@@ -690,19 +690,19 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         /**
          * Builds an observable array designed to bind a navigation UI to. The model will exist in the `navigationModel` property.
          * @method buildNavigationModel
-         * @param {number} defaultOrder The default order to use for navigation visible routes that don't specify an order. The defualt is 100.
+         * @param {number} defaultOrder The default order to use for navigation visible routes that don't specify an order. The default is 100 and each successive route will be one more than that.
          * @chainable
          */
         router.buildNavigationModel = function(defaultOrder) {
             var nav = [], routes = router.routes;
-            defaultOrder = defaultOrder || 100;
+            var fallbackOrder = defaultOrder || 100;
 
             for (var i = 0; i < routes.length; i++) {
                 var current = routes[i];
 
                 if (current.nav) {
                     if (!system.isNumber(current.nav)) {
-                        current.nav = defaultOrder;
+                        current.nav = ++fallbackOrder;
                     }
 
                     addActiveFlag(current);
