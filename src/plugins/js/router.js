@@ -350,12 +350,20 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             if (canReuseCurrentActivation(instruction)) {
                 ensureActivation(activator.create(), currentActivation, instruction);
             } else {
-                system.acquire(instruction.config.moduleId).then(function(module) {
-                    var instance = system.resolveObject(module);
+                if (instruction.config.instance) {
+                    var instance = instruction.config.instance;
+                     ensureActivation(activeItem, instance, instruction);
+                } else if (instruction.config.factory && system.isFunction(instruction.config.factory)) {
+                    var instance = instruction.config.factory(instruction);
                     ensureActivation(activeItem, instance, instruction);
-                }).fail(function(err){
-                        system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message);
-                    });
+                } else {
+					system.acquire(instruction.config.moduleId).then(function(module) {
+						var instance = system.resolveObject(module);
+						ensureActivation(activeItem, instance, instruction);
+					}).fail(function(err){
+							system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message);
+						});
+				}
             }
         }
 
