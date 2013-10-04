@@ -52,7 +52,7 @@
 
             it('applies bindings with before and after hooks', function () {
                 var bindStatus = 0;
-                spyOn(sut, 'beforeBind').andCallFake(function (dataArg, viewArg) {
+                spyOn(sut, 'binding').andCallFake(function (dataArg, viewArg) {
                     expect(dataArg).toBe(settings.data);
                     expect(viewArg).toBe(view);
                     expect(bindStatus).toBe(0);
@@ -62,7 +62,7 @@
                     expect(bindStatus).toBe(1);
                     bindStatus = 2;
                 });
-                spyOn(sut, 'afterBind').andCallFake(function (dataArg, viewArg) {
+                spyOn(sut, 'bindingComplete').andCallFake(function (dataArg, viewArg) {
                     expect(dataArg).toBe(settings.data);
                     expect(viewArg).toBe(view);
                     expect(bindStatus).toBe(2);
