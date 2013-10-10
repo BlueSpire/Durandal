@@ -60,14 +60,18 @@ define(['durandal/system', 'durandal/composition', 'jquery'], function(system, c
                     var $child = $(context.child);
 
                     $child.css(startValues);
-                    $child.animate(endValues, duration, 'swing', function () {
-                        $child.css(clearValues);
-                        endTransition();
+                    $child.animate(endValues, {
+                        duration: duration,
+                        easing: 'swing',
+                        always: function () {
+                            $child.css(clearValues);
+                            endTransition();
+                        }
                     });
                 }
 
                 if (context.activeView) {
-                    $(context.activeView).fadeOut(fadeOutDuration, startTransition);
+                    $(context.activeView).fadeOut({ duration: fadeOutDuration, always: startTransition });
                 } else {
                     startTransition();
                 }

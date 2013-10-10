@@ -24,6 +24,8 @@
 -Fix Issue #324: fix binder-spec to address beforeBind/afterBind renaming to binding/bind...
 -Fix Issue #334: add events tests
 -Fix Issue #323: Unit test errors on OSX
+-Fix Issue #333: Changed entrance animations callbacks from complete to always
+-Fix Issue #331: compositioncomplete does not get triggered
 -Don't include a trailing slash on the root when the router navigates.
 -Fixing an improper node removal in one execution path of composition relating to rebinding views.
 -Tweaking the .NET Index.cshtml so that it plays nicer when using the router in push state mode.
