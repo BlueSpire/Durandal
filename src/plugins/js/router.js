@@ -319,7 +319,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 && currentInstruction.config.moduleId == instruction.config.moduleId
                 && currentActivation
                 && ((currentActivation.canReuseForRoute && currentActivation.canReuseForRoute.apply(currentActivation, instruction.params))
-                || (currentActivation.router && currentActivation.router.loadUrl));
+                || (!currentActivation.canReuseForRoute && currentActivation.router && currentActivation.router.loadUrl));
         }
 
         function dequeueInstruction() {
