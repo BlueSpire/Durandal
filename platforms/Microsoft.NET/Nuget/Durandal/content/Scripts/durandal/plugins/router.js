@@ -192,6 +192,12 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return instance.router && instance.router.parent == router;
         }
 
+        function setCurrentInstructionRouteIsActive(flag) {
+            if (currentInstruction && currentInstruction.config.isActive) {
+                currentInstruction.config.isActive(flag)
+            }
+        }
+
         function completeNavigation(instance, instruction) {
             system.log('Navigation Complete', instance, instruction);
 
@@ -201,7 +207,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
 
             currentActivation = instance;
+
+            setCurrentInstructionRouteIsActive(false);
             currentInstruction = instruction;
+            setCurrentInstructionRouteIsActive(true);
 
             var toModuleId = system.getModuleId(currentActivation);
             if (toModuleId) {
@@ -403,8 +412,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 config.routePattern = config.route;
             }
 
+            config.isActive = config.isActive || ko.observable(false);
             router.trigger('router:route:after-config', config, router);
-
             router.routes.push(config);
 
             router.route(config.routePattern, function(fragment, queryString) {
@@ -421,12 +430,18 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         function mapRoute(config) {
             if(system.isArray(config.route)){
+                var isActive = config.isActive || ko.observable(false);
+
                 for(var i = 0, length = config.route.length; i < length; i++){
                     var current = system.extend({}, config);
+
                     current.route = config.route[i];
+                    current.isActive = isActive;
+
                     if(i > 0){
                         delete current.nav;
                     }
+
                     configureRoute(current);
                 }
             }else{
@@ -434,17 +449,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
 
             return router;
-        }
-
-        function addActiveFlag(config) {
-            if(config.isActive){
-                return;
-            }
-
-            config.isActive = ko.computed(function() {
-                var theItem = activeItem();
-                return theItem && theItem.__moduleId__ == config.moduleId;
-            });
         }
 
         /**
@@ -705,7 +709,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                         current.nav = ++fallbackOrder;
                     }
 
-                    addActiveFlag(current);
                     nav.push(current);
                 }
             }
