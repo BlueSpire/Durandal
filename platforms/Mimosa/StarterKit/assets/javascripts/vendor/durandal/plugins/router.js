@@ -892,20 +892,20 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
 
             $(document).delegate("a", 'click', function(evt){
-                rootRouter.explicitNavigation = true;
-
                 if(history._hasPushState){
                     if(!evt.altKey && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey && rootRouter.targetIsThisWindow(evt)){
-                        // Get the anchor href
                         var href = $(this).attr("href");
 
                         // Ensure the protocol is not part of URL, meaning its relative.
                         // Stop the event bubbling to ensure the link will not cause a page refresh.
-                        if (!href || !(href.charAt(0) === "#" || /^[a-z]+:/i.test(href))) {
+                        if (href && !(href.charAt(0) === "#" || /^[a-z]+:/i.test(href))) {
+                            rootRouter.explicitNavigation = true;
                             evt.preventDefault();
                             history.navigate(href);
                         }
                     }
+                }else{
+                    rootRouter.explicitNavigation = true;
                 }
             });
 

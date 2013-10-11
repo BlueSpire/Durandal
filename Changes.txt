@@ -27,6 +27,7 @@
 -Fix Issue #333: Changed entrance animations callbacks from complete to always
 -Fix Issue #331: compositioncomplete does not get triggered
 -Fix Issue #330: router canReuseCurrentActivation() function is not quite right
+-Fix Issue #307: Router handling of null/undefined href is possibly reversed?
 -Don't include a trailing slash on the root when the router navigates.
 -Fixing an improper node removal in one execution path of composition relating to rebinding views.
 -Tweaking the .NET Index.cshtml so that it plays nicer when using the router in push state mode.
