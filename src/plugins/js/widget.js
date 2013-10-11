@@ -68,6 +68,7 @@ define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], functi
             };
 
             ko.virtualElements.allowedBindings[kind] = true;
+            composition.composeBindings.push(kind + ':');
         },
         /**
          * Maps views and module to the kind identifier if a non-standard pattern is desired.
@@ -180,6 +181,7 @@ define(['durandal/system', 'durandal/composition', 'jquery', 'knockout'], functi
                 }
             };
 
+            composition.composeBindings.push(config.bindingName + ':');
             ko.virtualElements.allowedBindings[config.bindingName] = true;
         }
     };

@@ -17,9 +17,9 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         compositionCount = 0,
         compositionDataKey = 'durandal-composition-data',
         partAttributeName = 'data-part',
-        partAttributeSelector = '[' + partAttributeName + ']',
         bindableSettings = ['model', 'view', 'transition', 'area', 'strategy', 'activationData'],
-        visibilityKey = "durandal-visibility-data";
+        visibilityKey = "durandal-visibility-data",
+        composeBindings = ['compose:'];
 
     function getHostState(parent) {
         var elements = [];
@@ -166,7 +166,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
     function replaceParts(context){
         var parts = cloneNodes(context.parts);
-        var replacementParts = composition.getParts(parts);
+        var replacementParts = composition.getParts(parts, null, true);
         var standardParts = composition.getParts(context.child);
 
         for (var partId in replacementParts) {
@@ -201,6 +201,21 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         view.style.display = ko.utils.domData.get(view, visibilityKey);
     }
 
+    function hasComposition(element){
+        var dataBind = element.getAttribute('data-bind');
+        if(!dataBind){
+            return false;
+        }
+
+        for(var i = 0, length = composeBindings.length; i < length; i++){
+            if(dataBind.indexOf(composeBindings[i]) > -1){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @class CompositionTransaction
      * @static
@@ -221,6 +236,12 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
      * @static
      */
     composition = {
+        /**
+         * An array of all the binding handler names (includeing :) that trigger a composition.
+         * @property {string} composeBindings
+         * @default ['compose:']
+         */
+        composeBindings:composeBindings,
         /**
          * Converts a transition name to its moduleId.
          * @method convertTransitionToModuleId
@@ -310,28 +331,32 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
          * @param {DOMElement\DOMElement[]} elements The element(s) to search for parts.
          * @return {object} An object keyed by part.
          */
-        getParts: function(elements) {
-            var parts = {};
+        getParts: function(elements, parts, isReplacementSearch) {
+            parts = parts || {};
 
-            if (!system.isArray(elements)) {
-                elements = elements ? [elements] : [];
+            if (!elements) {
+                return parts;
             }
 
-            for (var i = 0; i < elements.length; i++) {
+            if (elements.length === undefined) {
+                elements = [elements];
+            }
+
+            for (var i = 0, length = elements.length; i < length; i++) {
                 var element = elements[i];
 
                 if (element.getAttribute) {
+                    if(!isReplacementSearch && hasComposition(element)){
+                        continue;
+                    }
+
                     var id = element.getAttribute(partAttributeName);
                     if (id) {
                         parts[id] = element;
                     }
 
-                    var childParts = $(partAttributeSelector, element)
-                        .not($('[data-bind] ' + partAttributeSelector, element));
-
-                    for (var j = 0; j < childParts.length; j++) {
-                        var part = childParts.get(j);
-                        parts[part.getAttribute(partAttributeName)] = part;
+                    if(!isReplacementSearch && element.hasChildNodes()){
+                        composition.getParts(element.childNodes, parts);
                     }
                 }
             }
