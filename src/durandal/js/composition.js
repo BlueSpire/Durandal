@@ -64,6 +64,14 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         }
     }
 
+    function cleanUp(context){
+        delete context.activeView;
+        delete context.viewElements;
+        //delete context.parent;
+        //delete context.child;
+        //delete context.bindingContext;
+    }
+
     function tryActivate(context, successCallback, skipActivation) {
         if(skipActivation){
             successCallback();
@@ -82,6 +90,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                 successCallback();
             } else {
                 endComposition();
+                cleanUp(context);
             }
         } else {
             successCallback();
@@ -374,6 +383,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
                 context.triggerAttach();
                 endComposition();
+                cleanUp(context);
             }else if (shouldTransition(context)) {
                 var transitionModuleId = this.convertTransitionToModuleId(context.transition);
 
@@ -396,6 +406,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
                         context.triggerAttach();
                         endComposition();
+                        cleanUp(context);
                     });
                 }).fail(function(err){
                     system.error('Failed to load transition (' + transitionModuleId + '). Details: ' + err.message);
@@ -426,6 +437,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
                 context.triggerAttach();
                 endComposition();
+                cleanUp(context);
             }
         },
         bindAndShow: function (child, context, skipActivation) {
