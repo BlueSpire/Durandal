@@ -29,6 +29,8 @@
 -Fix Issue #330: router canReuseCurrentActivation() function is not quite right
 -Fix Issue #307: Router handling of null/undefined href is possibly reversed?
 -Fix Issue #303: Multiple route are active when are base on single viewmodel
+-Fix Issue #304: Heap Size growing, DOM element detached
+-Fix Issue #256: [data-part]'s nested in [data-bind] elements get removed from childParts in widgets
 -Don't include a trailing slash on the root when the router navigates.
 -Fixing an improper node removal in one execution path of composition relating to rebinding views.
 -Tweaking the .NET Index.cshtml so that it plays nicer when using the router in push state mode.

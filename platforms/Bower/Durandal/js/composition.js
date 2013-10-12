@@ -72,9 +72,6 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
     function cleanUp(context){
         delete context.activeView;
         delete context.viewElements;
-        //delete context.parent;
-        //delete context.child;
-        //delete context.bindingContext;
     }
 
     function tryActivate(context, successCallback, skipActivation) {
