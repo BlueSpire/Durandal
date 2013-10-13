@@ -160,7 +160,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
         createCompositionSettings: function(obj, dialogContext) {
             var settings = {
                 model:obj,
-                activate:false
+                activate:false,
+                transition: false
             };
 
             if (dialogContext.attached) {

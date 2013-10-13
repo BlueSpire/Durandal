@@ -33,6 +33,7 @@
 -Fix Issue #256: [data-part]'s nested in [data-bind] elements get removed from childParts in widgets
 -Fix Issue #284: Publish 1.X Docs Publicly
 -Fix Issue #317: Put Samples Online
+-Fix Issue #308: dialog isn't positioned correctly when is set composition.defaultTransitionName
 -Don't include a trailing slash on the root when the router navigates.
 -Fixing an improper node removal in one execution path of composition relating to rebinding views.
 -Tweaking the .NET Index.cshtml so that it plays nicer when using the router in push state mode.

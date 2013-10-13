@@ -371,7 +371,9 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         },
         cloneNodes:cloneNodes,
         finalize: function (context) {
-            context.transition = context.transition || this.defaultTransitionName;
+            if(context.transition === undefined) {
+                context.transition = this.defaultTransitionName;
+            }
 
             if(!context.child && !context.activeView){
                 if (!context.cacheViews) {
