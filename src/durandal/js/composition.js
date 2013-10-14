@@ -168,13 +168,17 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
     }
 
     function removePreviousView(context){
-        var children = context.childElements, i, len;
+        var children = ko.virtualElements.childNodes(context.parent), i, len;
 
-        if(!children || !children.length){
-            return;
+        if(!system.isArray(children)){
+            var arrayChildren = [];
+            for(i = 0, len = children.length; i < len; i++){
+                arrayChildren[i] = children[i];
+            }
+            children = arrayChildren;
         }
 
-        for(i = 0,len = children.length; i < len; i++){
+        for(i = 1,len = children.length; i < len; i++){
             ko.removeNode(children[i]);
         }
     }
