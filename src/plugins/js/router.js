@@ -255,11 +255,12 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     completeNavigation(instance, instruction);
 
                     if (hasChildRouter(instance)) {
-                        queueInstruction({
-                            router: instance.router,
-                            fragment: instruction.fragment,
-                            queryString: instruction.queryString
-                        });
+                        var fullFragment = instruction.fragment;
+                        if (instruction.queryString) {
+                            fullFragment += "?" + instruction.queryString;
+                        }
+
+                        instance.router.loadUrl(fullFragment);
                     }
 
                     if (previousActivation == instance) {
@@ -340,16 +341,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             queue = [];
 
             if (!instruction) {
-                return;
-            }
-
-            if (instruction.router) {
-                var fullFragment = instruction.fragment;
-                if (instruction.queryString) {
-                    fullFragment += "?" + instruction.queryString;
-                }
-
-                instruction.router.loadUrl(fullFragment);
                 return;
             }
 
