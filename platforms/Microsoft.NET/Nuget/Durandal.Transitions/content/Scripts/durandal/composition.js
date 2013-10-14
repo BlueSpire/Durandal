@@ -120,23 +120,9 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
             context.child.setAttribute(activeViewAttributeName, true);
 
-            if (context.composingNewView && context.model) {
-                if (context.model.compositionComplete) {
-                    composition.current.complete(function () {
-                        context.model.compositionComplete(context.child, context.parent, context);
-                    });
-                }
-
-                if (context.model.detached) {
-                    ko.utils.domNodeDisposal.addDisposeCallback(context.child, function () {
-                        context.model.detached(context.child, context.parent, context);
-                    });
-                }
-            }
-
-            if (context.compositionComplete) {
-                composition.current.complete(function () {
-                    context.compositionComplete(context.child, context.parent, context);
+            if (context.composingNewView && context.model && context.model.detached) {
+                ko.utils.domNodeDisposal.addDisposeCallback(context.child, function () {
+                    context.model.detached(context.child, context.parent, context);
                 });
             }
         }
@@ -592,11 +578,23 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
          * @param {object} [bindingContext] The current binding context.
          */
         compose: function (element, settings, bindingContext, fromBinding) {
-            compositionCount++;
-
             if(!fromBinding){
                 settings = composition.getSettings(function() { return settings; }, element);
             }
+
+            compositionCount++;
+
+            if (settings.compositionComplete) {
+                compositionCompleteCallbacks.push(function () {
+                    settings.compositionComplete(settings.child, settings.parent, settings);
+                });
+            }
+
+            compositionCompleteCallbacks.push(function () {
+                if(settings.composingNewView && settings.model && settings.model.compositionComplete){
+                    settings.model.compositionComplete(settings.child, settings.parent, settings);
+                }
+            });
 
             var hostState = getHostState(element);
 
