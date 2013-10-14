@@ -67,7 +67,6 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
     function cleanUp(context){
         delete context.activeView;
         delete context.viewElements;
-        delete context.childElements;
     }
 
     function tryActivate(context, successCallback, skipActivation) {
@@ -601,7 +600,6 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             settings.parent = element;
             settings.triggerAttach = triggerAttach;
             settings.bindingContext = bindingContext;
-            settings.childElements = hostState.childElements;
 
             if (settings.cacheViews && !settings.viewElements) {
                 settings.viewElements = hostState.childElements;
