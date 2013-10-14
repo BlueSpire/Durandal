@@ -72,6 +72,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
     function cleanUp(context){
         delete context.activeView;
         delete context.viewElements;
+        delete context.childElements;
     }
 
     function tryActivate(context, successCallback, skipActivation) {
@@ -185,20 +186,14 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         }
     }
 
-    function removePreviousView(parent){
-        var children = ko.virtualElements.childNodes(parent), i, len;
+    function removePreviousView(context){
+        var children = context.childElements, i, len;
 
-        if(!system.isArray(children)){
-            var arrayChildren = [];
-
-            for(i = 0, len = children.length; i < len; i++){
-                arrayChildren[i] = children[i];
-            }
-
-            children = arrayChildren;
+        if(!children || !children.length){
+            return;
         }
 
-        for(i = 1,len = children.length; i < len; i++){
+        for(i = 0,len = children.length; i < len; i++){
             ko.removeNode(children[i]);
         }
     }
@@ -399,7 +394,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                             if(!context.child){
                                 ko.virtualElements.emptyNode(context.parent);
                             }else{
-                                removePreviousView(context.parent);
+                                removePreviousView(context);
                             }
                         }else if(context.activeView){
                             var instruction = binder.getBindingInstruction(context.activeView);
@@ -432,7 +427,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                         }
                     } else {
                         if (!context.cacheViews) {
-                            removePreviousView(context.parent);
+                            removePreviousView(context);
                         }
 
                         show(context.child);
@@ -609,6 +604,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             settings.parent = element;
             settings.triggerAttach = triggerAttach;
             settings.bindingContext = bindingContext;
+            settings.childElements = hostState.childElements;
 
             if (settings.cacheViews && !settings.viewElements) {
                 settings.viewElements = hostState.childElements;
