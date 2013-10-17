@@ -166,7 +166,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
 
         //if this was originally an observableArray, then always check to see if we need to add/replace the array methods (if newValue was an entirely new array)
         if (isArray) {
-            if (!val.destroyAll) {
+            if (!val || !val.destroyAll) {
                 //don't allow null, force to an empty array
                 if (!val) {
                     val = [];
