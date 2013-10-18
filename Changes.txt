@@ -34,6 +34,7 @@
 -Fix Issue #284: Publish 1.X Docs Publicly
 -Fix Issue #317: Put Samples Online
 -Fix Issue #308: dialog isn't positioned correctly when is set composition.defaultTransitionName
+-Fix Issue #338: Old custom almond script used
 -Improved ordering of compositionComplete callbacks.
 -Some perf improvements in the composition engine.
 -Don't include a trailing slash on the root when the router navigates.
