@@ -56,7 +56,11 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                 var i = compositionCompleteCallbacks.length;
 
                 while(i--) {
-                    compositionCompleteCallbacks[i]();
+                    try{
+                        compositionCompleteCallbacks[i]();
+                    }catch(e){
+                        system.error(e);
+                    }
                 }
 
                 compositionCompleteCallbacks = [];
@@ -75,19 +79,27 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         } else if (context.activate && context.model && context.model.activate) {
             var result;
 
-            if(system.isArray(context.activationData)) {
-                result = context.model.activate.apply(context.model, context.activationData);
-            } else {
-                result = context.model.activate(context.activationData);
-            }
+            try{
+                if(system.isArray(context.activationData)) {
+                    result = context.model.activate.apply(context.model, context.activationData);
+                } else {
+                    result = context.model.activate(context.activationData);
+                }
 
-            if(result && result.then) {
-                result.then(successCallback);
-            } else if(result || result === undefined) {
-                successCallback();
-            } else {
-                endComposition();
-                cleanUp(context);
+                if(result && result.then) {
+                    result.then(successCallback, function(reason) {
+                        system.error(reason);
+                        successCallback();
+                    });
+                } else if(result || result === undefined) {
+                    successCallback();
+                } else {
+                    endComposition();
+                    cleanUp(context);
+                }
+            }
+            catch(e){
+                system.error(e);
             }
         } else {
             successCallback();
@@ -102,22 +114,30 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         }
 
         if (context.child) {
-            if (context.model && context.model.attached) {
-                if (context.composingNewView || context.alwaysTriggerAttach) {
-                    context.model.attached(context.child, context.parent, context);
+            try{
+                if (context.model && context.model.attached) {
+                    if (context.composingNewView || context.alwaysTriggerAttach) {
+                        context.model.attached(context.child, context.parent, context);
+                    }
                 }
-            }
 
-            if (context.attached) {
-                context.attached(context.child, context.parent, context);
-            }
+                if (context.attached) {
+                    context.attached(context.child, context.parent, context);
+                }
 
-            context.child.setAttribute(activeViewAttributeName, true);
+                context.child.setAttribute(activeViewAttributeName, true);
 
-            if (context.composingNewView && context.model && context.model.detached) {
-                ko.utils.domNodeDisposal.addDisposeCallback(context.child, function () {
-                    context.model.detached(context.child, context.parent, context);
-                });
+                if (context.composingNewView && context.model && context.model.detached) {
+                    ko.utils.domNodeDisposal.addDisposeCallback(context.child, function () {
+                        try{
+                            context.model.detached(context.child, context.parent, context);
+                        }catch(e2){
+                            system.error(e2);
+                        }
+                    });
+                }
+            }catch(e){
+                system.error(e);
             }
         }
 
@@ -576,11 +596,11 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
          * @param {object} [bindingContext] The current binding context.
          */
         compose: function (element, settings, bindingContext, fromBinding) {
+            compositionCount++;
+
             if(!fromBinding){
                 settings = composition.getSettings(function() { return settings; }, element);
             }
-
-            compositionCount++;
 
             if (settings.compositionComplete) {
                 compositionCompleteCallbacks.push(function () {

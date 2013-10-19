@@ -36,6 +36,7 @@
 -Fix Issue #308: dialog isn't positioned correctly when is set composition.defaultTransitionName
 -Fix Issue #338: Old custom almond script used
 -Fix Issue #341: pushState href="" (empty string) not recognized as internal navigation
+-Fix Issue #339: exceptions thrown in compositionComplete callbacks prevent other callbacks to run. (other callback may need handling as well.)
 -Improved ordering of compositionComplete callbacks.
 -Some perf improvements in the composition engine.
 -Don't include a trailing slash on the root when the router navigates.
