@@ -17,7 +17,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     var escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
     var startDeferred, rootRouter;
     var trailingSlash = /\/$/;
-
+    
     function routeStringToRegExp(routeString) {
         routeString = routeString.replace(escapeRegExp, '\\$&')
             .replace(optionalParam, '(?:$1)?')
@@ -369,7 +369,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         // treated as `null` to normalize cross-browser behavior.
         function createParams(routePattern, fragment, queryString) {
             var params = routePattern.exec(fragment).slice(1);
-
+            
             for (var i = 0; i < params.length; i++) {
                 var current = params[i];
                 params[i] = current ? decodeURIComponent(current) : null;
@@ -639,6 +639,45 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         router.convertRouteToTitle = function(route) {
             var value = stripParametersFromRoute(route);
             return value.substring(0, 1).toUpperCase() + value.substring(1);
+        };
+
+        /**
+         * Converts a moduleId and a object to a hash
+         * @method hashFor
+         * @param {string} moduleId
+         * @param {object} namedParams the parameters for the route. For examle route ursers(/:id) -> { id: 'foo' }
+         */
+        router.hashFor = function (moduleId, namedParams) {
+
+            for (var i = 0; i < router.routes.length; i++) {
+                var route = router.routes[i];
+
+                if (route.moduleId === moduleId) {
+                    var hash = route.hash;
+                    if (namedParams) {
+                        hash = hash.replace(optionalParam, function (match) {
+                            var paramName = match.match(/\w+/)[0];
+                            var paramValue = namedParams[paramName];
+                            if (paramValue) {
+                                return match.replace(/[()]/g, '');
+                            } else {
+                                return '';
+                            }
+                        })
+                        .replace(namedParam, function (match) {
+                            var paramName = match.match(/\w+/)[0];
+                            var paramValue = namedParams[paramName];
+                            if (paramValue) {
+                                return paramValue;
+                            } else {
+                                return match; // failed
+                            }
+                        });
+                    }
+                    return hash;
+                }
+            }
+            return undefined;
         };
 
         /**
