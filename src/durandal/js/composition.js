@@ -418,7 +418,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                 if (context.child != context.activeView) {
                     if (context.cacheViews && context.activeView) {
                         var instruction = binder.getBindingInstruction(context.activeView);
-                        if(instruction.cacheViews != undefined && !instruction.cacheViews){
+                        if(!instruction || (instruction.cacheViews != undefined && !instruction.cacheViews)){
                             ko.removeNode(context.activeView);
                         }else{
                             hide(context.activeView);
