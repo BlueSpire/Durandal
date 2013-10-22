@@ -20,7 +20,7 @@ Durandal Release Checklist
 9. Build Zips - Durandal, StarterKit, Samples
 	* Include Changes.txt
 	* Include License.txt
-10. Update Website with New Downloads
+10. Update Website with New Downloads and API Docs
 11. Test Mimosa
 12. Publish Bower
 	* Include License and Readme
