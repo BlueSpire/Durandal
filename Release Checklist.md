@@ -32,8 +32,8 @@ Durandal Release Checklist
 14. Publish Mimosa Skeleton via Github
 15. Publish Nugets
 16. Publish VSIX
-
-17. Release on Github
+17. Publish TypeScript definitions
+18. Release on Github
 	* Tag with semver
 	* Attach all artifacts
-18. Publish Website
+19. Publish Website
