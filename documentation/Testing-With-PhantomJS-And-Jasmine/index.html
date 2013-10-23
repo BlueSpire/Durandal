@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="format-detection" content="telephone=no"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>Docs - Testing with PhantomJS and Jasmine | Durandal</title>
+		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
+		<meta name="author" content="EisenbergEffect" />
+
+		<meta http-equiv="X-Powered-By" content="DocPad v6.38.1"/>
+
+		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+		<link rel="apple-touch-icon" href="images/icon.png"/>
+
+		<!-- Shims: IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Styles -->
+		<link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+		<script type="text/javascript">
+		    if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+		        var msViewportStyle = document.createElement("style");
+		        var mq = "@@-ms-viewport{width:auto!important}";
+		        msViewportStyle.appendChild(document.createTextNode(mq));
+		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+		    }
+		</script>
+
+		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+		    <div class="navbar-inner">
+		        <a class="brand" href="/">
+		            <span>&nbsp;&nbsp;Durandal</span>
+		        </a>
+
+		        
+					<ul class="nav">
+						
+							<li typeof="sioc:Page" about="/pages/get-started" class="">
+								<a href="/pages/get-started" property="dc:title">Get Started</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/downloads" class="">
+								<a href="/pages/downloads" property="dc:title">Downloads</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/docs" class="">
+								<a href="/pages/docs" property="dc:title">Docs</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/support" class="">
+								<a href="/pages/support" property="dc:title">Support/Training</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/consultation" class="">
+								<a href="/pages/consultation" property="dc:title">Consultation</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/showcase" class="">
+								<a href="/pages/showcase" property="dc:title">Showcase</a>
+							</li>
+						
+						<li class="donate">
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						      <input type="hidden" name="cmd" value="_s-xclick">
+						      <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+						      <input class="btn btn-small btn-success" type="submit" name="submit" value="Donate">
+						    </form>
+						</li>
+					</ul>
+
+					<ul class="nav pull-right">
+						<li>
+							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+						</li>
+					</ul>
+				
+		    </div>
+		</div>
+
+		<section class="container content docs">
+  <h1>Testing with PhantomJS and Jasmine</h1>
+<h4> </h4>
+<p>Durandal provides the Durandal Test Framework for unit testing. This test framework uses <a href="http://phantomjs.org">PhantomJS</a> and <a href="http://pivotal.github.io/jasmine/">Jasmine</a>. As shipped with Durandal, it&#39;s focused on testing Durandal&#39;s own internal components, but it can easily be adapted for your own unit testing needs.</p>
+<p>You can obtain the test framework by downloading the entire Durandal project using git:</p>
+<pre class="prettyprint linenums">git clone https://github.com/BlueSpire/Durandal.git</pre><blockquote>
+<p><strong>Note:</strong> If you&#39;re not on Windows, you&#39;ll also need to install PhantomJS on your system, since the PhantomJS that comes with the Test Framework is an <em>.exe</em>.</p>
+</blockquote>
+<p>In your own work, you&#39;re probably not going to want to use the entire Durandal project -- you may start with a starter kit such as the [HTML Starter Kit](/version/latest/HTML StarterKit.zip), or even with your own custom setup. For the moment, the Starter Kits don&#39;t include the Test Framework, which is why you need to get it from the repository directly.</p>
+<p>Once you download the testing framework, you will need to update it&#39;s configuration. To do this edit <em>spec.html</em> in the <em>test</em> directory. In that file, you&#39;ll see that <em>require</em> is configured with some paths:</p>
+<pre class="prettyprint linenums">paths: {
+    &#39;specs&#39;: &#39;../test/specs/&#39;,
+    &#39;text&#39;: &#39;../lib/require/text&#39;,
+    &#39;durandal&#39;: &#39;durandal/js&#39;,
+    &#39;plugins&#39; : &#39;plugins/js&#39;,
+    &#39;transitions&#39; : &#39;transitions/js&#39;,
+    &#39;knockout&#39;: &#39;../lib/knockout/knockout-2.3.0&#39;,
+    &#39;jquery&#39;: &#39;../lib/jquery/jquery-1.9.1&#39;
+}</pre><p>For the HTML Starter Kit, with the <em>test</em> directory copied into the top-level directory at the same level as <em>lib</em>, <em>css</em>, and <em>app</em>, you only have to change three of them:</p>
+<pre class="prettyprint linenums">&#39;durandal&#39;: &#39;../lib/durandal/js&#39;,
+&#39;plugins&#39; : &#39;../lib/durandal/js/plugins&#39;,
+&#39;transitions&#39; : &#39;/lib/durandal/js/transitions&#39;,</pre><p>In general, you just need to find the <em>durandal</em>, <em>plugins</em>, and <em>transitions</em> directories and set the paths appropriately. It&#39;s also helpful to add a path to the app directory where your code will live:</p>
+<pre class="prettyprint linenums">&#39;app&#39;: &#39;../app&#39;,</pre><p>You can test your paths by removing the existing test modules from <em>test/specs</em> (which will no longer work, since they are for Durandal&#39;s internal testing) and replacing them with a new, dummy test module such as:</p>
+<pre class="prettyprint linenums">define([&#39;viewmodels/flickr&#39;], function (flickr) {
+    describe(&#39;&#39;, function(){
+        it(&#39;returns true&#39;, function () {
+            expect(true).toBe(true);
+        });
+    });
+});</pre><p>This sets up testing for the <em>flickr</em> module that ships with the HTML Starter Kit. If you&#39;re using some other setup, you&#39;ll need a different test. But this shows how it&#39;s done. It doesn&#39;t test every path, but since the <em>flickr</em> module uses the <em>durandal</em> and <em>plugin</em> paths, it tells you whether you&#39;re on the right track. </p>
+<p>To run the test type the following on the command prompt:</p>
+<pre class="prettyprint linenums">$ phantomjs spec.js</pre><p>You&#39;ll know that you don&#39;t have the paths set correctly if you get an error like the following, which leads to a hang of PhantomJS:</p>
+<pre class="prettyprint linenums">Running spec files: specs/mytest.spec
+Error: Script error
+http://requirejs.org/docs/errors.html#scripterror
+
+  file:///Users/garyrob/Source/Durandal%20Projects/HTML%20StarterKit%20(Durandal%202.0)%20Exp%202/lib/require/require.js:32
+  file:///Users/garyrob/Source/Durandal%20Projects/HTML%20StarterKit%20(Durandal%202.0)%20Exp%202/lib/require/require.js:12 in C
+  file:///Users/garyrob/Source/Durandal%20Projects/HTML%20StarterKit%20(Durandal%202.0)%20Exp%202/lib/require/require.js:29</pre><p>If all is well, you should see something like:</p>
+<pre class="prettyprint linenums">Running spec files: specs/mytest.spec
+Starting...
+
+Finished
+-----------------
+1 spec, 0 failures in 0.002s.</pre><p>Now you&#39;re ready to unit test your new Durandal project!</p>
+
+</section>
+
+		<footer class="footer">
+		  <div class="container">
+		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a>.</p>
+		    <p>Site design crafted by <a href="https://twitter.com/@scriswell" target="_blank">@scriswell</a> of <a href="https://twitter.com/@The_UI_Guy" target="_blank">@The_UI_Guy</a> and <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		  </div>
+		  <br />
+		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	        <input type="hidden" name="cmd" value="_s-xclick">
+	        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+	        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Donate Now.">
+	      </form>
+		</footer>
+
+		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/modernizr.js"></script>
+		<script src="/vendor/prettify.js"></script>
+		<script src="/scripts/behavior.js"></script>
+
+		
+
+		
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-38441871-1']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+		
+	</body>
+</html>

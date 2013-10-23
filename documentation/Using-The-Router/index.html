@@ -221,6 +221,9 @@
     params: object[],
     queryParams: object
 }</pre><p>You can examine the <code>fragment</code>, <code>params</code> and <code>queryParams</code> to determine a module. Then, simply set <code>config.moduleId</code> and the router will handle the navigation from there. You can also return a promise from this callback, if you need to asynchronously determine the module to handle the request. It&#39;s probably also a good idea to set the <code>title</code> property on the config as well.</p>
+<blockquote>
+<p><strong>Note:</strong> You should always call <a href="/documentation/api#class/Router/method/mapUnknownRoutes">mapUnknownRoutes()</a> last, after all your standard mapping configuration is done.</p>
+</blockquote>
 <h3>Child Routers</h3>
 <p>Your application has one main router, but can have multiple child routers. This provides you with a way to handle more complex deep-linking scenarios as well as encapsulate routes within features areas. Typically, the parent router will map a route with a splat. The child router will then work relative to that route, mapping its own set of routes. Let&#39;s look at an example from the samples, shortened for clarity:</p>
 <p><figcaption>Samples shell.js</figcaption></p>
@@ -255,6 +258,16 @@
     };
 });</pre><p>We start by requiring the root router and calling <a href="/documentation/api#class/Router/method/createChildRouter">router.createChildRouter()</a>. This creates a new router. Notice that we have set it as a property on the module, called <em>router</em>. This follows the same pattern we used with the root router, and you can use the exact same binding in your child view. We then make use of an API called <a href="/documentation/api#class/Router/method/makeRelative">makeRelative</a> by passing it a simple configuration object. The <code>moduleId</code> parameter indicates that we want all modules in our route config to be prefixed with this, affectively making the modules relative to a folder. The second option <code>fromParent</code> makes all our routes relative to the parent router&#39;s route. In this case that means that <code>route:&#39;simpleList&#39;</code> will be relative to the parent route of <code>route:&#39;knockout-samples*details&#39;</code>. The result with be a match of <code>knockout-samples/simpleList</code>. If the <code>fromParent</code> setting doesn&#39;t work for your scenario, you can provide another options <code>route</code> which works like the <code>moduleId</code> option but provides an explicit relative route for all route patterns.</p>
 <p>Now, what happens when someone actually navigates to &quot;knockout-samples/simpleList&quot;? Here&#39;s how routing works in this scenario: First the pattern &quot;knockout-samples*details&quot; will be matched at the root router level. The root router will then cause a navigation to &quot;ko/index&quot;. The root router will then detect the presence of the <code>router</code> property on this module and assume that it hosts a child router. So, it will then pass control to the child router to match next. It will then match on the full pattern and activate the &quot;ko/simpleList/index&quot; module in its view.</p>
+<h3>Module Reuse</h3>
+<p>Consider the scenario where a history change causes a navigation that results in the same module as is already active and being viewed. Normally, even though the module is the same type, it will be discarded and a new instance created. There are two exceptions to this:</p>
+<ol>
+<li>If the module has a child router associated with it. The instance will be kept.</li>
+<li>If the module has a special callback implemented, called <code>canReuseForRoute</code>, this function will be called allowing the developer to determine if the module should be discarded or not.</li>
+</ol>
+<p>When implementing <code>canReuseForRoute</code> you should return either <code>true</code> to indicate that the module instance should be reused, or <code>false</code> to indicate otherwise. This callback will receive the activation parameters from the route as its arguments, so you can make a decision based on the data.</p>
+<blockquote>
+<p><strong>Note:</strong> It may sometimes be desirable to have modules with child routers be re-created. You can use this hook to override the default behavior there as well.</p>
+</blockquote>
 <h3>Customization</h3>
 <p>There are several place you may want to override functionality of the router. Here&#39;s a list of relevant functions:</p>
 <ul>
@@ -269,7 +282,7 @@
 </ul>
 <p>The router module includes <a href="/documentation/api#module/events">events</a> capabilities, and exposes a number of interesting events you may need to tie into to customize or respond to behavior. You can find the complete list of events listed in the <a href="/documentation/api#module/router/class/Router">module API docs</a>.</p>
 <h3>Activation Options</h3>
-<p>When you call <a href="/documentation/api#module/router/method/activate">router.acivate()</a> in your shell, you can actually pass an options object. You may have noticed that the router uses hash change events by default, but there are other optoins and related settings. Here&#39;s what is available:</p>
+<p>When you call <a href="/documentation/api#module/router/method/activate">router.activate()</a> in your shell, you can actually pass an options object. You may have noticed that the router uses hash change events by default, but there are other options and related settings. Here&#39;s what is available:</p>
 <pre class="prettyprint linenums">{
     /**
      * The url root used to extract the fragment when using push state.

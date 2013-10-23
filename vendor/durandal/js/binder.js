@@ -1,5 +1,5 @@
 /**
- * Durandal 2.0.0-pre Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Durandal 2.0.1 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
@@ -10,7 +10,7 @@
  * @requires knockout
  */
 define(['durandal/system', 'knockout'], function (system, ko) {
-    var viewModelBinder,
+    var binder,
         insufficientInfoMessage = 'Insufficient Information to Bind',
         unexpectedViewMessage = 'Unexpected View Type',
         bindingInstructionKey = 'durandal-binding-instruction',
@@ -34,7 +34,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
 
     function doBind(obj, view, bindingTarget, data){
         if (!view || !bindingTarget) {
-            if (viewModelBinder.throwOnErrors) {
+            if (binder.throwOnErrors) {
                 system.error(insufficientInfoMessage);
             } else {
                 system.log(insufficientInfoMessage, view, data);
@@ -43,7 +43,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
         }
 
         if (!view.getAttribute) {
-            if (viewModelBinder.throwOnErrors) {
+            if (binder.throwOnErrors) {
                 system.error(unexpectedViewMessage);
             } else {
                 system.log(unexpectedViewMessage, view, data);
@@ -61,7 +61,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             }
 
             instruction = normalizeBindingInstruction(instruction);
-            viewModelBinder.beforeBind(data, view, instruction);
+            binder.binding(data, view, instruction);
 
             if(instruction.applyBindings){
                 system.log('Binding', viewName, data);
@@ -70,7 +70,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 ko.utils.domData.set(view, koBindingContextKey, { $data:obj });
             }
 
-            viewModelBinder.afterBind(data, view, instruction);
+            binder.bindingComplete(data, view, instruction);
 
             if (obj && obj.bindingComplete) {
                 obj.bindingComplete(view);
@@ -80,7 +80,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             return instruction;
         } catch (e) {
             e.message = e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(data);
-            if (viewModelBinder.throwOnErrors) {
+            if (binder.throwOnErrors) {
                 system.error(e);
             } else {
                 system.log(e.message);
@@ -89,26 +89,26 @@ define(['durandal/system', 'knockout'], function (system, ko) {
     }
 
     /**
-     * @class ViewModelBinderModule
+     * @class BinderModule
      * @static
      */
-    return viewModelBinder = {
+    return binder = {
         /**
          * Called before every binding operation. Does nothing by default.
-         * @method beforeBind
+         * @method binding
          * @param {object} data The data that is about to be bound.
          * @param {DOMElement} view The view that is about to be bound.
          * @param {object} instruction The object that carries the binding instructions.
          */
-        beforeBind: system.noop,
+        binding: system.noop,
         /**
          * Called after every binding operation. Does nothing by default.
-         * @method afterBind
+         * @method bindingComplete
          * @param {object} data The data that has just been bound.
          * @param {DOMElement} view The view that has just been bound.
          * @param {object} instruction The object that carries the binding instructions.
          */
-        afterBind: system.noop,
+        bindingComplete: system.noop,
         /**
          * Indicates whether or not the binding system should throw errors or not.
          * @property {boolean} throwOnErrors

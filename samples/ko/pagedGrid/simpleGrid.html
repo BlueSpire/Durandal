@@ -1,0 +1,23 @@
+﻿<div>
+    <table class="table table-striped" cellspacing="0 ">
+        <thead>
+            <tr data-bind="foreach: columns">
+                <th data-bind="text: headerText"></th>
+            </tr>
+        </thead>
+        <tbody class="table table-hover" data-bind="foreach: itemsOnCurrentPage">
+            <tr data-bind="foreach: $parent.columns">
+                <td data-bind="text: typeof rowText == 'function' ? rowText($parent) : $parent[rowText]"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <ul>
+            <!-- ko foreach: ko.utils.range(0, maxPageIndex) -->
+            <li>
+                <a href="#" data-bind="text: $data + 1, click: function () { $root.currentPageIndex($data); }"></a>
+            </li>
+            <!-- /ko -->
+        </ul>
+    </div>
+</div>

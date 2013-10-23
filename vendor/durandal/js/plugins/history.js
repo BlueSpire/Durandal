@@ -1,5 +1,5 @@
 /**
- * Durandal 2.0.0-pre Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Durandal 2.0.1 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
@@ -79,7 +79,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
     history.getFragment = function(fragment, forcePushState) {
         if (fragment == null) {
             if (history._hasPushState || !history._wantsHashChange || forcePushState) {
-                fragment = history.location.pathname;
+                fragment = history.location.pathname + history.location.search;
                 var root = history.root.replace(trailingSlash, '');
                 if (!fragment.indexOf(root)) {
                     fragment = fragment.substr(root.length);
@@ -213,8 +213,8 @@ define(['durandal/system', 'jquery'], function (system, $) {
      * Save a fragment into the hash history, or replace the URL state if the
      * 'replace' option is passed. You are responsible for properly URL-encoding
      * the fragment in advance.
-     * The options object can contain `trigger: true` if you wish to have the
-     * route callback be fired (not usually desirable), or `replace: true`, if
+     * The options object can contain `trigger: false` if you wish to not have the
+     * route callback be fired, or `replace: true`, if
      * you wish to modify the current URL without adding an entry to the history.
      * @method navigate
      * @param {string} fragment The url fragment to navigate to.
@@ -243,7 +243,13 @@ define(['durandal/system', 'jquery'], function (system, $) {
         }
 
         history.fragment = fragment;
+
         var url = history.root + fragment;
+
+        // Don't include a trailing slash on the root.
+        if(fragment === '' && url !== '/') {
+            url = url.slice(0, -1);
+        }
 
         // If pushState is available, we use it to set the fragment as a real URL.
         if (history._hasPushState) {
@@ -274,6 +280,14 @@ define(['durandal/system', 'jquery'], function (system, $) {
         if (options.trigger) {
             return history.loadUrl(fragment);
         }
+    };
+
+    /**
+     * Navigates back in the browser history.
+     * @method navigateBack
+     */
+    history.navigateBack = function() {
+        history.history.back();
     };
 
     /**

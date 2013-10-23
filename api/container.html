@@ -1,0 +1,65 @@
+<div>
+	<h1 data-bind="text: model.name"></h1>
+	<p class="lead" data-bind="markdown: model.description"></p>
+
+	<!--ko if: model.dependencies && model.dependencies.length > 0-->
+		<h3>Dependencies</h3>
+		<ul class="columns" data-bind="foreach: model.dependencies">
+			<li>
+				<a data-bind="text: $data, attr:{ href: '#module/' + $data }"></a>
+			</li>
+		</ul>
+	<!--/ko-->
+
+	<h3>Members</h3>
+	<div class="row-fluid">
+		<div class="span3">
+			<h4>Classes</h4>
+			<ul data-bind="foreach: model.classes">
+				<li>
+					<a data-bind="text: name, attr:{ href: hash }"></a>
+				</li>
+			</ul>	
+
+			<!--ko if: model.classes.length < 1-->
+				<em>None</em>
+			<!--/ko-->
+		</div>
+		<div class="span3">
+			<h4>Properties</h4>
+			<ul data-bind="foreach: model.properties">
+				<li>
+					<a data-bind="text: name, attr:{ href: hash }"></a>
+				</li>
+			</ul>	
+
+			<!--ko if: model.properties.length < 1-->
+				<em>None</em>
+			<!--/ko-->
+		</div>
+		<div class="span3">
+			<h4>Methods</h4>
+			<ul data-bind="foreach: model.methods">
+				<li>
+					<a data-bind="text: name, attr:{ href: hash }"></a>
+				</li>
+			</ul>	
+
+			<!--ko if: model.methods.length < 1-->
+				<em>None</em>
+			<!--/ko-->
+		</div>
+		<div class="span3">
+			<h4>Events</h4>
+			<ul data-bind="foreach: model.events">
+				<li>
+					<a data-bind="text: name, attr:{ href: hash }"></a>
+				</li>
+			</ul>	
+
+			<!--ko if: model.events.length < 1-->
+				<em>None</em>
+			<!--/ko-->
+		</div>
+	</div>
+</div>

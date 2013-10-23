@@ -1,0 +1,21 @@
+<div>
+	<h3 class="member-name">
+        <!--ko text: name--><!--/ko--> : <!--ko text: model.type--><!--/ko-->
+        <!--ko if: model.static-->
+        <span class="label label-warning static" title="This property exists directly on the constructor, accessible apart from any instance.">static</span>
+        <!--/ko-->
+	</h3>
+
+    <h5 class="location">
+        Defined in <a data-bind="attr:{href:model.srcHref}, text: model.file" target="_blank"></a> on line <a data-bind="attr:{href:model.lineHref}, text: model.line" target="_blank"></a>.
+    </h5>
+
+    <p class="lead" data-bind="markdown: model.description"></p>
+
+    <!--ko if: model.example-->
+        <h4>Examples</h4>
+        <div data-bind="foreach: model.example">
+            <pre class="prettyprint linenums" data-bind="text: $.trim($data)"></pre>
+        </div>
+    <!--/ko-->
+</div>
