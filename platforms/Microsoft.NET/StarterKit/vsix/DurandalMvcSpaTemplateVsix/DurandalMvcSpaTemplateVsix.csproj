@@ -74,15 +74,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages\Durandal.StarterKit.2.0.0.nupkg">
+    <Content Include="packages\Durandal.StarterKit.2.0.1.nupkg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="packages\Durandal.2.0.0.nupkg">
+    <Content Include="packages\Durandal.2.0.1.nupkg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="packages\Durandal.Transitions.2.0.0.nupkg">
+    <Content Include="packages\Durandal.Transitions.2.0.1.nupkg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
