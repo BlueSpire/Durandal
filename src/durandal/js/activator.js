@@ -136,7 +136,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 if (resultOrPromise.then) {
                     resultOrPromise.then(function(result) {
                         settings.lifecycleData = result;
-                        dfd.resolve(settings.interpretResponse(result));
+                        dfd.resolve(settings.interpretResponse.apply(settings, arguments));
                     }, function(reason) {
                         system.error(reason);
                         dfd.resolve(false);
@@ -173,7 +173,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 if (resultOrPromise.then) {
                     resultOrPromise.then(function(result) {
                         settings.lifecycleData = result;
-                        dfd.resolve(settings.interpretResponse(result));
+                        dfd.resolve(settings.interpretResponse.apply(settings, arguments));
                     }, function(reason) {
                         system.error(reason);
                         dfd.resolve(false);
