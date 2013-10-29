@@ -77,10 +77,10 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
     MessageBox.defaultViewMarkup = [
         '<div data-view="plugins/messageBox" class="messageBox">',
             '<div class="modal-header">',
-                '<h3 data-bind="text: title"></h3>',
+                '<h3 data-bind="html: title"></h3>',
             '</div>',
             '<div class="modal-body">',
-                '<p class="message" data-bind="text: message"></p>',
+                '<p class="message" data-bind="html: message"></p>',
             '</div>',
             '<div class="modal-footer" data-bind="foreach: options">',
                 '<button class="btn" data-bind="click: function () { $parent.selectOption($data); }, text: $data, css: { \'btn-primary\': $index() == 0, autofocus: $index() == 0 }"></button>',
@@ -296,6 +296,43 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                     return config.messageBoxView;
                 };
             }
+        },
+		reposition: function(child) {
+            var $child = $(child),
+                $window = $(window);
+
+            //We will clear and then set width for dialogs without width set 
+            if (!$child.data("predefinedWidth")) {
+                $child.css({ width: '' }); //Reset width
+            }
+            var width = $child.outerWidth(false),
+                height = $child.outerHeight(false),
+                windowHeight = $window.height() - 10, //leave at least 10 pixels free
+                windowWidth = $window.width() - 10, //leave at least 10 pixels free
+                constrainedHeight = Math.min(height, windowHeight), 
+                constrainedWidth = Math.min(width, windowWidth);
+
+            $child.css({
+                'margin-top': (-constrainedHeight / 2).toString() + 'px',
+                'margin-left': (-constrainedWidth / 2).toString() + 'px'
+            });
+
+            if (!$child.data("predefinedWidth")) {
+                //Ensure the correct width after margin-left has been set
+                $child.outerWidth(constrainedWidth);
+            }
+
+            if (height > windowHeight) {
+                $child.css("overflow-y", "auto");
+            } else {
+                $child.css("overflow-y", "");
+            }
+            
+            if (width > windowWidth) {
+                $child.css("overflow-x", "auto");
+            } else {
+                $child.css("overflow-x", "");
+            }
         }
     };
 
@@ -384,43 +421,24 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
 
             $child.data("predefinedWidth", $child.get(0).style.width);
 
-            var setDialogPosition = function () {
+            var setDialogPosition = function (childView, objDialog) {
                 //Setting a short timeout is need in IE8, otherwise we could do this straight away
                 setTimeout(function () {
-                    //We will clear and then set width for dialogs without width set 
-                    if (!$child.data("predefinedWidth")) {
-                        $child.css({ width: '' }); //Reset width
-                    }
-                    var width = $child.outerWidth(false);
-                    var height = $child.outerHeight(false);
-                    var windowHeight = $(window).height();
-                    var constrainedHeight = Math.min(height, windowHeight);
+					var $childView = $(childView);
+                    
+					dialog.reposition(childView);
+					
+                    $(objDialog.host).css('opacity', 1);
+                    $childView.css("visibility", "visible");
 
-                    $child.css({
-                        'margin-top': (-constrainedHeight / 2).toString() + 'px',
-                        'margin-left': (-width / 2).toString() + 'px'
-                    });
-
-                    if (!$child.data("predefinedWidth")) {
-                        //Ensure the correct width after margin-left has been set
-                        $child.outerWidth(width);
-                    }
-
-                    if (height > windowHeight) {
-                        $child.css("overflow-y", "auto");
-                    } else {
-                        $child.css("overflow-y", "");
-                    }
-
-                    $(theDialog.host).css('opacity', 1);
-                    $child.css("visibility", "visible");
-
-                    $child.find('.autofocus').first().focus();
+                    $childView.find('.autofocus').first().focus();
                 }, 1);
             };
 
-            setDialogPosition();
-            loadables.load(setDialogPosition);
+            setDialogPosition(child, theDialog);
+            loadables.load(function() {
+                setDialogPosition(child, theDialog);
+            });
 
             if ($child.hasClass('autoclose')) {
                 $(theDialog.blockout).click(function () {
