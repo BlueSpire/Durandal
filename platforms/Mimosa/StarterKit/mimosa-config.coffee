@@ -1,6 +1,5 @@
 exports.config =
-  # 0.14.12 is needed for optimization to work properly
-  minMimosaVersion:'0.14.12'
+  minMimosaVersion:'1.0.0'
 
   modules: [
     'server'
@@ -10,7 +9,7 @@ exports.config =
     'combine'
     'requirebuild-include'
     'requirebuild-textplugin-include'
-    'bower@0.9.0'
+    'bower'
     'lint'
   ]
 

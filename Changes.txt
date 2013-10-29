@@ -16,7 +16,8 @@
 -Fix Issue #264: TS Definition missing activeInstruction().config.route
 -Fix Issue #281: Infinite Loop Navigation
 -Fix Issue #292: Correctly position dialog in more scnenarios
--Fix Issues #266 and #305: Router 2.0 fails to render views when cacheViews is not defined/Navigating from one view to another hangs the application.
+-Fix Issue #266: Router 2.0 fails to render views when cacheViews is not defined
+-Fix Issue #305: Navigating from one view to another hangs the application.
 -Fix Issue #310: Router Swallows errors from activate() promise
 -Fix Issue #319: dialog:autofocus was being called on last instead of first tagged element
 -Fix Issue #316: a Widget with no "parts" results in an exception being thrown
@@ -34,6 +35,11 @@
 -Fix Issue #284: Publish 1.X Docs Publicly
 -Fix Issue #317: Put Samples Online
 -Fix Issue #308: dialog isn't positioned correctly when is set composition.defaultTransitionName
+-Fix Issue #338: Old custom almond script used
+-Fix Issue #341: pushState href="" (empty string) not recognized as internal navigation
+-Fix Issue #339: exceptions thrown in compositionComplete callbacks prevent other callbacks to run. (other callback may need handling as well.)
+-Fix Issue #342: logical `if` flow bug in observable.js -> innerSetter
+-Fix Issue #351: TypeError when redirecting to currently loaded view
 -Improved ordering of compositionComplete callbacks.
 -Some perf improvements in the composition engine.
 -Don't include a trailing slash on the root when the router navigates.
