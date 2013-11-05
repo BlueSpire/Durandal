@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="format-detection" content="telephone=no"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>Docs - Durandal's Edge | Durandal</title>
+		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
+		<meta name="author" content="EisenbergEffect" />
+
+		<meta http-equiv="X-Powered-By" content="DocPad v6.38.1"/>
+
+		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+		<link rel="apple-touch-icon" href="images/icon.png"/>
+
+		<!-- Shims: IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Styles -->
+		<link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+		<script type="text/javascript">
+		    if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+		        var msViewportStyle = document.createElement("style");
+		        var mq = "@@-ms-viewport{width:auto!important}";
+		        msViewportStyle.appendChild(document.createTextNode(mq));
+		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+		    }
+		</script>
+
+		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+		    <div class="navbar-inner">
+		        <a class="brand" href="/">
+		            <span>&nbsp;&nbsp;Durandal</span>
+		        </a>
+
+		        
+					<ul class="nav">
+						
+							<li typeof="sioc:Page" about="/pages/get-started" class="">
+								<a href="/pages/get-started" property="dc:title">Get Started</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/downloads" class="">
+								<a href="/pages/downloads" property="dc:title">Downloads</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/docs" class="">
+								<a href="/pages/docs" property="dc:title">Docs</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/support" class="">
+								<a href="/pages/support" property="dc:title">Support/Training</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/consultation" class="">
+								<a href="/pages/consultation" property="dc:title">Consultation</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/pages/showcase" class="">
+								<a href="/pages/showcase" property="dc:title">Showcase</a>
+							</li>
+						
+						<li class="donate">
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						      <input type="hidden" name="cmd" value="_s-xclick">
+						      <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+						      <input class="btn btn-small btn-success" type="submit" name="submit" value="Donate">
+						    </form>
+						</li>
+					</ul>
+
+					<ul class="nav pull-right">
+						<li>
+							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+						</li>
+					</ul>
+				
+		    </div>
+		</div>
+
+		<section class="container content docs">
+  <h1>Durandal&#39;s Edge</h1>
+<blockquote>
+<p>With so many SPA-style frameworks emerging in the last couple years, you may wonder what makes Durandal unique or different. Why would you want to choose it for your next project?</p>
+</blockquote>
+<h3>A Natural Alliance</h3>
+<p>Rather than re-invent the wheel, Durandal starts by combining and building on top of three existing libraries. Each of these libraries is very mature, has a large, active community and was strategically chosen because it meets one specific need very well. First we start with jQuery. In some ways you can think of it as a better DOM or the &quot;missing JavaScript core library&quot;. Next, we add in RequireJS, which gives us rich, declarative JavaScript modules. Finally, Knockout provides us with powerful two-way data-binding.</p>
+<p>With these three libraries as a foundation, Durandal constructs a thin integration layer and transforms them into a powerful SPA framework. In addition to strategically connecting these libraries, Durandal adds new functionality. Some things Durandal adds are:  a client-side router, rich view composition, screen state management, pub/sub, simple conventions, modals/message boxes and more...</p>
+<h3>Maximum Skill Reuse</h3>
+<p>If you’ve worked with any of the three libraries listed above, then you already have skills you can leverage on a Durandal project. You already know part of the framework. This makes it relatively easy for existing web developers to get started. The time you&#39;ve invested learning the three core libraries on prior traditional web projects translates directly to Durandal apps. Choosing Durandal is almost a &quot;no brainer&quot;.</p>
+<p>Suppose you&#39;ve never worked with jQuery, RequireJS or Knockout. Is Durandal worth your time to learn? Why not pick a different SPA framework that is &quot;all inclusive&quot;? The simple answer is YES, it is well worth your time. Here&#39;s the longer answer: Almost every major SPA framework has a way to work with the DOM, create modules and declare data bindings. No matter what framework you pick, you are going to have to make the effort to learn these things both conceptually and in terms of the chosen library&#39;s API. The difference with Durandal is that we get those capabilities from other libraries which were originally designed for traditional web development. That means that when you learn those things in the context of Durandal, you are also learning things you can directly apply to traditional web development too. It&#39;s a huge return on investment.</p>
+<h3>Powerful Modularization</h3>
+<p>All Durandal code is modularized based on the AMD standard, which is supported by our use of RequireJS.  To our knowledge, Durandal is the only SPA framework based on this de-facto standard for JavaScript modularization. As a result, Durandal&#39;s capabilities in this department far outshine everything. Because we use the AMD standard, there is no presentation-framework-specific code required to create modules. This not only keeps your own code clean, but also makes it more portable: You can write a Durandal module for use both in a SPA and in a traditional web application where Durandal itself is not even used.</p>
+<p>But that’s only the beginning of the advantages...</p>
+<p>The AMD spec is pluggable via the notion of loader plugins. These plugins can acquire and transform any resource in any way and supply it as a module dependency. Want to load some JSON data? You can do that declaratively. Want to load CoffeeScript? You can use a loader to compile it on the fly if you want. You can write loaders to do just about anything. Most of Durandal&#39;s view engine is in fact supplied by the text loader plugin. What&#39;s the really awesome thing about loaders? They can execute code both at runtime and at build time. This means you can have a loader optimize content as part of a build process, but not have to change your application code at all. It&#39;s extremely powerful.</p>
+<p>Speaking of the build process...RequireJS supplies a build tool called r.js. It essentially takes a list of modules as inputs and spits out 1-n optimized files. For a small or medium-sized application, you might choose to build to one optimized file. For larger apps, you might choose to build a shell with each feature area optimized into its own file...and download features on the fly based on live user usage. That and many more deployment scenarios are what this tool was designed for. On top of that, there are many higher level build tools that work with RequireJS. You can use Grunt, Mimosa or even Durandal&#39;s Weyland to automate the process.</p>
+<p>Language support for AMD is also great. If you are using CoffeeScript, you’ll quickly notice that it&#39;s function and block syntax makes defining modules really clean. But an even better  experience is had when using TypeScript because it has direct language support for the concept of modules. When you compile your TypeScript code you just tell it that you want AMD modules and it will spit out JavaScript ready to work with RequireJS. But that&#39;s not the end of it. The work on TypeScript modules, RequireJS and the AMD spec has been influencing the next version of JavaScript directly. RequireJS is already planning to provide a direct migration path for code written with it today to the native module implementation of the JavaScript of the future.</p>
+<h3>Beyond Unobtrusive</h3>
+<p>Because Durandal relies on AMD modules and a lite set of conventions, you actually don&#39;t see Durandal itself in your code very much. Yes, you use its APIs to configure the framework and set up your application&#39;s router, but beyond that you don&#39;t invoke Durandal much at all. You won&#39;t be calling into Durandal to create modules, controllers, models or anything else. You don&#39;t need to inherit or extend from any special classes or objects. Most code in a Durandal application is vanilla JavaScript and you could take it out and use it without the framework at all. It&#39;s particularly powerful when used in combination with the observable module, which allows you to also remove all traces of Knockout from your code as well.</p>
+<h3>Flexible Composition</h3>
+<p>Not only do you need the ability to break down complex applications into small modules, but you need to be able to &quot;compose&quot; these small pieces together again at runtime. The declarative features of the AMD specification enable you to do this with your JavaScript objects in much the same way that you would leverage IoC and even simple name-spacing in other languages. The result is powerful and flexible object composition right out of the box.</p>
+<p>But you don&#39;t just need to compose objects, you need to compose views. Fortunately, Durandal has the most powerful, declarative view composition engine available in any framework today. Here&#39;s a short list of some things you can do declaratively:</p>
+<ul>
+<li>Statically/Dynamically compose a child view into a parent, allowing the binding context of the parent to be applied to the child.</li>
+<li>Statically/Dynamically compose a child view with it&#39;s own binding context into a parent view.</li>
+<li>Statically compose a model with a dynamically changing view.</li>
+<li>Statically compose a view with a dynamically changing model.</li>
+<li>Statically/Dynamically compose in a view while overriding parts of the view with custom HTML on a case-by-case basis in the parent. It can have it&#39;s own binding context or inherit its parent&#39;s.</li>
+</ul>
+<p>This is just a few examples of what can be done. Keep in mind that in all these cases the composition can be configured with transition animations, optimized per composition site to cache views or be driven entirely by static or dynamically changing data.</p>
+<h3>Elegant Asynchronicity</h3>
+<p>Building rich clients usually involves asynchronous requests for data or other resources. Durandal was designed to handle this with elegance from the very beginning. To that point, Durandal uses promises throughout. Durandal&#39;s own API exposes all potentially asynchronous commands via promises. Internally, Durandal also understands when you use promises and it can therefor cause the binding system, router and other key features to respond appropriately. Out of the box, our promise implementation is provided by jQuery. However, existing site documentation explains how you can switch that out in favor of your favorite promise library, such as Q.</p>
+<p>If you are targeting an ES5 browser, you can then enable the observable module. When this module is active, it teaches the binding system to data-bind directly to promises. The result is that you can set up a foreach binding over a promise for an array of data. In your own code, you don&#39;t have to handle the promise yourself at all.</p>
+<h3>Navigation &amp; Screen State Management</h3>
+<p>Durandal&#39;s router is perhaps the most powerful router available today. It is configured with simple route-to-module mappings but can also be configured for convention-based routing. It automatically handles bad routes, supports hash and push state navigation and provides a lot of capabilities around data driven routes such as parameters, optional parameters, splats and query strings. Additionally, we support the notion of &quot;child routers&quot; allowing you to structure and encapsulate entire areas of your application, reducing the overall complexity of the navigation structure.</p>
+<p>In real applications you need more than just routing though. You need something which is occasionally called &quot;screen state management.&quot; What is that? Imagine you’ve got a customer filling out a form in your application. Before they save, they attempt to navigate to a new screen. The current screen is in a &quot;dirty&quot; state and the application may want to prevent the user from navigating away...or at least temporarily halt the process and ask the user what it should do with the data. In Durandal, the router supports something we call the &quot;screen activation lifecycle&quot; which allows any screen to synchronously or asynchronously control flow into and out of screens. But this functionality is implemented so that it&#39;s decoupled from the router itself, thus Durandal also uses it to handle the lifecycle of its modal dialogs. In fact, you can use it anywhere in your app, even controlling fragments of a screen and individual component activations. This is a complex bit of functionality to get right but it is critical in real applications. Most frameworks just ignore it entirely, but not Durandal.</p>
+<h3>Enterprise Ready</h3>
+<h4>Consistent Testability</h4>
+<p>SPA’s can be complex code-bases and such projects need to be tested. Durandal has this area covered well. Because we&#39;ve built on RequireJS and all of your code is built as AMD modules, you can easily fake, mock, or stub any part of the system. This applies both to your code as well as all of Durandal&#39;s modules. The test strategy is consistent.  In fact, if you want to see how to write unit tests for your application, all you have to do is fork the Durandal test suite, change some file paths and you are up and running with a test setup for yourself. If you are interested in testability, there are several articles in the documentation that expand upon this.</p>
+<h4>SEO Optimization</h4>
+<p>From the beginning of work on Durandal 2.0, SEO was considered. Interestingly, much of this work has to be handled on the server for a SPA. That said, Durandal supports all the necessary client-side hooks and configuration options to enable full Google crawling of your application. Interested in how to make it wll work? We&#39;ve got some great documentation on that.</p>
+<h4>Globalization and Localization</h4>
+<p>Modern applications need to be made available to diverse people groups. Today Durandal is being used by companies all over the world who are rolling out apps to multiple cultures. Since Durandal was designed to be pluggable, it actually only takes a few minutes to plug a localization solution into the binder. With just a few lines of code centralized in one part of your code-base, you can ensure that everything displayed on the screen is properly localized; no hassle, no fuss.</p>
+<h4>Responsible Versioning</h4>
+<p>The Durandal project follows Sematic Versioning with great rigor. APIs do not break on minor or patch releases. Minor releases contain only additions and patches contain only bug fixes. Only major version changes signal potential breakage. Those aren’t going to happen very often. When you depend on Durandal, you know exactly what the version numbers mean and what you can expect when updating. The docs from previous versions are made available perpetually and conversion guides are provided for major version changes. We handle integration of the dependent libraries for you as well.</p>
+<h4>Commercial Support and Training</h4>
+<p>Durandal has an active community that is happy to help you learn the framework as you work through your application&#39;s unique challenges. Much discussion is taking place already in our Google Group as well as on Stack Overflow. However, if that is not enough for you, or if you or your business need a safety net, Durandal has a few options available to you.  First, we have commercial support. This is a monthly subscription you can cancel any time and is priced based on the team size. We usually have clients purchase the commercial support for the few months they are working on the project and then discontinue after a successful rollout. It’s a great bargain compared to traditional consulting prices and turnaround time is very good. Additionally, Blue Spire provides customized training either delivered in person at your place of business or virtually through a series of web meetings. Pricing is usually negotiated on a case by case basis depending on the depth, time length and number of students. Finally, in the next couple of months you are going to start seeing official video training become available. Some of this will be free and some of it will be available for a reasonable price, providing you not only with a way to learn directly from us, but also to financially support the project.</p>
+<h3>Conclusion</h3>
+<p>While there are several SPA frameworks available today, only Durandal has all the benefits and characteristics listed above. But not only is it one of the most powerful and flexible options today, it also provides you with a great return on investment for your non-SPA web work. On top of all that, it’s enterprise ready and the kind of training and support you would expect is readily available. And this is just the beginning. Wait until you see what’s next...</p>
+
+</section>
+
+		<footer class="footer">
+		  <div class="container">
+		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a> of <a href="http://www.bluespire.com/" target="_blank">Blue Spire</a>.</p>
+		    <p>Site design crafted by <a href="https://twitter.com/@scriswell" target="_blank">@scriswell</a> of <a href="https://twitter.com/@The_UI_Guy" target="_blank">@The_UI_Guy</a> and <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		  </div>
+		  <br />
+		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	        <input type="hidden" name="cmd" value="_s-xclick">
+	        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+	        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Donate Now.">
+	      </form>
+		</footer>
+
+		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/modernizr.js"></script>
+		<script src="/vendor/prettify.js"></script>
+		<script src="/scripts/behavior.js"></script>
+
+		
+
+		
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-38441871-1']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+		
+	</body>
+</html>
