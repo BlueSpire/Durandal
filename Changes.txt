@@ -1,4 +1,52 @@
-﻿2.0.0
+﻿2.0.1
+-Fix Issue #259: Fragment doesn't include query when using push state
+-Fix Issue #258: Absolute links not working when using push state
+-Fix Issue #254: Bad mainConfigFile entry in the default weyland-config of the Durandal nuget package
+-Fix Issue #267: Added missing generic type arguments in the Durandal.d.ts file
+-Fix Issue #265: Undefined reference error when trying to remove the previous view binding instruction from the dom, which doesn't exist.
+-Fix Issue #261: Improving the Mimosa starter kit by adding bower support for font awesome and durandal
+-Fix Issue #271: observable.defineProperty overwrites ko
+-Fix Issue #272: Add a condition on the target attribute so that when pushState is activated, there is a way to bypass the router.
+-Fix Issue #275: The close declaration in Durandal's TypeScript d.ts file would not allow for passing result parameters. Fixed by adding a rest argument called results.
+-Fix Issue #255: router.activate Promise never resolves with 'silent' activation
+-Fix Issue #278: Fixed Route Not Found error in IE11 Preview
+-Fix Issue #279: Binding handlers added through composition.addBindingHandler don't work outside of a composition
+-Fix Issue #266: composition.bindAndShow overwrites the elements local display style
+-Fix Issue #268: TS Definition file Error - Exported variable 'router' has or is using or is using private type 'durandal/typescript.rootRouter'
+-Fix Issue #264: TS Definition missing activeInstruction().config.route
+-Fix Issue #281: Infinite Loop Navigation
+-Fix Issue #292: Correctly position dialog in more scnenarios
+-Fix Issue #266: Router 2.0 fails to render views when cacheViews is not defined
+-Fix Issue #305: Navigating from one view to another hangs the application.
+-Fix Issue #310: Router Swallows errors from activate() promise
+-Fix Issue #319: dialog:autofocus was being called on last instead of first tagged element
+-Fix Issue #316: a Widget with no "parts" results in an exception being thrown
+-Fix Issue #309: Improvements for property DurandalRouteConfiguration.nav and more consistent router ordering.
+-Fix Issue #324: fix binder-spec to address beforeBind/afterBind renaming to binding/bind...
+-Fix Issue #334: add events tests
+-Fix Issue #323: Unit test errors on OSX
+-Fix Issue #333: Changed entrance animations callbacks from complete to always
+-Fix Issue #331: compositioncomplete does not get triggered
+-Fix Issue #330: router canReuseCurrentActivation() function is not quite right
+-Fix Issue #307: Router handling of null/undefined href is possibly reversed?
+-Fix Issue #303: Multiple route are active when are base on single viewmodel
+-Fix Issue #304: Heap Size growing, DOM element detached
+-Fix Issue #256: [data-part]'s nested in [data-bind] elements get removed from childParts in widgets
+-Fix Issue #284: Publish 1.X Docs Publicly
+-Fix Issue #317: Put Samples Online
+-Fix Issue #308: dialog isn't positioned correctly when is set composition.defaultTransitionName
+-Fix Issue #338: Old custom almond script used
+-Fix Issue #341: pushState href="" (empty string) not recognized as internal navigation
+-Fix Issue #339: exceptions thrown in compositionComplete callbacks prevent other callbacks to run. (other callback may need handling as well.)
+-Fix Issue #342: logical `if` flow bug in observable.js -> innerSetter
+-Fix Issue #351: TypeError when redirecting to currently loaded view
+-Improved ordering of compositionComplete callbacks.
+-Some perf improvements in the composition engine.
+-Don't include a trailing slash on the root when the router navigates.
+-Fixing an improper node removal in one execution path of composition relating to rebinding views.
+-Tweaking the .NET Index.cshtml so that it plays nicer when using the router in push state mode.
+
+2.0.0
 -Massive reorganization of the github repo. The reorg was done to cleanly separate the library, samples and starter kit source from the platform targets and to facilitate a cleaner build process with less manual "fixup" as the list of supported platforms expands.
 -Durandal now expects to live along side 3rd party script libraries, outside of your application code. All samples and starter kits have been updated to use requirejs.path to setup the correct mapping, per platform. Additionally, the framework no longer assumes that plugins or transitions are under the durandal folder. The starter kits all use requirejs.path to map them to their actual location.
 -Durandal no longer has any dependencies on globally defined variables. It now requires everything through the module system. This means that jQuery and Knockout must be defined in order for Durandal to function properly. The samples/starter kits all set up the proper configuration to make this happen. This allows you to keep ko/jquery in global scope by using an explicit define call, giving you the same expereience as 1.x or you can now use require.paths and shim config to keep everything out of the gloabl scope if you desire.
@@ -22,7 +70,7 @@ multiple ids are passed then the promise resolves with an array of modules. syst
 -Added api docs via YUIDoc
 -Lots of bug fixes
 -Updated docs and conversion guide
--Official TypeScript defition file
+-Official TypeScript definition file
 
 1.2.0
 

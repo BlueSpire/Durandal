@@ -89,7 +89,7 @@ Copy-Item "Microsoft.NET/StarterKit/vstemplate/DurandalTemplate/DurandalTemplate
 Write-Host "Building Mimosa/StarterKit"
 
 copyDurandal "Mimosa/StarterKit/assets/javascripts/vendor/durandal" `
-		 	 "Mimosa/StarterKit/assets/stylesheets" `
+		 	 "Mimosa/StarterKit/assets/stylesheets/vendor/durandal" `
 		 	 "Mimosa/StarterKit/assets/images"
 
 copyStarterKit "Mimosa/StarterKit/assets/javascripts/app" `

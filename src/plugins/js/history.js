@@ -74,7 +74,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
     history.getFragment = function(fragment, forcePushState) {
         if (fragment == null) {
             if (history._hasPushState || !history._wantsHashChange || forcePushState) {
-                fragment = history.location.pathname;
+                fragment = history.location.pathname + history.location.search;
                 var root = history.root.replace(trailingSlash, '');
                 if (!fragment.indexOf(root)) {
                     fragment = fragment.substr(root.length);
@@ -238,7 +238,13 @@ define(['durandal/system', 'jquery'], function (system, $) {
         }
 
         history.fragment = fragment;
+
         var url = history.root + fragment;
+
+        // Don't include a trailing slash on the root.
+        if(fragment === '' && url !== '/') {
+            url = url.slice(0, -1);
+        }
 
         // If pushState is available, we use it to set the fragment as a real URL.
         if (history._hasPushState) {

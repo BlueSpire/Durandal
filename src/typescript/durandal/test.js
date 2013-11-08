@@ -115,10 +115,29 @@ define(["require", "exports", 'durandal/system', 'durandal/events', 'durandal/ac
     }
 
     function test_router() {
+        var currentActiveRoute = router.activeInstruction().config.route;
+
+        var vm = {
+            router: router
+        };
+
+        vm.router.on('test', function (x) {
+        }).map(null).activate();
+
         router.activate().then(function () {
             router.createChildRouter();
             router.handlers[0].routePattern;
             router.install();
         });
+    }
+
+    function test_observable() {
+        var o = observable(null, "test");
+
+        o.subscribe(function (x) {
+            console.log(x);
+        });
+
+        observable.convertObject({});
     }
 });
