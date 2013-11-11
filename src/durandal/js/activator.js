@@ -1,4 +1,9 @@
-﻿/**
+/**
+ * Durandal 2.0.1 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Available via the MIT license.
+ * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
+ */
+/**
  * The activator module encapsulates all logic related to screen/component activation.
  * An activator is essentially an asynchronous state machine that understands a particular state transition protocol.
  * The protocol ensures that the following series of events always occur: `canDeactivate` (previous state), `canActivate` (new state), `deactivate` (previous state), `activate` (new state).
@@ -151,20 +156,13 @@ define(['durandal/system', 'knockout'], function (system, ko) {
         }).promise();
     };
 
-    function canActivateItem(newItem, activeItem, settings, activationData) {
-        settings.lifecycleData = null;
-
-        return system.defer(function (dfd) {
-            if (newItem == activeItem()) {
-                dfd.resolve(true);
-                return;
-            }
-
-            if (newItem && newItem.canActivate) {
+    function areSameItem(newItem, activeItem) {
+        return system.defer(function(dfd) {
+            if (newItem.isSameItem) {
                 var resultOrPromise;
                 try {
-                    resultOrPromise = invoke(newItem, 'canActivate', activationData);
-                } catch (error) {
+                    resultOrPromise = newItem.isSameItem(activeItem());
+                } catch(error) {
                     system.error(error);
                     dfd.resolve(false);
                     return;
@@ -172,19 +170,58 @@ define(['durandal/system', 'knockout'], function (system, ko) {
 
                 if (resultOrPromise.then) {
                     resultOrPromise.then(function(result) {
-                        settings.lifecycleData = result;
-                        dfd.resolve(settings.interpretResponse(result));
+                        dfd.resolve(!!result);
                     }, function(reason) {
                         system.error(reason);
                         dfd.resolve(false);
                     });
+
                 } else {
-                    settings.lifecycleData = resultOrPromise;
-                    dfd.resolve(settings.interpretResponse(resultOrPromise));
+                    dfd.resolve(!!resultOrPromise);
                 }
+
             } else {
-                dfd.resolve(true);
+                dfd.resolve(newItem == activeItem())
             }
+        }).promise();
+    }
+
+    function canActivateItem(newItem, activeItem, settings, activationData) {
+        settings.lifecycleData = null;
+
+        return system.defer(function (dfd) {
+            areSameItem(newItem, activeItem).then(function(areSameItemResult) {
+                if (areSameItemResult) {
+                    dfd.resolve(true);
+                    return;
+                }
+
+                if (newItem && newItem.canActivate) {
+                    var resultOrPromise;
+                    try {
+                        resultOrPromise = invoke(newItem, 'canActivate', activationData);
+                    } catch (error) {
+                        system.error(error);
+                        dfd.resolve(false);
+                        return;
+                    }
+
+                    if (resultOrPromise.then) {
+                        resultOrPromise.then(function(result) {
+                            settings.lifecycleData = result;
+                            dfd.resolve(settings.interpretResponse(result));
+                        }, function(reason) {
+                            system.error(reason);
+                            dfd.resolve(false);
+                        });
+                    } else {
+                        settings.lifecycleData = resultOrPromise;
+                        dfd.resolve(settings.interpretResponse(resultOrPromise));
+                    }
+                } else {
+                    dfd.resolve(true);
+                }
+            });
         }).promise();
     };
 
