@@ -75,7 +75,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
      * @static
      */
     MessageBox.defaultViewMarkup = [
-        '<div data-view="plugins/messageBox" class="messageBox">',
+        '<div data-view="plugins/messageBox" class="modal-content messageBox">',
             '<div class="modal-header">',
                 '<h3 data-bind="text: title"></h3>',
             '</div>',

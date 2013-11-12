@@ -7,7 +7,7 @@
     }
 });
 
-define('jquery', function() { return jQuery; });
+define('jquery', function () { return jQuery; });
 define('knockout', ko);
 
 define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (system, app, viewLocator) {
@@ -19,8 +19,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
 
     app.configurePlugins({
         router: true,
-        dialog: true,
-        widget: true
+        dialog: true
     });
 
     app.start().then(function() {

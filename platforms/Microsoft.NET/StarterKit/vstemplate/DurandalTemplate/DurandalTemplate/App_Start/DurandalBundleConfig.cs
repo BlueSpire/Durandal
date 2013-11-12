@@ -18,8 +18,7 @@ namespace DurandalTemplate {
                 new StyleBundle("~/Content/css")
                     .Include("~/Content/ie10mobile.css")
                     .Include("~/Content/bootstrap.min.css")
-                    .Include("~/Content/bootstrap-responsive.min.css")
-                    .Include("~/Content/font-awesome.min.css")
+                    .Include("~/Content/fontawesome/font-awesome.min.css")
                     .Include("~/Content/durandal.css")
                     .Include("~/Content/starterkit.css")
                 );
