@@ -3,6 +3,7 @@
 -Fix Issue #374: Bootstrap 3.0 & Font-Awesome Update
 -Fix Issue #380: Replaced html bindings with text bindings in sample application codes
 -Fix Issue #375: Potentially insecure code in Durandal example app
+-Fix Issue #372: Better system.guid implementation
 -Updated Bootstrap to 3.0.2
 -Updated FontAwesome to 4.0.3
 -Updated Knockout to 3.0.0
