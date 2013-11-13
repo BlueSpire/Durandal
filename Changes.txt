@@ -1,4 +1,6 @@
 ﻿2.1.0
+-Fix Issue #381: Update Durandal to use KO 3
+-Fix Issue #374: Bootstrap 3.0 & Font-Awesome Update
 -Updated Bootstrap to 3.0.2
 -Updated FontAwesome to 4.0.3
 -Updated Knockout to 3.0.0
