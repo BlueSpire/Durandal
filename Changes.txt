@@ -4,6 +4,7 @@
 -Fix Issue #380: Replaced html bindings with text bindings in sample application codes
 -Fix Issue #375: Potentially insecure code in Durandal example app
 -Fix Issue #372: Better system.guid implementation
+-Fix Issue #385: Routes are case sensitive (and should not be by default)
 -Updated Bootstrap to 3.0.2
 -Updated FontAwesome to 4.0.3
 -Updated Knockout to 3.0.0

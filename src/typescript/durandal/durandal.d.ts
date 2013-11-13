@@ -1642,6 +1642,11 @@ interface DurandalRouter extends DurandalRouterBase<DurandalRouter> { }
 
 interface DurandalRootRouter extends DurandalRouterBase<DurandalRootRouter> {
     /**
+     * Makes the RegExp generated for routes case sensitive, rather than the default of case insensitive.
+     */
+    makeRoutesCaseSensitive(): void;
+
+    /**
      * Activates the router and the underlying history tracking mechanism.
      * @returns {Promise} A promise that resolves when the router is ready.
      */

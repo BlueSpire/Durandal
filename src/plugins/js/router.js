@@ -17,6 +17,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     var escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
     var startDeferred, rootRouter;
     var trailingSlash = /\/$/;
+    var routesAreCaseSensitive = false;
 
     function routeStringToRegExp(routeString) {
         routeString = routeString.replace(escapeRegExp, '\\$&')
@@ -26,7 +27,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             })
             .replace(splatParam, '(.*?)');
 
-        return new RegExp('^' + routeString + '$');
+        return new RegExp('^' + routeString + '$', routesAreCaseSensitive ? undefined : 'i');
     }
 
     function stripParametersFromRoute(route) {
@@ -841,6 +842,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     rootRouter = createRouter();
     rootRouter.explicitNavigation = false;
     rootRouter.navigatingBack = false;
+
+    /**
+     * Makes the RegExp generated for routes case sensitive, rather than the default of case insensitive.
+     * @method makeRoutesCaseSensitive
+     */
+    rootRouter.makeRoutesCaseSensitive = function(){
+        routesAreCaseSensitive = true;
+    };
 
     /**
      * Verify that the target is the current window
