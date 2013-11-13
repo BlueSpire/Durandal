@@ -1,4 +1,11 @@
-﻿2.0.1
+﻿2.1.0
+-Updated Bootstrap to 3.0.2
+-Updated FontAwesome to 4.0.3
+-Updated Knockout to 3.0.0
+-Updated RequireJS to 2.1.9
+-Updated RequireJS Text Plugin to 2.0.7
+
+2.0.1
 -Fix Issue #259: Fragment doesn't include query when using push state
 -Fix Issue #258: Absolute links not working when using push state
 -Fix Issue #254: Bad mainConfigFile entry in the default weyland-config of the Durandal nuget package
