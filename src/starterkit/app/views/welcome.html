@@ -1,9 +1,9 @@
 ﻿<section>
-    <h2 data-bind="html:displayName"></h2>
-    <blockquote data-bind="html:description"></blockquote>
+    <h2 data-bind="text:displayName"></h2>
+    <blockquote data-bind="text:description"></blockquote>
     <h3>Features</h3>
     <ul data-bind="foreach: features">
-        <li data-bind="html: $data"></li>
+        <li data-bind="text:$data"></li>
     </ul>
     <div class="alert alert-success">
       <h4>Read Me Please</h4>
