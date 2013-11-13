@@ -184,8 +184,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return false;
         };
 
-        function hasChildRouter(instance) {
-            return instance.router && instance.router.parent == router;
+        function hasChildRouter(instance, parentRouter) {
+            return instance.router && instance.router.parent == parentRouter;
         }
 
         function setCurrentInstructionRouteIsActive(flag) {
@@ -213,7 +213,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 router.trigger('router:navigation:to:' + toModuleId);
             }
 
-            if (!hasChildRouter(instance)) {
+            if (!hasChildRouter(instance, router)) {
                 router.updateDocumentTitle(instance, instruction);
             }
 
@@ -255,7 +255,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     var previousActivation = currentActivation;
                     completeNavigation(instance, instruction);
 
-                    if (hasChildRouter(instance)) {
+                    if (hasChildRouter(instance, router)) {
                         var fullFragment = instruction.fragment;
                         if (instruction.queryString) {
                             fullFragment += "?" + instruction.queryString;
