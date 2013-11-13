@@ -14,8 +14,7 @@
             { route: 'animatedTrans',       moduleId: 'animatedTrans/index',    title: 'Animated Transition',   type: 'intro',      nav: true },
             { route: 'contactsEditor',      moduleId: 'contactsEditor/index',   title: 'Contacts Editor',       type: 'detailed',   nav: true },
             { route: 'gridEditor',          moduleId: 'gridEditor/index',       title: 'Grid Editor',           type: 'detailed',   nav: true },
-            { route: 'shoppingCart',        moduleId: 'shoppingCart/index',     title: 'Shopping Cart',         type: 'detailed',   nav: true },
-            { route: 'twitterClient',       moduleId: 'twitterClient/index',    title: 'Twitter Client',        type: 'detailed',   nav: true }
+            { route: 'shoppingCart',        moduleId: 'shoppingCart/index',     title: 'Shopping Cart',         type: 'detailed',   nav: true }
         ]).buildNavigationModel();
 
     return {

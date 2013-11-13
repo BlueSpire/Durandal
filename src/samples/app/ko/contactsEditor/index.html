@@ -1,44 +1,57 @@
-﻿<style>
-    .liveExample td { vertical-align: text-top; }
-    .liveExample textarea { width: initial;  }
-</style>
-<div>
-    <h2>Grid Editor</h2>
-    <div class="well liveExample">
-        <div id='contactsList'>
-            <table class='contactsEditor'>
+﻿<div>
+    <h1>Grid Editor</h1>
+    <div class="well">
+        <div>
+            <table class="table table-bordered">
                 <tr>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Phone numbers</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Phone Numbers</th>
                 </tr>
-                <tbody data-bind="foreach: ContactsModel.contacts">
+                <tbody data-bind="foreach: contacts">
                     <tr>
-                        <td>
-                            <input data-bind='value: firstName' />
-                            <div><a href='#' data-bind='click: $root.ContactsModel.removeContact'>Delete</a></div>
+                        <td class="col-xs-4">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <a class="btn btn-danger" href='#' data-bind='click: $root.removeContact'>
+                                        <span class="fa fa-trash-o"></span>
+                                    </a>
+                                </span>
+                                <input type="text" class="form-control" data-bind='value: firstName' />
+                            </div>
                         </td>
-                        <td><input data-bind='value: lastName' /></td>
+                        <td class="col-xs-4">
+                            <input type="text" class="form-control" data-bind='value: lastName' />
+                        </td>
                         <td>
                             <table>
                                 <tbody data-bind="foreach: phones">
                                     <tr>
-                                        <td><input data-bind='value: type' /></td>
-                                        <td><input data-bind='value: number' /></td>
-                                        <td><a href='#' data-bind='click: $root.ContactsModel.removePhone'>Delete</a></td>
+                                        <td><input type="text" class="form-control" data-bind='value: type' /></td>
+                                        <td><input type="text" class="form-control" data-bind='value: number' /></td>
+                                        <td>
+                                            <a href='#' class="btn btn-danger" data-bind='click: $root.removePhone'>
+                                                <span class="fa fa-trash-o"></span>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <a href='#' data-bind='click: $root.ContactsModel.addPhone'>Add number</a>
+                            <br/>
+                            <a href='#' class="btn btn-success" data-bind='click: $root.addPhone'>Add Number</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <p>
-            <button data-bind='click: ContactsModel.addContact'>Add a contact</button>
-            <button data-bind='click: ContactsModel.save, enable: ContactsModel.contacts().length > 0'>Save to JSON</button>
-        </p>
-        <textarea data-bind='value: ContactsModel.lastSavedJson' rows='5' cols='60'> </textarea>
+        <br/>
+        <div>
+            <button class="btn btn-default" data-bind='click: addContact'>Add a Contact</button>
+            <button class="btn btn-default" data-bind='click: save, enable: contacts().length > 0'>Save to JSON</button>
+        </div>
+        <br/>
+        <div>
+            <textarea class="form-control" data-bind='value: lastSavedJson' rows='5' cols='60'></textarea>
+        </div>
     </div>
 </div>

@@ -1,49 +1,54 @@
-﻿<style>
-    .liveExample .price  { text-align: center }
-    .liveExample th { width: 11em; }
-    .liveExample input { width: 8em; float:right; text-align:right; padding-right:10px; }
-</style>
-<div>
-    <h2>Shopping Cart</h2>
-    <div class="well liveExample">
+﻿<div>
+    <h1>Shopping Cart</h1>
+    <div class="well">
         <table>
             <thead>
                 <tr>
-                    <th>Category</th>
-                    <th>Product</th>
-                    <th class="price">Price</th>
-                    <th class="quantity">Quantity</th>
-                    <th class="price">Subtotal</th>
-                    <th> </th>
+                    <th class="col-xs-3">Category</th>
+                    <th class="col-xs-3">Product</th>
+                    <th class="col-xs-2">Price</th>
+                    <th class="col-xs-1">Quantity</th>
+                    <th class="col-xs-2">Subtotal</th>
+                    <th class="col-xs-1">&nbsp;</th>
                 </tr>
             </thead>
             <tbody data-bind='foreach: Cart.lines'>
                 <tr>
-                    <td>
-                        <select data-bind='options: sampleProductCategories, optionsText: "name", optionsCaption: "Select...", value: category'> </select>
+                    <td class="col-xs-3">
+                        <select class="form-control" data-bind='options: $root.sampleProductCategories, optionsText: "name", optionsCaption: "Select...", value: category'> </select>
                     </td>
-                    <td data-bind="with: category">
-                        <select data-bind='options: products, optionsText: "name", optionsCaption: "Select...", value: $parent.product'> </select>
+                    <td class="col-xs-3" data-bind="with: category">
+                        <select class="form-control" data-bind='options: products, optionsText: "name", optionsCaption: "Select...", value: $parent.product'> </select>
                     </td>
-                    <td class='price' data-bind='with: product'>
+                    <td  class="col-xs-2" data-bind='with: product'>
                         <span data-bind='text: $root.formatCurrency(price)'> </span>
                     </td>
-                    <td class='quantity'>
-                        <input data-bind='visible: product, value: quantity, valueUpdate: "afterkeydown"' />
+                    <td  class="col-xs-1">
+                        <input type="text" class="form-control" data-bind='visible: product, value: quantity, valueUpdate: "afterkeydown"' />
                     </td>
-                    <td class='price'>
+                    <td class="col-xs-2">
                         <span data-bind='visible: product, text: $root.formatCurrency(subtotal())' > </span>
                     </td>
-                    <td>
-                        <button data-bind='click: $root.Cart.removeLine'>Remove</button>
+                    <td class="col-xs-1">
+                        <button class="btn btn-danger" data-bind='click: $root.Cart.removeLine'>
+                            <span class="fa fa-trash-o"></span>
+                        </button>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <p class='grandTotal'>
+
+        <br/>
+
+        <div>
             Total value: <span data-bind='text: formatCurrency(Cart.grandTotal())'> </span>
-        </p>
-        <button data-bind='click: Cart.addLine'>Add product</button>
-        <button data-bind='click: Cart.save'>Submit order</button>
+        </div>
+
+        <br/>
+
+        <div>
+            <button class="btn btn-default" data-bind='click: Cart.addLine'>Add Product</button>
+            <button class="btn btn-success" data-bind='click: Cart.save'>Submit Order</button>
+        </div>
     </div>
 </div>

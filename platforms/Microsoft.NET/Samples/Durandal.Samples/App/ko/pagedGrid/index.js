@@ -20,25 +20,19 @@
         pageSize: 4
     });
 
-    var addItem = function() {
-        items.push({ name: "New item", sales: 0, price: 100 });
-    };
-
-    var sortByName = function() {
-        items.sort(function(a, b) {
-            return a.name < b.name ? -1 : 1;
-        });
-    };
-
-    var jumpToFirstPage = function() {
-        gridViewModel.currentPageIndex(0);
-    };
-
     return {
         items: items,
-        addItem: addItem,
-        sortByName: sortByName,
-        jumpToFirstPage: jumpToFirstPage,
+        addItem:function() {
+            items.push({ name: "New item", sales: 0, price: 100 });
+        },
+        sortByName: function() {
+            items.sort(function(a, b) {
+                return a.name < b.name ? -1 : 1;
+            });
+        },
+        jumpToFirstPage: function() {
+            gridViewModel.currentPageIndex(0);
+        },
         gridViewModel: gridViewModel,
         SimpleGrid: SimpleGrid
     };
