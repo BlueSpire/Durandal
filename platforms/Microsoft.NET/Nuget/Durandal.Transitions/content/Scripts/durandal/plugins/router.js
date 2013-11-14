@@ -63,6 +63,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         return true;
     }
 
+    function reconstructUrl(instruction){
+        if(!instruction.queryString){
+            return instruction.fragment;
+        }
+
+        return instruction.fragment + '?' + instruction.queryString;
+    }
+
     /**
      * @class Router
      * @uses Events
@@ -233,7 +241,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             router.activeInstruction(currentInstruction);
 
             if (currentInstruction) {
-                router.navigate(currentInstruction.fragment, false);
+                router.navigate(reconstructUrl(currentInstruction), false);
             }
 
             isProcessing(false);
@@ -533,7 +541,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             router.trigger('router:route:not-found', fragment, router);
 
             if (currentInstruction) {
-                history.navigate(currentInstruction.fragment, { trigger:false, replace:true });
+                history.navigate(reconstructUrl(currentInstruction), { trigger:false, replace:true });
             }
 
             rootRouter.explicitNavigation = false;
