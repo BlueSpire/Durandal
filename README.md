@@ -1,4 +1,13 @@
-![Durandal](http://durandaljs.com/media/DURANDAL-FINAL-HI-RES-LOGO-HOR-WEB.png)
+<h1 style="text-align: center">Help Kickstart Durandal in 2014!</h1>
+<div style="text-align: center">
+View it on <a href="http://www.kickstarter.com/projects/eisenbergeffect/durandal-2014">Kickstarter</a> or <a href="http://www.crowdfundfusion.com">CrowdFundFusion</a>.
+</div>
+
+<div style="text-align: center">
+<iframe frameborder="0" height="380" scrolling="no" src="http://www.kickstarter.com/projects/eisenbergeffect/durandal-2014/widget/card.html" width="220"></iframe>
+</div>
+
+
 
 Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain. We've used it to build apps for PC, Mac, Linux, iOS and Android...and now it's your turn...
 
