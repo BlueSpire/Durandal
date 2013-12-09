@@ -7,6 +7,7 @@
 -Fix Issue #385: Routes are case sensitive (and should not be by default)
 -Fix Issue #357: Child routers which are 3 levels deep are broken with 2.0.1
 -Fix Issue #376: returning false in canDeactivate strips queryString
+-Fix Issue #354: Check for obj.prototype before reading or assigning
 -Updated Bootstrap to 3.0.2
 -Updated FontAwesome to 4.0.3
 -Updated Knockout to 3.0.0

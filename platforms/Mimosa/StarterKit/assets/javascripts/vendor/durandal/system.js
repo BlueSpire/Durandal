@@ -118,7 +118,7 @@ define(['require', 'jquery'], function(require, $) {
                 return null;
             }
 
-            if (typeof obj == 'function') {
+            if (typeof obj == 'function' && obj.prototype) {
                 return obj.prototype.__moduleId__;
             }
 
@@ -139,7 +139,7 @@ define(['require', 'jquery'], function(require, $) {
                 return;
             }
 
-            if (typeof obj == 'function') {
+            if (typeof obj == 'function' && obj.prototype) {
                 obj.prototype.__moduleId__ = id;
                 return;
             }
