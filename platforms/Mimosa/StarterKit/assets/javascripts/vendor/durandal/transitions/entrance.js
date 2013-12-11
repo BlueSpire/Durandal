@@ -45,21 +45,17 @@ define(['durandal/system', 'durandal/composition', 'jquery'], function(system, c
             } else {
                 var duration = context.duration || 500;
                 var fadeOnly = !!context.fadeOnly;
+                var $child = $(context.child);
 
                 function startTransition() {
                     scrollIfNeeded();
                     context.triggerAttach();
 
-                    var startValues = {
+                    $child.css({
                         marginLeft: fadeOnly ? '0' : '20px',
-                        marginRight: fadeOnly ? '0' : '-20px',
-                        opacity: 0,
-                        display: 'block'
-                    };
+                        marginRight: fadeOnly ? '0' : '-20px'
+                    });
 
-                    var $child = $(context.child);
-
-                    $child.css(startValues);
                     $child.animate(endValues, {
                         duration: duration,
                         easing: 'swing',
@@ -69,6 +65,8 @@ define(['durandal/system', 'durandal/composition', 'jquery'], function(system, c
                         }
                     });
                 }
+
+                $child.css({ display: 'block', opacity: .01 });
 
                 if (context.activeView) {
                     $(context.activeView).fadeOut({ duration: fadeOutDuration, always: startTransition });
