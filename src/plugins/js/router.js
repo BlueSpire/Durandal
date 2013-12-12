@@ -267,6 +267,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                         instance.router.trigger('router:route:before-child-routes', instance, instruction, router);
 
+
+                        instance.router.trigger('router:route:before-child-routes', instance, instruction, router);
+
                         var fullFragment = instruction.fragment;
                         if (instruction.queryString) {
                             fullFragment += "?" + instruction.queryString;
