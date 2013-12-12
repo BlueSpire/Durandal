@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Connects the history module's url and history tracking support to Durandal's activation and composition engine allowing you to easily build navigation-style applications.
  * @module router
  * @requires system
@@ -189,7 +189,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         function setCurrentInstructionRouteIsActive(flag) {
             if (currentInstruction && currentInstruction.config.isActive) {
-                currentInstruction.config.isActive(flag)
+                currentInstruction.config.isActive(flag);
             }
         }
 
@@ -255,6 +255,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     completeNavigation(instance, instruction);
 
                     if (hasChildRouter(instance)) {
+
+                        instance.router.trigger('router:route:before-child-routes', instance, instruction, router);
+
                         var fullFragment = instruction.fragment;
                         if (instruction.queryString) {
                             fullFragment += "?" + instruction.queryString;
@@ -603,7 +606,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         router.convertRouteToHash = function(route) {
             if(router.relativeToParentRouter){
                 var instruction = router.parent.activeInstruction(),
-                    hash = instruction.config.hash + '/' + route;
+                    hash = route ? instruction.config.hash + '/' + route : instruction.config.hash;
 
                 if(history._hasPushState){
                     hash = '/' + hash;
@@ -815,6 +818,33 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     }
                 }
             });
+
+            if (settings.dynamicHash) {
+               
+
+                router.on('router:route:after-config').then(function (config) {
+                    config.routePattern = routeStringToRegExp(config.route ? settings.dynamicHash + '/' + config.route : settings.dynamicHash);
+                    config.dynamicHash = config.dynamicHash || ko.observable(config.hash);
+                });
+
+                 router.on('router:route:before-child-routes').then(function(instance, instruction, parentRouter) {
+                    var childRouter = instance.router;
+                 
+                     for (var i = 0; i < childRouter.routes.length; i++) {
+
+                         var route = childRouter.routes[i];
+                         var params = instruction.params.slice(0);
+                         
+                         route.hash = childRouter.convertRouteToHash(route.route)
+                             .replace(namedParam, function (match) {
+                                                   return params.length > 0?params.shift() : match;  
+                             });
+
+                         route.dynamicHash(route.hash);
+
+                     }
+                });
+            }
 
             return router;
         };
