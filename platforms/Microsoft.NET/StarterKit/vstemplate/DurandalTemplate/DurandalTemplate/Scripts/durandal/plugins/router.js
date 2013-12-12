@@ -362,7 +362,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             router.activeInstruction(instruction);
 
             if (canReuseCurrentActivation(instruction)) {
-                ensureActivation(activator.create(), currentActivation, instruction);
+                var tempActivator = activator.create(currentActivation); //enforce lifecycle without re-compose
+                tempActivator.settings.areSameItem = activeItem.settings.areSameItem;
+                ensureActivation(tempActivator, currentActivation, instruction);
             } else {
                 system.acquire(instruction.config.moduleId).then(function(module) {
                     var instance = system.resolveObject(module);

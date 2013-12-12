@@ -9,6 +9,7 @@
 -Fix Issue #376: returning false in canDeactivate strips queryString
 -Fix Issue #354: Check for obj.prototype before reading or assigning
 -Fix Issue #407: Entrance Transition Bug
+-Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Updated Bootstrap to 3.0.2
 -Updated FontAwesome to 4.0.3
 -Updated Knockout to 3.0.0
