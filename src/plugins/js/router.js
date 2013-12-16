@@ -572,7 +572,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 return true;
             }
 
-            if((system.isBoolean(options) && options) || options.trigger) {
+            if((system.isBoolean(options) && options) || (system.isObject(options) && options.trigger)) {
                 rootRouter.explicitNavigation = true;
             }
             return history.navigate(fragment, options);
