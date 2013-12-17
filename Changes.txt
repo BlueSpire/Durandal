@@ -9,6 +9,9 @@
 -Fix Issue #376: returning false in canDeactivate strips queryString
 -Fix Issue #354: Check for obj.prototype before reading or assigning
 -Fix Issue #407: Entrance Transition Bug
+-Fix Issue #337: module canActivate is not fired when module is already active
+-Fix Issue #382: Allow more granular control for module comparison during activation
+-Fix Issue #293: Transitions now use CSS3 animations when available.
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Updated Bootstrap to 3.0.2
 -Updated FontAwesome to 4.0.3
