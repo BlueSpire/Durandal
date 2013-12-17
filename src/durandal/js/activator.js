@@ -151,20 +151,13 @@ define(['durandal/system', 'knockout'], function (system, ko) {
         }).promise();
     };
 
-    function canActivateItem(newItem, activeItem, settings, activationData) {
-        settings.lifecycleData = null;
-
-        return system.defer(function (dfd) {
-            if (newItem == activeItem()) {
-                dfd.resolve(true);
-                return;
-            }
-
-            if (newItem && newItem.canActivate) {
+    function areSameItem(newItem, activeItem) {
+        return system.defer(function(dfd) {
+            if (newItem.isSameItem) {
                 var resultOrPromise;
                 try {
-                    resultOrPromise = invoke(newItem, 'canActivate', activationData);
-                } catch (error) {
+                    resultOrPromise = newItem.isSameItem(activeItem());
+                } catch(error) {
                     system.error(error);
                     dfd.resolve(false);
                     return;
@@ -172,22 +165,61 @@ define(['durandal/system', 'knockout'], function (system, ko) {
 
                 if (resultOrPromise.then) {
                     resultOrPromise.then(function(result) {
-                        settings.lifecycleData = result;
-                        dfd.resolve(settings.interpretResponse(result));
+                        dfd.resolve(!!result);
                     }, function(reason) {
                         system.error(reason);
                         dfd.resolve(false);
                     });
+
                 } else {
-                    settings.lifecycleData = resultOrPromise;
-                    dfd.resolve(settings.interpretResponse(resultOrPromise));
+                    dfd.resolve(!!resultOrPromise);
                 }
+
             } else {
-                dfd.resolve(true);
+                dfd.resolve(newItem == activeItem())
             }
         }).promise();
-    };
+    }
 
+    function canActivateItem(newItem, activeItem, settings, activationData) {
+        settings.lifecycleData = null;
+
+        return system.defer(function (dfd) {
+            areSameItem(newItem, activeItem).then(function(areSameItemResult) {
+                if (areSameItemResult) {
+                    dfd.resolve(true);
+                    return;
+                }
+
+                if (newItem && newItem.canActivate) {
+                    var resultOrPromise;
+                    try {
+                        resultOrPromise = invoke(newItem, 'canActivate', activationData);
+                    } catch (error) {
+                        system.error(error);
+                        dfd.resolve(false);
+                        return;
+                    }
+
+                    if (resultOrPromise.then) {
+                        resultOrPromise.then(function(result) {
+                            settings.lifecycleData = result;
+                            dfd.resolve(settings.interpretResponse(result));
+                        }, function(reason) {
+                            system.error(reason);
+                            dfd.resolve(false);
+                        });
+                    } else {
+                        settings.lifecycleData = resultOrPromise;
+                        dfd.resolve(settings.interpretResponse(resultOrPromise));
+                    }
+                } else {
+                    dfd.resolve(true);
+                }
+            });
+        }).promise();
+    };
+    
     /**
      * An activator is a read/write computed observable that enforces the activation lifecycle whenever changing values.
      * @class Activator
