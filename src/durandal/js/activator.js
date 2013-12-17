@@ -151,11 +151,11 @@ define(['durandal/system', 'knockout'], function (system, ko) {
         }).promise();
     };
 
-    function canActivateItem(newItem, activeItem, settings, activationData) {
+    function canActivateItem(newItem, activeItem, settings, activeData, newActivationData) {
         settings.lifecycleData = null;
 
         return system.defer(function (dfd) {
-            if (newItem == activeItem()) {
+            if (settings.areSameItem(activeItem(), newItem, activeData, newActivationData)) {
                 dfd.resolve(true);
                 return;
             }
@@ -163,7 +163,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             if (newItem && newItem.canActivate) {
                 var resultOrPromise;
                 try {
-                    resultOrPromise = invoke(newItem, 'canActivate', activationData);
+                    resultOrPromise = invoke(newItem, 'canActivate', newActivationData);
                 } catch (error) {
                     system.error(error);
                     dfd.resolve(false);
@@ -224,6 +224,10 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          */
         computed.isActivating = ko.observable(false);
 
+        computed.forceActiveItem = function (item) {
+            activeItem(item);
+        };
+
         /**
          * Determines whether or not the specified item can be deactivated.
          * @method canDeactivateItem
@@ -263,7 +267,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          * @return {promise}
          */
         computed.canActivateItem = function (newItem, activationData) {
-            return canActivateItem(newItem, activeItem, settings, activationData);
+            return canActivateItem(newItem, activeItem, settings, activeData, activationData);
         };
 
         /**
@@ -299,13 +303,13 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                                 system.defer(function (dfd2) {
                                     deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2);
                                 }).promise().then(function () {
-                                    newItem = settings.beforeActivate(newItem, newActivationData);
-                                    activate(newItem, activeItem, function (result) {
-                                        activeData = newActivationData;
-                                        computed.isActivating(false);
-                                        dfd.resolve(result);
-                                    }, newActivationData);
-                                });
+                                        newItem = settings.beforeActivate(newItem, newActivationData);
+                                        activate(newItem, activeItem, function (result) {
+                                            activeData = newActivationData;
+                                            computed.isActivating(false);
+                                            dfd.resolve(result);
+                                        }, newActivationData);
+                                    });
                             } else {
                                 if (viaSetter) {
                                     computed.notifySubscribers();
@@ -590,12 +594,12 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          */
         defaults: activatorSettings,
         /**
-          * Creates a new activator.
-          * @method create
-          * @param {object} [initialActiveItem] The item which should be immediately activated upon creation of the ativator.
-          * @param {ActivatorSettings} [settings] Per activator overrides of the default activator settings.
-          * @return {Activator} The created activator.
-          */
+         * Creates a new activator.
+         * @method create
+         * @param {object} [initialActiveItem] The item which should be immediately activated upon creation of the ativator.
+         * @param {ActivatorSettings} [settings] Per activator overrides of the default activator settings.
+         * @return {Activator} The created activator.
+         */
         create: createActivator,
         /**
          * Determines whether or not the provided object is an activator or not.

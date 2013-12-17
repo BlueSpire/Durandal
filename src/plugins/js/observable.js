@@ -10,8 +10,9 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         toString = Object.prototype.toString,
         nonObservableTypes = ['[object Function]', '[object String]', '[object Boolean]', '[object Number]', '[object Date]', '[object RegExp]'],
         observableArrayMethods = ['remove', 'removeAll', 'destroy', 'destroyAll', 'replace'],
-        arrayMethods = ['pop', 'reverse', 'sort', 'shift', 'splice'],
+        arrayMethods = ['pop', 'reverse', 'sort', 'shift', 'slice'],
         additiveArrayFunctions = ['push', 'unshift'],
+        es5Functions = ['filter', 'map', 'reduce', 'reduceRight', 'forEach', 'every', 'some'],
         arrayProto = Array.prototype,
         observableArrayFunctions = ko.observableArray.fn,
         logConversion = false;
@@ -49,6 +50,12 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
 
         lookup = lookup || (original.__observable__ = {});
         lookup.__full__ = true;
+
+        es5Functions.forEach(function (methodName) {
+            observable[methodName] = function () {
+                return arrayProto[methodName].apply(original, arguments);
+            };
+        });
 
         observableArrayMethods.forEach(function(methodName) {
             original[methodName] = function() {

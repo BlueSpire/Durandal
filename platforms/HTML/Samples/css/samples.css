@@ -5,7 +5,6 @@
  */
 
 .page-host {
-    padding: 0 20px;
     position: absolute;
     left: 0;
     right: 0;
@@ -13,6 +12,10 @@
     bottom: 0;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+section {
+    margin: 0 20px;
 }
 
 .loader {

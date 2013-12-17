@@ -287,8 +287,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     startDeferred = null;
                 }
             }).fail(function(err){
-                system.error(err);
-            });;
+                    system.error(err);
+                });;
         }
 
         /**
@@ -357,14 +357,15 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             router.activeInstruction(instruction);
 
             if (canReuseCurrentActivation(instruction)) {
-                var tempActivator = activator.create(currentActivation); //enforce lifecycle without re-compose
+                var tempActivator = activator.create();
+                tempActivator.forceActiveItem(currentActivation); //enforce lifecycle without re-compose
                 tempActivator.settings.areSameItem = activeItem.settings.areSameItem;
                 ensureActivation(tempActivator, currentActivation, instruction);
             } else {
-                system.acquire(instruction.config.moduleId).then(function(module) {
+                system.acquire(instruction.config.moduleId).then(function (module) {
                     var instance = system.resolveObject(module);
                     ensureActivation(activeItem, instance, instruction);
-                }).fail(function(err){
+                }).fail(function (err) {
                         system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message);
                     });
             }
@@ -659,10 +660,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @param {object} [config] The config for the specified route.
          * @chainable
          * @example
- router.map([
-    { route: '', title:'Home', moduleId: 'homeScreen', nav: true },
-    { route: 'customer/:id', moduleId: 'customerDetails'}
- ]);
+         router.map([
+         { route: '', title:'Home', moduleId: 'homeScreen', nav: true },
+         { route: 'customer/:id', moduleId: 'customerDetails'}
+         ]);
          */
         router.map = function(route, config) {
             if (system.isArray(route)) {
@@ -868,12 +869,12 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      */
     rootRouter.targetIsThisWindow = function(event) {
         var targetWindow = $(event.target).attr('target');
-        
+
         if (!targetWindow ||
             targetWindow === window.name ||
             targetWindow === '_self' ||
             (targetWindow === 'top' && window === window.top)) { return true; }
-        
+
         return false;
     };
 
