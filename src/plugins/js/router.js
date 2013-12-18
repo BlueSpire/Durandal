@@ -389,7 +389,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         function configureRoute(config){
             router.trigger('router:route:before-config', config, router);
 
-            if (!system.isRegExp(config)) {
+            if (!system.isRegExp(config.route)) {
                 config.title = config.title || router.convertRouteToTitle(config.route);
                 config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
                 config.hash = config.hash || router.convertRouteToHash(config.route);
