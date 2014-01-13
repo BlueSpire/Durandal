@@ -18,10 +18,12 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
      * Models a message box's message, title and options.
      * @class MessageBox
      */
-    var MessageBox = function(message, title, options) {
+    var MessageBox = function(message, title, options, autoclose, settings) {
         this.message = message;
         this.title = title || MessageBox.defaultTitle;
         this.options = options || MessageBox.defaultOptions;
+        this.autoclose = autoclose || false;
+        this.settings = $.extend({}, MessageBox.defaultSettings, settings);
     };
 
     /**
@@ -69,21 +71,66 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
      */
     MessageBox.defaultOptions = ['Ok'];
 
+    MessageBox.defaultSettings = { buttonClass: "btn", primaryButtonClass: "btn-primary", secondaryButtonClass: "", "class": "messageBox", style: null };
+
+    MessageBox.setDefaults = function (settings) {
+        $.extend(MessageBox.defaultSettings, settings);
+    };
+
+    MessageBox.prototype.getButtonClass = function ($index) {
+        var c = "";
+        if (this.settings) {
+            if (this.settings.buttonClass) {
+                c = this.settings.buttonClass;
+            }
+            if ($index() === 0 && this.settings.primaryButtonClass) {
+                if (c.length > 0) {
+                    c += " ";
+                }
+                c += this.settings.primaryButtonClass;
+            }
+            if ($index() > 0 && this.settings.secondaryButtonClass) {
+                if (c.length > 0) {
+                    c += " ";
+                }
+                c += this.settings.secondaryButtonClass;
+            }
+        }
+        return c;
+    };
+
+    MessageBox.prototype.getClass = function () {
+        if (this.settings) {
+            return this.settings.class;
+        }
+        return "messageBox";
+    };
+
+    MessageBox.prototype.getStyle = function () {
+        if (this.settings) {
+            return this.settings.style;
+        }
+        return null;
+    };
+
     /**
      * The markup for the message box's view.
      * @property {string} defaultViewMarkup
      * @static
      */
     MessageBox.defaultViewMarkup = [
-        '<div data-view="plugins/messageBox" class="messageBox">',
+        '<div data-view="plugins/messageBox" data-bind="css: getClass(), style: getStyle()">',
             '<div class="modal-header">',
                 '<h3 data-bind="html: title"></h3>',
             '</div>',
             '<div class="modal-body">',
                 '<p class="message" data-bind="html: message"></p>',
             '</div>',
-            '<div class="modal-footer" data-bind="foreach: options">',
-                '<button class="btn" data-bind="click: function () { $parent.selectOption($data); }, text: $data, css: { \'btn-primary\': $index() == 0, autofocus: $index() == 0 }"></button>',
+            '<div class="modal-footer">',
+                '<!-- ko foreach: options -->',
+                '<button data-bind="click: function () { $parent.selectOption($data); }, text: $data, css: $parent.getButtonClass($index)"></button>',
+                '<!-- /ko -->',
+                '<div style="clear:both;"></div>',
             '</div>',
         '</div>'
     ].join('\n');
@@ -262,16 +309,18 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {string[]} [options] The options to provide to the user.
          * @return {Promise} A promise that resolves when the message box is closed and returns the selected option.
          */
-        showMessage:function(message, title, options){
+        showMessage:function(message, title, options, autoclose, settings){
             if(system.isString(this.MessageBox)){
                 return dialog.show(this.MessageBox, [
                     message,
                     title || MessageBox.defaultTitle,
-                    options || MessageBox.defaultOptions
+                    options || MessageBox.defaultOptions,
+                    autoclose || false,
+                    settings || {}
                 ]);
             }
 
-            return dialog.show(new this.MessageBox(message, title, options));
+            return dialog.show(new this.MessageBox(message, title, options, autoclose, settings));
         },
         /**
          * Installs this module into Durandal; called by the framework. Adds `app.showDialog` and `app.showMessage` convenience methods.
@@ -283,8 +332,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 return dialog.show(obj, activationData, context);
             };
 
-            app.showMessage = function(message, title, options) {
-                return dialog.showMessage(message, title, options);
+            app.showMessage = function(message, title, options, autoclose, settings) {
+                return dialog.showMessage(message, title, options, autoclose, settings);
             };
 
             if(config.messageBox){
@@ -340,7 +389,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
      * @class DialogContext
      */
     dialog.addContext('default', {
-        blockoutOpacity: .2,
+        blockoutOpacity: 0.2,
         removeDelay: 200,
         /**
          * In this function, you are expected to add a DOM element to the tree which will serve as the "host" for the modal's composed view. You must add a property called host to the modalWindow object which references the dom element. It is this host which is passed to the composition module.
@@ -440,7 +489,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 setDialogPosition(child, theDialog);
             });
 
-            if ($child.hasClass('autoclose')) {
+            if ($child.hasClass('autoclose') || context.model.autoclose) {
                 $(theDialog.blockout).click(function () {
                     theDialog.close();
                 });
