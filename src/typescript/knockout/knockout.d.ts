@@ -188,7 +188,7 @@ interface KnockoutVirtualElements {
 }
 
 interface KnockoutExtenders {
-    throttle(target: any, timeout: number): KnockoutComputed;
+    throttle(target: any, timeout: number): KnockoutComputed<any>;
     notify(target: any, notifyWhen: string): any;
 }
 
@@ -394,6 +394,7 @@ interface KnockoutStatic {
     toJSON(viewModel: any, replacer?: Function, space?: any): string;
     toJS(viewModel: any): any;
     isObservable(instance: any): boolean;
+    isWriteableObservable(instance: any): boolean;
     isComputed(instance: any): boolean;
     dataFor(node: any): any;
     removeNode(node: Element);
@@ -477,6 +478,21 @@ interface KnockoutStatic {
     /////////////////////////////////
 
     bindingProvider: any;
+
+    /////////////////////////////////
+    // selectExtensions.js
+    /////////////////////////////////
+
+    selectExtensions: {
+
+        readValue(element: any);
+
+        writeValue(element: any, value: any);
+    };
+}
+
+declare module "knockout" {
+	export = ko;
 }
 
 declare var ko: KnockoutStatic;

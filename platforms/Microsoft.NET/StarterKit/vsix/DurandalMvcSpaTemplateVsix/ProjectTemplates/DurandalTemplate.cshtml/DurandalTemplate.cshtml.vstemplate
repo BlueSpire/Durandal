@@ -65,9 +65,9 @@
             <package id="WebGrease" version="1.3.0" skipAssemblyReferences="true" />
         </packages>
         <packages repository="extension" repositoryId="DurandalMvcSpaTemplateVsix..0ef2dc13-b4cd-4d95-ad03-2df4a36764ac">
-          <package id="Durandal.StarterKit" version="2.0.0" skipAssemblyReferences="true" />
-          <package id="Durandal" version="2.0.0" skipAssemblyReferences="true" />
-          <package id="Durandal.Transitions" version="2.0.0" skipAssemblyReferences="true" />
+          <package id="Durandal.StarterKit" version="2.0.1" skipAssemblyReferences="true" />
+          <package id="Durandal" version="2.0.1" skipAssemblyReferences="true" />
+          <package id="Durandal.Transitions" version="2.0.1" skipAssemblyReferences="true" />
           <package id="RequireJS" version="2.1.8" skipAssemblyReferences="true" />
           <package id="RequireJS.Text" version="2.0.7" skipAssemblyReferences="true" />
           <package id="FontAwesome" version="3.2.1" skipAssemblyReferences="true" />

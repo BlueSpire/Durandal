@@ -1,5 +1,5 @@
 /**
- * Durandal 2.0.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Durandal 2.0.1 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
@@ -165,7 +165,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
         createCompositionSettings: function(obj, dialogContext) {
             var settings = {
                 model:obj,
-                activate:false
+                activate:false,
+                transition: false
             };
 
             if (dialogContext.attached) {
@@ -195,7 +196,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * Closes the dialog associated with the specified object.
          * @method close
          * @param {object} obj The object whose dialog should be closed.
-         * @param {object} result* The results to return back to the dialog caller after closing.
+         * @param {object} results* The results to return back to the dialog caller after closing.
          */
         close:function(obj){
             var theDialog = this.getDialog(obj);
@@ -234,11 +235,11 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                                             dialogContext.removeHost(theDialog);
                                             delete instance.__dialog__;
 
-                                            if(args.length == 0){
+                                            if (args.length === 0) {
                                                 dfd.resolve();
-                                            }else if(args.length == 1){
-                                                dfd.resolve(args[0])
-                                            }else{
+                                            } else if (args.length === 1) {
+                                                dfd.resolve(args[0]);
+                                            } else {
                                                 dfd.resolve.apply(dfd, args);
                                             }
                                         }
@@ -336,7 +337,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 var oldScrollTop = html.scrollTop();
                 $("html").css("overflow-y", "hidden");
                 var newBodyOuterWidth = $("body").outerWidth(true);
-                body.css("margin-right", (newBodyOuterWidth - oldBodyOuterWidth + parseInt(theDialog.oldBodyMarginRight)) + "px");
+                body.css("margin-right", (newBodyOuterWidth - oldBodyOuterWidth + parseInt(theDialog.oldBodyMarginRight, 10)) + "px");
                 html.scrollTop(oldScrollTop); // necessary for Firefox
             }
         },
@@ -366,6 +367,10 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 }
             }
         },
+        attached: function (view) {
+            //To prevent flickering in IE8, we set visibility to hidden first, and later restore it
+            $(view).css("visibility", "hidden");
+        },
         /**
          * This function is called after the modal is fully composed into the DOM, allowing your implementation to do any final modifications, such as positioning or animation. You can obtain the original dialog object by using `getDialog` on context.model.
          * @method compositionComplete
@@ -374,27 +379,59 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {object} context The composition context.
          */
         compositionComplete: function (child, parent, context) {
-            var $child = $(child);
-            var width = $child.width();
-            var height = $child.height();
             var theDialog = dialog.getDialog(context.model);
-
-            $child.css({
-                'margin-top': (-height / 2).toString() + 'px',
-                'margin-left': (-width / 2).toString() + 'px'
+            var $child = $(child);
+            var loadables = $child.find("img").filter(function () {
+                //Remove images with known width and height
+                var $this = $(this);
+                return !(this.style.width && this.style.height) && !($this.attr("width") && $this.attr("height"));
             });
 
-            $(theDialog.host).css('opacity', 1);
+            $child.data("predefinedWidth", $child.get(0).style.width);
 
-            if ($(child).hasClass('autoclose')) {
-                $(theDialog.blockout).click(function() {
+            var setDialogPosition = function () {
+                //Setting a short timeout is need in IE8, otherwise we could do this straight away
+                setTimeout(function () {
+                    //We will clear and then set width for dialogs without width set 
+                    if (!$child.data("predefinedWidth")) {
+                        $child.css({ width: '' }); //Reset width
+                    }
+                    var width = $child.outerWidth(false);
+                    var height = $child.outerHeight(false);
+                    var windowHeight = $(window).height();
+                    var constrainedHeight = Math.min(height, windowHeight);
+
+                    $child.css({
+                        'margin-top': (-constrainedHeight / 2).toString() + 'px',
+                        'margin-left': (-width / 2).toString() + 'px'
+                    });
+
+                    if (!$child.data("predefinedWidth")) {
+                        //Ensure the correct width after margin-left has been set
+                        $child.outerWidth(width);
+                    }
+
+                    if (height > windowHeight) {
+                        $child.css("overflow-y", "auto");
+                    } else {
+                        $child.css("overflow-y", "");
+                    }
+
+                    $(theDialog.host).css('opacity', 1);
+                    $child.css("visibility", "visible");
+
+                    $child.find('.autofocus').first().focus();
+                }, 1);
+            };
+
+            setDialogPosition();
+            loadables.load(setDialogPosition);
+
+            if ($child.hasClass('autoclose')) {
+                $(theDialog.blockout).click(function () {
                     theDialog.close();
                 });
             }
-
-            $('.autofocus', child).each(function() {
-                $(this).focus();
-            });
         }
     });
 

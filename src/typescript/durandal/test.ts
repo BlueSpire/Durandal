@@ -113,10 +113,28 @@ function test_app() {
     });
 }
 
-function test_router(){
+function test_router() {
+    var currentActiveRoute = router.activeInstruction().config.route;
+
+    var vm = {
+        router:router
+    };
+
+    vm.router.on('test', x => { }).map(null).activate();
+
     router.activate().then(() => {
         router.createChildRouter();
         router.handlers[0].routePattern;
         router.install();
     });
+}
+
+function test_observable() {
+    var o = observable(null, "test");
+
+    o.subscribe(x => {
+        console.log(x);
+    });
+
+    observable.convertObject({});
 }
