@@ -68,7 +68,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                     settings.afterDeactivate(item, close, setter);
                     dfd.resolve(true);
                 }, function(reason) {
-                    system.error(reasor);
+                    system.error(reason);
                     dfd.resolve(false);
                 });
             } else {
