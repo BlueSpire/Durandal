@@ -1,10 +1,236 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<title>Docs - Ceating a Module</title>
-		<meta http-equiv="REFRESH" content="0;url=/documentation/Creating-A-Module">
+		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="format-detection" content="telephone=no"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>Docs - Ceating a Module | Durandal</title>
+		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
+		<meta name="author" content="EisenbergEffect" />
+
+		<meta name="generator" content="DocPad v6.60.3" />
+
+		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+		<link rel="apple-touch-icon" href="images/icon.png"/>
+
+		<!-- Shims: IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Styles -->
+		<link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+		<script type="text/javascript">
+		    if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+		        var msViewportStyle = document.createElement("style");
+		        var mq = "@@-ms-viewport{width:auto!important}";
+		        msViewportStyle.appendChild(document.createTextNode(mq));
+		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+		    }
+		</script>
+
+		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		This page has moved. You will be automatically redirected to its new location. If you aren't forwarded to the new page, <a href="/documentation/Creating-A-Module">click here</a>.
+		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			      <span class="sr-only">Toggle navigation</span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			    </button>
+			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
+			  </div>
+
+		    <div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						
+							<li typeof="sioc:Page" about="/get-started.html" class="">
+								<a href="/get-started.html" property="dc:title">Get Started</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/downloads.html" class="">
+								<a href="/downloads.html" property="dc:title">Downloads</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/docs.html" class="">
+								<a href="/docs.html" property="dc:title">Docs</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/support.html" class="">
+								<a href="/support.html" property="dc:title">Support/Training</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/consultation.html" class="">
+								<a href="/consultation.html" property="dc:title">Consultation</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/showcase.html" class="">
+								<a href="/showcase.html" property="dc:title">Showcase</a>
+							</li>
+						
+						<li class="donate">
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						      <input type="hidden" name="cmd" value="_s-xclick">
+						      <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+						      <input class="btn btn-small btn-success" type="submit" name="submit" value="Donate">
+						    </form>
+						</li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+						</li>
+					</ul>
+		    </div>
+		</div>
+
+		<section class="container content docs">
+  <h1 id="creating-a-module">Creating a Module</h1>
+<h4 id="-"> </h4>
+<blockquote>
+  <strong>Key Points</strong>
+  <ul>
+    <li>
+      All Durandal app code is written as AMD modules.
+    </li>
+    <li>
+       Durandal&#39;s module support is provided by <a href="http://requirejs.org/docs/whyamd.html">RequireJS</a>.
+    </li>
+    <li>
+      Create a module by calling <em>define</em> and import other modules using <em>require</em>.
+    </li>
+    <li>
+      Modules can be either objects or functions.
+    </li>
+    <li>
+      All modules have an id.
+    </li>
+  </ul>
+</blockquote>
+
+<h3 id="a-simple-example">A Simple Example</h3>
+<p>To create a module, start by creating a new <em>.js</em> file. In this file, call <em>define</em> and pass it a function which will be used to build up your module. The return value of the function is what will be imported by other modules when they call <em>require</em>.
+Here&#39;s a simple example of two modules, one of which depends on the other:</p>
+<p><strong>backend.js</strong></p>
+<pre class="prettyprint linenums">define(function(require){
+  return {
+    getCustomers:function(){
+      //do some ajax and return a promise
+    }
+  };
+});</pre>
+<p><strong>customerList.js</strong></p>
+<pre class="prettyprint linenums">define(function(require){
+  var backend = require(&#39;backend&#39;);
+
+  return {
+    customers:ko.observableArray([]),
+    activate:function(){
+      var that = this;
+      return backend.getCustomers().then(function(results){
+        that.customers(results);
+      });
+    }
+  };
+});</pre>
+<p>As you can see here, both modules declare themselves by calling <em>define</em>. 
+The <em>customerList</em> module also indicates that it has a dependency on <em>backend</em> by calling <em>require</em> and passing it the path to that module.
+The value assigned to the <em>backend</em> variable is the same object instance that was returned from the <em>backend</em> module.</p>
+<blockquote>
+<p><strong>Note:</strong> Module paths can be relative to the module which is calling require, or they can be absolute, based on the <em>baseUrl</em> of your app. Unless otherwise configured, the <em>baseUrl</em> is wherever your <em>main.js</em> resides.</p>
+</blockquote>
+<h3 id="module-values">Module Values</h3>
+<p>In the above example, both modules returned an object instance. This results in what would commonly be called a &quot;singleton&quot; object, since the same object instance is obtained by all who require it.
+You are not limited to this pattern, however. Another common module usage pattern is to return a constructor function from the module. This sets up an organization which is common to many other languages where you have one &quot;class&quot; per file.
+This allows dependent modules to create instances on demand. Here&#39;s a modified version of the above sample which demonstrates that:</p>
+<p><strong>backend.js</strong></p>
+<pre class="prettyprint linenums">define(function(require){
+  var backend = function(username, password){
+    this.username = username;
+    this.password = password;
+  };
+
+  backend.prototype.getCustomers = function(){
+    //do some ajax and return a promise
+  };
+
+  return backend;
+});</pre>
+<p><strong>customerList.js</strong></p>
+<pre class="prettyprint linenums">define(function(require){
+  var Backend = require(&#39;backend&#39;);
+
+  return {
+    customers:ko.observableArray([]),
+    activate:function(){
+      var that = this;
+      var service = new Backend(&#39;username&#39;, &#39;password&#39;);
+
+      return service.getCustomers().then(function(results){
+        that.customers(results);
+      });
+    }
+  };
+});</pre>
+<p>As you can see <em>customerList</em> depends on <em>backend</em> and uses the <em>new</em> modifier to create instances of it.</p>
+<div class="alert alert-block">
+  <h4>Important!</h4>
+  <p>
+  A module&#39;s <em>define</em> is only exeucted once, at the time the module is first required. As a result, if you return an object instance, you have created a singleton which will stay in memory for the lifetime of your application. If this is not desired, return a constructor function to retain greater control of the lifetime of your objects by allowing consumers to create/release them as needed.
+  </p>
+</div>
+
+<h3 id="module-ids">Module Ids</h3>
+<p>Every module in your application has an Id. This Id is derived from its path, relative to your application&#39;s <em>baseUrl</em>. 
+Unless otherwise configured, your <em>baseUrl</em> is the same as the location of your <em>main.js</em> file.
+As part of the module definition process, Durandal assigns every module its Id. This is stored in the semi-private field called __moduleId__.
+Should you need to inspect the Id of a module, it is better to use the <a href="/documentation/api.html#module/system/method/getModuleId">system module&#39;s</a> <code>getModuleId(object)</code> function than to access this field as the underlying storage mechanism may change in future versions.</p>
+
+</section>
+
+		<footer class="footer">
+		  <div class="container">
+		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a> of <a href="http://www.bluespire.com/" target="_blank">Blue Spire</a>.</p>
+		    <p>Site design crafted by <a href="https://twitter.com/@scriswell" target="_blank">@scriswell</a> of <a href="https://twitter.com/@The_UI_Guy" target="_blank">@The_UI_Guy</a> and <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		  </div>
+		  <br />
+		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Please Donate.">
+      </form>
+		</footer>
+
+		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/modernizr.js"></script>
+		<script src="/vendor/prettify.js"></script>
+		<script src="/scripts/behavior.js"></script>
+
+		
+
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-38441871-1']);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
 	</body>
 </html>

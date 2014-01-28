@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta http-equiv="X-Powered-By" content="DocPad v6.38.1"/>
+		<meta name="generator" content="DocPad v6.60.3" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -26,7 +26,7 @@
 		<![endif]-->
 
 		<!-- Styles -->
-		<link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap-responsive.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+		<link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
 
 		<script type="text/javascript">
 		    if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
@@ -41,37 +41,42 @@
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top">
-		    <div class="navbar-inner">
-		        <a class="brand" href="/">
-		            <span>&nbsp;&nbsp;Durandal</span>
-		        </a>
+		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			      <span class="sr-only">Toggle navigation</span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			    </button>
+			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
+			  </div>
 
-		        
-					<ul class="nav">
+		    <div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
 						
-							<li typeof="sioc:Page" about="/pages/get-started" class="">
-								<a href="/pages/get-started" property="dc:title">Get Started</a>
+							<li typeof="sioc:Page" about="/get-started.html" class="">
+								<a href="/get-started.html" property="dc:title">Get Started</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/downloads" class="">
-								<a href="/pages/downloads" property="dc:title">Downloads</a>
+							<li typeof="sioc:Page" about="/downloads.html" class="">
+								<a href="/downloads.html" property="dc:title">Downloads</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/docs" class="">
-								<a href="/pages/docs" property="dc:title">Docs</a>
+							<li typeof="sioc:Page" about="/docs.html" class="">
+								<a href="/docs.html" property="dc:title">Docs</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/support" class="">
-								<a href="/pages/support" property="dc:title">Support/Training</a>
+							<li typeof="sioc:Page" about="/support.html" class="">
+								<a href="/support.html" property="dc:title">Support/Training</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/consultation" class="">
-								<a href="/pages/consultation" property="dc:title">Consultation</a>
+							<li typeof="sioc:Page" about="/consultation.html" class="">
+								<a href="/consultation.html" property="dc:title">Consultation</a>
 							</li>
 						
-							<li typeof="sioc:Page" about="/pages/showcase" class="">
-								<a href="/pages/showcase" property="dc:title">Showcase</a>
+							<li typeof="sioc:Page" about="/showcase.html" class="">
+								<a href="/showcase.html" property="dc:title">Showcase</a>
 							</li>
 						
 						<li class="donate">
@@ -83,12 +88,11 @@
 						</li>
 					</ul>
 
-					<ul class="nav pull-right">
+					<ul class="nav navbar-nav navbar-right">
 						<li>
 							<a href="https://bluespire.zendesk.com" class="support">Login</a>
 						</li>
 					</ul>
-				
 		    </div>
 		</div>
 
@@ -133,12 +137,8 @@
 </div>
 
 <section class="container content home" style="margin-top: 40px;">
-    <div class="row-fluid">
-      <div class="span12">
-
-        <div class="row-fluid">
-
-        <div class="span5">
+    <div class="row">
+        <div class="col-md-5">
           <h1 class="text-left">Meet Durandal</h1>
           <h2 class="text-left">Your search for a SPA framework ends here.</h2>
 
@@ -163,7 +163,7 @@
           </p>
         </div>
 
-        <div class="span7 features">
+        <div class="col-md-7 features">
             <h3>Features</h3>
 
             <div>
@@ -186,110 +186,41 @@
                   <img style="display: block; margin: 40px auto" src="/images/browser.png" />
                 </a>
 
-                <a class="btn btn-large btn-inverse" style="width: 90%" href="/pages/downloads" property="dc:title">Durandal Downloads</a>
+                <a class="btn btn-large btn-success" style="width: 100%" href="/get-started.html" property="dc:title">Get Started Now!</a>
                 <br />
                 <br />
                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
                   <input type="hidden" name="cmd" value="_s-xclick">
                   <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
-                  <input class="btn btn-med btn-success" style="width: 100%" type="submit" name="submit" value="Help Grow Durandal. Donate Now.">
+                  <input class="btn btn-med btn-default" style="width: 100%" type="submit" name="submit" value="Help Grow Durandal. Please Donate.">
                 </form>
             </div>
         </div>
-
-       </div>
-      </div>
     </div>
 
 </section>
 
 <hr class="soften">
-<div class="content_alt">
-<section class="container content home">
-    <div class="row-fluid">
-        <div class="span12">
 
-          <div class="row-fluid">
-            <div class="span4">
-              <h1 class="text-left h1-subhead">Showcase</h1>
-              <h2 class="text-left">Projects Based on Durandal</h2>
-              <p>If you've got a project based on Durandal we want to help you show it off. View our Showcase to see examples of Durandal solutions.</p>
-              <a class="btn btn-small btn-inverse" href="/pages/showcase">View Showcase</a>
-              <br />
-              <br />
-            </div>
-
-            <div class="span7 offset1">
-              <h5 style="margin-top: 40px; color: #777;">SilverReader</h5>
-              <a style="display: block; clear: left; margin-bottom: 10px;" href="http://silverreader.com" target="_blank">Visit the SilverReader Project Website</a>
-              <div class="thumbnail text-center">
-                <a href="/pages/showcase">
-                  <img src="../images/showcase_silver_reader.png" alt="SilverReader" />
-                </a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-    </div>
-</section>
-</div>
-
-<hr class="soften">
-
-<section class="container content home">
-
-    <div class="marketing">
-        <h1 class="text-left h1-subhead">Technologist Testimonials</h1>
-        <div class="row-fluid" style="margin-top: 50px;">
-            <blockquote>
-              <p>Durandal is built to handle the plumbing and makes it easier for me to focus on building rich webs apps with JavaScript faster. Only when you've written SPA's without Durandal do you realize how much it saves you!</p>
-              <small>John Papa, <cite title="Source Title">Author &amp; Microsoft Regional Director</cite></small>
-            </blockquote>
-
-            <blockquote>
-              <p>The MapsJS project team has been successfully using Durandal for its single page app-dev.  MapsJS is a free HTML5 map control for building complex cross-platform geospatial applications. Many of our larger customer projects required an SPA framework to minimize dev time and keep the projects well organized. We liked using Durandal so much that we decided to add support for it in our latest release.</p>
-              <small>Brian Hearn, <cite title="Source Title">MapsJS Lead Architect</cite></small>
-            </blockquote>
-
-            <blockquote>
-              <p>Durandal is the missing piece in my Knockout SPA toolkit. It handles the infrastructure and lets me focus on delivering functionality. Powerful, yet lightweight, pluggable and built on proven patterns from WPF/Silverlight development.</p>
-              <small>Hans Fjällemark, <cite title="Source Title">Freelancing HTML5 consultant - Tellurian Interactive</cite></small>
-            </blockquote>
-
-            <blockquote>
-              <p>Durandal brings capabilities from Caliburn.Micro to JavaScript clients that we sorely missed. Love the screen management and convention-based composition of Views and ViewModels.</p>
-              <small>Ward Bell, <cite title="Source Title">V.P. of Technology - IdeaBlade</cite></small>
-            </blockquote>
-
-            <blockquote>
-              <p>Rob set high standards with Caliburn.Micro...
-    When we develop WPF/Silverlight applications using it, we get better code organization,
-    flexibility and, ultimately, higher code quality and team productivity.
-    He's done it again with Durandal - which brings all of the same qualities to the world
-    of HTML5 applications. Amazing work!</p>
-              <small>Srdjan Strbanovic, <cite title="Source Title">CTO - Cignium Technologies</cite></small>
-            </blockquote>
-        </div>
-    </div>
-
-</section>
-
-<hr class="soften">
 <div class="content_alt">
   <section class="container content home">
-      <div class="row-fluid">
-        <div class="span12">
-              <h1 class="text-left h1-subhead">Who's Behind It?</h1>
-          <div class="row-fluid">
-            <div class="span5">
-          <a href="http://www.bluespire.com/" target="_blank">
-            <img src="../images/BlueSpireLogo.png" alt="SilverReader" />
-          </a>
+      <div class="row">
+        <div class="col-md-4">
+          <h1 class="text-left h1-subhead">Showcase</h1>
+          <h2 class="text-left">Projects Based on Durandal</h2>
+          <p>If you've got a project based on Durandal we want to help you show it off. View our Showcase to see examples of Durandal solutions.</p>
+          <a class="btn btn-small btn-default" href="/showcase.html">View Showcase</a>
+          <br />
+          <br />
         </div>
-        <div class="span7" style="margin-top:90px">
-              <p><a href="http://www.bluespire.com/" target="_blank">Blue Spire</a> is a Tallahassee, FL. based software development firm specializing in user interface architecture and engineering. <a href="http://robeisenberg.com/" target="_blank">Rob Eisenberg</a>, aka <a href="http://twitter.com/eisenbergeffect" target="_blank">EisenbergEffect</a>, is currently the lead architect and developer of the Durandal project.</p>
-        </div>
+
+        <div class="col-md-7 col-md-offset-1">
+          <h5 style="margin-top: 40px; color: #777;">SilverReader</h5>
+          <a style="display: block; clear: left; margin-bottom: 10px;" href="http://silverreader.com" target="_blank">Visit the SilverReader Project Website</a>
+          <div class="thumbnail text-center">
+            <a href="/showcase.html">
+              <img src="../images/showcase_silver_reader.png" alt="SilverReader" />
+            </a>
           </div>
         </div>
       </div>
@@ -297,25 +228,75 @@
 </div>
 
 <hr class="soften">
-<div class="content">
+
 <section class="container content home">
+  <div class="marketing">
+      <h1 class="text-left h1-subhead">Technologist Testimonials</h1>
+      <div class="row-fluid" style="margin-top: 50px;">
+          <blockquote>
+            <p>Durandal is built to handle the plumbing and makes it easier for me to focus on building rich webs apps with JavaScript faster. Only when you've written SPA's without Durandal do you realize how much it saves you!</p>
+            <small>John Papa, <cite title="Source Title">Author &amp; Microsoft Regional Director</cite></small>
+          </blockquote>
 
-    <div class="row-fluid">
-      <div class="span12">
-        <div class="row-fluid">
+          <blockquote>
+            <p>The MapsJS project team has been successfully using Durandal for its single page app-dev.  MapsJS is a free HTML5 map control for building complex cross-platform geospatial applications. Many of our larger customer projects required an SPA framework to minimize dev time and keep the projects well organized. We liked using Durandal so much that we decided to add support for it in our latest release.</p>
+            <small>Brian Hearn, <cite title="Source Title">MapsJS Lead Architect</cite></small>
+          </blockquote>
 
-          <div class="span5">
-            <h1 class="text-left h1-subhead">Sponsors</h1>
-            <a href="http://www.jetbrains.com/webstorm/" style="display:block; background:#fff url(http://www.jetbrains.com/webstorm/documentation/webstorm_banners/webstorm1/webstorm468x60_white.gif) no-repeat 10px 50%; border:solid 1px #0281b6; margin:40px 0;padding:0;text-decoration:none;text-indent:0;letter-spacing:-0.001em; max-width:466px; min-height:58px" alt="Advanced HTML/CSS/JavaScript Editor for hardcore web-developers" title="Advanced HTML/CSS/JavaScript Editor for hardcore web-developers">
-              <span style="margin: 5px 0 0 63px;padding: 0;float: left;font-size: 12px;cursor:pointer;  background-image:none;border:0;color: #0281b6; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">Proud user of</span>
-              <span style="margin:0 0 0 195px;padding:18px 0 10px 0; line-height:13px;font-size:13px;cursor:pointer;  background-image:none;border:0;display:block; max-width:265px; color:#0281b6; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">Advanced HTML/CSS/JavaScript Editor<br/>for hardcore web-developers</span>
-            </a>
-          </div>
+          <blockquote>
+            <p>Durandal is the missing piece in my Knockout SPA toolkit. It handles the infrastructure and lets me focus on delivering functionality. Powerful, yet lightweight, pluggable and built on proven patterns from WPF/Silverlight development.</p>
+            <small>Hans Fjällemark, <cite title="Source Title">Freelancing HTML5 consultant - Tellurian Interactive</cite></small>
+          </blockquote>
 
+          <blockquote>
+            <p>Durandal brings capabilities from Caliburn.Micro to JavaScript clients that we sorely missed. Love the screen management and convention-based composition of Views and ViewModels.</p>
+            <small>Ward Bell, <cite title="Source Title">V.P. of Technology - IdeaBlade</cite></small>
+          </blockquote>
+
+          <blockquote>
+            <p>Rob set high standards with Caliburn.Micro...
+  When we develop WPF/Silverlight applications using it, we get better code organization,
+  flexibility and, ultimately, higher code quality and team productivity.
+  He's done it again with Durandal - which brings all of the same qualities to the world
+  of HTML5 applications. Amazing work!</p>
+            <small>Srdjan Strbanovic, <cite title="Source Title">CTO - Cignium Technologies</cite></small>
+          </blockquote>
+      </div>
+  </div>
+</section>
+
+<hr class="soften">
+
+<div class="content_alt">
+  <section class="container content home">
+    <h1 class="text-left h1-subhead">Who's Behind It?</h1>
+    <div class="row">
+      <div class="col-md-5">
+        <a href="http://www.bluespire.com/" target="_blank">
+          <img src="../images/BlueSpireLogo.png" alt="SilverReader" style="max-width: 100%" />
+        </a>
+      </div>
+      <div class="col-md-7" style="margin-top:90px">
+            <p><a href="http://www.bluespire.com/" target="_blank">Blue Spire</a> is a Tallahassee, FL. based software development firm specializing in user interface architecture and engineering. <a href="http://robeisenberg.com/" target="_blank">Rob Eisenberg</a>, aka <a href="http://twitter.com/eisenbergeffect" target="_blank">EisenbergEffect</a>, is currently the lead architect of the Durandal project.</p>
       </div>
     </div>
+  </section>
+</div>
 
-</section>
+<hr class="soften">
+
+<div class="content">
+  <section class="container content home">
+      <div class="row">
+        <div class="col-md-5">
+          <h1 class="text-left h1-subhead">Sponsors</h1>
+          <a href="http://www.jetbrains.com/webstorm/" style="display:block; background:#fff url(http://www.jetbrains.com/webstorm/documentation/webstorm_banners/webstorm1/webstorm468x60_white.gif) no-repeat 10px 50%; border:solid 1px #0281b6; margin:40px 0;padding:0;text-decoration:none;text-indent:0;letter-spacing:-0.001em; max-width:466px; min-height:58px" alt="Advanced HTML/CSS/JavaScript Editor for hardcore web-developers" title="Advanced HTML/CSS/JavaScript Editor for hardcore web-developers">
+            <span style="margin: 5px 0 0 63px;padding: 0;float: left;font-size: 12px;cursor:pointer;  background-image:none;border:0;color: #0281b6; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">Proud user of</span>
+            <span style="margin:0 0 0 195px;padding:18px 0 10px 0; line-height:13px;font-size:13px;cursor:pointer;  background-image:none;border:0;display:block; max-width:265px; color:#0281b6; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">Advanced HTML/CSS/JavaScript Editor<br/>for hardcore web-developers</span>
+          </a>
+        </div>
+    </div>
+  </section>
 </div>
 
 		<footer class="footer">
@@ -326,10 +307,10 @@
 		  </div>
 		  <br />
 		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-	        <input type="hidden" name="cmd" value="_s-xclick">
-	        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
-	        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Donate Now.">
-	      </form>
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Please Donate.">
+      </form>
 		</footer>
 
 		<script src="/vendor/jquery.js"></script>
@@ -339,18 +320,16 @@
 
 		
 
-		
-			<script type="text/javascript">
-			  var _gaq = _gaq || [];
-			  _gaq.push(['_setAccount', 'UA-38441871-1']);
-			  _gaq.push(['_trackPageview']);
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-38441871-1']);
+		  _gaq.push(['_trackPageview']);
 
-			  (function() {
-			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			  })();
-			</script>
-		
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
 	</body>
 </html>

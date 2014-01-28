@@ -1,5 +1,5 @@
 /**
- * Durandal 2.0.1 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
@@ -22,6 +22,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     var escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
     var startDeferred, rootRouter;
     var trailingSlash = /\/$/;
+    var routesAreCaseSensitive = false;
 
     function routeStringToRegExp(routeString) {
         routeString = routeString.replace(escapeRegExp, '\\$&')
@@ -31,7 +32,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             })
             .replace(splatParam, '(.*?)');
 
-        return new RegExp('^' + routeString + '$');
+        return new RegExp('^' + routeString + '$', routesAreCaseSensitive ? undefined : 'i');
     }
 
     function stripParametersFromRoute(route) {
@@ -60,6 +61,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         }
 
         return true;
+    }
+
+    function reconstructUrl(instruction){
+        if(!instruction.queryString){
+            return instruction.fragment;
+        }
+
+        return instruction.fragment + '?' + instruction.queryString;
     }
 
     /**
@@ -188,8 +197,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return false;
         };
 
-        function hasChildRouter(instance) {
-            return instance.router && instance.router.parent == router;
+        function hasChildRouter(instance, parentRouter) {
+            return instance.router && instance.router.parent == parentRouter;
         }
 
         function setCurrentInstructionRouteIsActive(flag) {
@@ -217,7 +226,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 router.trigger('router:navigation:to:' + toModuleId);
             }
 
-            if (!hasChildRouter(instance)) {
+            if (!hasChildRouter(instance, router)) {
                 router.updateDocumentTitle(instance, instruction);
             }
 
@@ -232,7 +241,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             router.activeInstruction(currentInstruction);
 
             if (currentInstruction) {
-                router.navigate(currentInstruction.fragment, false);
+                router.navigate(reconstructUrl(currentInstruction), false);
             }
 
             isProcessing(false);
@@ -259,12 +268,13 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     var previousActivation = currentActivation;
                     completeNavigation(instance, instruction);
 
-                    if (hasChildRouter(instance)) {
-                        queueInstruction({
-                            router: instance.router,
-                            fragment: instruction.fragment,
-                            queryString: instruction.queryString
-                        });
+                    if (hasChildRouter(instance, router)) {
+                        var fullFragment = instruction.fragment;
+                        if (instruction.queryString) {
+                            fullFragment += "?" + instruction.queryString;
+                        }
+
+                        instance.router.loadUrl(fullFragment);
                     }
 
                     if (previousActivation == instance) {
@@ -282,8 +292,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     startDeferred = null;
                 }
             }).fail(function(err){
-                system.error(err);
-            });;
+                    system.error(err);
+                });;
         }
 
         /**
@@ -348,26 +358,19 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 return;
             }
 
-            if (instruction.router) {
-                var fullFragment = instruction.fragment;
-                if (instruction.queryString) {
-                    fullFragment += "?" + instruction.queryString;
-                }
-
-                instruction.router.loadUrl(fullFragment);
-                return;
-            }
-
             isProcessing(true);
             router.activeInstruction(instruction);
 
             if (canReuseCurrentActivation(instruction)) {
-                ensureActivation(activator.create(), currentActivation, instruction);
+                var tempActivator = activator.create();
+                tempActivator.forceActiveItem(currentActivation); //enforce lifecycle without re-compose
+                tempActivator.settings.areSameItem = activeItem.settings.areSameItem;
+                ensureActivation(tempActivator, currentActivation, instruction);
             } else {
-                system.acquire(instruction.config.moduleId).then(function(module) {
+                system.acquire(instruction.config.moduleId).then(function (module) {
                     var instance = system.resolveObject(module);
                     ensureActivation(activeItem, instance, instruction);
-                }).fail(function(err){
+                }).fail(function (err) {
                         system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message);
                     });
             }
@@ -541,7 +544,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             router.trigger('router:route:not-found', fragment, router);
 
             if (currentInstruction) {
-                history.navigate(currentInstruction.fragment, { trigger:false, replace:true });
+                history.navigate(reconstructUrl(currentInstruction), { trigger:false, replace:true });
             }
 
             rootRouter.explicitNavigation = false;
@@ -662,10 +665,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @param {object} [config] The config for the specified route.
          * @chainable
          * @example
- router.map([
-    { route: '', title:'Home', moduleId: 'homeScreen', nav: true },
-    { route: 'customer/:id', moduleId: 'customerDetails'}
- ]);
+         router.map([
+         { route: '', title:'Home', moduleId: 'homeScreen', nav: true },
+         { route: 'customer/:id', moduleId: 'customerDetails'}
+         ]);
          */
         router.map = function(route, config) {
             if (system.isArray(route)) {
@@ -857,18 +860,26 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     rootRouter.navigatingBack = false;
 
     /**
+     * Makes the RegExp generated for routes case sensitive, rather than the default of case insensitive.
+     * @method makeRoutesCaseSensitive
+     */
+    rootRouter.makeRoutesCaseSensitive = function(){
+        routesAreCaseSensitive = true;
+    };
+
+    /**
      * Verify that the target is the current window
      * @method targetIsThisWindow
      * @return {boolean} True if the event's target is the current window, false otherwise.
      */
     rootRouter.targetIsThisWindow = function(event) {
         var targetWindow = $(event.target).attr('target');
-        
+
         if (!targetWindow ||
             targetWindow === window.name ||
             targetWindow === '_self' ||
             (targetWindow === 'top' && window === window.top)) { return true; }
-        
+
         return false;
     };
 
@@ -901,7 +912,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                         // Ensure the protocol is not part of URL, meaning its relative.
                         // Stop the event bubbling to ensure the link will not cause a page refresh.
-                        if (href && !(href.charAt(0) === "#" || /^[a-z]+:/i.test(href))) {
+                        if (href != null && !(href.charAt(0) === "#" || /^[a-z]+:/i.test(href))) {
                             rootRouter.explicitNavigation = true;
                             evt.preventDefault();
                             history.navigate(href);

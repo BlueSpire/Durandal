@@ -1,5 +1,5 @@
 /**
- * Durandal 2.0.1 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
@@ -80,7 +80,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
      * @static
      */
     MessageBox.defaultViewMarkup = [
-        '<div data-view="plugins/messageBox" class="messageBox">',
+        '<div data-view="plugins/messageBox" class="modal-content messageBox">',
             '<div class="modal-header">',
                 '<h3 data-bind="text: title"></h3>',
             '</div>',
@@ -88,7 +88,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 '<p class="message" data-bind="text: message"></p>',
             '</div>',
             '<div class="modal-footer" data-bind="foreach: options">',
-                '<button class="btn" data-bind="click: function () { $parent.selectOption($data); }, text: $data, css: { \'btn-primary\': $index() == 0, autofocus: $index() == 0 }"></button>',
+                '<button class="btn btn-default" data-bind="click: function () { $parent.selectOption($data); }, text: $data, css: { \'btn-primary\': $index() == 0, autofocus: $index() == 0 }"></button>',
             '</div>',
         '</div>'
     ].join('\n');
@@ -165,7 +165,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
         createCompositionSettings: function(obj, dialogContext) {
             var settings = {
                 model:obj,
-                activate:false
+                activate:false,
+                transition: false
             };
 
             if (dialogContext.attached) {

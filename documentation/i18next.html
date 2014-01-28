@@ -1,10 +1,210 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<title>Docs - Localization with i18next</title>
-		<meta http-equiv="REFRESH" content="0;url=/documentation/i18next">
+		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="format-detection" content="telephone=no"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>Docs - Localization with i18next | Durandal</title>
+		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
+		<meta name="author" content="EisenbergEffect" />
+
+		<meta name="generator" content="DocPad v6.60.3" />
+
+		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+		<link rel="apple-touch-icon" href="images/icon.png"/>
+
+		<!-- Shims: IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Styles -->
+		<link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+		<script type="text/javascript">
+		    if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+		        var msViewportStyle = document.createElement("style");
+		        var mq = "@@-ms-viewport{width:auto!important}";
+		        msViewportStyle.appendChild(document.createTextNode(mq));
+		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+		    }
+		</script>
+
+		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		This page has moved. You will be automatically redirected to its new location. If you aren't forwarded to the new page, <a href="/documentation/i18next">click here</a>.
+		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			      <span class="sr-only">Toggle navigation</span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			    </button>
+			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
+			  </div>
+
+		    <div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						
+							<li typeof="sioc:Page" about="/get-started.html" class="">
+								<a href="/get-started.html" property="dc:title">Get Started</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/downloads.html" class="">
+								<a href="/downloads.html" property="dc:title">Downloads</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/docs.html" class="">
+								<a href="/docs.html" property="dc:title">Docs</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/support.html" class="">
+								<a href="/support.html" property="dc:title">Support/Training</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/consultation.html" class="">
+								<a href="/consultation.html" property="dc:title">Consultation</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/showcase.html" class="">
+								<a href="/showcase.html" property="dc:title">Showcase</a>
+							</li>
+						
+						<li class="donate">
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						      <input type="hidden" name="cmd" value="_s-xclick">
+						      <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+						      <input class="btn btn-small btn-success" type="submit" name="submit" value="Donate">
+						    </form>
+						</li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+						</li>
+					</ul>
+		    </div>
+		</div>
+
+		<section class="container content docs">
+  <h1 id="localization-with-i18next">Localization with i18next</h1>
+<h4 id="-"> </h4>
+<p>Here&#39;s how <a href="http://i18next.com/">i18next</a> describes itself:</p>
+<blockquote>
+<p>i18next is a full-featured i18n javascript library for translating your webapplication. It runs in browser, under node.js, rhino and other javascript runtimes.</p>
+</blockquote>
+<p>To set up localization of your app, first download <a href="http://i18next.com/">i18next</a> and add it into your project&#39;s scripts folder. Then configure RequireJS to find the library. Do this by adding a path entry to your requirejs.config in main.js:</p>
+<pre class="prettyprint linenums">requirejs.config({
+    paths: {
+        ...
+        &#39;i18next&#39;:&#39;../lib/i18next/i18next.amd.withJQuery-1.7.0&#39; //this should point to where you placed the library
+        ...
+    }
+});</pre>
+<p>Next, you will need to import the library and build your i18next configuration object in your main.js module:</p>
+<pre class="prettyprint linenums">define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLocator&#39;, &#39;durandal/binder&#39;, &#39;i18next&#39;], function (system, app, viewLocator, binder, i18n) {
+    var i18NOptions = { 
+        detectFromHeaders: false,
+        lng: window.navigator.userLanguage || window.navigator.language || &#39;en-US&#39;,
+        fallbackLang: &#39;en&#39;,
+        ns: &#39;app&#39;,
+        resGetPath: &#39;locales/__lng__/__ns__.json&#39;,
+        useCookie: false
+    };
+
+    ...
+}</pre>
+<blockquote>
+<p><strong>Note:</strong> This example uses the window.navigator language to set the default language. You can change this using a different client side or server side approach.</p>
+</blockquote>
+<p>Now initialize i18next inside your app.start method in the main.js. Notice that the initialization function uses a callback. This is where you hook into Durandal&#39;s binder and tell i18next to parse your markup and convert any resource lookups into strings. It uses jQuery to traverse the DOM and find any &#39;data-i18n&#39; attributes and look up the string in the resource files for the configured language or in the fallback languages.</p>
+<pre class="prettyprint linenums">app.start().then(function () {
+    i18n.init(i18NOptions, function () {
+        //Call localization on view before binding...
+        binder.binding = function (obj, view) {
+            $(view).i18n();
+        };
+
+        //Show the app by setting the root view model for our application with a transition.
+        app.setRoot(&#39;shell&#39;, &#39;entrance&#39;);
+    });
+});</pre>
+<p>You are now ready to localize the application. First you need to create your resource files. There are many options in i18next to handle this. For this example we have established the namespace in the configuration object to be &#39;app&#39; and created a locales folder at the root of the website. The location of the resources is defined in the configuration object. Notice that the file name starts with the namespace: &#39;app&#39; is our namespace and &#39;app.json&#39; is the file name.  You can read up more about how this works on the <a href="http://i18next.com/pages/doc_init.html">i18next</a> site.</p>
+<p>In each folder in your locales you create a JSON file that has key-value pairs. Here is an example:</p>
+<pre class="prettyprint linenums">{
+    &quot;modules&quot; : {
+        &quot;localization&quot;: {
+            &quot;title&quot; : &quot;Localization&quot;,
+            &quot;modal&quot; : &quot;Modal localized&quot;,
+            &quot;modalDialog&quot; : &quot;Modal Dialog localized&quot;,
+            &quot;clickToShowModal&quot; : &quot;Click the button below to show the localized modal dialog&quot;,
+            &quot;showModalBtn&quot; : &quot;Show Custom Modal localized&quot;,
+            &quot;yourAnswer&quot;: &quot;You answered \&quot;__response__\&quot;.&quot;,
+            &quot;youAnswered&quot;:&quot;You answered...&quot;,
+            &quot;colorMsgTitle&quot;: &quot;Color&quot;,
+            &quot;favoriteColorQuestion&quot; : &quot;What is your favorite color?&quot;,
+            &quot;confirmColorMsg&quot; : &quot;Are you sure that is your favorite color?&quot;,
+            &quot;justCheckingTitle&quot; : &quot;Just Checking...&quot;
+        }
+    }
+}</pre>
+<p>Now let&#39;s see how we use the resources in code. In code you import i18next and use it to return the localized string. Here is an example of how you might set up a localized route title. You just call the <code>t()</code> function passing a string that defines the path to the resource key. The function returns the localized string.</p>
+<pre class="prettyprint linenums">{
+    type: &#39;intro&#39;,
+    title: i18n.t(&#39;app:modules.localization.modal&#39;),
+    route: &#39;&#39;,
+    moduleId: &#39;default/index&#39;
+ }</pre>
+<p>In markup you add the <code>&#39;data-i18n&#39;</code> attribute and set its value to a string that defines the path to the resource key. When the Durandal binder binds the view and the viewmodel we call i18next method passing the view object. i18next traverses the DOM and looks up the localized strings in the resource files. Here is an example of the markup.</p>
+<pre class="prettyprint linenums">&lt;div&gt;
+    &lt;h2 data-i18n=&quot;app:modules.localization.clickToShowModal&quot;&gt;&lt;/h2&gt;
+    &lt;button class=&quot;btn&quot; data-bind=&quot;click:showCustomModal&quot; data-i18n=&quot;app:modules.localization.showModalBtn&quot;&gt;&lt;/button&gt;
+&lt;/div&gt;</pre>
+<p>You can download the dFiddle fork with this implemented at <a href="https://github.com/anwalkers/dFiddle-2.0"><a href="https://github.com/anwalkers/dFiddle-2.0">https://github.com/anwalkers/dFiddle-2.0</a></a> or see the dFiddle in action at <a href="http://anwalkers.github.io/dFiddle-2.0/#localization"><a href="http://anwalkers.github.io/dFiddle-2.0/#localization">http://anwalkers.github.io/dFiddle-2.0/#localization</a></a>.</p>
+
+</section>
+
+		<footer class="footer">
+		  <div class="container">
+		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a> of <a href="http://www.bluespire.com/" target="_blank">Blue Spire</a>.</p>
+		    <p>Site design crafted by <a href="https://twitter.com/@scriswell" target="_blank">@scriswell</a> of <a href="https://twitter.com/@The_UI_Guy" target="_blank">@The_UI_Guy</a> and <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		  </div>
+		  <br />
+		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Please Donate.">
+      </form>
+		</footer>
+
+		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/modernizr.js"></script>
+		<script src="/vendor/prettify.js"></script>
+		<script src="/scripts/behavior.js"></script>
+
+		
+
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-38441871-1']);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
 	</body>
 </html>

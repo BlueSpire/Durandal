@@ -1,10 +1,505 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<title>Docs - Converting a Durandal 1.x Project to 2.0</title>
-		<meta http-equiv="REFRESH" content="0;url=/documentation/Conversion-Guide">
+		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="format-detection" content="telephone=no"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>Docs - Converting a Durandal 1.x Project to 2.0 | Durandal</title>
+		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
+		<meta name="author" content="EisenbergEffect" />
+
+		<meta name="generator" content="DocPad v6.60.3" />
+
+		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+		<link rel="apple-touch-icon" href="images/icon.png"/>
+
+		<!-- Shims: IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Styles -->
+		<link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+		<script type="text/javascript">
+		    if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+		        var msViewportStyle = document.createElement("style");
+		        var mq = "@@-ms-viewport{width:auto!important}";
+		        msViewportStyle.appendChild(document.createTextNode(mq));
+		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+		    }
+		</script>
+
+		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		This page has moved. You will be automatically redirected to its new location. If you aren't forwarded to the new page, <a href="/documentation/Conversion-Guide">click here</a>.
+		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			      <span class="sr-only">Toggle navigation</span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			    </button>
+			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
+			  </div>
+
+		    <div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						
+							<li typeof="sioc:Page" about="/get-started.html" class="">
+								<a href="/get-started.html" property="dc:title">Get Started</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/downloads.html" class="">
+								<a href="/downloads.html" property="dc:title">Downloads</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/docs.html" class="">
+								<a href="/docs.html" property="dc:title">Docs</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/support.html" class="">
+								<a href="/support.html" property="dc:title">Support/Training</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/consultation.html" class="">
+								<a href="/consultation.html" property="dc:title">Consultation</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/showcase.html" class="">
+								<a href="/showcase.html" property="dc:title">Showcase</a>
+							</li>
+						
+						<li class="donate">
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						      <input type="hidden" name="cmd" value="_s-xclick">
+						      <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+						      <input class="btn btn-small btn-success" type="submit" name="submit" value="Donate">
+						    </form>
+						</li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+						</li>
+					</ul>
+		    </div>
+		</div>
+
+		<section class="container content docs">
+  <h1 id="converting-a-durandal-1-x-project-to-2-0">Converting a Durandal 1.x Project to 2.0</h1>
+<h4 id="-"> </h4>
+<blockquote>
+<p>There were significant breaking changes between the 1.x version series and 2.0. Below you will find details of how to convert an existing project to the new version. For additional information, see the <a href="/documentation/api.html">API Documentation</a> or the <a href="/docs.html">various &quot;How To&quot; guides</a>.</p>
+</blockquote>
+<h3 id="re-locate-durandal">Re-locate Durandal</h3>
+<p>In the 1.x version series, Durandal was located under your <code>App</code> folder. In 2.0, the preferred location is side-by-side with other 3rd party scripts. This relocation allows Durandal to more easily be updated and tracked in the same way you do other libraries. It also provides a cleaner separation of the framework code from your application code.</p>
+<p>To make this change:</p>
+<ol>
+<li>Create a <code>durandal</code> folder in the same location as other 3rd party scripts in your web project and copy into it all Durandal modules, including sub-folders for plugins and transitions, if desired.</li>
+<li>Move <code>require.js</code>, <code>text.js</code> and <code>almond-custom.js</code> into your 3rd party scripts folder also. (Previously located at App/durandal/amd).</li>
+<li>Delete the old <code>durandal</code> folder which used to reside in your <code>App</code> folder.</li>
+<li>Fix up your <em>index.html</em> so that the RequireJS path is correct.</li>
+<li>In your <code>main.js</code> file, configure RequireJS with the location of the Durandal modules. You do this by adding <code>requirejs.config.paths</code> entries. Assuming your Durandal application is in an <code>App</code> folder under your web root and all your 3rd party scripts are in a <code>Scripts</code> folder, your configuration should look like this:</li>
+</ol>
+<pre class="prettyprint linenums">requirejs.config({
+    paths: {
+        &#39;text&#39;: &#39;../Scripts/text&#39;,
+        &#39;durandal&#39;: &#39;../Scripts/durandal&#39;,
+        &#39;plugins&#39;: &#39;../Scripts/durandal/plugins&#39;,
+        &#39;transitions&#39;: &#39;../Scripts/durandal/transitions&#39;
+    }
+});</pre>
+<p>This should be immediately at the top of your <code>main.js</code> file.</p>
+<h3 id="configure-dependencies">Configure Dependencies</h3>
+<p>Durandal depends on RequireJS, jQuery and Knockout. In version 1.x the Durandal library made the assumption that both jQuery and Knockout were available in the global script scope. This assumption was problematic for some deploy scenarios, so now Durandal requires both jQuery and Knockout to be available explicitly through the module system. There are two options for you in updating the dependency configuration. Option 1 is to use the <code>path</code> config to register jQuery and Knockout with RequireJS. This option should only be used by developers who are familiar and comfortable with <code>shim</code> configuration, as registering the modules in this way will require all 3rd party scripts to be registered similarly. Modules not designed for AMD will require shimming. Option 2 is to reference these libraries as you would normally, through script tags, then manually <code>define</code> them inside the module system. If you aren&#39;t comfortable with  <code>path</code> and <code>shim</code> config, then this option is recommended for you. </p>
+<p>Please choose the option that fits your project and team best:</p>
+<h4 id="option-1-path-and-shim-config">Option 1: Path and Shim Config</h4>
+<ol>
+<li>Remove all script tags from your html page, except for RequireJS.</li>
+<li>In <code>main.js</code> extend the <code>requirejs.config.paths</code> entries so that they include paths to jQuery and Knockout.</li>
+<li>Add paths and shim config for any 3rd party libraries.</li>
+</ol>
+<p>Here&#39;s an example of what the configuration would look like with the standard dependencies, plus one 3rd party library: Bootstrap.</p>
+<pre class="prettyprint linenums">requirejs.config({
+    paths: {
+        &#39;text&#39;: &#39;../Scripts/text&#39;,
+        &#39;durandal&#39;:&#39;../Scripts/durandal&#39;,
+        &#39;plugins&#39; : &#39;../Scripts/durandal/plugins&#39;,
+        &#39;transitions&#39; : &#39;../Scripts/durandal/transitions&#39;,
+        &#39;knockout&#39;: &#39;../Scripts/knockout-2.3.0&#39;,
+        &#39;bootstrap&#39;: &#39;../Scripts/bootstrap&#39;,
+        &#39;jquery&#39;: &#39;../Scripts/jquery-1.9.1&#39;
+    },
+    shim: {
+        &#39;bootstrap&#39;: {
+            deps: [&#39;jquery&#39;],
+            exports: &#39;jQuery&#39;
+       }
+    }
+});</pre>
+<h4 id="option-2-script-tags-and-manual-define">Option 2: Script Tags and Manual Define</h4>
+<ol>
+<li>Keep all script libraries referenced in your html page.</li>
+<li>Add two define statements after your <code>requirejs.config</code> and before the body of your main module. These statements will manually define the modules needed by Durandal. Your code should look like this:</li>
+</ol>
+<pre class="prettyprint linenums">define(&#39;jquery&#39;, function () { return jQuery; });
+define(&#39;knockout&#39;, ko);</pre>
+<h3 id="configure-plugins">Configure Plugins</h3>
+<p>Durandal 1.x, though appearing to be modularized, was still monolithic in nature due to certain dependencies between modules. In 2.0, we have moved all non-essential functionality out of the core and into plugins. As part of this process, we have established a simple plugin loading api and extensibility point.</p>
+<p>The <code>router</code>, <code>dialog</code> (previously modalDialog), <code>widget</code> and <code>http</code> modules were part of Durandal&#39;s core, but are now plugins. If you wish to take advantage of their functionality, you can load them in your main module using the new <code>app.configurePlugins</code> API. Below is a sample <code>main.js</code> file that demonstrates all the above mentioned configuration (manual define) along with plugin configuration.</p>
+<pre class="prettyprint linenums">requirejs.config({
+    paths: {
+        &#39;text&#39;: &#39;../Scripts/text&#39;,
+        &#39;durandal&#39;: &#39;../Scripts/durandal&#39;,
+        &#39;plugins&#39;: &#39;../Scripts/durandal/plugins&#39;,
+        &#39;transitions&#39;: &#39;../Scripts/durandal/transitions&#39;
+    }
+});
+
+define(&#39;jquery&#39;, [], function () { return jQuery; });
+define(&#39;knockout&#39;, [], function () { return ko; });
+
+define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLocator&#39;],  function (system, app, viewLocator) {
+    app.title = &#39;My App&#39;;
+
+    //specify which plugins to install and their configuration
+    app.configurePlugins({
+        router: true,
+        dialog: true,
+        widget: {
+            kinds: [&#39;expander&#39;]
+        }
+    });
+
+    app.start().then(function () {
+        viewLocator.useConvention();
+        app.setRoot(&#39;shell&#39;);
+    });
+});</pre>
+<p>Here you can see that we provide the <code>configurePlugins</code> API with an object, where each plugin we want to load is a key. The values for those keys can be <code>true</code> to simply load the plugin, or a configuration object, as demonstrated with the <code>widget</code> plugin. In this case, the <code>widget</code> plugin configures the <em>expander</em> widget kind. See the plugin documentation for details on any available configuration options.</p>
+<h3 id="fix-module-names-and-paths">Fix Module Names and Paths</h3>
+<p>As part of the general refactoring in 2.0 some modules became plugins and others were renamed. If you used any of these modules directly, you will need to fix up your require paths throughout. Here is a chart showing the 1.x to 2.0 changes:</p>
+<table class="table table-bordered">
+    <tr>
+        <th>1.x Module</th>
+        <th>2.0 Module</th>
+        <th>Path</th>
+    </tr>
+    <tr>
+        <td>app</td>
+        <td>app</td>
+        <td>durandal/app</td>
+    </tr>
+    <tr>
+        <td>composition</td>
+        <td>composition</td>
+        <td>durandal/composition</td>
+    </tr>
+    <tr>
+        <td>events</td>
+        <td>events</td>
+        <td>durandal/events</td>
+    </tr>
+    <tr class="error">
+        <td>http</td>
+        <td>http</td>
+        <td>plugins/http</td>
+    </tr>
+    <tr class="error">
+        <td>modalDialog</td>
+        <td>dialog</td>
+        <td>plugins/dialog</td>
+    </tr>
+    <tr class="error">
+        <td>messageBox</td>
+        <td>-----------------</td>
+        <td>(Merged into dialog.)</td>
+    </tr>
+    <tr>
+        <td>system</td>
+        <td>system</td>
+        <td>durandal/system</td>
+    </tr>
+    <tr>
+        <td>viewLocator</td>
+        <td>viewLocator</td>
+        <td>durandal/viewLocator</td>
+    </tr>
+    <tr>
+        <td>viewEngine</td>
+        <td>viewEngine</td>
+        <td>durandal/viewEngine</td>
+    </tr>
+    <tr class="error">
+        <td>viewModelBinder</td>
+        <td>binder</td>
+        <td>durandal/binder</td>
+    </tr>
+    <tr class="error">
+        <td>viewModel</td>
+        <td>activator</td>
+        <td>durandal/activator</td>
+    </tr>
+    <tr class="error">
+        <td>widget</td>
+        <td>widget</td>
+        <td>plugins/widget</td>
+    </tr>
+    <tr class="error">
+        <td>router</td>
+        <td>router</td>
+        <td>plugins/router</td>
+    </tr>
+    <tr class="warning">
+        <td>------------------------</td>
+        <td>history</td>
+        <td>plugins/history</td>
+    </tr>
+    <tr class="warning">
+        <td>------------------------</td>
+        <td>observable</td>
+        <td>plugins/observable</td>
+    </tr>
+    <tr class="warning">
+        <td>------------------------</td>
+        <td>serializer</td>
+        <td>plugins/serializer</td>
+    </tr>
+</table>
+
+<blockquote>
+<p><strong>Note:</strong> Red indicates changes. Yellow indicates additions.</p>
+</blockquote>
+<h3 id="update-composition-and-activator-callbacks">Update Composition and Activator Callbacks</h3>
+<p>Durandal 2.0 has a more consistent and powerful composition and activator lifecycle. We&#39;ve renamed some callbacks for simplicity and consistency, as well as added new ones and adjusted the timing of others. You will need to go through your modules and make name changes where appropriate. Here&#39;s a chart to guide you in the process.</p>
+<table class="table table-bordered">
+  <tr>
+    <th>1.x Name</th>
+    <th>2.0 Name</th>
+    <th>Lifecycle</th>
+    <th>Notes</th>
+  </tr>
+
+  <tr>
+    <td><code>getView()</code></td>
+    <td><code>getView()</code></td>
+    <td>Composition</td>
+    <td>Enables the new object to return a custom view.</td>
+  </tr>
+
+  <tr>
+    <td><code>canDeactivate()</code></td>
+    <td><code>canDeactivate()</code></td>
+    <td>Activator</td>
+    <td>Allows the previous object to cancel deactivation.</td>
+  </tr>
+
+  <tr>
+    <td><code>canActivate()</code></td>
+    <td><code>canActivate()</code></td>
+    <td>Activator</td>
+    <td>Allows the new object to cancel activation.</td>
+  </tr>
+
+  <tr>
+    <td><code>deactivate()</code></td>
+    <td><code>deactivate()</code></td>
+    <td>Activator</td>
+    <td>Allows the previous object to execute custom deactivation logic.</td>
+  </tr>
+
+  <tr class="warning">
+    <td>----------------------</td>
+    <td><code>detached()</code></td>
+    <td>Composition</td>
+    <td>Notifies the object when its view is removed from the DOM.</td>
+  </tr>
+
+  <tr>
+    <td><code>activate()</code></td>
+    <td><code>activate()</code></td>
+    <td>Composition &amp; Activator</td>
+    <td>Allows the new object to execute custom activation logic.</td>
+  </tr>
+
+  <tr class="error">
+    <td><code>beforeBind()</code></td>
+    <td><code>binding()</code></td>
+    <td>Composition</td>
+    <td>Notifies the new object when databinding is about to occur.</td>
+  </tr>
+
+  <tr class="error">
+    <td><code>afterBind()</code></td>
+    <td><code>bindingComplete()</code></td>
+    <td>Composition</td>
+    <td>Notifies the new object immediately after databinding is complete.</td>
+  </tr>
+
+  <tr class="error">
+    <td><code>viewAttached()</code></td>
+    <td><code>attached()</code></td>
+    <td>Composition</td>
+    <td>Notifies the new object when its view is attached to the DOM.</td>
+  </tr>
+
+  <tr class="warning">
+    <td>----------------------</td>
+    <td><code>compositionComplete()</code></td>
+    <td>Composition</td>
+    <td>Notifies the new object when the entire composition (all parents &amp; children) is complete.</td>
+  </tr>
+</table>
+
+<blockquote>
+<p><strong>Note:</strong> Red indicates changes. Yellow indicates additions.</p>
+</blockquote>
+<h3 id="switch-to-the-new-router">Switch to the New Router</h3>
+<p>The Durandal 1.x router was built on top of SammyJS. This seemed like a good idea at the time, but in the end, turned out to be quite problematic and limiting. Durandal 2.0 has an entirely new router with less code, less bugs, more features and better performance. It has no dependencies on 3rd party libraries outside of the Durandal core. The new router is split into two modules: <code>history</code> which contains the low level cross-browser history abstraction and <code>router</code> which contains the Durandal activation and composition semantics, built on top of <code>history</code>.</p>
+<h4 id="update-configuration">Update Configuration</h4>
+<p>The new router has a different mechanism for configuration. To configure routes, call the <code>map</code> api, providing it with an array of route configurations. If you want to databind to routes in order to create a navigation UI, call <code>buildNavigationModel</code>. You can easily handle unknown routes by calling <code>mapUnknownRoutes</code> as well (or set up conventions). Finally, you should  add a public attribute on your shell called <em>router</em> and <code>activate</code> the router and return the promise back to Durandal. Here&#39;s an example shell configuration:</p>
+<pre class="prettyprint linenums">define([&#39;plugins/router&#39;], function (router) {
+    return {
+        router: router,
+        activate: function () {
+            return router.map([
+                { route: &#39;&#39;,                            moduleId: &#39;hello/index&#39;,            title: &#39;Hello World&#39;,       nav: true },
+                { route: &#39;view-composition&#39;,            moduleId: &#39;viewComposition/index&#39;,  title: &#39;View Composition&#39;,  nav: true },
+                { route: &#39;modal&#39;,                       moduleId: &#39;modal/index&#39;,            title: &#39;Modal Dialogs&#39;,     nav: true },
+                { route: &#39;event-aggregator&#39;,            moduleId: &#39;eventAggregator/index&#39;,  title: &#39;Events&#39;,            nav: true },
+                { route: &#39;widgets&#39;,                     moduleId: &#39;widgets/index&#39;,          title: &#39;Widgets&#39;,           nav: true },
+                { route: &#39;master-detail&#39;,               moduleId: &#39;masterDetail/index&#39;,     title: &#39;Master Detail&#39;,     nav: true },
+                { route: &#39;knockout-samples*details&#39;,    moduleId: &#39;ko/index&#39;,               title: &#39;Knockout Samples&#39;,  nav: true, hash: &#39;#knockout-samples&#39; }
+            ]).buildNavigationModel()
+              .mapUnknownRoutes(&#39;hello/index&#39;, &#39;not-found&#39;)
+              .activate();
+        }
+    };
+});</pre>
+<p>Looking at the <code>map</code> API, the <em>route</em> is the pattern to match in the url and the <em>moduleId</em> is the module to activate when that pattern is matched. You can optionally configure a <em>title</em> to set the document to as well or a <em>hash</em> to use in databinding (if the generated hash based on the route isn&#39;t correct; usually if the route contains parameters or splats). Finally, you can specify <code>nav:true</code> to indicate that the route should be part of the navigation model used to databind the UI. If you provide a number, such as <code>nav:5</code>, then you can order the navigation model independently of the route configuration order. See the router&#39;s documentation for further details concerning the above APIs.</p>
+<blockquote>
+<p><strong>Note:</strong> Did you previously call <code>useConvention</code>? If so, that API has been removed. In its place is the <code>makeRelative</code> API. This can be used to tell the router that all moduleIds are relative to a certain path, or that all routes are relative to a certain base url. To achieve the same effect has <code>useConvention</code> you would call <code>router.makeRelative({moduleId:&#39;viewmodels&#39;});</code></p>
+<p><strong>Note:</strong> Did you previously call <code>activate</code> with a default route to navigate to? If so, please note that that has been deprecated. Instead, be sure to register a route with &#39;&#39; (empty string) as its pattern. This will designate the default route.</p>
+</blockquote>
+<h4 id="update-view">Update View</h4>
+<p>Because the router has changed, you will also need to update your shell&#39;s view. The router binding is simplified by the new router binding handler. Some minor changes to the bound navigation model are also necessary. Here&#39;s the view that corresponds to the previous module:</p>
+<pre class="prettyprint linenums">&lt;div&gt;
+    &lt;div class=&quot;navbar navbar-fixed-top&quot;&gt;
+        &lt;div class=&quot;navbar-inner&quot;&gt;
+            &lt;ul class=&quot;nav&quot; data-bind=&quot;foreach: router.navigationModel&quot;&gt;
+                &lt;li data-bind=&quot;css: { active: isActive }&quot;&gt;
+                    &lt;a data-bind=&quot;attr: { href: hash }, html: title&quot;&gt;&lt;/a&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;div class=&quot;loader pull-right&quot; data-bind=&quot;css: { active: router.isNavigating }&quot;&gt;
+                &lt;i class=&quot;icon-spinner icon-2x icon-spin&quot;&gt;&lt;/i&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;container-fluid page-host&quot;&gt;
+        &lt;!--ko router: { transition:&#39;entrance&#39;, cacheViews:true }--&gt;&lt;!--/ko--&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+<p>Notice that the nav bar is built by binding the <code>navigationModel</code> array. Again, please note the new router binding handler.</p>
+<h4 id="update-modules">Update Modules</h4>
+<p>The new router now not only supports parameterized routes, but also optional parameters, splats and query strings. In order to guarantee a consistent calling mechanism, one that functions more similarly to <em>Controllers</em> in most MVC applications, the new router activates modules slightly different from 1.x. The 2.0 router will call <code>activate</code> on your module with one argument per route parameter. This includes optional parameters, even if they are not supplied. If the history state contains a query string, that will be parsed into a key/value object and passed in as the last argument. Let&#39;s see an example:</p>
+<p>The Shell&#39;s Route Config</p>
+<pre class="prettyprint linenums">define([&#39;plugins/router&#39;], function (router) {
+    return {
+        router: router,
+        activate: function () {
+            return router.map([
+                { route: &#39;customer/:customerId/order/:orderId&#39;, moduleId: &#39;order&#39; },
+            ]).activate();
+        }
+    };
+});</pre>
+<p>The <em>order</em> module:</p>
+<pre class="prettyprint linenums">define(function () {
+    return {
+        activate: function (customerId, orderId) {
+            //use the customerId and orderId here
+            //if the route contained a query string, there would be a 3rd argument
+        }
+    };
+});</pre>
+<blockquote>
+<p><strong>Note:</strong> For those who need access to the current route&#39;s configuration in order to get at custom properties or other information, you can access the raw data via <code>router.activeInstruction()</code> The instruction contains the <em>fragment</em>, <em>queryString</em>, <em>params</em>, and <em>queryParams</em>. It also contains a <em>config</em> property which is the same instance as your original route config.</p>
+</blockquote>
+<h3 id="fix-dialogs">Fix Dialogs</h3>
+<p>First, you must configure the <code>dialog</code> module by installing the plugin as shown above. Then the dialog APIs will be available where appropriate.</p>
+<p>If you previously used <code>app.showModal()</code> to show a dialog, this has been renamed to <code>app.showDialog()</code>. <code>app.showMessage()</code> remains the same. The <code>dialog</code> module now has <code>dialog.show()</code> (replacing modalDialog.show) and now adds <code>dialog.showMessage()</code> as well.</p>
+<p>Previously, closing a custom dialog from inside the view model was accomplished with this code: <code>self.modal.close(returnValue);</code> In Durandal 2.0, you should use the <code>dialog</code> module to close your custom dialog.  The code for that looks like this: <code>dialog.close(self, returnValue);</code></p>
+<p>The <code>MessageBox</code> class and view have been merged into the <code>dialog</code> module. If you need to customize the Message Box&#39;s view, you should do it as follows: <code>dialog.MessageBox.setViewUrl(&#39;path/to/your/custom/view&#39;);</code></p>
+<p>If you are creating a custom model context, this has been affected by the changes to the composition system as detailed above. Modal contexts have <code>addHost()</code> and <code>removeHost()</code> as before. But the optional lifecycle callbacks have changed to <code>attached()</code> and <code>compositionComplete()</code>.</p>
+<p>The API <code>modalDialog.isModalOpen()</code> was renamed to <code>dialog.isOpen()</code>.</p>
+<h3 id="fix-widgets">Fix Widgets</h3>
+<p>In 2.0, many of the features of widgets, such as templated parts, were pushed into the core infrastructure. Also, the core composition lifecycle was improved through greater consistency and extension points as discussed above. As a result, the widgets, which are built on top of these features, have also changed. As part of the process, we took the opportunity to fix some other issues. Here&#39;s how you get your widgets converted to 2.0:</p>
+<ol>
+<li>In 1.x, each widget resided in a folder and had a <em>controller.js</em> and a <em>view.html</em>. The only change to this structure and naming is that <em>controller.js</em> should now be named <em>viewmodel.js</em>. We felt this naming was more consistent with the rest of the framework.</li>
+<li>Widgets are no longer passed any information in the constructor function. Instead, a widget&#39;s settings are passed to its <code>activate</code> function. This makes widgets much more consistent with the way that normal composition works. With a widget, its settings essentially become the composition&#39;s <em>activationData</em>.</li>
+</ol>
+<p>If you customized widget mapping, have a look at the new API&#39;s <a href="/documentation/api#module/widget">map and convert methods</a>.</p>
+<h3 id="fix-activators">Fix Activators</h3>
+<p>Most developers don&#39;t use <em>activators</em> directly. However, if you use the <code>viewModel.activator()</code> API, it has changed. As mentioned above, the <code>viewModel</code> module has been renamed to <code>activator</code>. Additionally, the factory method has been renamed to <code>create</code>. So, the previous API call would now be <code>activator.create();</code>. If you used the <code>areSameItem</code> override, then you should know that its signature has slightly changed: <code>areSameItem(currentItem, newItem, currentActivationData, newActivationData)</code>.</p>
+<h3 id="fix-custom-transitions">Fix Custom Transitions</h3>
+<p>Due to improvements in the composition system, custom transitions have changed as well. On the whole, they are simpler to write now since you don&#39;t need to worry about view cache settings. If you have custom transitions, have a look at the built-in <code>entrance</code> transition and use it as a guide to updating your custom transitions.</p>
+<h3 id="miscellany">Miscellany</h3>
+<ol>
+<li>Removed <code>app.adaptToDevice();</code></li>
+<li>Calling <code>system.acquire();</code> with multiple ids or an array of ids, results in an array of modules being returned.</li>
+<li>If you customized the <code>viewEngine</code> module, you should look at the changes to <a href="/documentation/api#module/viewEngine/method/parseMarkup">parseMarkup</a> and <a href="/documentation/api#module/viewEngine/method/processMarkup">processMarkup</a>.</li>
+<li>Removed the .NET Optimizer in favor of <em>Weyland</em>, the new cross-platform build tool for Durandal.</li>
+</ol>
+<blockquote>
+<p>In addition to these changes, there are many new features (and bug fixes) as part of this release. Have a look through the docs to discover new capabilities you could be leveraging in your app.</p>
+</blockquote>
+
+</section>
+
+		<footer class="footer">
+		  <div class="container">
+		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a> of <a href="http://www.bluespire.com/" target="_blank">Blue Spire</a>.</p>
+		    <p>Site design crafted by <a href="https://twitter.com/@scriswell" target="_blank">@scriswell</a> of <a href="https://twitter.com/@The_UI_Guy" target="_blank">@The_UI_Guy</a> and <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		  </div>
+		  <br />
+		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Please Donate.">
+      </form>
+		</footer>
+
+		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/modernizr.js"></script>
+		<script src="/vendor/prettify.js"></script>
+		<script src="/scripts/behavior.js"></script>
+
+		
+
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-38441871-1']);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
 	</body>
 </html>

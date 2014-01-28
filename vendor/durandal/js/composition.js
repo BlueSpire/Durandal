@@ -1,5 +1,5 @@
 /**
- * Durandal 2.0.1 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
@@ -61,7 +61,11 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                 var i = compositionCompleteCallbacks.length;
 
                 while(i--) {
-                    compositionCompleteCallbacks[i]();
+                    try{
+                        compositionCompleteCallbacks[i]();
+                    }catch(e){
+                        system.error(e);
+                    }
                 }
 
                 compositionCompleteCallbacks = [];
@@ -72,9 +76,6 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
     function cleanUp(context){
         delete context.activeView;
         delete context.viewElements;
-        //delete context.parent;
-        //delete context.child;
-        //delete context.bindingContext;
     }
 
     function tryActivate(context, successCallback, skipActivation) {
@@ -83,19 +84,27 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         } else if (context.activate && context.model && context.model.activate) {
             var result;
 
-            if(system.isArray(context.activationData)) {
-                result = context.model.activate.apply(context.model, context.activationData);
-            } else {
-                result = context.model.activate(context.activationData);
-            }
+            try{
+                if(system.isArray(context.activationData)) {
+                    result = context.model.activate.apply(context.model, context.activationData);
+                } else {
+                    result = context.model.activate(context.activationData);
+                }
 
-            if(result && result.then) {
-                result.then(successCallback);
-            } else if(result || result === undefined) {
-                successCallback();
-            } else {
-                endComposition();
-                cleanUp(context);
+                if(result && result.then) {
+                    result.then(successCallback, function(reason) {
+                        system.error(reason);
+                        successCallback();
+                    });
+                } else if(result || result === undefined) {
+                    successCallback();
+                } else {
+                    endComposition();
+                    cleanUp(context);
+                }
+            }
+            catch(e){
+                system.error(e);
             }
         } else {
             successCallback();
@@ -110,36 +119,30 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         }
 
         if (context.child) {
-            if (context.model && context.model.attached) {
-                if (context.composingNewView || context.alwaysTriggerAttach) {
-                    context.model.attached(context.child, context.parent, context);
-                }
-            }
-
-            if (context.attached) {
-                context.attached(context.child, context.parent, context);
-            }
-
-            context.child.setAttribute(activeViewAttributeName, true);
-
-            if (context.composingNewView && context.model) {
-                if (context.model.compositionComplete) {
-                    composition.current.complete(function () {
-                        context.model.compositionComplete(context.child, context.parent, context);
-                    });
+            try{
+                if (context.model && context.model.attached) {
+                    if (context.composingNewView || context.alwaysTriggerAttach) {
+                        context.model.attached(context.child, context.parent, context);
+                    }
                 }
 
-                if (context.model.detached) {
+                if (context.attached) {
+                    context.attached(context.child, context.parent, context);
+                }
+
+                context.child.setAttribute(activeViewAttributeName, true);
+
+                if (context.composingNewView && context.model && context.model.detached) {
                     ko.utils.domNodeDisposal.addDisposeCallback(context.child, function () {
-                        context.model.detached(context.child, context.parent, context);
+                        try{
+                            context.model.detached(context.child, context.parent, context);
+                        }catch(e2){
+                            system.error(e2);
+                        }
                     });
                 }
-            }
-
-            if (context.compositionComplete) {
-                composition.current.complete(function () {
-                    context.compositionComplete(context.child, context.parent, context);
-                });
+            }catch(e){
+                system.error(e);
             }
         }
 
@@ -188,16 +191,14 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         }
     }
 
-    function removePreviousView(parent){
-        var children = ko.virtualElements.childNodes(parent), i, len;
+    function removePreviousView(context){
+        var children = ko.virtualElements.childNodes(context.parent), i, len;
 
         if(!system.isArray(children)){
             var arrayChildren = [];
-
             for(i = 0, len = children.length; i < len; i++){
                 arrayChildren[i] = children[i];
             }
-
             children = arrayChildren;
         }
 
@@ -379,7 +380,9 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         },
         cloneNodes:cloneNodes,
         finalize: function (context) {
-            context.transition = context.transition || this.defaultTransitionName;
+            if(context.transition === undefined) {
+                context.transition = this.defaultTransitionName;
+            }
 
             if(!context.child && !context.activeView){
                 if (!context.cacheViews) {
@@ -400,12 +403,14 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                             if(!context.child){
                                 ko.virtualElements.emptyNode(context.parent);
                             }else{
-                                removePreviousView(context.parent);
+                                removePreviousView(context);
                             }
                         }else if(context.activeView){
                             var instruction = binder.getBindingInstruction(context.activeView);
                             if(instruction && instruction.cacheViews != undefined && !instruction.cacheViews){
                                 ko.removeNode(context.activeView);
+                            }else{
+                                hide(context.activeView);
                             }
                         }
 
@@ -420,7 +425,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                 if (context.child != context.activeView) {
                     if (context.cacheViews && context.activeView) {
                         var instruction = binder.getBindingInstruction(context.activeView);
-                        if(instruction.cacheViews != undefined && !instruction.cacheViews){
+                        if(!instruction || (instruction.cacheViews != undefined && !instruction.cacheViews)){
                             ko.removeNode(context.activeView);
                         }else{
                             hide(context.activeView);
@@ -433,7 +438,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                         }
                     } else {
                         if (!context.cacheViews) {
-                            removePreviousView(context.parent);
+                            removePreviousView(context);
                         }
 
                         show(context.child);
@@ -603,6 +608,18 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             if(!fromBinding){
                 settings = composition.getSettings(function() { return settings; }, element);
             }
+
+            if (settings.compositionComplete) {
+                compositionCompleteCallbacks.push(function () {
+                    settings.compositionComplete(settings.child, settings.parent, settings);
+                });
+            }
+
+            compositionCompleteCallbacks.push(function () {
+                if(settings.composingNewView && settings.model && settings.model.compositionComplete){
+                    settings.model.compositionComplete(settings.child, settings.parent, settings);
+                }
+            });
 
             var hostState = getHostState(element);
 

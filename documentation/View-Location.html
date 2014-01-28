@@ -1,10 +1,161 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<title>Docs - View Location & Customization</title>
-		<meta http-equiv="REFRESH" content="0;url=/documentation/View-Location">
+		<meta charset="utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="format-detection" content="telephone=no"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>Docs - View Location &amp; Customization | Durandal</title>
+		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
+		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
+		<meta name="author" content="EisenbergEffect" />
+
+		<meta name="generator" content="DocPad v6.60.3" />
+
+		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+		<link rel="apple-touch-icon" href="images/icon.png"/>
+
+		<!-- Shims: IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script async src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Styles -->
+		<link  rel="stylesheet" href="/vendor/twitter-bootstrap/css/bootstrap.css" /><link  rel="stylesheet" href="/vendor/prettify.css" /><link  rel="stylesheet" href="/styles/style.css" />
+
+		<script type="text/javascript">
+		    if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+		        var msViewportStyle = document.createElement("style");
+		        var mq = "@@-ms-viewport{width:auto!important}";
+		        msViewportStyle.appendChild(document.createTextNode(mq));
+		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+		    }
+		</script>
+
+		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		This page has moved. You will be automatically redirected to its new location. If you aren't forwarded to the new page, <a href="/documentation/View-Location">click here</a>.
+		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			      <span class="sr-only">Toggle navigation</span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			    </button>
+			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
+			  </div>
+
+		    <div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						
+							<li typeof="sioc:Page" about="/get-started.html" class="">
+								<a href="/get-started.html" property="dc:title">Get Started</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/downloads.html" class="">
+								<a href="/downloads.html" property="dc:title">Downloads</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/docs.html" class="">
+								<a href="/docs.html" property="dc:title">Docs</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/support.html" class="">
+								<a href="/support.html" property="dc:title">Support/Training</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/consultation.html" class="">
+								<a href="/consultation.html" property="dc:title">Consultation</a>
+							</li>
+						
+							<li typeof="sioc:Page" about="/showcase.html" class="">
+								<a href="/showcase.html" property="dc:title">Showcase</a>
+							</li>
+						
+						<li class="donate">
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						      <input type="hidden" name="cmd" value="_s-xclick">
+						      <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+						      <input class="btn btn-small btn-success" type="submit" name="submit" value="Donate">
+						    </form>
+						</li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+						</li>
+					</ul>
+		    </div>
+		</div>
+
+		<section class="container content docs">
+  <h1 id="view-location-amp-customization">View Location &amp; Customization</h1>
+<h4 id="-"> </h4>
+<blockquote>
+<p>The <a href="/documentation/api.html#module/viewLocator">viewLocator module</a> collaborates with the <a href="/documentation/api.html#module/viewEngine">viewEngine module</a> to provide views (literally dom sub-trees) to other parts of the framework as needed. The primary consumer of the <a href="/documentation/api.html#module/viewLocator">viewLocator</a> is the <a href="/documentation/api.html#module/composition">composition module</a>.</p>
+</blockquote>
+<p>During composition, the framework calls into the <a href="/documentation/api.html#module/viewLocator">viewLocator</a> to obtain a view to render the current object with. It does this by calling <a href="/documentation/api.html#module/viewLocator/method/locateViewForObject">viewLocator.locateViewForObject</a>. Here&#39;s what that does:</p>
+<ol>
+<li><p>First, the object is checked for a member function named <em>getView</em>. If this function exists, it is invoked and the object is given the opportunity to explicitly provide either a constructed DOM to be used as the view or a <em>string</em> to be interpreted as the view url/id. The result is passed to <a href="/documentation/api.html#module/viewLocator/method/locateView">locateView</a> which then either returns the DOM element or requires the view using its id and returns that. The <em>getView</em> method is not used in typical application scenarios. It exists for highly specialized scenarios where an object may need &quot;one-off&quot; control in determining which view to create or how the view should be created.</p>
+</li>
+<li><p>If there is no <em>getView</em> function, or if it returns null/undefined, then the object is inspected for a <em>viewUrl</em> property. If found, it is passed to <a href="/documentation/api.html#module/viewLocator/method/locateView">locateView</a> and processing continues as above to ultimately return a DOM element. Again, usage of this is expected to be rare.</p>
+</li>
+<li><p>If neither of the above explicit view declarations is found, then a convention is applied. This is the expected normative use. The first convention is to get the module&#39;s id. Durandal hooks into RequireJS and stores this information for all module instances. The module id is then passed to <a href="/documentation/api.html#module/viewLocator/method/locateView">locateView</a> which transforms it into a view id and returns the DOM sub-tree as described above. This allows for a very simple naming convention for view models and views. For example, a module named <em>editCustomer.js</em> will map to <em>editCustomer.html</em>.</p>
+</li>
+<li><p>If no module id is found, then an attempt is made to determine the object&#39;s type by examining its constructor. This type name is then mapped to a views folder and passed to the <a href="/documentation/api.html#module/viewLocator/method/locateView">locateView</a> function so processing can finish. This would mean that an object with a constructor named Customer would have a view url of <em>views/customer.html</em>. This is a last resort attempt to determine the view by convention and is not expected to be used normally.</p>
+</li>
+</ol>
+<p>The <em>viewLocator</em> allows for a very simple pattern of creating a module per view model or model and a corresponding view per module. Naturally, by using the <em>composition module</em> view resolution behavior can be customized in a variety of ways, but you may also want to customize the view locator directly with your own general mapping convention. There are three functions exported by the <em>viewLocator</em> which you can replace with your own logic in order to accomplish this:</p>
+<ul>
+<li><p><a href="/documentation/api.html#module/viewLocator/method/convertModuleIdToViewId">convertModuleIdToViewId</a> - This function does nothing by default which is why <em>editCustomer.js</em> is mapped to <em>editCustomer.html</em> (both have the same underlying id of <em>editCustomer</em>). Replace this function with your own implementation to easily create your own mapping logic based on <em>moduleId</em>.</p>
+</li>
+<li><p><a href="/documentation/api.html#module/viewLocator/method/determineFallbackViewId">determineFallbackViewId</a> - As mentioned above, if no view id can be determined, the system falls back to attempting to determine the object&#39;s &quot;type&quot; and then uses that. This function contains the implementation of that fallback behavior. Replace it if you desire something different. Under normal usage however, this function should not be called.</p>
+</li>
+<li><p><a href="/documentation/api.html#module/viewLocator/method/translateViewIdToArea">translateViewIdToArea</a> - When a view area is specified, it along with the requested view id will be passed to this function, allowing you to customize the path of your view. You can specify area as part of the <a href="/documentation/api#module/viewLocator/method/locateViewForObject">locateViewForObject</a> or <a href="/documentation/api#module/viewLocator/method/locateView">locateView</a> calls, but more commonly you would specify it as part of a compose binding. Any compose binding that does not include a model, but only a view, has a default area of &#39;partial&#39;. That said, the default implementation of this function does no area translation.</p>
+</li>
+</ul>
+
+</section>
+
+		<footer class="footer">
+		  <div class="container">
+		    <p>Durandal is licensed under the <a href="https://raw.github.com/BlueSpire/Durandal/master/License.txt">MIT License</a>.</p>
+		    <p>Lovingly created by <a href="http://twitter.com/eisenbergeffect" target="_blank">@eisenbergeffect</a> of <a href="http://www.bluespire.com/" target="_blank">Blue Spire</a>.</p>
+		    <p>Site design crafted by <a href="https://twitter.com/@scriswell" target="_blank">@scriswell</a> of <a href="https://twitter.com/@The_UI_Guy" target="_blank">@The_UI_Guy</a> and <a href="https://twitter.com/hfjallemark" target="_blank">@hfjallemark</a>.</p>
+		  </div>
+		  <br />
+		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="JHLN2GQYN6Z3W">
+        <input class="btn btn-med" type="submit" name="submit" value="Help Grow Durandal. Please Donate.">
+      </form>
+		</footer>
+
+		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/modernizr.js"></script>
+		<script src="/vendor/prettify.js"></script>
+		<script src="/scripts/behavior.js"></script>
+
+		
+
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-38441871-1']);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
 	</body>
 </html>
