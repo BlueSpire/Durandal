@@ -9,7 +9,7 @@
 		<meta name="format-detection" content="telephone=no"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<title>Docs - Building with Mimosa | Durandal</title>
+		<title>Docs - Building and Testing with Grunt | Durandal</title>
 		<meta name="description" content="Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain." />
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
@@ -97,12 +97,45 @@
 		</div>
 
 		<section class="container content docs">
-  <h1 id="building-with-mimosa">Building with Mimosa</h1>
+  <h1 id="building-and-testing-with-grunt">Building and Testing with Grunt</h1>
 <h4 id="-"> </h4>
-<p>Mimosa natively understands applications built with <a href="http://requirejs.org/">RequireJS</a>, so optimization is a synch.
-The following console command will do it for you:</p>
-<pre class="prettyprint linenums">mimosa build -mo</pre>
-<p>That said, we have provided a make file for convenience, which provides several commands. For further options and additional information on Mimosa, <a href="http://mimosajs.com/optimization.html">see their official documentation</a>.</p>
+<blockquote>
+<p>This article describes the setup of the &quot;Durandal HTML Starter Kit Pro&quot; contributed by Rainer Wittmann.</p>
+</blockquote>
+<h3 id="quick-start">Quick start</h3>
+<ol>
+<li>Install node from <a href="http://nodejs.org">http://nodejs.org</a></li>
+<li>Install grunt using <code>npm install -g grunt-cli</code></li>
+<li>Download/clone the repo found at <a href="https://github.com/RainerAtSpirit/HTMLStarterKitPro">https://github.com/RainerAtSpirit/HTMLStarterKitPro</a></li>
+<li>Run <code>npm install</code> in the repo&#39;s root directory to install grunt&#39;s dependencies</li>
+<li>Run <code>grunt</code>, which will run the default task, which runs <code>jshint</code>, <code>jasmine:modules</code> and opens the resultant <code>_specrunner.html</code> in the browser</li>
+</ol>
+<h3 id="writing-tests">Writing tests</h3>
+<p>There are two <code>grunt watch</code> tasks configured.</p>
+<ol>
+<li><code>grunt watch:modules</code>. Whenever a spec in the test/specs/modules directory is updated <code>grunt:watch</code> will run <code>grunt:jasmine:modules</code>.</li>
+<li><code>grunt watch:app</code>. Durandal app testing, due to its the async nature, isn&#39;t that straight forward in jasmine. You can find an example using jasmine&#39;s native <code>runs</code> and <code>waitsFor</code> in <code>test/specs/app</code>. Check the <a href="http://www.durandaljs.com">Durandal&#39;s</a> documentation for updated info about that topic.</li>
+</ol>
+<h3 id="building-the-app">Building the app</h3>
+<p>Experimental: There&#39;s a <code>grunt build</code> task that builds an optimized version in the build directory.</p>
+<h3 id="customization">Customization</h3>
+<p>Modify/adjust package.json after cloning. Open <code>gruntfile.js</code> to add/modify the existing configuration.</p>
+<pre class="prettyprint linenums">    ...
+    grunt.registerTask(&#39;build&#39;, [&#39;jshint&#39;, &#39;jasmine&#39;, &#39;clean&#39;, &#39;copy&#39;, &#39;durandal:main&#39;, &#39;uglify&#39;, &#39;connect:build&#39;]);
+    grunt.registerTask(&#39;default&#39;, &#39;start web server for jasmine tests in browser&#39;, function() {
+        grunt.task.run(&#39;jshint&#39;);
+        grunt.task.run(&#39;jasmine:modules&#39;);
+
+        grunt.event.once(&#39;connect.test.listening&#39;, function( host, port ) {
+           var specRunnerUrl = &#39;http://&#39; + host + &#39;:&#39; + port + &#39;/_SpecRunner.html&#39;;
+           grunt.log.writeln(&#39;Jasmine specs available at: &#39; + specRunnerUrl);
+           require(&#39;open&#39;)(specRunnerUrl);
+        });
+
+        grunt.task.run(&#39;connect:test:keepalive&#39;);
+    });</pre>
+<h3 id="new-to-grunt-">New to grunt?</h3>
+<p>Head over to <a href="http://gruntjs.com/">http://gruntjs.com/</a> to learn the basics.</p>
 
 </section>
 
