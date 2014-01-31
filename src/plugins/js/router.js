@@ -567,12 +567,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @return {boolean} Returns true/false from loading the url.
          */
         router.navigate = function(fragment, options) {
-            if(fragment && fragment.indexOf('://') != -1){
+            if(fragment && fragment.indexOf('://') != -1) {
                 window.location.href = fragment;
                 return true;
             }
 
-            rootRouter.explicitNavigation = true;
+            if(options === undefined || (system.isBoolean(options) && options) || (system.isObject(options) && options.trigger)) {
+                rootRouter.explicitNavigation = true;
+            }
             return history.navigate(fragment, options);
         };
 
