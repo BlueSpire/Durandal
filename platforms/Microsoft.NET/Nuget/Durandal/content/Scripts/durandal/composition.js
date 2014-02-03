@@ -450,6 +450,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         },
         bindAndShow: function (child, context, skipActivation) {
             context.child = child;
+            context.parent.__composition_context = context;
 
             if (context.cacheViews) {
                 context.composingNewView = (ko.utils.arrayIndexOf(context.viewElements, child) == -1);
@@ -458,46 +459,53 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             }
 
             tryActivate(context, function () {
-                if (context.binding) {
-                    context.binding(context.child, context.parent, context);
-                }
+                if (context.parent.__composition_context == context) {
+                    delete context.parent.__composition_context;
 
-                if (context.preserveContext && context.bindingContext) {
-                    if (context.composingNewView) {
-                        if(context.parts){
-                            replaceParts(context);
-                        }
-
-                        hide(child);
-                        ko.virtualElements.prepend(context.parent, child);
-
-                        binder.bindContext(context.bindingContext, child, context.model);
+                    if (context.binding) {
+                        context.binding(context.child, context.parent, context);
                     }
-                } else if (child) {
-                    var modelToBind = context.model || dummyModel;
-                    var currentModel = ko.dataFor(child);
 
-                    if (currentModel != modelToBind) {
-                        if (!context.composingNewView) {
-                            ko.removeNode(child);
-                            viewEngine.createView(child.getAttribute('data-view')).then(function(recreatedView) {
-                                composition.bindAndShow(recreatedView, context, true);
-                            });
-                            return;
+                    if (context.preserveContext && context.bindingContext) {
+                        if (context.composingNewView) {
+                            if(context.parts){
+                                replaceParts(context);
+                            }
+
+                            hide(child);
+                            ko.virtualElements.prepend(context.parent, child);
+
+                            binder.bindContext(context.bindingContext, child, context.model);
                         }
+                    } else if (child) {
+                        var modelToBind = context.model || dummyModel;
+                        var currentModel = ko.dataFor(child);
 
-                        if(context.parts){
-                            replaceParts(context);
+                        if (currentModel != modelToBind) {
+                            if (!context.composingNewView) {
+                                ko.removeNode(child);
+                                viewEngine.createView(child.getAttribute('data-view')).then(function(recreatedView) {
+                                    composition.bindAndShow(recreatedView, context, true);
+                                });
+                                return;
+                            }
+
+                            if(context.parts){
+                                replaceParts(context);
+                            }
+
+                            hide(child);
+                            ko.virtualElements.prepend(context.parent, child);
+
+                            binder.bind(modelToBind, child);
                         }
-
-                        hide(child);
-                        ko.virtualElements.prepend(context.parent, child);
-
-                        binder.bind(modelToBind, child);
                     }
-                }
 
-                composition.finalize(context);
+                    composition.finalize(context);
+                } else {
+                    endComposition();
+                    cleanUp(context);
+                }
             }, skipActivation);
         },
         /**
