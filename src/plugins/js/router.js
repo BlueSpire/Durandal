@@ -216,6 +216,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 router.updateDocumentTitle(instance, instruction);
             }
 
+            isProcessing(false);
             rootRouter.explicitNavigation = false;
             rootRouter.navigatingBack = false;
             router.trigger('router:navigation:complete', instance, instruction, router);
