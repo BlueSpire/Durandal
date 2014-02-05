@@ -58,12 +58,13 @@ define(['jquery', 'knockout'], function($, ko) {
          * @method post
          * @param {string} url The url to send the post request to.
          * @param {object} data The data to post. It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
+         * @param {function} Optional function to specify how and what to serialize.
          * @return {Promise} A promise of the response data.
          */
-        post:function(url, data) {
+        post:function(url, data, replacer) {
             return $.ajax({
                 url: url,
-                data: ko.toJSON(data),
+                data: ko.toJSON(data, replacer),
                 type: 'POST',
                 contentType: 'application/json',
                 dataType: 'json'
