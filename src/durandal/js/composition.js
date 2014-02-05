@@ -466,7 +466,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                         hide(child);
                         ko.virtualElements.prepend(context.parent, child);
 
-                        binder.bindContext(context.bindingContext, child, context.model);
+                        binder.bindContext(context.bindingContext, child, context.model, context.as);
                     }
                 } else if (child) {
                     var modelToBind = context.model || dummyModel;
