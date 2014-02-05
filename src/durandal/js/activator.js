@@ -284,11 +284,16 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 }
 
                 computed.isActivating(true);
-
+				
+				var activateCallback = function (result) {
+					activeData = newActivationData;
+					computed.isActivating(false);
+					dfd.resolve(result);
+                };
+				
                 var currentItem = activeItem();
                 if (settings.areSameItem(currentItem, newItem, activeData, newActivationData)) {
-                    computed.isActivating(false);
-                    dfd.resolve(true);
+					activate(newItem, activeItem, activateCallback, newActivationData);
                     return;
                 }
 
@@ -300,11 +305,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                                     deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2);
                                 }).promise().then(function () {
                                     newItem = settings.beforeActivate(newItem, newActivationData);
-                                    activate(newItem, activeItem, function (result) {
-                                        activeData = newActivationData;
-                                        computed.isActivating(false);
-                                        dfd.resolve(result);
-                                    }, newActivationData);
+                                    activate(newItem, activeItem, activateCallback, newActivationData);
                                 });
                             } else {
                                 if (viaSetter) {
