@@ -544,10 +544,19 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          */
         router.updateDocumentTitle = function(instance, instruction) {
             if (instruction.config.title) {
-                if (app.title) {
-                    document.title = instruction.config.title + " | " + app.title;
+                function setTitle(value) {
+                    if (app.title) {
+                        document.title = value + " | " + app.title;
+                    } else {
+                        document.title = value;
+                    }
+                }
+                var title = instruction.config.title;
+                if (ko.isObservable(title)) {
+                    title.subscribe(setTitle);
+                    setTitle(title());
                 } else {
-                    document.title = instruction.config.title;
+                    setTitle(title);
                 }
             } else if (app.title) {
                 document.title = app.title;
