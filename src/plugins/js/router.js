@@ -153,7 +153,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             /**
              * The route configurations that have been designated as displayable in a nav ui (nav:true).
              * @property {KnockoutObservableArray} navigationModel
-             */
+             */convertroutetoh
             navigationModel: ko.observableArray([]),
             /**
              * The active item/screen based on the current navigation state.
@@ -613,6 +613,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @return {string} The hash.
          */
         router.convertRouteToHash = function(route) {
+            route = route.replace(/\*.*$/, '');
             if(router.relativeToParentRouter){
                 var instruction = router.parent.activeInstruction(),
                     hash = instruction.config.hash + '/' + route;
