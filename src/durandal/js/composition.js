@@ -520,7 +520,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                 } else {
                     settings = {
                         model: settings,
-                        activate: true
+                        activate: !activatorPresent
                     };
                 }
 

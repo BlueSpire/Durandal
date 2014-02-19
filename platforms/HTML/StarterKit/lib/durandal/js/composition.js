@@ -525,7 +525,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                 } else {
                     settings = {
                         model: settings,
-                        activate: true
+                        activate: !activatorPresent
                     };
                 }
 
@@ -536,7 +536,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             if (moduleId) {
                 settings = {
                     model: settings,
-                    activate: true
+                    activate: !activatorPresent
                 };
 
                 return settings;
