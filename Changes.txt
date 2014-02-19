@@ -12,6 +12,7 @@
 -Fix Issue #337: module canActivate is not fired when module is already active
 -Fix Issue #382: Allow more granular control for module comparison during activation
 -Fix Issue #293: Transitions now use CSS3 animations when available.
+-Fix Issue #440: Remove *details part when hash generated #440
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Updated Bootstrap to 3.0.2
 -Updated FontAwesome to 4.0.3
