@@ -101,7 +101,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
 
     MessageBox.prototype.getClass = function () {
         if (this.settings) {
-            return this.settings.class;
+            return this.settings["class"];
         }
         return "messageBox";
     };
