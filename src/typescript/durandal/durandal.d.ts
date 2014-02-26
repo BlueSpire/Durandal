@@ -1402,7 +1402,7 @@ interface DurandalNavigationOptions {
 }
 
 interface DurandalRouteConfiguration {
-    title?: string;
+    title?: any;
     moduleId?: string;
     hash?: string;
     route?: string;

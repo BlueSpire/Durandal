@@ -572,18 +572,34 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return false;
         };
 
+        var titleSubscription;
+        function setTitle(value) {
+            if (app.title) {
+                document.title = value + " | " + app.title;
+            } else {
+                document.title = value;
+            }
+        }
+
         /**
          * Updates the document title based on the activated module instance, the routing instruction and the app.title.
          * @method updateDocumentTitle
          * @param {object} instance The activated module.
          * @param {object} instruction The routing instruction associated with the action. It has a `config` property that references the original route mapping config.
          */
-        router.updateDocumentTitle = function(instance, instruction) {
-            if (instruction.config.title) {
-                if (app.title) {
-                    document.title = instruction.config.title + " | " + app.title;
+        router.updateDocumentTitle = function (instance, instruction) {
+            var title = instruction.config.title;
+
+            if (titleSubscription) {
+                titleSubscription.dispose();
+            }
+
+            if (title) {
+                if (ko.isObservable(title)) {
+                    titleSubscription = title.subscribe(setTitle);
+                    setTitle(title());
                 } else {
-                    document.title = instruction.config.title;
+                    setTitle(title);
                 }
             } else if (app.title) {
                 document.title = app.title;

@@ -20,6 +20,7 @@
 -Fix Issue #286: Adding the ability to use a .hasChildRoutes boolean route property rather than *details
 -Fix Issue #312: Improved query string to handle multiple occurences of the same key
 -Fix Issue #315: Append startRoute option to router activate options 
+-Fix Issue #343: Support for observable route titles 
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Updated Bootstrap to 3.0.2
 -Updated FontAwesome to 4.0.3
