@@ -103,7 +103,7 @@ define(['durandal/system', 'durandal/viewEngine'], function (system, viewEngine)
             var funcNameRegex = /function (.{1,})\(/;
             var results = (funcNameRegex).exec((obj).constructor.toString());
             var typeName = (results && results.length > 1) ? results[1] : "";
-
+            typeName = typeName.trim();
             return 'views/' + typeName;
         },
         /**

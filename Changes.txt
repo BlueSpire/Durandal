@@ -21,6 +21,7 @@
 -Fix Issue #312: Improved query string to handle multiple occurences of the same key
 -Fix Issue #315: Append startRoute option to router activate options 
 -Fix Issue #343: Support for observable route titles 
+-Fix Issue #355: Fix bug where IE will fail to load view due to wrong typeName 
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
