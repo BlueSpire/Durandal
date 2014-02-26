@@ -85,7 +85,7 @@ define(['jquery', 'knockout'], function($, ko) {
                 dataType: 'json'
             });
         },
-                /**
+        /**
          * Makes an HTTP DELETE request.
          * @method remove
          * @param {string} url The url to send the delete request to.

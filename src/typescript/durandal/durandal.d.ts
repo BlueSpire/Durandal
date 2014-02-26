@@ -840,6 +840,24 @@ declare module 'plugins/http' {
      * @returns {Promise} A promise of the response data.
     */
     export function post(url: string, data: Object): JQueryPromise<any>;
+
+    /**
+    * Makes an HTTP PUT request.
+    * @method put
+    * @param {string} url The url to send the put request to.
+    * @param {object} data The data to put. It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
+    * @return {Promise} A promise of the response data.
+    */
+    export function put(url: string, data: Object): JQueryPromise<any>;
+
+    /**
+    * Makes an HTTP DELETE request.
+    * @method remove
+    * @param {string} url The url to send the delete request to.
+    * @param {object} [query] An optional key/value object to transform into query string parameters.
+    * @return {Promise} A promise of the get response data.
+    */
+    export function remove(url: string, query?: Object): JQueryPromise<any>;
 }
 
 /**
