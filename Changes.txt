@@ -22,6 +22,7 @@
 -Fix Issue #315: Append startRoute option to router activate options 
 -Fix Issue #343: Support for observable route titles 
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
+-Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
 -Updated FontAwesome to 4.0.3
 -Updated Knockout to 3.0.0
