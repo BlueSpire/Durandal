@@ -818,6 +818,13 @@ declare module 'plugins/http' {
     export var callbackParam: string;
     
     /**
+    * Converts the data to JSON.
+    * @param {object} data The data to convert to JSON.
+    * @return {string} JSON.
+    */
+    export function toJSON(data:Object): string;
+
+    /**
      * Makes an HTTP GET request.
      * @param {string} url The url to send the get request to.
      * @param {object} [query] An optional key/value object to transform into query string parameters.

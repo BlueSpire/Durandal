@@ -20,7 +20,16 @@ define(['jquery', 'knockout'], function($, ko) {
          * @property {string} callbackParam
          * @default callback
          */
-        callbackParam:'callback',
+        callbackParam: 'callback',
+        /**
+         * Converts the data to JSON.
+         * @method toJSON
+         * @param {object} data The data to convert to JSON.
+         * @return {string} JSON.
+         */
+        toJSON: function(data) {
+            return ko.toJSON(data);
+        },
         /**
          * Makes an HTTP GET request.
          * @method get
@@ -68,7 +77,7 @@ define(['jquery', 'knockout'], function($, ko) {
         put:function(url, data) {
             return $.ajax({
                 url: url,
-                data: ko.toJSON(data),
+                data: this.toJSON(data),
                 type: 'PUT',
                 contentType: 'application/json',
                 dataType: 'json'
@@ -84,7 +93,7 @@ define(['jquery', 'knockout'], function($, ko) {
         post:function(url, data) {
             return $.ajax({
                 url: url,
-                data: ko.toJSON(data),
+                data: this.toJSON(data),
                 type: 'POST',
                 contentType: 'application/json',
                 dataType: 'json'
