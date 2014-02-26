@@ -1403,7 +1403,8 @@ interface DurandalRouteConfiguration {
     route?: string;
     routePattern?: RegExp;
     isActive?: KnockoutComputed<boolean>;
-    nav:any;
+    nav?: any;
+    hasChildRoutes?: boolean;
 }
 
 interface DurandalRouteInstruction {
