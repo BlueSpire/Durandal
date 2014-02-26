@@ -366,21 +366,26 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 'margin-left': (-constrainedWidth / 2).toString() + 'px'
             });
 
-            if (!$child.data("predefinedWidth")) {
-                //Ensure the correct width after margin-left has been set
-                $child.outerWidth(constrainedWidth);
-            }
-
             if (height > windowHeight) {
-                $child.css("overflow-y", "auto");
+                $child.css("overflow-y", "auto").outerHeight(windowHeight);
             } else {
-                $child.css("overflow-y", "");
+                $child.css({
+                    "overflow-y": "",
+                    "height": ""
+                });
             }
             
             if (width > windowWidth) {
-                $child.css("overflow-x", "auto");
+                $child.css("overflow-x", "auto").outerWidth(windowWidth);
             } else {
                 $child.css("overflow-x", "");
+
+                if (!$child.data("predefinedWidth")) {
+                    //Ensure the correct width after margin-left has been set
+                    $child.outerWidth(constrainedWidth);
+                } else {
+                    $child.css("width", $child.data("predefinedWidth"));
+                }
             }
         }
     };
