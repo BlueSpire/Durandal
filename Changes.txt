@@ -15,6 +15,7 @@
 -Fix Issue #440: Remove *details part when hash generated #440
 -Fix Issues #386 and #437: Double activate when using activator with compose binding
 -Fix Issue #257: Add PUT and DELETE methods to http plugin
+-Fix Issue #270: Add "as" parameter to compose binding
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Updated Bootstrap to 3.0.2
 -Updated FontAwesome to 4.0.3

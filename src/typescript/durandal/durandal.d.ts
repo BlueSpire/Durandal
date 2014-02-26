@@ -333,8 +333,9 @@ declare module 'durandal/binder' {
      * @param {KnockoutBindingContext} bindingContext The current binding context.
      * @param {DOMElement} view The view to bind.
      * @param {object} [obj] The data to bind to, causing the creation of a child binding context if present.
+     * @param {string} [dataAlias] An alias for $data if present.
     */
-    export function bindContext(bindingContext: KnockoutBindingContext, view: HTMLElement, obj?: any): BindingInstruction;
+    export function bindContext(bindingContext: KnockoutBindingContext, view: HTMLElement, obj?: any, dataAlias?: string): BindingInstruction;
     
     /**
      * Binds the view, preserving the existing binding context. Optionally, a new context can be created, parented to the previous context.
