@@ -21,7 +21,7 @@ Durandal is a cross-device, cross-platform client framework written in JavaScrip
 
 ## Documentation
 
-All the documentation is located on [the official site](http://durandaljs.com/), so have a look there for help on how to [get started](http://durandaljs.com/pages/get-started/), [read tutorials](http://durandaljs.com/pages/docs/), [view sample descriptions](http://durandaljs.com/documentation/Understanding-the-Samples/) and peruse the module reference docs.
+All the documentation is located on [the official site](http://durandaljs.com/), so have a look there for help on how to [get started](http://durandaljs.com/get-started.html), [read tutorials](http://durandaljs.com/docs.html), [view sample descriptions](http://durandaljs.com/documentation/Understanding-the-Samples.html) and peruse the module reference docs.
 If you want to keep up to date with the activity that is happening on the master branch, you can [subscribe to the commit feed](https://github.com/BlueSpire/durandal/commits/master.atom).
 
 ## Community & Support
