@@ -123,6 +123,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 return stringOrObject.text;
             } else {
                 system.error('The object for a MessageBox button does not have a text property that is a string.');
+                return null;
             }
         }
         system.error('Object for a MessageBox button is not a string or object but ' + t + '.');
@@ -137,6 +138,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
         else if (t === "object") {
             if ($.type(stringOrObject.text) === "undefined") {
                 system.error('The object for a MessageBox button does not have a value property defined.');
+                return null;
             } else {
                 return stringOrObject.value;
             }
