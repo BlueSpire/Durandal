@@ -77,12 +77,12 @@ define(['jquery', 'knockout'], function ($, ko) {
 
         /**
          * Makes an HTTP DELETE request.
-         * @method delete
+         * @method del
          * @param {string} url The url to send the post request to.
          * @param {object} header The data to add to the request header.  It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
          * @return {Promise} A promise of the response data.
          */
-        delete: function (url, header) {
+        del: function (url, header) {
             return $.ajax({
                 url: url,
                 type: 'DELETE',
