@@ -1384,7 +1384,7 @@ interface DurandalRouteConfiguration {
     route?: string;
     routePattern?: RegExp;
     isActive?: KnockoutComputed<boolean>;
-    nav:any;
+    nav?:any;
 }
 
 interface DurandalRouteInstruction {
