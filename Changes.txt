@@ -26,6 +26,7 @@
 -Fix Issue #405: Added Layout = null to index view for vs template and nuget starter kit
 -Fix Issue #368: Added headers to http.js plugin
 -Fix Issue #412/#413: Route configured as RegExp object throwing error
+-Fix Issue #426: Fix bug where guardRoute cannot redirect to '' 
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2

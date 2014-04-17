@@ -305,7 +305,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          */
         function handleGuardedRoute(activator, instance, instruction) {
             var resultOrPromise = router.guardRoute(instance, instruction);
-            if (resultOrPromise) {
+            if (resultOrPromise || resultOrPromise === '') {
                 if (resultOrPromise.then) {
                     resultOrPromise.then(function(result) {
                         if (result) {
