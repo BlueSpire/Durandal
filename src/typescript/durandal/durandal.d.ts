@@ -173,7 +173,7 @@ declare module 'durandal/composition' {
         binding?: (child: HTMLElement, parent: HTMLElement, context: CompositionContext) => void;
         attached?: (child: HTMLElement, parent: HTMLElement, context: CompositionContext) => void;
         compositionComplete?: (child: HTMLElement, parent: HTMLElement, context: CompositionContext) => void;
-        tranistion?: string;
+        transition?: string;
     }
 
     /**
@@ -1398,7 +1398,8 @@ interface DurandalRouteConfiguration {
     title?: string;
     moduleId?: string;
     hash?: string;
-    route?: string;
+    /** string or string[] */
+    route?: any;
     routePattern?: RegExp;
     isActive?: KnockoutComputed<boolean>;
     nav: any;
