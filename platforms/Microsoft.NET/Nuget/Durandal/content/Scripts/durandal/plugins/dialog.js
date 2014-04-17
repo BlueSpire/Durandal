@@ -39,6 +39,14 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
     };
 
     /**
+     * Closes a message box.
+     * @method close
+     */
+    MessageBox.prototype.close = function () {
+      dialog.close(this);
+    };
+
+    /**
      * Provides the view to the composition system.
      * @method getView
      * @return {DOMElement} The view of the message box.
@@ -82,7 +90,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
     MessageBox.defaultViewMarkup = [
         '<div data-view="plugins/messageBox" class="modal-content messageBox">',
             '<div class="modal-header">',
-                '<h3 data-bind="text: title"></h3>',
+                '<button type="button" class="close" data-bind="click: function () { close(); }" aria-hidden="true">&times;</button>',
+                '<h4 data-bind="text: title"></h4>',
             '</div>',
             '<div class="modal-body">',
                 '<p class="message" data-bind="text: message"></p>',
@@ -429,6 +438,10 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
 
             if ($child.hasClass('autoclose')) {
                 $(theDialog.blockout).click(function () {
+                    theDialog.close();
+                });
+                $(document).keyup(function (e) {
+                  if (e.keyCode === 27)
                     theDialog.close();
                 });
             }
