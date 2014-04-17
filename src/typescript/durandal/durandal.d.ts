@@ -828,44 +828,49 @@ declare module 'plugins/http' {
      * Makes an HTTP GET request.
      * @param {string} url The url to send the get request to.
      * @param {object} [query] An optional key/value object to transform into query string parameters.
+     * @param {object} [headers] The data to add to the request header.  It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
      * @returns {Promise} A promise of the get response data.
     */
-    export function get(url: string, query?: Object): JQueryPromise<any>;
+    export function get(url: string, query?: Object, headers?: Object): JQueryPromise<any>;
 
     /**
      * Makes an JSONP request.
      * @param {string} url The url to send the get request to.
      * @param {object} [query] An optional key/value object to transform into query string parameters.
      * @param {string} [callbackParam] The name of the callback parameter the api expects (overrides the default callbackParam).
+     * @param {object} [headers] The data to add to the request header.  It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
      * @returns {Promise} A promise of the response data.
     */
-    export function jsonp(url: string, query?: Object, callbackParam?: string): JQueryPromise<any>;
+    export function jsonp(url: string, query?: Object, callbackParam?: string, headers?:Object): JQueryPromise<any>;
     
     /**
      * Makes an HTTP POST request.
      * @param {string} url The url to send the post request to.
      * @param {object} data The data to post. It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
+     * @param {object} [headers] The data to add to the request header.  It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
      * @returns {Promise} A promise of the response data.
     */
-    export function post(url: string, data: Object): JQueryPromise<any>;
+    export function post(url: string, data: Object, headers?:Object): JQueryPromise<any>;
 
     /**
     * Makes an HTTP PUT request.
     * @method put
     * @param {string} url The url to send the put request to.
     * @param {object} data The data to put. It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
+    * @param {object} [headers] The data to add to the request header.  It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
     * @return {Promise} A promise of the response data.
     */
-    export function put(url: string, data: Object): JQueryPromise<any>;
+    export function put(url: string, data: Object, headers?:Object): JQueryPromise<any>;
 
     /**
     * Makes an HTTP DELETE request.
     * @method remove
     * @param {string} url The url to send the delete request to.
     * @param {object} [query] An optional key/value object to transform into query string parameters.
+    * @param {object} [headers] The data to add to the request header.  It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
     * @return {Promise} A promise of the get response data.
     */
-    export function remove(url: string, query?: Object): JQueryPromise<any>;
+    export function remove(url: string, query?: Object, headers?:Object): JQueryPromise<any>;
 }
 
 /**

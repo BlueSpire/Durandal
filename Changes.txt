@@ -24,6 +24,7 @@
 -Fix Issue #355: Fix bug where IE will fail to load view due to wrong typeName 
 -Fix Issue #360: Added a toJSON function to the http module to allow customizing how objects are converted
 -Fix Issue #405: Added Layout = null to index view for vs template and nuget starter kit
+-Fix Issue #368: Added headers to http.js plugin
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
