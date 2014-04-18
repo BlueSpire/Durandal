@@ -559,7 +559,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 }
             }
 
-            system.log('Route Not Found');
+            system.log('Route Not Found', fragment, currentInstruction);
             router.trigger('router:route:not-found', fragment, router);
 
             if (currentInstruction) {
