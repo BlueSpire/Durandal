@@ -281,7 +281,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
         /**
          * Installs this module into Durandal; called by the framework. Adds `app.showDialog` and `app.showMessage` convenience methods.
          * @method install
-         * @param {object} [config] Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box.
+         * @param {object} [config] Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box. You can also use messageBoxViewUrl to specify the view url.
          */
         install:function(config){
             app.showDialog = function(obj, activationData, context) {
@@ -298,8 +298,12 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
 
             if(config.messageBoxView){
                 dialog.MessageBox.prototype.getView = function(){
-                    return config.messageBoxView;
+                    return viewEngine.processMarkup(config.messageBoxView);
                 };
+            }
+
+            if (config.messageBoxViewUrl) {
+                dialog.MessageBox.setViewUrl(config.messageBoxViewUrl);
             }
         }
     };
