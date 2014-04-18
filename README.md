@@ -27,7 +27,7 @@ If you want to keep up to date with the activity that is happening on the master
 ## Community & Support
 
 Need help with something that the docs aren't providing an answer to? 
-Visit our [google group](https://groups.google.com/forum/?fromgroups#!forum/durandaljs) and join in the conversation. We also provide [full commercial support](http://durandaljs.com/pages/support/) no matter how large or small your team is. Additionally, we offer both [on-site and remote training](http://durandaljs.com/pages/training/).
+Visit our [google group](https://groups.google.com/forum/?fromgroups#!forum/durandaljs) and join in the conversation.
 
 ## License
 
