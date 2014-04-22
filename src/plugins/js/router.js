@@ -380,7 +380,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         // extracted decoded parameters. Empty or unmatched parameters will be
         // treated as `null` to normalize cross-browser behavior.
         function createParams(routePattern, fragment, queryString) {
-            var params = routePattern.exec(fragment).slice(1);
+            var result = routePattern.exec(fragment),
+                params = result.slice(1),
+                argsDiff;
 
             for (var i = 0; i < params.length; i++) {
                 var current = params[i];
@@ -389,6 +391,13 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             var queryParams = router.parseQueryString(queryString);
             if (queryParams) {
+                // If the amount of arguments matched is less than the actual expected argument count,
+                // fill in the array to the right with n null values, where n is the argument length difference.
+                // This ensures we don't assign queryParams to a position that should be an optional parameter
+                if ((argsDiff = params.length < result.length - 1)) {
+                    params = params.concat(new Array(argsDiff));
+                }
+
                 params.push(queryParams);
             }
 
@@ -569,11 +578,22 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         var titleSubscription;
         function setTitle(value) {
-            if (app.title) {
-                document.title = value + " | " + app.title;
+            var appTitle = ko.unwrap(app.title);
+
+            if (appTitle) {
+                document.title = value + " | " + appTitle;
             } else {
                 document.title = value;
             }
+        }
+
+        // Allow observable to be used for app.title
+        if(ko.isObservable(app.title)) {
+            app.title.subscribe(function() {
+                setTitle(
+                    ko.unwrap(router.activeInstruction().config.title)
+                );
+            });
         }
 
         /**
@@ -583,7 +603,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @param {object} instruction The routing instruction associated with the action. It has a `config` property that references the original route mapping config.
          */
         router.updateDocumentTitle = function (instance, instruction) {
-            var title = instruction.config.title;
+            var appTitle = ko.unwrap(app.title),
+                title = instruction.config.title;
 
             if (titleSubscription) {
                 titleSubscription.dispose();
@@ -596,8 +617,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 } else {
                     setTitle(title);
                 }
-            } else if (app.title) {
-                document.title = app.title;
+            } else if (appTitle) {
+                document.title = appTitle;
             }
         };
 
