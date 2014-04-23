@@ -379,48 +379,6 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                     return config.messageBoxView;
                 };
             }
-        },
-        reposition: function (child) {
-            var $child = $(child),
-                $window = $(window);
-
-            //We will clear and then set width for dialogs without width set 
-            if (!$child.data("predefinedWidth")) {
-                $child.css({ width: '' }); //Reset width
-            }
-            var width = $child.outerWidth(false),
-                height = $child.outerHeight(false),
-                windowHeight = $window.height() - 10, //leave at least 10 pixels free
-                windowWidth = $window.width() - 10, //leave at least 10 pixels free
-                constrainedHeight = Math.min(height, windowHeight),
-                constrainedWidth = Math.min(width, windowWidth);
-
-            $child.css({
-                'margin-top': (-constrainedHeight / 2).toString() + 'px',
-                'margin-left': (-constrainedWidth / 2).toString() + 'px'
-            });
-
-            if (height > windowHeight) {
-                $child.css("overflow-y", "auto").outerHeight(windowHeight);
-            } else {
-                $child.css({
-                    "overflow-y": "",
-                    "height": ""
-                });
-            }
-
-            if (width > windowWidth) {
-                $child.css("overflow-x", "auto").outerWidth(windowWidth);
-            } else {
-                $child.css("overflow-x", "");
-
-                if (!$child.data("predefinedWidth")) {
-                    //Ensure the correct width after margin-left has been set
-                    $child.outerWidth(constrainedWidth);
-                } else {
-                    $child.css("width", $child.data("predefinedWidth"));
-                }
-            }
         }
     };
 
@@ -514,7 +472,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 setTimeout(function () {
                     var $childView = $(childView);
 
-                    dialog.reposition(childView);
+                    objDialog.context.reposition(childView);
 
                     $(objDialog.host).css('opacity', 1);
                     $childView.css("visibility", "visible");
@@ -532,6 +490,48 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 $(theDialog.blockout).click(function () {
                     theDialog.close();
                 });
+            }
+        },
+        reposition: function (view) {
+            var $view = $(view),
+                $window = $(window);
+
+            //We will clear and then set width for dialogs without width set 
+            if (!$view.data("predefinedWidth")) {
+                $view.css({ width: '' }); //Reset width
+            }
+            var width = $view.outerWidth(false),
+                height = $view.outerHeight(false),
+                windowHeight = $window.height() - 10, //leave at least 10 pixels free
+                windowWidth = $window.width() - 10, //leave at least 10 pixels free
+                constrainedHeight = Math.min(height, windowHeight),
+                constrainedWidth = Math.min(width, windowWidth);
+
+            $view.css({
+                'margin-top': (-constrainedHeight / 2).toString() + 'px',
+                'margin-left': (-constrainedWidth / 2).toString() + 'px'
+            });
+
+            if (height > windowHeight) {
+                $view.css("overflow-y", "auto").outerHeight(windowHeight);
+            } else {
+                $view.css({
+                    "overflow-y": "",
+                    "height": ""
+                });
+            }
+
+            if (width > windowWidth) {
+                $view.css("overflow-x", "auto").outerWidth(windowWidth);
+            } else {
+                $view.css("overflow-x", "");
+
+                if (!$view.data("predefinedWidth")) {
+                    //Ensure the correct width after margin-left has been set
+                    $view.outerWidth(constrainedWidth);
+                } else {
+                    $view.css("width", $view.data("predefinedWidth"));
+                }
             }
         }
     });
