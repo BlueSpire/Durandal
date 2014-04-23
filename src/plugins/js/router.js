@@ -380,7 +380,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         // extracted decoded parameters. Empty or unmatched parameters will be
         // treated as `null` to normalize cross-browser behavior.
         function createParams(routePattern, fragment, queryString) {
-            var params = routePattern.exec(fragment).slice(1);
+            var result = routePattern.exec(fragment),
+                params = result.slice(1),
+                argsDiff;
 
             for (var i = 0; i < params.length; i++) {
                 var current = params[i];
@@ -389,6 +391,13 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             var queryParams = router.parseQueryString(queryString);
             if (queryParams) {
+                // If the amount of arguments matched is less than the actual expected argument count,
+                // fill in the array to the right with n null values, where n is the argument length difference.
+                // This ensures we don't assign queryParams to a position that should be an optional parameter
+                if ((argsDiff = params.length < result.length - 1)) {
+                    params = params.concat(new Array(argsDiff));
+                }
+
                 params.push(queryParams);
             }
 
