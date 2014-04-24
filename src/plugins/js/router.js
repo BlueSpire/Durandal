@@ -580,10 +580,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         
         // Allow observable to be used for app.title
         if(ko.isObservable(app.title)) {
-            app.title.subscribe(function() {
-                setTitle(
-                    ko.unwrap(router.activeInstruction().config.title)
-                );
+            app.title.subscribe(function () {
+                var instruction = router.activeInstruction();
+                var title = instruction != null ? ko.unwrap(instruction.config.title) : '';
+                setTitle(title);
             });
         }
         

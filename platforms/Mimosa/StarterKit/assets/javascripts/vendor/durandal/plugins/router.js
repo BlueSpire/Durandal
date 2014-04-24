@@ -574,13 +574,24 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         var titleSubscription;
         function setTitle(value) {
-            if (app.title) {
-                document.title = value + " | " + app.title;
+            var appTitle = ko.unwrap(app.title);
+
+            if (appTitle) {
+                document.title = value + " | " + appTitle;
             } else {
                 document.title = value;
             }
+        }  
+        
+        // Allow observable to be used for app.title
+        if(ko.isObservable(app.title)) {
+            app.title.subscribe(function () {
+                var instruction = router.activeInstruction();
+                var title = instruction != null ? ko.unwrap(instruction.config.title) : '';
+                setTitle(title);
+            });
         }
-
+        
         /**
          * Updates the document title based on the activated module instance, the routing instruction and the app.title.
          * @method updateDocumentTitle
@@ -588,8 +599,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @param {object} instruction The routing instruction associated with the action. It has a `config` property that references the original route mapping config.
          */
         router.updateDocumentTitle = function (instance, instruction) {
-            var title = instruction.config.title;
-
+            var appTitle = ko.unwrap(app.title),
+                title = instruction.config.title;
+                
             if (titleSubscription) {
                 titleSubscription.dispose();
             }
@@ -601,8 +613,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 } else {
                     setTitle(title);
                 }
-            } else if (app.title) {
-                document.title = app.title;
+            } else if (appTitle) {
+                document.title = appTitle;
             }
         };
 
