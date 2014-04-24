@@ -941,7 +941,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                 while(i--){
                     var current = routes[i];
-                    current.hash = current.hash.replace('#', '');
+                    current.hash = current.hash.replace('#', '/');
                 }
             }
 
