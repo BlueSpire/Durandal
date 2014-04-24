@@ -35,6 +35,7 @@
 -Fix Issue #459: Fixed bug in router where querystring in child routes causes Route Not Found errors
 -Fix Issue #464: Fix a bug that causes routes to be relative even when in pushState
 -Fix Issue #473 and 476: Querystring function should only split on first '='
+-Fix Issue #482: Support full HTML templates
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2

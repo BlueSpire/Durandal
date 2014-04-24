@@ -40,6 +40,12 @@ define(['durandal/system', 'jquery'], function (system, $) {
          */
         viewPlugin: 'text',
         /**
+         * Parameters passed to the RequireJS loader plugin used by the viewLocator to obtain the view source.
+         * @property {string} viewPluginParameters
+         * @default !strip To allow html views to be a full HTML files
+         */
+        viewPluginParameters: '!strip',
+        /**
          * Determines if the url is a url for a view, according to the view engine.
          * @method isViewUrl
          * @param {string} url The potential view url.
@@ -64,7 +70,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
          * @return {string} The require path.
          */
         convertViewIdToRequirePath: function (viewId) {
-            return this.viewPlugin + '!' + viewId + this.viewExtension;
+            return this.viewPlugin + '!' + viewId + this.viewExtension + this.viewPluginParameters;
         },
         /**
          * Parses the view engine recognized markup and returns DOM elements.

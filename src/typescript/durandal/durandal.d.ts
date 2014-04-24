@@ -221,6 +221,12 @@ declare module 'durandal/viewEngine' {
     export var viewPlugin: string;
 
     /**
+    * Parameters passed to the RequireJS loader plugin used by the viewLocator to obtain the view source.
+    * @default !strip To allow html views to be a full HTML files
+    */
+    export var viewPluginParameters:string;
+
+    /**
      * Determines if the url is a url for a view, according to the view engine.
      * @param {string} url The potential view url.
      * @returns {boolean} True if the url is a view url, false otherwise.
