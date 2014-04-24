@@ -287,8 +287,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     startDeferred = null;
                 }
             }).fail(function(err){
-                    system.error(err);
-                });;
+                system.error(err);
+            });
         }
 
         /**
@@ -366,8 +366,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     var instance = system.resolveObject(module);
                     ensureActivation(activeItem, instance, instruction);
                 }).fail(function (err) {
-                        system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message);
-                    });
+                    system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message, err);
+                });
             }
         }
 

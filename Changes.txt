@@ -31,6 +31,7 @@
 -Fix Issue #449: dialog's config.messageBoxView working improperly 
 -Fix Issue #445: Improve 'Route Not Found' message 
 -Fix Issue #362: Dialog improvements
+-Fix Issue #452: Provide original error to system.error 
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
