@@ -292,8 +292,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     startDeferred = null;
                 }
             }).fail(function(err){
-                    system.error(err);
-                });;
+                system.error(err);
+            });
         }
 
         /**
@@ -371,8 +371,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     var instance = system.resolveObject(module);
                     ensureActivation(activeItem, instance, instruction);
                 }).fail(function (err) {
-                        system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message);
-                    });
+                    system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message, err);
+                });
             }
         }
 
@@ -536,7 +536,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             if(router.relativeToParentRouter){
                 var instruction = this.parent.activeInstruction();
-                coreFragment = instruction.params.join('/');
+				coreFragment = queryIndex == -1 ? instruction.params.join('/') : instruction.params.slice(0, -1).join('/');
 
                 if(coreFragment && coreFragment.charAt(0) == '/'){
                     coreFragment = coreFragment.substr(1);

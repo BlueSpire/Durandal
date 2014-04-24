@@ -32,6 +32,7 @@
 -Fix Issue #445: Improve 'Route Not Found' message 
 -Fix Issue #362: Dialog improvements
 -Fix Issue #452: Provide original error to system.error 
+-Fix Issue #459: Fixed bug in router where querystring in child routes causes Route Not Found errors
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
