@@ -570,19 +570,26 @@ declare module 'plugins/dialog' {
     * @class
     */
     class Box {
-        constructor(message: string, title: string, options: string[]);
+        constructor(message: string, title?: string, options?: string[], autoclose?:boolean, settings?:Object);
 
         /**
          * Selects an option and closes the message box, returning the selected option through the dialog system's promise.
          * @param {string} dialogResult The result to select.
          */
-        selectOptions(dialogResult: string): void;
+        selectOption(dialogResult: string): void;
 
         /**
          * Provides the view to the composition system.
          * @returns {DOMElement} The view of the message box.
          */
         getView(): HTMLElement;
+
+        /**
+         * Configures a custom view to use when displaying message boxes.
+         * @method setViewUrl
+         * @param {string} viewUrl The view url relative to the base url which the view locator will use to find the message box's view.
+         */
+        static setViewUrl(viewUrl:string):void;
 
         /**
          * The title to be used for the message box if one is not provided.
@@ -592,24 +599,23 @@ declare module 'plugins/dialog' {
         static defaultTitle: string;
 
         /**
-         * The options to display in the message box of none are specified.
+         * The options to display in the message box if none are specified.
          * @default ['Ok']
          * @static
          */
         static defaultOptions: string[];
 
         /**
-         * The markup for the message box's view.
-         * @static
-         */
-        static defaultViewMarkup: string;
+        * Sets the classes and styles used throughout the message box markup.
+        * @method setDefaults
+        * @param {object} settings A settings object containing the following optional properties: buttonClass, primaryButtonClass, secondaryButtonClass, class, style.
+        */
+        static setDefaults(settings:Object):void;
 
         /**
-         * Configures a custom view to use when displaying message boxes.
-         * @param {string} viewUrl The view url relative to the base url which the view locator will use to find the message box's view.
-         * @static
+         * The markup for the message box's view.
          */
-        static setViewUrl(url:string):void;
+        static defaultViewMarkup: string;
     }
 
     interface DialogContext {
@@ -706,9 +712,11 @@ declare module 'plugins/dialog' {
      * @param {string} message The message to display in the dialog.
      * @param {string} [title] The title message.
      * @param {string[]} [options] The options to provide to the user.
+     * @param {boolean} [autoclose] Automatically close the the message box when clicking outside?
+     * @param {Object} [settings] Custom settings for this instance of the messsage box, used to change classes and styles.
      * @returns {Promise} A promise that resolves when the message box is closed and returns the selected option.
     */
-    export function showMessage(message: string, title?: string, options?: string[]): JQueryPromise<string>;
+    export function showMessage(message: string, title?: string, options?: string[], autoclose?: boolean, settings?: Object): JQueryPromise<string>;
 
     /**
      * Installs this module into Durandal; called by the framework. Adds `app.showDialog` and `app.showMessage` convenience methods.

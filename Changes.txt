@@ -30,6 +30,7 @@
 -Fix Issue #480: DurandalRouteConfiguration.nav to be optional in Typescript definition
 -Fix Issue #449: dialog's config.messageBoxView working improperly 
 -Fix Issue #445: Improve 'Route Not Found' message 
+-Fix Issue #362: Dialog improvements
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
