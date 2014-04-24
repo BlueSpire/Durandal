@@ -481,7 +481,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     continue;
                 }
 
-                var parts = pair.split('='),
+                var parts = pair.split(/=(.+)?/),
                     key = parts[0],
                     value = parts[1] && decodeURIComponent(parts[1].replace(/\+/g, ' '));
 
