@@ -278,12 +278,12 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
                 system.error('For defineProperty, you must not specify a "value" for the property. You must provide a "get" function.');
             }
 
-            if (typeof evaluatorOrOptions.get !== 'function') {
+            if (typeof evaluatorOrOptions.get !== 'function' && typeof evaluatorOrOptions.read !== 'function') {
                 system.error('For defineProperty, the third parameter must be either an evaluator function, or an options object containing a function called "get".');
             }
 
-            computedOptions.read = evaluatorOrOptions.get;
-            computedOptions.write = evaluatorOrOptions.set;
+            computedOptions.read = evaluatorOrOptions.get || evaluatorOrOptions.read;
+            computedOptions.write = evaluatorOrOptions.set || evaluatorOrOptions.write;
         }
 
         computed = ko.computed(computedOptions);
