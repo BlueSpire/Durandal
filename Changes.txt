@@ -38,6 +38,7 @@
 -Fix Issue #482: Support full HTML templates
 -Fix Issue #486: Allow `app.title` to be an observable.
 -Fix Issue #483: Renaming "module" variable 
+-Fix Issue #300: closeDialog convenience API
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2

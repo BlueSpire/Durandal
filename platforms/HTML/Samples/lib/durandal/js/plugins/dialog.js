@@ -379,6 +379,10 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 return dialog.show(obj, activationData, context);
             };
 
+            app.closeDialog = function () {
+                return dialog.close.apply(dialog, arguments);
+            };
+
             app.showMessage = function (message, title, options, autoclose, settings) {
                 return dialog.showMessage(message, title, options, autoclose, settings);
             };

@@ -1224,6 +1224,13 @@ interface DurandalAppModule extends DurandalEventSupport<DurandalAppModule> {
     showDialog(obj: any, activationData?: any, context?: string): JQueryPromise<any>;
 
     /**
+    * Closes the dialog associated with the specified object. via the dialog plugin.
+    * @param {object} obj The object whose dialog should be closed.
+    * @param {object} results* The results to return back to the dialog caller after closing.
+    */
+    closeDialog(obj:any, ...results);
+
+    /**
      * Shows a message box via the dialog plugin.
      * @param {string} message The message to display in the dialog.
      * @param {string} [title] The title message.
