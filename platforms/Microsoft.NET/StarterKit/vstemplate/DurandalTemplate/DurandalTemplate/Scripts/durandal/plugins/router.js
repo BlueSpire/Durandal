@@ -367,8 +367,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 tempActivator.settings.areSameItem = activeItem.settings.areSameItem;
                 ensureActivation(tempActivator, currentActivation, instruction);
             } else {
-                system.acquire(instruction.config.moduleId).then(function (module) {
-                    var instance = system.resolveObject(module);
+                system.acquire(instruction.config.moduleId).then(function (m) {
+                    var instance = system.resolveObject(m);
                     ensureActivation(activeItem, instance, instruction);
                 }).fail(function (err) {
                     system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message, err);
