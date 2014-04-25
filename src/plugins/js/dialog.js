@@ -251,6 +251,10 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 transition: false
             };
 
+            if (dialogContext.binding) {
+                settings.binding = dialogContext.binding;
+            }
+
             if (dialogContext.attached) {
                 settings.attached = dialogContext.attached;
             }
