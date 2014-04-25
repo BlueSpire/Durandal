@@ -43,6 +43,7 @@
 -Fix Issue #436, #453 and #371: Composition complete callbacks not trigged
 -Fix Issue #481: Dialog improvement (adding binding callback to custom contexts)
 -Fix Issue #346 and #438: various composition part pass through issues
+-Fix Issue #475 and #432: Abort composition when the context is changed during activation
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
