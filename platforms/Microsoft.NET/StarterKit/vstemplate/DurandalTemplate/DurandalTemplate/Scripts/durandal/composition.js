@@ -56,19 +56,20 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
     function endComposition() {
         compositionCount--;
 
-        if (compositionCount === 0) {
-            setTimeout(function(){
-                var i = compositionCompleteCallbacks.length;
+        if(compositionCount === 0) {
+            var callBacks = compositionCompleteCallbacks;
+            compositionCompleteCallbacks = [];
+
+            setTimeout(function() {
+                var i = callBacks.length;
 
                 while(i--) {
-                    try{
-                        compositionCompleteCallbacks[i]();
-                    }catch(e){
+                    try {
+                        callBacks[i]();
+                    } catch(e) {
                         system.error(e);
                     }
                 }
-
-                compositionCompleteCallbacks = [];
             }, 1);
         }
     }
