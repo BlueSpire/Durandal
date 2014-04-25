@@ -179,7 +179,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
     function replaceParts(context){
         var parts = cloneNodes(context.parts);
-        var replacementParts = composition.getParts(parts, null, true);
+        var replacementParts = composition.getParts(parts);
         var standardParts = composition.getParts(context.child);
 
         for (var partId in replacementParts) {
@@ -342,7 +342,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
          * @param {DOMElement\DOMElement[]} elements The element(s) to search for parts.
          * @return {object} An object keyed by part.
          */
-        getParts: function(elements, parts, isReplacementSearch) {
+        getParts: function(elements, parts) {
             parts = parts || {};
 
             if (!elements) {
@@ -354,19 +354,16 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             }
 
             for (var i = 0, length = elements.length; i < length; i++) {
-                var element = elements[i];
+                var element = elements[i],
+                    id;
 
                 if (element.getAttribute) {
-                    if(!isReplacementSearch && hasComposition(element)){
-                        continue;
-                    }
-
-                    var id = element.getAttribute(partAttributeName);
+                    id = element.getAttribute(partAttributeName);
                     if (id) {
                         parts[id] = element;
                     }
 
-                    if(!isReplacementSearch && element.hasChildNodes()){
+                    if (element.hasChildNodes() && !hasComposition(element)) {
                         composition.getParts(element.childNodes, parts);
                     }
                 }

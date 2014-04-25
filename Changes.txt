@@ -42,6 +42,7 @@
 -Fix Issue #361: TS File has incorrect sig for observable.defineProperty by making the actual implementation more flexible
 -Fix Issue #436, #453 and #371: Composition complete callbacks not trigged
 -Fix Issue #481: Dialog improvement (adding binding callback to custom contexts)
+-Fix Issue #346 and #438: various composition part pass through issues
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
