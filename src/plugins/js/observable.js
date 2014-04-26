@@ -14,7 +14,8 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         additiveArrayFunctions = ['push', 'unshift'],
         arrayProto = Array.prototype,
         observableArrayFunctions = ko.observableArray.fn,
-        logConversion = false;
+        logConversion = false,
+        changeDetectionMethod = undefined;    
 
     /**
      * You can call observable(obj, propertyName) to get the observable function for the specified property on the object.
@@ -23,7 +24,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
 
     function shouldIgnorePropertyName(propertyName){
         var first = propertyName[0];
-        return first === '_' || first === '$';
+        return first === '_' || first === '$' || (changeDetectionMethod && propertyName === changeDetectionMethod);
     }
 
     function isNode(obj) {
@@ -40,7 +41,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         return nonObservableTypes.indexOf(type) == -1 && !(value === true || value === false);
     }
 
-    function makeObservableArray(original, observable) {
+    function makeObservableArray(original, observable, hasChanged) {
         var lookup = original.__observable__, notify = true;
 
         if(lookup && lookup.__full__){
@@ -78,7 +79,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         additiveArrayFunctions.forEach(function(methodName){
             original[methodName] = function() {
                 for (var i = 0, len = arguments.length; i < len; i++) {
-                    convertObject(arguments[i]);
+                    convertObject(arguments[i], hasChanged);
                 }
 
                 if(notify){
@@ -97,7 +98,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
 
         original['splice'] = function() {
             for (var i = 2, len = arguments.length; i < len; i++) {
-                convertObject(arguments[i]);
+                convertObject(arguments[i], hasChanged);
             }
 
             if(notify){
@@ -114,7 +115,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         };
 
         for (var i = 0, len = original.length; i < len; i++) {
-            convertObject(original[i]);
+            convertObject(original[i], hasChanged);
         }
     }
 
@@ -123,8 +124,19 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
      * @method convertObject
      * @param {object} obj The target object to convert.
      */
-    function convertObject(obj){
+    function convertObject(obj, hasChanged) {
         var lookup, value;
+
+        if (changeDetectionMethod) {
+            if(obj && obj[changeDetectionMethod]) {
+                if (hasChanged) {
+                    hasChanged = hasChanged.slice(0);
+                } else {
+                    hasChanged = [];
+                }
+                hasChanged.push(obj[changeDetectionMethod]);
+            }
+        }
 
         if(!canConvertType(obj)){
             return;
@@ -141,7 +153,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
 
         if (system.isArray(obj)) {
             var observable = ko.observableArray(obj);
-            makeObservableArray(obj, observable);
+            makeObservableArray(obj, observable, hasChanged);
         } else {
             for (var propertyName in obj) {
                 if(shouldIgnorePropertyName(propertyName)){
@@ -152,7 +164,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
                     value = obj[propertyName];
 
                     if(!system.isFunction(value)){
-                        convertProperty(obj, propertyName, value);
+                        convertProperty(obj, propertyName, value, hasChanged);
                     }
                 }
             }
@@ -192,7 +204,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
      * @param {object} [original] The original value of the property. If not specified, it will be retrieved from the object.
      * @return {KnockoutObservable} The underlying observable.
      */
-    function convertProperty(obj, propertyName, original){
+    function convertProperty(obj, propertyName, original, hasChanged) {
         var observable,
             isArray,
             lookup = obj.__observable__ || (obj.__observable__ = {});
@@ -203,7 +215,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
 
         if (system.isArray(original)) {
             observable = ko.observableArray(original);
-            makeObservableArray(original, observable);
+            makeObservableArray(original, observable, hasChanged);
             isArray = true;
         } else if (typeof original == "function") {
             if(ko.isObservable(original)){
@@ -225,7 +237,21 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
             });
         } else {
             observable = ko.observable(original);
-            convertObject(original);
+            convertObject(original, hasChanged);
+        }
+
+        if (hasChanged && hasChanged.length > 0) {
+            hasChanged.forEach(function (func) {
+                if (system.isArray(original)) {
+                    observable.subscribe(function (arrayChanges) {
+                        func(obj, propertyName, null, arrayChanges);
+                    }, null, "arrayChange");
+                } else {
+                    observable.subscribe(function (newValue) {
+                        func(obj, propertyName, newValue, null);
+                    });
+                }
+            });
         }
 
         Object.defineProperty(obj, propertyName, {
@@ -324,6 +350,9 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         };
 
         logConversion = options.logConversion;
+        if (options.changeDetection) {
+            changeDetectionMethod = options.changeDetection;
+        }
     };
 
     return observableModule;
