@@ -229,7 +229,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
             original.then(function (result) {
                 if(system.isArray(result)) {
                     var oa = ko.observableArray(result);
-                    makeObservableArray(result, oa);
+                    makeObservableArray(result, oa, hasChanged);
                     result = oa;
                 }
 
