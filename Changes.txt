@@ -45,6 +45,7 @@
 -Fix Issue #346 and #438: various composition part pass through issues
 -Fix Issue #475 and #432: Abort composition when the context is changed during activation
 -Fix Issue #488/#421: TypeScript - expose durandal/system and durandal/viewEngine in module 
+-Fix Issue #490: Add optional change detection via the observable module. See docs for details.
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
