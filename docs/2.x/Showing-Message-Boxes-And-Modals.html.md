@@ -14,6 +14,12 @@ tags: ['docs','modals','how to']
       Use <code>app.showMessage(...)</code> to show a message box; Aliased from <code>dialog.showMessage(...)</code>
     </li>
     <li>
+        Customize message boxes using options, autoclose, and settings.
+    </li>
+    <li>
+        Set the default settings for all message boxes using <code>dialog.MessageBox.setDefaults</code>.
+    </li>
+    <li>
       Use <code>app.showDialog(...)</code> to show a custom dialog; Aliased from <code>dialog.show(...)</code>
     </li>
     <li>
@@ -24,6 +30,9 @@ tags: ['docs','modals','how to']
     </li>
     <li>
       All dialogs return a promise, resolved when close is called.
+    </li>
+    <li>
+        Reposition dialogs after their contents have been changed using the <code>reposition</code> method on the default dialog context.
     </li>
   </ul>
 </blockquote>
@@ -79,6 +88,77 @@ This message box will have two buttons "Yes" and "No". The yes button, which is 
 Notice also that a call to `showMessage` has a return value. This return value is actually a promise of the user's response. 
 It will be resolved when they select an option and the message box is closed.
 
+### Customizing Message Boxes
+
+As of Durandal 2.1, message boxes can be customized in a number of ways. The _app.showMessage_ method has the following signature:
+
+```javascript
+app.showMessage = function(message, title, options, autoclose, settings)
+```
+
+#### Options - Message Box Buttons
+
+Options, that is, message box buttons, can be specified in two ways:
+
+1. An array of strings: This will generate buttons with the same text as the strings provided. Also, the returned value, when the button is clicked, will be the provided string. Example: 
+```javascript
+["Yes", "No"]
+```
+
+2. An array of objects: Each object must have two properties: _text_ and _value_. _text_ specifies the text of the button and _value_ the value that is returned, when the button is clicked. _text_ must be a string, _value_ can be any JavaScript object.
+This way of specifying buttons is useful, for example, for localizing button texts. Example:
+```javascript
+[ { text: "Ja", value: "Yes" }, { text: "Nein", value: "No" }]
+```
+
+#### Autoclose
+
+You can pass a fourth parameter, a boolean _autoclose_, to _app.showMessage_ and _dialog.showMessage_. It specifies whether the message box will close on a background click. The default is _false_.
+
+#### Settings
+
+The fifth parameter of _app.showMessage_ and _dialog.showMessage_ is _settings_, which specifies additional behaviours for the message box. It is a JavaScript object, for which you can specify the following properties:
+
+<ul>
+<li><i>buttonClass</i> specifies a class for all buttons. The default is <i>"btn"</i>.</li>
+<li><i>primaryButtonClass</i> specifies an additional class for the first button. The default is <i>"btn-primary"</i></li>
+<li><i>secondaryButtonClass</i> specifies an additional class for buttons other than the first. The default is no class.</li>
+<li><i>class</i> specifies the class of the outermost div of the message box. The default is <i>"messageBox"</i>. Note that you must specify this property with quotes, or it will crash in IE8. Example: "class": "myClass".</li>
+<li><i>style</i> specifies additional styles for the outermost div of the message box. The default is nothing.</li>
+</ul>
+
+##### Button Classes
+
+You can customize the classes that are rendered to buttons with _buttonClass_, _primaryButtonClass_, and _secondaryButtonClass_. _buttonClass_ will be rendered to all buttons, _primaryButtonClass_ to the first button only, and the _secondaryButtonClass_ to all other buttons. This allows you to change the button positions by _float:left_ and _float:right_ as you want.
+
+##### Dialog Class and Styles
+
+The _class_ and _style_ settings allow you to customize the MessageBox dialog. The _class_ setting allows you to define the class of the message box in question. It defaults to "messageBox". For example:
+
+```javascript
+app.showMessage("Message", "Title", ["Close"], true, { "class": "messageBox2" });
+```
+
+This will change the class of the message box from _messageBox_ to _messageBox2_.
+
+The _style_ setting is forwarded to Knockout's style-binding. So, you can use it as follows:
+
+```javascript
+app.showMessage("Message", "Title", ["Close"], true, { style:  { width: "600px", backgroundColor: "red" } });
+```
+
+That is, the _style_ setting can take an object of styles and their settings. This allows you to customize the message box even more.
+
+#### Default Settings
+
+Often it is handy to set the default settings that apply to all message boxes instead of specifying them to each message box separately. This you can do as follows:
+
+```javascript
+dialog.MessageBox.setDefaults({ buttonClass: "iconbutton", primaryButtonClass: "float-right", secondaryButtonClass: "cancelbutton float-left" });
+```
+
+_dialog.MessageBox.setDefaults_ specifies only the settings that you define in the object passed to the method, leaving all other settings intact. You can run this method in your application startup.
+
 ### Custom Dialogs
 
 It turns out that message boxes are just an implementation of a custom modal dialog.
@@ -87,8 +167,8 @@ Let's see how to do it by looking at how the built-in message box is implemented
 First, let's see the implementation of _showMessage_:
 
 ```javascript
-showMessage:function(message, title, options){
-    return dialog.show(new MessageBox(message, title, options));
+showMessage: function (message, title, options, autoclose, settings) {
+    return dialog.showMessage(message, title, options, autoclose, settings);
 }
 ```
 
@@ -97,29 +177,38 @@ This shows the typical technique for displaying a custom dialog. All you have to
 Let's see part of the implementation of _MessageBox_ and its view.
 
 **messageBox.js**
+
 ```javascript
-var MessageBox = function(message, title, options) {
+var MessageBox = function (message, title, options, autoclose, settings) {
     this.message = message;
     this.title = title || MessageBox.defaultTitle;
     this.options = options || MessageBox.defaultOptions;
+    this.autoclose = autoclose || false;
+    this.settings = $.extend({}, MessageBox.defaultSettings, settings);
 };
 
 MessageBox.prototype.selectOption = function (dialogResult) {
     dialog.close(this, dialogResult);
 };
+
 ```
+
 **messageBox.html**
+
 ```html
-<div class="messageBox">
-    <div class="modal-header">
-        <h3 data-bind="text: title"></h3>
-    </div>
-    <div class="modal-body">
-        <p class="message" data-bind="text: message"></p>
-    </div>
-    <div class="modal-footer" data-bind="foreach: options">
-        <button class="btn" data-bind="click: function () { $parent.selectOption($data); }, text: $data, css: { 'btn-primary': $index() == 0, autofocus: $index() == 0 }"></button>
-    </div>
+<div data-view="plugins/messageBox" data-bind="css: getClass(), style: getStyle()">,
+	<div class="modal-header">
+		<h3 data-bind="html: title"></h3>
+	</div>
+	<div class="modal-body">
+		<p class="message" data-bind="html: message"></p>
+	</div>
+	<div class="modal-footer">
+		<!-- ko foreach: options -->
+		<button data-bind="click: function () { $parent.selectOption($parent.getButtonValue($data)); }, text: $parent.getButtonText($data), css: $parent.getButtonClass($index)"></button>
+		<!-- /ko -->
+		<div style="clear:both;"></div>
+	</div>
 </div>
 ```
 
@@ -169,3 +258,21 @@ You an use the [addContext](/documentation/api#module/dialog/method/addContext) 
 * [compositionComplete(child, parent, context)](/documentation/api#class/DialogContext/method/compositionComplete) - This function is called after the dialog is fully composed into the DOM, allowing your implementation to do any final modifications, such as positioning or animation. You can obtain the original _dialog_ object via `dialog.getDialog(context.model);`.
 
 > **Note:** Whenever you call [addContext](/documentation/api#module/dialog/method/addContext) the _dialog_ module will add a helper method to itself to facillitate showing dialogs in that context. For example, if your create and add a context called 'bubble' for showing bubble popups, you could show these popups in two different ways: `dialog.show(viewModel, activationData, 'bubble')` or `dialog.showBubble(viewModel, activationData)`
+
+
+### Repositioning Dialogs After Their Contents Have Been Changed
+
+On the default dialog context, there is a method to reposition a dialog after its contents have been changed (called _reposition_). You can call it as follows:
+
+```javascript
+dialog.getContext().reposition(view);
+```
+
+or
+
+```javascript
+var theDialog = dialog.getDialog(context.model);
+theDialog.context.reposition(view);
+```
+
+where _view_ is the view that needs to be repositioned. You need to call this method, for example, after you have loaded some content via AJAX to the dialog.
