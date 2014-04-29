@@ -177,6 +177,66 @@ define(['durandal/system'], function (system) {
     };
 
     /**
+     * Inversion-of-control to the `on` method. Starts `this` object listening to
+     * target object, keeping track of subscription(s).
+
+     * @chainable
+     * @method listenTo
+     * @param targetObject {object} The object to start listening to
+     * @param events {string} Space-separated list of events to subscribe to
+     * @param callback {function} Callback method to subscribe
+     * @return {object} `this`
+     */
+    Events.prototype.listenTo = function (target, events, callback) {
+        // Get (or setup) the listenTo object
+        var listeningTo = this._listeningTo || (this._listeningTo = {});
+
+        // Get the listen Id (or set it, if one isn't already generated for target object)
+        // and assign the target to the listenTo hash via it's ID
+        var id = target._listenId || (target._listenId = _.uniqueId('l'));
+        listeningTo[id] = target;
+
+        // Listen to the event using regular `on`
+        target.on(events, callback, this);
+
+        return this;
+    };
+
+    /**
+     * Inversion-of-control to the `off` method. Stops `this` objet listening to
+     * target object, removing subscriptions that were tracked.
+
+     * @chainable
+     * @method stopListening
+     * @param targetObject {object} The object to stop listening to
+     * @param [events] {string} Space-separated list of events to unsubscribe from
+     * @param [callback] {function} Callback method to unsubscribe
+     * @return {object} `this`
+     */
+    Events.prototype.stopListening = function (target, events, callback) {
+        // Check if the listeningTo hash exists... and if not, return early
+        var listeningTo = this._listeningTo;
+        if (!listeningTo) return this;
+
+        // Check if we're doing a blanket remove (no event names or callbacks given)
+        var remove = !events && !callback;
+
+        // Grab only those events pertaining to the target object
+        target && ((listeningTo = {})[target._listenId] = target);
+
+        // Loop over all listeners and remove
+        for (var id in listeningTo) {
+            target = listeningTo[id];
+            target.off(events, callback, this);
+            if (remove || _.isEmpty(target._callbacks)) {
+                delete this._listeningTo[id];
+            }
+        }
+
+        return this;
+    };
+
+    /**
      * Creates a function that will trigger the specified events when called. Simplifies proxying jQuery (or other) events through to the events object.
      * @method proxy
      * @param {string} events One or more events, separated by white space to trigger by invoking the returned function.
@@ -204,6 +264,8 @@ define(['durandal/system'], function (system) {
         targetObject.on = Events.prototype.on;
         targetObject.off = Events.prototype.off;
         targetObject.trigger = Events.prototype.trigger;
+        targetObject.listenTo = Events.prototype.listenTo;
+        targetObject.stopListening = Events.prototype.stopListening;
         targetObject.proxy = Events.prototype.proxy;
     };
 
