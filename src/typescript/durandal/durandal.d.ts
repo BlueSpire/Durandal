@@ -1065,11 +1065,19 @@ declare module 'plugins/serializer' {
 
     /**
      * Deserialize the JSON.
-     * @param {text} string The JSON string.
+     * @param {text} text The JSON string.
      * @param {DeserializerOptions} settings Settings can specify a reviver, getTypeId function or getConstructor function.
      * @returns {object} The deserialized object.
     */
     export function deserialize<T>(text: string, settings?: DeserializerOptions): T;
+
+    /**
+    * Clone the object.
+    * @param {object} obj The object to clone.
+    * @param {object} [settings] Settings can specify any of the options allowed by the serialize or deserialize methods.
+    * @return {object} The new clone.
+    */
+    export function clone<T>(obj:T, settings?:Object): T;
 }
 
 /**
