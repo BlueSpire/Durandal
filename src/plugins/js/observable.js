@@ -164,24 +164,22 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
     }
 
     function innerSetter(observable, newValue, isArray) {
-        var val;
-        observable(newValue);
-        val = observable.peek();
-
         //if this was originally an observableArray, then always check to see if we need to add/replace the array methods (if newValue was an entirely new array)
         if (isArray) {
-            if (!val) {
+            if (!newValue) {
                 //don't allow null, force to an empty array
-                val = [];
-                observable(val);
-                makeObservableArray(val, observable);
+                newValue = [];
+                makeObservableArray(newValue, observable);
             }
-            else if (!val.destroyAll) {
-                makeObservableArray(val, observable);
+            else if (!newValue.destroyAll) {
+                makeObservableArray(newValue, observable);
             }
         } else {
-            convertObject(val);
+            convertObject(newValue);
         }
+
+        //call the update to the observable after the array as been updated.
+        observable(newValue);
     }
 
     /**
