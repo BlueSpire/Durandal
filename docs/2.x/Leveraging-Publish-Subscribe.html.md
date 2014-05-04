@@ -41,7 +41,7 @@ By doing this, _myObj_ gains the following functions:
 * `trigger` - Trigger this object's events.
 * `proxy` - Proxy this object's events.
 
-You can pass the `all` event name to subsribe to all events.
+You can pass the `all` event name to subscribe to all events.
 
 You can see the [events](/documentation/api#module/events) module reference documentation for more detailed information on these.
 Some examples of using the _app_ module's events are demonstrated below.
