@@ -41,6 +41,8 @@ By doing this, _myObj_ gains the following functions:
 * `trigger` - Trigger this object's events.
 * `proxy` - Proxy this object's events.
 
+You can pass the `all` event name to subsribe to all events.
+
 You can see the [events](/documentation/api#module/events) module reference documentation for more detailed information on these.
 Some examples of using the _app_ module's events are demonstrated below.
 
@@ -60,6 +62,13 @@ app.trigger('customer:new', newCustomer);
 ```javascript
 app.on('customer:new').then(function(customer){
   //do something with the payload
+});
+```
+
+**Subscribing to all app-wide messages.**
+```javascript
+app.on('all').then(function(event){
+  //the arguments array contains the payload
 });
 ```
 
