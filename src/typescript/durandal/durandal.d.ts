@@ -1183,9 +1183,10 @@ interface DurandalAppModule extends DurandalEventSupport<DurandalAppModule> {
      * @param {string} message The message to display in the dialog.
      * @param {string} [title] The title message.
      * @param {string[]} [options] The options to provide to the user.
+     * @param {object[]} [values] The values to return to the caller.
      * @returns {Promise} A promise that resolves when the message box is closed and returns the selected option.
     */
-    showMessage(message: string, title?: string, options?: string[]): JQueryPromise<string>;
+    showMessage(message: string, title?: string, options?: string[], values?: any[]): JQueryPromise<string>;
 
     /**
      * Configures one or more plugins to be loaded and installed into the application.
