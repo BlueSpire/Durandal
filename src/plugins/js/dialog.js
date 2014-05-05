@@ -18,10 +18,11 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
      * Models a message box's message, title and options.
      * @class MessageBox
      */
-    var MessageBox = function(message, title, options) {
+    var MessageBox = function(message, title, options, values) {
         this.message = message;
         this.title = title || MessageBox.defaultTitle;
         this.options = options || MessageBox.defaultOptions;
+        this.values = values;
     };
 
     /**
@@ -29,8 +30,12 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
      * @method selectOption
      * @param {string} dialogResult The result to select.
      */
-    MessageBox.prototype.selectOption = function (dialogResult) {
-        dialog.close(this, dialogResult);
+    MessageBox.prototype.selectOption = function (index) {
+        if (this.values && this.values.length >= index) {
+            dialog.close(this, this.values[index])
+        } else {
+            dialog.close(this, this.options[index]);
+        }
     };
 
     /**
@@ -83,7 +88,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 '<p class="message" data-bind="text: message"></p>',
             '</div>',
             '<div class="modal-footer" data-bind="foreach: options">',
-                '<button class="btn" data-bind="click: function () { $parent.selectOption($data); }, text: $data, css: { \'btn-primary\': $index() == 0, autofocus: $index() == 0 }"></button>',
+                '<button class="btn" data-bind="click: function () { $parent.selectOption($index()); }, text: $data, css: { \'btn-primary\': $index() == 0, autofocus: $index() == 0 }"></button>',
             '</div>',
         '</div>'
     ].join('\n');
@@ -262,16 +267,17 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {string[]} [options] The options to provide to the user.
          * @return {Promise} A promise that resolves when the message box is closed and returns the selected option.
          */
-        showMessage:function(message, title, options){
+        showMessage:function(message, title, options, values){
             if(system.isString(this.MessageBox)){
                 return dialog.show(this.MessageBox, [
                     message,
                     title || MessageBox.defaultTitle,
-                    options || MessageBox.defaultOptions
+                    options || MessageBox.defaultOptions,
+                    values
                 ]);
             }
 
-            return dialog.show(new this.MessageBox(message, title, options));
+            return dialog.show(new this.MessageBox(message, title, options, values));
         },
         /**
          * Installs this module into Durandal; called by the framework. Adds `app.showDialog` and `app.showMessage` convenience methods.
@@ -283,8 +289,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 return dialog.show(obj, activationData, context);
             };
 
-            app.showMessage = function(message, title, options) {
-                return dialog.showMessage(message, title, options);
+            app.showMessage = function(message, title, options, values) {
+                return dialog.showMessage(message, title, options, values);
             };
 
             if(config.messageBox){

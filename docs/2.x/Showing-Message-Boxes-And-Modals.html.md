@@ -79,6 +79,20 @@ This message box will have two buttons "Yes" and "No". The yes button, which is 
 Notice also that a call to `showMessage` has a return value. This return value is actually a promise of the user's response. 
 It will be resolved when they select an option and the message box is closed.
 
+```javascript
+var screen = {
+  ...
+  canDeactivate:function(){
+    return app.showMessage('You have unsaved data. Are you sure you want to close?', 'Unsaved Data', ['Yes', 'No'], [true, false]);
+  }
+  ...
+};
+```
+
+This message box has the same buttons as the one before, but returns the values of the second array. The array can contain any object or value
+and the value is passed to the promise "done" handler according to the index of the button. If the array is smaller than the list of buttons,
+the text of the button will be used.
+
 ### Custom Dialogs
 
 It turns out that message boxes are just an implementation of a custom modal dialog.
