@@ -54,7 +54,7 @@
 -Updated Knockout to 3.0.0
 -Updated RequireJS to 2.1.9
 -Updated RequireJS Text Plugin to 2.0.7
--Various fixes to the docs and readme
+-Various fixes/extensions to the docs and readme
 
 2.0.1
 -Fix Issue #259: Fragment doesn't include query when using push state
