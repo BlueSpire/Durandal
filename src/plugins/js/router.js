@@ -88,6 +88,13 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      */
 
     /**
+     * Triggered when navigation begins.
+     * @event router:navigation:processing
+     * @param {object} instruction The routing instruction.
+     * @param {Router} router The router.
+     */
+
+    /**
      * Triggered right before a route is activated.
      * @event router:route:activating
      * @param {object} instance The activated instance.
@@ -355,6 +362,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             isProcessing(true);
             router.activeInstruction(instruction);
+            router.trigger('router:navigation:processing', instruction, router);
 
             if (canReuseCurrentActivation(instruction)) {
                 var tempActivator = activator.create();
