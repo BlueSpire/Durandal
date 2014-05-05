@@ -48,6 +48,7 @@
 -Fix Issue #490: Add optional change detection via the observable module. See docs for details.
 -Fix Issue #494: Feature: serializer.clone
 -Fix Issue #495: Maybe add a router navigation started event (added router:navigation:processing)
+-Fix Issue ##498 and #496: Overwriting an observable array results in one-way binding of the new array
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
