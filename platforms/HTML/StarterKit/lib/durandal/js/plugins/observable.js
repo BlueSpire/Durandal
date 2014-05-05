@@ -21,7 +21,8 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         arrayProto = Array.prototype,
         observableArrayFunctions = ko.observableArray.fn,
         logConversion = false,
-        changeDetectionMethod = undefined;    
+        changeDetectionMethod = undefined,
+        skipPromises = false;
 
     /**
      * You can call observable(obj, propertyName) to get the observable function for the specified property on the object.
@@ -47,6 +48,19 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         return nonObservableTypes.indexOf(type) == -1 && !(value === true || value === false);
     }
 
+    function createLookup(obj) {
+        var value = {};
+
+        Object.defineProperty(obj, "__observable__", {
+            enumerable: false,
+            configurable: false,
+            writable: false,
+            value: value
+        });
+
+        return value;
+    }
+
     function makeObservableArray(original, observable, hasChanged) {
         var lookup = original.__observable__, notify = true;
 
@@ -54,7 +68,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
             return;
         }
 
-        lookup = lookup || (original.__observable__ = {});
+        lookup = lookup || createLookup(original);
         lookup.__full__ = true;
 
         es5Functions.forEach(function (methodName) {
@@ -160,7 +174,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
             return;
         }
 
-        lookup = lookup || (obj.__observable__ = {});
+        lookup = lookup || createLookup(obj);
         lookup.__full__ = true;
 
         if (system.isArray(obj)) {
@@ -217,7 +231,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
     function convertProperty(obj, propertyName, original, hasChanged) {
         var observable,
             isArray,
-            lookup = obj.__observable__ || (obj.__observable__ = {});
+            lookup = obj.__observable__ || createLookup(obj);
 
         if(original === undefined){
             original = obj[propertyName];
@@ -233,7 +247,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
             }else{
                 return null;
             }
-        } else if(system.isPromise(original)) {
+        } else if(!skipPromises && system.isPromise(original)) {
             observable = ko.observable();
 
             original.then(function (result) {
@@ -269,7 +283,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
             enumerable: true,
             get: observable,
             set: ko.isWriteableObservable(observable) ? (function (newValue) {
-                if (newValue && system.isPromise(newValue)) {
+                if (newValue && system.isPromise(newValue) && !skipPromises) {
                     newValue.then(function (result) {
                         innerSetter(observable, result, system.isArray(result));
                     });
@@ -363,6 +377,8 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         if (options.changeDetection) {
             changeDetectionMethod = options.changeDetection;
         }
+
+        skipPromises = options.skipPromises;
     };
 
     return observableModule;

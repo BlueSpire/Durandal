@@ -50,6 +50,7 @@
 -Fix Issue #495: Maybe add a router navigation started event (added router:navigation:processing)
 -Fix Issue #498 and #496: Overwriting an observable array results in one-way binding of the new array
 -Fix Issue #489: Observable plugin resetting Deferred properties as undefined
+-Fix Issue #366: Make Observable Tracking Non-Enumerable
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
