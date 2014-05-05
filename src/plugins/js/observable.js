@@ -16,7 +16,8 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         arrayProto = Array.prototype,
         observableArrayFunctions = ko.observableArray.fn,
         logConversion = false,
-        changeDetectionMethod = undefined;    
+        changeDetectionMethod = undefined,
+        skipPromises = false;
 
     /**
      * You can call observable(obj, propertyName) to get the observable function for the specified property on the object.
@@ -228,7 +229,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
             }else{
                 return null;
             }
-        } else if(system.isPromise(original)) {
+        } else if(!skipPromises && system.isPromise(original)) {
             observable = ko.observable();
 
             original.then(function (result) {
@@ -264,7 +265,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
             enumerable: true,
             get: observable,
             set: ko.isWriteableObservable(observable) ? (function (newValue) {
-                if (newValue && system.isPromise(newValue)) {
+                if (newValue && system.isPromise(newValue) && !skipPromises) {
                     newValue.then(function (result) {
                         innerSetter(observable, result, system.isArray(result));
                     });
@@ -358,6 +359,8 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         if (options.changeDetection) {
             changeDetectionMethod = options.changeDetection;
         }
+
+        skipPromises = options.skipPromises;
     };
 
     return observableModule;
