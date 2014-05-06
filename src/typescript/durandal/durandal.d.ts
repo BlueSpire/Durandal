@@ -7,6 +7,8 @@
 /// <reference path="../jquery/jquery.d.ts" />
 /// <reference path="../knockout/knockout.d.ts" />
 
+/* tslint:disable */
+
 /**
  * The system module encapsulates the most basic features used by other modules.
  * @requires require
@@ -740,6 +742,17 @@ declare module 'plugins/dialog' {
     export function showMessage(message: string, title?: string, options?: string[], autoclose?: boolean, settings?: Object): JQueryPromise<string>;
 
     /**
+     * Shows a message box.
+     * @param {string} message The message to display in the dialog.
+     * @param {string} [title] The title message.
+     * @param {DialogButton[]} [options] The options to provide to the user.
+     * @param {boolean} [autoclose] Automatically close the the message box when clicking outside?
+     * @param {Object} [settings] Custom settings for this instance of the messsage box, used to change classes and styles.
+     * @returns {Promise} A promise that resolves when the message box is closed and returns the selected option.
+    */
+    export function showMessage(message: string, title?: string, options?: DialogButton[], autoclose?: boolean, settings?: Object): JQueryPromise<any>;
+
+    /**
      * Installs this module into Durandal; called by the framework. Adds `app.showDialog` and `app.showMessage` convenience methods.
      * @param {object} [config] Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box. You can also use messageBoxViewUrl to specify the view url.
     */
@@ -1231,6 +1244,11 @@ interface DurandalEventModule {
     includeIn(targetObject: any): void;
 }
 
+interface DialogButton {
+  text: string;
+  value: any;
+}
+
 interface DurandalAppModule extends DurandalEventSupport<DurandalAppModule> {
     /**
      * The title of your application.
@@ -1247,10 +1265,10 @@ interface DurandalAppModule extends DurandalEventSupport<DurandalAppModule> {
     showDialog(obj: any, activationData?: any, context?: string): JQueryPromise<any>;
 
     /**
-    * Closes the dialog associated with the specified object. via the dialog plugin.
-    * @param {object} obj The object whose dialog should be closed.
-    * @param {object} results* The results to return back to the dialog caller after closing.
-    */
+     * Closes the dialog associated with the specified object. via the dialog plugin.
+     * @param {object} obj The object whose dialog should be closed.
+     * @param {object} results* The results to return back to the dialog caller after closing.
+     */
     closeDialog(obj: any, ...results);
 
     /**
@@ -1258,9 +1276,22 @@ interface DurandalAppModule extends DurandalEventSupport<DurandalAppModule> {
      * @param {string} message The message to display in the dialog.
      * @param {string} [title] The title message.
      * @param {string[]} [options] The options to provide to the user.
+     * @param {boolean} [autoclose] Automatically close the the message box when clicking outside?
+     * @param {Object} [settings] Custom settings for this instance of the messsage box, used to change classes and styles.
      * @returns {Promise} A promise that resolves when the message box is closed and returns the selected option.
-    */
-    showMessage(message: string, title?: string, options?: string[]): JQueryPromise<string>;
+     */
+    showMessage(message: string, title?: string, options?: string[], autoclose?: boolean, settings?: Object): JQueryPromise<string>;
+
+    /**
+     * Shows a message box.
+     * @param {string} message The message to display in the dialog.
+     * @param {string} [title] The title message.
+     * @param {DialogButton[]} [options] The options to provide to the user.
+     * @param {boolean} [autoclose] Automatically close the the message box when clicking outside?
+     * @param {Object} [settings] Custom settings for this instance of the messsage box, used to change classes and styles.
+     * @returns {Promise} A promise that resolves when the message box is closed and returns the selected option.
+     */
+    showMessage(message: string, title?: string, options?: DialogButton[], autoclose?: boolean, settings?: Object): JQueryPromise<any>;
 
     /**
      * Configures one or more plugins to be loaded and installed into the application.
