@@ -133,6 +133,16 @@ define(['durandal/system'], function(system) {
             var reviver = settings.reviver || function(key, value) { return that.reviver(key, value, getTypeId, getConstructor); };
 
             return JSON.parse(text, reviver);
+        },
+        /**
+         * Clone the object.
+         * @method clone
+         * @param {object} obj The object to clone.
+         * @param {object} [settings] Settings can specify any of the options allowed by the serialize or deserialize methods.
+         * @return {object} The new clone.
+         */
+        clone:function(obj, settings) {
+            return this.deserialize(this.serialize(obj, settings), settings);
         }
     };
 });

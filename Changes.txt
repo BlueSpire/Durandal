@@ -44,6 +44,13 @@
 -Fix Issue #481: Dialog improvement (adding binding callback to custom contexts)
 -Fix Issue #346 and #438: various composition part pass through issues
 -Fix Issue #475 and #432: Abort composition when the context is changed during activation
+-Fix Issue #488/#421: TypeScript - expose durandal/system and durandal/viewEngine in module 
+-Fix Issue #490: Add optional change detection via the observable module. See docs for details.
+-Fix Issue #494: Feature: serializer.clone
+-Fix Issue #495: Maybe add a router navigation started event (added router:navigation:processing)
+-Fix Issue #498 and #496: Overwriting an observable array results in one-way binding of the new array
+-Fix Issue #489: Observable plugin resetting Deferred properties as undefined
+-Fix Issue #366: Make Observable Tracking Non-Enumerable
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
@@ -51,7 +58,7 @@
 -Updated Knockout to 3.0.0
 -Updated RequireJS to 2.1.9
 -Updated RequireJS Text Plugin to 2.0.7
--Various fixes to the docs and readme
+-Various fixes/extensions to the docs and readme
 
 2.0.1
 -Fix Issue #259: Fragment doesn't include query when using push state

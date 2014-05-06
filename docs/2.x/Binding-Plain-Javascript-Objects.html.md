@@ -113,3 +113,33 @@ In your view, you can data-bind to these as if they were normal arrays.
     <hr>
 </div>
 ```
+
+### Change Detection
+
+The observable module supports optional changed detection. To activate it, simply add the changeDetection parameter to the plugin activation:
+
+```javascript
+  app.configurePlugins({
+    observable: {
+      changeDetection: "hasChanged" // The name of your method.
+    },
+    // ... other plugins.
+  });
+```
+
+Then, add a method of the same name to your shell, model, viewmodel or controller:
+
+```javascript
+  hasChanged = function (obj, propertyName, newValue, arrayChanges) {
+    // obj is the object on which the property "propertyName" has changed.
+
+    if (arrayChanges) {
+      // Array changes needs version 3+ of Knockout and is called on changes
+      // to an observable array.
+    } else {
+      // newValue contains the new value of the observable having changed.
+    }
+  }
+```
+
+Multiple objects can receive notifications when changes are detected. Simply add the method to all the objects you need to detect those changes.
