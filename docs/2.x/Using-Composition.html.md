@@ -245,3 +245,12 @@ There are three hooks into the composition pipeline which you can specify as cal
 Whenever Durandal composes, it also checks your model for various callback functions at different points in the compositoin process. The sequence of callbacks is referred to as the _composition lifecycle_. The lifecycle is as follows: getView, activate, binding, bindingComplete, attached, compositionComplete, detached. You can find more information in the section on [Hooking Lifecycle Callbacks](/documentation/Hooking-Lifecycle-Callbacks).
 
 > **Note:** If you have set `cacheViews:true` then _attached_ will only be called the first time the view is shown, on the initial bind, since technically the view is only attached once. If you wish to override this behavior, then set `alwaysTriggerAttach:true` on your composition binding.
+
+#### Custom Error Management
+You can replace the default error management during composition by adding an error handler to the binding:
+
+```html
+<div data-bind="compose: { model: model, onError: errorHandlerFunction }"></div>
+``` 
+
+The error handler is called with 2 parameters: the error or exception and the binded element.
