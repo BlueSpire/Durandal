@@ -978,6 +978,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 }
             }
 
+            var rootStripper = rootRouter.options.root && new RegExp("^" + rootRouter.options.root + "/");
+
             $(document).delegate("a", 'click', function(evt){
                 if(history._hasPushState){
                     if(!evt.altKey && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey && rootRouter.targetIsThisWindow(evt)){
@@ -988,6 +990,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                         if (href != null && !(href.charAt(0) === "#" || /^[a-z]+:/i.test(href))) {
                             rootRouter.explicitNavigation = true;
                             evt.preventDefault();
+
+                            if (rootStripper) {
+                                href = href.replace(rootStripper, "");
+                            }
+
                             history.navigate(href);
                         }
                     }
