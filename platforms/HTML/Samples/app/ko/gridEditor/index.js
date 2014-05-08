@@ -26,6 +26,7 @@
 
         self.canActivate = function () {
             console.log('canActivate grid');
+            return true;
         };
 
         self.canDeactivate = function () {

@@ -55,6 +55,7 @@
 -Fix Issue #503: Updated showMessage overload
 -Fix Issue #395: setRoot() composition skips canActivate 
 -Fix Issues #418, #181, #297: Various fixes to activator hierarchies and child routers
+-Fix Issue #461: Router: Click binding not stripping root path 
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.1.1
