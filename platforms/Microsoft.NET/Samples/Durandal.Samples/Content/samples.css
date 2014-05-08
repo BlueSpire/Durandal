@@ -18,13 +18,12 @@ section {
     margin: 0 20px;
 }
 
-.loader {
-    margin-top: 12px;
-    margin-right: 12px;
+.navbar-nav li.loader {
+    margin: 12px 20px 0 0;
     visibility: hidden;
 }
 
-.loader.active {
+.navbar-nav li.loader.active {
     visibility: visible;
 }
 

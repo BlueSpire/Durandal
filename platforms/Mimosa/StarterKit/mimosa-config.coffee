@@ -1,16 +1,19 @@
 exports.config =
-  minMimosaVersion:'1.0.0'
+  minMimosaVersion:'2.0.0'
 
   modules: [
     'server'
     'require'
-    'minify'
+    'minify-js'
+    'minify-css'
     'live-reload'
     'combine'
     'requirebuild-include'
     'requirebuild-textplugin-include'
     'bower'
-    'lint'
+    'csslint'
+    'jshint'
+    'copy'
   ]
 
   watch:
@@ -27,15 +30,16 @@ exports.config =
   bower:
     copy:
       mainOverrides:
-        "knockout.js":["knockout.js","knockout-3.0.0.debug.js"]
+        "knockout.js":["knockout.js","knockout-2.3.0.debug.js"]
         "bootstrap": [
-          { "docs/assets/fonts": "../../fonts" }
           "docs/assets/js/bootstrap.js"
           "docs/assets/css/bootstrap.css"
+          "docs/assets/css/bootstrap-responsive.css"
         ]
         "font-awesome": [
-          { fonts: "../../fonts" }
+          { font: "../../font" }
           "css/font-awesome.css"
+          "css/font-awesome-ie7.css"
         ]
         "durandal": [
           {
@@ -52,6 +56,7 @@ exports.config =
         output:'stylesheets/styles.css'
         order: [
           'vendor/bootstrap/bootstrap.css'
+          'vendor/bootstrap/bootstrap-responsive.css'
           'vendor/font-awesome/font-awesome.css'
           'vendor/durandal/durandal.css'
           'starterkit.css'

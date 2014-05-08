@@ -19,8 +19,8 @@ This is a starter kit for durandal-based projects.</description>
         <dependencies>
             <dependency id="Microsoft.AspNet.Web.Optimization" version="1.0.0" />
             <dependency id="WebActivator" version="1.5.3" />
-            <dependency id="bootstrap" version="3.0.2" />
-            <dependency id="FontAwesome" version="4.0.3" />
+            <dependency id="bootstrap" version="3.1.1" />
+            <dependency id="FontAwesome" version="4.0.3.1" />
             <dependency id="Durandal" version="2.1.0" />
             <dependency id="Durandal.Transitions" version="2.1.0" />
         </dependencies>

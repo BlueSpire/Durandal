@@ -38,12 +38,12 @@ section {
     margin: 0 20px;
 }
 
-.loader {
-    margin-top: 12px;
+.navbar-nav li.loader {
+    margin: 12px 6px 0 6px;
     visibility: hidden;
 }
 
-.loader.active {
+.navbar-nav li.loader.active {
     visibility: visible;
 }
 

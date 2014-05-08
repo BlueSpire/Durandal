@@ -3,8 +3,8 @@
     "version": "2.1.0",
     "dependencies": {
         "jquery":"1.9.1",
-        "requirejs":"2.1.9",
+        "requirejs":"2.1.11",
         "requirejs-text":"2.0.7",
-        "knockout.js":"3.0.0"
+        "knockout.js":"3.1.1"
     }
 }
