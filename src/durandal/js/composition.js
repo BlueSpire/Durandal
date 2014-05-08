@@ -407,6 +407,10 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                             }
                         }
 
+                        if (context.child) {
+                            show(context.child);
+                        }
+
                         context.triggerAttach();
                         endComposition();
                         cleanUp(context);
