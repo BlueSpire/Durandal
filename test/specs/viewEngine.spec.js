@@ -27,7 +27,7 @@
             it('returns require path', function () {
                 var viewId = sut.convertViewIdToRequirePath('test');
 
-                expect(viewId).toBe('text!test.html');
+                expect(viewId).toBe('text!test.html!strip');
             });
         });
 
@@ -127,7 +127,7 @@
                 });
                 var view = sut.createView('test');
 
-                expect(system.acquire).toHaveBeenCalledWith('text!test.html');
+                expect(system.acquire).toHaveBeenCalledWith('text!test.html!strip');
 
                 view.done(function (view) {
                     expect($(view).data('view')).toBe('test');
