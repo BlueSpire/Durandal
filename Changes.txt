@@ -54,6 +54,7 @@
 -Fix Issue #501: Entrance transition bug in Chrome 34 
 -Fix Issue #503: Updated showMessage overload
 -Fix Issue #395: setRoot() composition skips canActivate 
+-Fix Issues #418, #181, #297: Various fixes to activator hierarchies and child routers
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.1.1
