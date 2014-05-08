@@ -53,6 +53,7 @@
 -Fix Issue #366: Make Observable Tracking Non-Enumerable
 -Fix Issue #501: Entrance transition bug in Chrome 34 
 -Fix Issue #503: Updated showMessage overload
+-Fix Issue #395: setRoot() composition skips canActivate 
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
