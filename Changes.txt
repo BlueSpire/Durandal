@@ -52,6 +52,7 @@
 -Fix Issue #489: Observable plugin resetting Deferred properties as undefined
 -Fix Issue #366: Make Observable Tracking Non-Enumerable
 -Fix Issue #501: Entrance transition bug in Chrome 34 
+-Fix Issue #503: Updated showMessage overload
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.0.2
