@@ -199,6 +199,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return false;
         };
 
+        activeItem.settings.findChildActivator = function(item) {
+            if (item && item.router && item.router.parent == router) {
+                return item.router.activeItem;
+            }
+
+            return null;
+        };
+
         function hasChildRouter(instance, parentRouter) {
             return instance.router && instance.router.parent == parentRouter;
         }
@@ -265,7 +273,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             rootRouter.navigatingBack = !rootRouter.explicitNavigation && currentActivation != instruction.fragment;
             router.trigger('router:route:activating', instance, instruction, router);
 
-            activator.activateItem(instance, instruction.params).then(function(succeeded) {
+            var options = {
+                canDeactivate: !router.parent
+            };
+
+            activator.activateItem(instance, instruction.params, options).then(function(succeeded) {
                 if (succeeded) {
                     var previousActivation = currentActivation;
                     completeNavigation(instance, instruction);
@@ -368,6 +380,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 var tempActivator = activator.create();
                 tempActivator.forceActiveItem(currentActivation); //enforce lifecycle without re-compose
                 tempActivator.settings.areSameItem = activeItem.settings.areSameItem;
+                tempActivator.settings.findChildActivator = activeItem.settings.findChildActivator;
                 ensureActivation(tempActivator, currentActivation, instruction);
             } else {
                 system.acquire(instruction.config.moduleId).then(function (m) {
