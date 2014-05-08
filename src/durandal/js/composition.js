@@ -419,6 +419,10 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                             }
                         }
 
+                        if (context.child) {
+                            show(context.child);
+                        }
+
                         context.triggerAttach(context, element);
                         endComposition(context, element);
                         cleanUp(context);
@@ -598,7 +602,6 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             }
 
             if (system.isString(context.strategy)) {
-                debugger;
                 system.acquire(context.strategy).then(function (strategy) {
                     context.strategy = strategy;
                     composition.executeStrategy(context, element);
