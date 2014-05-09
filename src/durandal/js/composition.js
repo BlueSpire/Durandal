@@ -22,14 +22,18 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         composeBindings = ['compose:'];
     
     function onError(context, error, element) {
-        if (context.onError) {
-            try {
-                context.onError(error, element);
-            } catch (e) {
-                system.error(e);
+        try {
+            if (context.onError) {
+                try {
+                    context.onError(error, element);
+                } catch (e) {
+                    system.error(e);
+                }
+            } else {
+                system.error(error);
             }
-        } else {
-            system.error(error);
+        } finally {
+            endComposition(context, element, true);
         }
     }
 
@@ -60,25 +64,29 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         return state;
     }
 
-    function endComposition(context, element) {
+    function endComposition(context, element, error) {
         compositionCount--;
 
         if(compositionCount === 0) {
             var callBacks = compositionCompleteCallbacks;
             compositionCompleteCallbacks = [];
+            
+            if (!error) {
+                setTimeout(function () {
+                    var i = callBacks.length;
 
-            setTimeout(function() {
-                var i = callBacks.length;
-
-                while(i--) {
-                    try {
-                        callBacks[i]();
-                    } catch(e) {
-                        onError(context, e, element);
+                    while (i--) {
+                        try {
+                            callBacks[i]();
+                        } catch (e) {
+                            onError(context, e, element);
+                        }
                     }
-                }
-            }, 1);
+                }, 1);
+            }
         }
+
+        cleanUp(context);
     }
 
     function cleanUp(context){
@@ -108,7 +116,6 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                     successCallback();
                 } else {
                     endComposition(context, element);
-                    cleanUp(context);
                 }
             }
             catch(e){
@@ -396,7 +403,6 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
                 context.triggerAttach(context, element);
                 endComposition(context, element);
-                cleanUp(context);
             } else if (shouldTransition(context)) {
                 var transitionModuleId = this.convertTransitionToModuleId(context.transition);
 
@@ -421,7 +427,6 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
                         context.triggerAttach(context, element);
                         endComposition(context, element);
-                        cleanUp(context);
                     });
                 }).fail(function(err){
                     onError(context, 'Failed to load transition (' + transitionModuleId + '). Details: ' + err.message, element);
@@ -452,7 +457,6 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
                 context.triggerAttach(context, element);
                 endComposition(context, element);
-                cleanUp(context);
             }
         },
         bindAndShow: function (child, element, context, skipActivation) {
@@ -511,7 +515,6 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                     composition.finalize(context, element);
                 } else {
                     endComposition(context, element);
-                    cleanUp(context);
                 }
             }, skipActivation, element);
         },
@@ -598,7 +601,6 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             }
 
             if (system.isString(context.strategy)) {
-                debugger;
                 system.acquire(context.strategy).then(function (strategy) {
                     context.strategy = strategy;
                     composition.executeStrategy(context, element);
