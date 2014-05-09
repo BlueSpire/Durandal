@@ -18,7 +18,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             settings = {};
         }
 
-        if (!settings.closeOnDeactivate) {
+        if (!system.isBoolean(settings.closeOnDeactivate)) {
             settings.closeOnDeactivate = activator.defaults.closeOnDeactivate;
         }
 
