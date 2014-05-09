@@ -516,13 +516,15 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                         var listLength = list.length;
 
                         function doDeactivate(item) {
-                            computed.deactivateItem(item, close).then(function () {
-                                results++;
-                                items.remove(item);
-                                if (results == listLength) {
-                                    dfd.resolve();
-                                }
-                            });
+                            setTimeout(function () {
+                                computed.deactivateItem(item, close).then(function () {
+                                    results++;
+                                    items.remove(item);
+                                    if (results == listLength) {
+                                        dfd.resolve();
+                                    }
+                                });
+                            }, 1);
                         }
 
                         for (var i = 0; i < listLength; i++) {
