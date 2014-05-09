@@ -57,6 +57,7 @@
 -Fix Issues #418, #181, #297: Various fixes to activator hierarchies and child routers
 -Fix Issue #461: Router: Click binding not stripping root path 
 -Fix Issue #508 Composition on error override 
+-Fix Issue #511: Always end composition, even on error 
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.1.1
