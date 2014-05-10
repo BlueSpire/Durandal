@@ -60,6 +60,7 @@
 -Fix Issue #511: Always end composition, even on error 
 -Fix Issue #509: Unable to set activator settings "closeOnDeactivate" property to false 
 -Fix Issue #512: Multi-item activator issue 
+-Fix Issue #356: Don't throw exception in deferred fail in canActivate 
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.1.1

@@ -65,7 +65,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             try {
                 result = item.deactivate(close);
             } catch(error) {
-                system.error(error);
+                system.log('ERROR: ' + error.message, error);
                 dfd.resolve(false);
                 return;
             }
@@ -100,7 +100,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 try {
                     result = invoke(newItem, 'activate', activationData);
                 } catch (error) {
-                    system.error(error);
+                    system.log('ERROR: ' + error.message, error);
                     callback(false);
                     return;
                 }
@@ -137,7 +137,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                     try {
                         resultOrPromise = item.canDeactivate(close);
                     } catch (error) {
-                        system.error(error);
+                        system.log('ERROR: ' + error.message, error);
                         dfd.resolve(false);
                         return;
                     }
@@ -147,7 +147,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                             settings.lifecycleData = result;
                             dfd.resolve(settings.interpretResponse(result));
                         }, function (reason) {
-                            system.error(reason);
+                            system.log('ERROR: ' + reason.message, reason);
                             dfd.resolve(false);
                         });
                     } else {
@@ -188,7 +188,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 try {
                     resultOrPromise = invoke(newItem, 'canActivate', newActivationData);
                 } catch (error) {
-                    system.error(error);
+                    system.log('ERROR: ' + error.message, error);
                     dfd.resolve(false);
                     return;
                 }
@@ -198,7 +198,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                         settings.lifecycleData = result;
                         dfd.resolve(settings.interpretResponse(result));
                     }, function(reason) {
-                        system.error(reason);
+                        system.log('ERROR: ' + reason.message, reason);
                         dfd.resolve(false);
                     });
                 } else {
