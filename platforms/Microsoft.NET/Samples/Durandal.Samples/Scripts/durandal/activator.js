@@ -97,36 +97,30 @@ define(['durandal/system', 'knockout'], function (system, ko) {
     }
 
     function activate(newItem, activeItem, callback, activationData) {
-        if (newItem) {
-            if (newItem.activate) {
-                system.log('Activating', newItem);
+        var result;
 
-                var result;
-                try {
-                    result = invoke(newItem, 'activate', activationData);
-                } catch (error) {
-                    system.log('ERROR: ' + error.message, error);
-                    callback(false);
-                    return;
-                }
+        if(newItem && newItem.activate) {
+            system.log('Activating', newItem);
 
-                if (result && result.then) {
-                    result.then(function() {
-                        activeItem(newItem);
-                        callback(true);
-                    }, function(reason) {
-                        system.log(reason);
-                        callback(false);
-                    });
-                } else {
-                    activeItem(newItem);
-                    callback(true);
-                }
-            } else {
+            try {
+                result = invoke(newItem, 'activate', activationData);
+            } catch(error) {
+                system.log('ERROR: ' + error.message, error);
+                callback(false);
+                return;
+            }
+        }
+
+        if(result && result.then) {
+            result.then(function() {
                 activeItem(newItem);
                 callback(true);
-            }
+            }, function(reason) {
+                system.log('ERROR: ' + reason.message, reason);
+                callback(false);
+            });
         } else {
+            activeItem(newItem);
             callback(true);
         }
     }
