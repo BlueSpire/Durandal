@@ -22,14 +22,15 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         observableArrayFunctions = ko.observableArray.fn,
         logConversion = false,
         changeDetectionMethod = undefined,
-        skipPromises = false;
+        skipPromises = false,
+        shouldIgnorePropertyName;
 
     /**
      * You can call observable(obj, propertyName) to get the observable function for the specified property on the object.
      * @class ObservableModule
      */
 
-    function shouldIgnorePropertyName(propertyName){
+    function defaultShouldIgnorePropertyName(propertyName){
         var first = propertyName[0];
         return first === '_' || first === '$' || (changeDetectionMethod && propertyName === changeDetectionMethod);
     }
@@ -379,6 +380,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         }
 
         skipPromises = options.skipPromises;
+        shouldIgnorePropertyName = options.shouldIgnorePropertyName || defaultShouldIgnorePropertyName;
     };
 
     return observableModule;
