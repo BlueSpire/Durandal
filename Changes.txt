@@ -63,6 +63,7 @@
 -Fix Issue #356: Don't throw exception in deferred fail in canActivate 
 -Fix Issue #417: Added support for null routes. 
 -Fix Issue #500: Observable.js - Custom shouldIgnorePropertyName 
+-Fix Issue #505: Make observable plug-in convert existing properties 
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.1.1

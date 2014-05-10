@@ -25,6 +25,21 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
      * @class ObservableModule
      */
 
+    if (!('getPropertyDescriptor' in Object)) {
+        var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+        var getPrototypeOf = Object.getPrototypeOf;
+
+        Object['getPropertyDescriptor'] = function(o, name) {
+            var proto = o, descriptor;
+
+            while(proto && !(descriptor = getOwnPropertyDescriptor(proto, name))) {
+                proto = getPrototypeOf(proto);
+            }
+
+            return descriptor;
+        };
+    }
+
     function defaultShouldIgnorePropertyName(propertyName){
         var first = propertyName[0];
         return first === '_' || first === '$' || (changeDetectionMethod && propertyName === changeDetectionMethod);
@@ -182,11 +197,19 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
                     continue;
                 }
 
-                if(!lookup[propertyName]){
-                    value = obj[propertyName];
+                if (!lookup[propertyName]) {
+                    var descriptor = Object.getPropertyDescriptor(obj, propertyName);
+                    if (descriptor && (descriptor.get || descriptor.set)) {
+                        defineProperty(obj, propertyName, {
+                            get:descriptor.get,
+                            set:descriptor.set
+                        });
+                    } else {
+                        value = obj[propertyName];
 
-                    if(!system.isFunction(value)){
-                        convertProperty(obj, propertyName, value, hasChanged);
+                        if(!system.isFunction(value)) {
+                            convertProperty(obj, propertyName, value, hasChanged);
+                        }
                     }
                 }
             }
