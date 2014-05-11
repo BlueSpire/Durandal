@@ -23,6 +23,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     var startDeferred, rootRouter;
     var trailingSlash = /\/$/;
     var routesAreCaseSensitive = false;
+    var lastUrl = '/', lastTryUrl = '/';
 
     function routeStringToRegExp(routeString) {
         routeString = routeString.replace(escapeRegExp, '\\$&')
@@ -222,7 +223,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
         }
 
-        function completeNavigation(instance, instruction) {
+        function completeNavigation(instance, instruction, mode) {
             system.log('Navigation Complete', instance, instruction);
 
             var fromModuleId = system.getModuleId(currentActivation);
@@ -245,8 +246,21 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 router.updateDocumentTitle(instance, instruction);
             }
 
+            switch (mode) {
+                case 'rootRouter':
+                    lastUrl = reconstructUrl(currentInstruction);
+                    break;
+                case 'rootRouterWithChild':
+                    lastTryUrl = reconstructUrl(currentInstruction);
+                    break;
+                case 'lastChildRouter':
+                    lastUrl = lastTryUrl;
+                    break;
+            }
+
             rootRouter.explicitNavigation = false;
             rootRouter.navigatingBack = false;
+
             router.trigger('router:navigation:complete', instance, instruction, router);
         }
 
@@ -255,9 +269,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             router.activeInstruction(currentInstruction);
 
-            if (currentInstruction) {
-                router.navigate(reconstructUrl(currentInstruction), false);
-            }
+            router.navigate(lastUrl, false);
 
             isProcessing(false);
             rootRouter.explicitNavigation = false;
@@ -285,9 +297,24 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             activator.activateItem(instance, instruction.params, options).then(function(succeeded) {
                 if (succeeded) {
                     var previousActivation = currentActivation;
-                    completeNavigation(instance, instruction);
+                    var withChild = hasChildRouter(instance, router);
+                    var mode = '';
 
-                    if (hasChildRouter(instance, router)) {
+                    if (router.parent) {
+                        if(!withChild) {
+                            mode = 'lastChildRouter';
+                        }
+                    } else {
+                        if (withChild) {
+                            mode = 'rootRouterWithChild';
+                        } else {
+                            mode = 'rootRouter';
+                        }
+                    }
+
+                    completeNavigation(instance, instruction, mode);
+
+                    if (withChild) {
                         var fullFragment = instruction.fragment;
                         if (instruction.queryString) {
                             fullFragment += "?" + instruction.queryString;
@@ -599,9 +626,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             system.log('Route Not Found', fragment, currentInstruction);
             router.trigger('router:route:not-found', fragment, router);
 
-            if (currentInstruction) {
-                history.navigate(reconstructUrl(currentInstruction), { trigger:false, replace:true });
+            if (router.parent) {
+                lastUrl = lastTryUrl;
             }
+
+            history.navigate(lastUrl, { trigger:false, replace:true });
 
             rootRouter.explicitNavigation = false;
             rootRouter.navigatingBack = false;
@@ -675,6 +704,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             if(options === undefined || (system.isBoolean(options) && options) || (system.isObject(options) && options.trigger)) {
                 rootRouter.explicitNavigation = true;
+            }
+
+            if ((system.isBoolean(options) && !options) || (options && options.trigger != undefined && !options.trigger)) {
+                lastUrl = fragment;
             }
 
             return history.navigate(fragment, options);
