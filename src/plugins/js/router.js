@@ -382,11 +382,23 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 tempActivator.settings.areSameItem = activeItem.settings.areSameItem;
                 tempActivator.settings.findChildActivator = activeItem.settings.findChildActivator;
                 ensureActivation(tempActivator, currentActivation, instruction);
+            } else if(!instruction.config.moduleId) {
+                ensureActivation(activeItem, {
+                    viewUrl:instruction.config.viewUrl,
+                    canReuseForRoute:function() {
+                        return true;
+                    }
+                }, instruction);
             } else {
-                system.acquire(instruction.config.moduleId).then(function (m) {
+                system.acquire(instruction.config.moduleId).then(function(m) {
                     var instance = system.resolveObject(m);
+
+                    if(instruction.config.viewUrl) {
+                        instance.viewUrl = instruction.config.viewUrl;
+                    }
+
                     ensureActivation(activeItem, instance, instruction);
-                }).fail(function (err) {
+                }).fail(function(err) {
                     system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message, err);
                 });
             }
@@ -424,7 +436,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             if (!system.isRegExp(config.route)) {
                 config.title = config.title || router.convertRouteToTitle(config.route);
-                config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
+
+                if (!config.viewUrl) {
+                    config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
+                }
+                
                 config.hash = config.hash || router.convertRouteToHash(config.route);
 
                 if (config.hasChildRoutes) {

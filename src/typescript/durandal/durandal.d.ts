@@ -1498,6 +1498,7 @@ interface DurandalRouteConfiguration {
     isActive?: KnockoutComputed<boolean>;
     nav?: any;
     hasChildRoutes?: boolean;
+    viewUrl?:string;
 }
 
 interface DurandalRouteInstruction {
