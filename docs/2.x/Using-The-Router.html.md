@@ -233,6 +233,50 @@ We start by requiring the root router and calling [router.createChildRouter()](/
 
 Now, what happens when someone actually navigates to "knockout-samples/simpleList"? Here's how routing works in this scenario: First the pattern "knockout-samples*details" will be matched at the root router level. The root router will then cause a navigation to "ko/index". The root router will then detect the presence of the `router` property on this module and assume that it hosts a child router. So, it will then pass control to the child router to match next. It will then match on the full pattern and activate the "ko/simpleList/index" module in its view.
 
+### Dynamic Child Routes
+
+Extending the idea of the child router we can additionally enable dynamic routes on the child. In many line of business style applications the parent router is keyed on a particular id for example a product number. 
+1. http://localhost/product/369      *parent route*
+2. http://localhost/product/369/reviews     *child route*
+3. http://localhost/product/369/specifications   *child route*
+
+To enable the update of the links for reviews and specifications if we were to switch to a different product, we must enable this on the child router by defining what part of the parent route we would like to inherit. 
+
+We still map our child routes from the parent with a splat, but we include :id as a parameter.
+
+```javascript
+define(['plugins/router'], function (router) {
+    return {
+        router: router,
+        activate: function () {
+            return router.map([
+                { route: 'product/:id*details', moduleId: 'product', title: 'Product',  nav: true, hash: '#product/:id' }
+            ]).buildNavigationModel()
+              .mapUnknownRoutes('hello/index', 'not-found')
+              .activate();
+        }
+    };
+});
+```
+
+On the child router we define what part of the parent route is dynamic by setting the dynamicHash property.
+
+```javascript
+var childRouter = router
+         .createChildRouter()
+         .makeRelative({ moduleId: 'product', fromParent: true, dynamicHash: ':id' })
+        .map([
+            { route: ['reviews',''], moduleId: 'reviews', title: 'Reviews', nav: true, hash:'#reviews' },
+            { route: 'specifications', moduleId: 'specifications', title: 'Specifications', nav: true }
+        ]).buildNavigationModel();
+```
+
+To render this dynamic child url, bind to the added property *dynamicHash* on the navigationModel.
+
+```html
+<a data-bind="attr: { href: dynamicHash }, text: title" />
+```
+
 ### Module Reuse
 
 Consider the scenario where a history change causes a navigation that results in the same module as is already active and being viewed. Normally, even though the module is the same type, it will be discarded and a new instance created. There are two exceptions to this:
