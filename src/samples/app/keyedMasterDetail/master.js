@@ -6,8 +6,7 @@
         .createChildRouter()
         .makeRelative({ moduleId: 'keyedMasterDetail/master', fromParent: true, dynamicHash: ':id' })
        .map([
-           { route: '', moduleId: 'first', title: 'First' },
-           { route: 'first', moduleId: 'first', title: 'First', nav: true },
+           { route: ['first',''], moduleId: 'first', title: 'First', nav: true, hash:'#first' },
            { route: 'second', moduleId: 'second', title: 'Second', nav: true },
            { route: 'third', moduleId: 'third', title: 'Third', nav: true }
        ]).buildNavigationModel();
