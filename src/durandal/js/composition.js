@@ -228,7 +228,8 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
     }
 
     function show(view) {
-        view.style.display = ko.utils.domData.get(view, visibilityKey);
+        var displayStyle = ko.utils.domData.get(view, visibilityKey);
+        view.style.display = displayStyle === 'none' ? 'block' : displayStyle;
     }
 
     function hasComposition(element){
