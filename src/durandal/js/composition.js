@@ -224,7 +224,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
     function hide(view) {
         ko.utils.domData.set(view, visibilityKey, view.style.display);
-        view.style.display = "none";
+        view.style.display = 'none';
     }
 
     function show(view) {
