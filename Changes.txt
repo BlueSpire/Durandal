@@ -67,6 +67,7 @@
 -Fix Issue #262: binding different views to the same view-model (enable default behavior of router) 
 -Fix Issue #430: Sometimes, negative response from CanDeactivate doesn't restore previous URL 
 -Fix Issue #520: Ensuring that composition show never inadvertently hides elements
+-Fix Issue #514: Don't enforce viewPlugin
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.1.1

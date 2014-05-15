@@ -70,7 +70,8 @@ define(['durandal/system', 'jquery'], function (system, $) {
          * @return {string} The require path.
          */
         convertViewIdToRequirePath: function (viewId) {
-            return this.viewPlugin + '!' + viewId + this.viewExtension + this.viewPluginParameters;
+            var plugin = this.viewPlugin ? this.viewPlugin + '!' : '';
+            return plugin + viewId + this.viewExtension + this.viewPluginParameters;
         },
         /**
          * Parses the view engine recognized markup and returns DOM elements.
