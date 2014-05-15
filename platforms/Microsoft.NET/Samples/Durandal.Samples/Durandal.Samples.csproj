@@ -128,6 +128,14 @@
     <Content Include="App\eventAggregator\subscriber.js" />
     <Content Include="App\hello\index.html" />
     <Content Include="App\hello\index.js" />
+    <Content Include="App\keyedMasterDetail\first.html" />
+    <Content Include="App\keyedMasterDetail\first.js" />
+    <Content Include="App\keyedMasterDetail\master.html" />
+    <Content Include="App\keyedMasterDetail\master.js" />
+    <Content Include="App\keyedMasterDetail\second.html" />
+    <Content Include="App\keyedMasterDetail\second.js" />
+    <Content Include="App\keyedMasterDetail\third.html" />
+    <Content Include="App\keyedMasterDetail\third.js" />
     <Content Include="App\ko\animatedTrans\index.html" />
     <Content Include="App\ko\animatedTrans\index.js" />
     <Content Include="App\ko\betterList\index.html" />
