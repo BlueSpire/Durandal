@@ -71,6 +71,7 @@
 -Fix Issue #519: Optimize Part Replacement
 -Fix Issue #513: Navigating back refreshes the page in latest chrome, when using router.navigate with {replace: true}
 -Fix Issue #516: Add dynamic child hash via cwooldridge
+-Fix Issue #515: Cache Parsed Views
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.1.1

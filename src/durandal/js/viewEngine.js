@@ -22,6 +22,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
      * @static
      */
     return {
+        cache:{},
         /**
          * The file extension that view source files are expected to have.
          * @property {string} viewExtension
@@ -127,18 +128,27 @@ define(['durandal/system', 'jquery'], function (system, $) {
         createView: function(viewId) {
             var that = this;
             var requirePath = this.convertViewIdToRequirePath(viewId);
+            var existing = this.cache[requirePath];
+
+            if (existing) {
+                return system.defer(function(dfd) {
+                    dfd.resolve(existing.cloneNode(true));
+                });
+            }
 
             return system.defer(function(dfd) {
                 system.acquire(requirePath).then(function(markup) {
                     var element = that.processMarkup(markup);
                     element.setAttribute('data-view', viewId);
-                    dfd.resolve(element);
-                }).fail(function(err){
-                        that.createFallbackView(viewId, requirePath, err).then(function(element){
-                            element.setAttribute('data-view', viewId);
-                            dfd.resolve(element);
-                        });
+                    that.cache[requirePath] = element;
+                    dfd.resolve(element.cloneNode(true));
+                }).fail(function(err) {
+                    that.createFallbackView(viewId, requirePath, err).then(function(element) {
+                        element.setAttribute('data-view', viewId);
+                        that.cache[requirePath] = element;
+                        dfd.resolve(element.cloneNode(true));
                     });
+                });
             }).promise();
         },
         /**
