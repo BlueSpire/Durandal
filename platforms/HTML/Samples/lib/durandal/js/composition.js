@@ -207,7 +207,8 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         var standardParts = composition.getParts(context.child);
 
         for (var partId in replacementParts) {
-            $(standardParts[partId]).replaceWith(replacementParts[partId]);
+            var toReplace = standardParts[partId];
+            toReplace.parentNode.replaceChild(replacementParts[partId], toReplace);
         }
     }
 
