@@ -234,7 +234,7 @@ interface DurandalViewEngineModule {
 
     /**
     * Parameters passed to the RequireJS loader plugin used by the viewLocator to obtain the view source.
-    * @default !strip To allow html views to be a full HTML files
+    * @default The empty string by default.
     */
     viewPluginParameters: string;
 
