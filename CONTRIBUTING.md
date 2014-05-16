@@ -173,7 +173,11 @@ The body should include the motivation for the change and contrast this with pre
 ###Footer
 The footer should contain any information about **Breaking Changes** and is also the place to reference GitHub issues that this commit **Closes**.
 
-> **Note:** The content of this document is based on the "Contributing" and "Code of Conduct" guides of the AngularJS project.
+
+
+*Many thanks to the AngularJS team. The content of this document is based on the "Contributing" and "Code of Conduct" guides of their project.*
+
+
 
 [github]: https://github.com/BlueSpire/Durandal
 [groups]: https://groups.google.com/forum/?fromgroups=#!forum/durandaljs
