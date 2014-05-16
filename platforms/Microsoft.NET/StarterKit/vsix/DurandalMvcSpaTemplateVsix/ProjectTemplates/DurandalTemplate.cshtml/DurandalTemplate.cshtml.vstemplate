@@ -49,7 +49,7 @@
         <FullClassName>NuGet.VisualStudio.TemplateWizard</FullClassName>
     </WizardExtension>
     <WizardData>
-        <packages repository="registry" keyName="AspNetMvc4VS11">
+        <packages repository="registry" keyName="AspNetMvc4VS12">
             <package id="Microsoft.Web.Infrastructure" version="1.0.0.0" skipAssemblyReferences="true" />
             <package id="Newtonsoft.Json" version="4.5.11" skipAssemblyReferences="true" />
             <package id="Microsoft.AspNet.Razor" version="2.0.20715.0" skipAssemblyReferences="true" />
