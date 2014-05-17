@@ -56,7 +56,7 @@
 -Fix Issue #395: setRoot() composition skips canActivate 
 -Fix Issues #418, #181, #297: Various fixes to activator hierarchies and child routers
 -Fix Issue #461: Router: Click binding not stripping root path 
--Fix Issue #508 Composition on error override 
+-Fix Issue #508: Composition on error override 
 -Fix Issue #511: Always end composition, even on error 
 -Fix Issue #509: Unable to set activator settings "closeOnDeactivate" property to false 
 -Fix Issue #512: Multi-item activator issue 

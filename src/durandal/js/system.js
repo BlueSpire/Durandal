@@ -109,7 +109,7 @@ define(['require', 'jquery'], function(require, $) {
          * Durandal's version.
          * @property {string} version
          */
-        version: "2.0.1",
+        version: "2.1.0",
         /**
          * A noop function.
          * @method noop
