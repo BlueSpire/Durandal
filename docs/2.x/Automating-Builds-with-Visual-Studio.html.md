@@ -10,20 +10,19 @@ It is a recommened practice to optimize your application for deploy. If you are 
 
 #### Install Dependencies
 1. Install NodeJS from http://nodejs.org
-2. Install Weyland via NPM using the following command `npm install -g weyland`
+2. Install a build tool such as Gulp or Grunt via NPM
 
 #### Add A Config File
 
-At the project root create a js file named _weyland-config.js_
-You can use the config file from the Nuget or VSIX install as is, except remove this line or your build will fail: `mainConfigFile: 'App/main.js'` (This is fixed as of 2.0.1.)
+At the project root create your build config file, per the instructions from your chosen build tool.
 
 #### Add the Post Build Event
 
-Go to the project's properties and select `Build Events`. In the post build event add the following:
+Go to the project's properties and select `Build Events`. In the post build event add the following (note that this example uses a hypothetical gulp build):
 
 ```
 cd $(ProjectDir)
-weyland build
+gulp build
 ```
 
 If you ony want to build when the Release configuration is selected, use the following:
@@ -31,11 +30,11 @@ If you ony want to build when the Release configuration is selected, use the fol
 ```
 if '$(Configuration)'=='Release' (
 	cd $(ProjectDir)
-	weyland build
+	gulp build
 )
 ```
 
-Build your project. You should see the weyland build output in the Output window, with a last line similar to: "Optimized build created at ...App\main-built.js"
+Build your project. You should see the build output in the Output window.
 
 #### Include Generated Files
 
