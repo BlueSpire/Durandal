@@ -1,4 +1,9 @@
-﻿/**
+/**
+ * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Available via the MIT license.
+ * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
+ */
+/**
  * The activator module encapsulates all logic related to screen/component activation.
  * An activator is essentially an asynchronous state machine that understands a particular state transition protocol.
  * The protocol ensures that the following series of events always occur: `canDeactivate` (previous state), `canActivate` (new state), `deactivate` (previous state), `activate` (new state).
@@ -57,37 +62,54 @@ define(['durandal/system', 'knockout'], function (system, ko) {
         return target[method](data);
     }
 
-    function deactivate(item, close, settings, dfd, setter) {
-        if (item && item.deactivate) {
-            system.log('Deactivating', item);
+    function deactivate(item, close, settings, dfd, setter, options) {
+        options = system.extend({}, defaultOptions, options);
 
-            var result;
-            try {
-                result = item.deactivate(close);
-            } catch(error) {
-                system.log('ERROR: ' + error.message, error);
-                dfd.resolve(false);
-                return;
-            }
+        function continueDeactivate() {
+            if (item && item.deactivate && options.canDeactivate) {
+                system.log('Deactivating', item);
 
-            if (result && result.then) {
-                result.then(function() {
+                var result;
+                try {
+                    result = item.deactivate(close);
+                } catch (error) {
+                    system.log('ERROR: ' + error.message, error);
+                    dfd.resolve(false);
+                    return;
+                }
+
+                if (result && result.then) {
+                    result.then(function () {
+                        settings.afterDeactivate(item, close, setter);
+                        dfd.resolve(true);
+                    }, function (reason) {
+                        system.log(reason);
+                        dfd.resolve(false);
+                    });
+                } else {
                     settings.afterDeactivate(item, close, setter);
                     dfd.resolve(true);
-                }, function(reason) {
-                    system.log(reason);
-                    dfd.resolve(false);
-                });
+                }
             } else {
-                settings.afterDeactivate(item, close, setter);
+                if (item) {
+                    settings.afterDeactivate(item, close, setter);
+                }
+
                 dfd.resolve(true);
             }
-        } else {
-            if (item) {
-                settings.afterDeactivate(item, close, setter);
-            }
+        }
 
-            dfd.resolve(true);
+        var childActivator = settings.findChildActivator(item);
+        if (childActivator) {
+            childActivator.forceDeactivate(null, options).then(function (result) {
+                if (result) {
+                    continueDeactivate();
+                } else {
+                    dfd.resolve(false);
+                }
+            });
+        } else {
+            continueDeactivate();
         }
     }
 
@@ -155,7 +177,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
 
             var childActivator = settings.findChildActivator(item);
             if (childActivator) {
-                childActivator.canDeactivate().then(function(result) {
+                childActivator.canDeactivate(null, options).then(function (result) {
                     if (result) {
                         continueCanDeactivate();
                     } else {
@@ -320,7 +342,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                         computed.canActivateItem(newItem, newActivationData).then(function (canActivate) {
                             if (canActivate) {
                                 system.defer(function (dfd2) {
-                                    deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2);
+                                    deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2, null, options);
                                 }).promise().then(function () {
                                         newItem = settings.beforeActivate(newItem, newActivationData);
                                         activate(newItem, activeItem, function (result) {
@@ -391,8 +413,8 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          * @method canDeactivate
          * @return {promise}
          */
-        computed.canDeactivate = function (close) {
-            return computed.canDeactivateItem(computed(), close);
+        computed.canDeactivate = function (close, options) {
+            return computed.canDeactivateItem(computed(), close, options);
         };
 
         /**
@@ -403,6 +425,13 @@ define(['durandal/system', 'knockout'], function (system, ko) {
         computed.deactivate = function (close) {
             return computed.deactivateItem(computed(), close);
         };
+
+        computed.forceDeactivate = function (close, options) {
+            return system.defer(function (dfd) {
+                deactivate(computed(), close, settings, dfd, activeItem, options);
+            }).promise();
+        };
+
 
         computed.includeIn = function (includeIn) {
             includeIn.canActivate = function () {
