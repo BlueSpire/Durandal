@@ -120,6 +120,24 @@ define(['durandal/system', 'jquery'], function (system, $) {
             return withoutCommentsOrEmptyText[0];
         },
         /**
+         * Gets the view associated with the id from the cache of parsed views.
+         * @method tryGetViewFromCache
+         * @param {string} id The view id to lookup in the cache.
+         * @return {DOMElement|null} The cached view or null if it's not in the cache.
+         */
+        tryGetViewFromCache:function(id) {
+            return this.cache[id];
+        },
+        /**
+         * Puts the view associated with the id into the cache of parsed views.
+         * @method putViewInCache
+         * @param {string} id The view id whose view should be cached.
+         * @param {DOMElement} view The view to cache.
+         */
+        putViewInCache: function (id, view) {
+            this.cache[id] = view;
+        },
+        /**
          * Creates the view associated with the view id.
          * @method createView
          * @param {string} viewId The view id whose view should be created.
@@ -128,19 +146,19 @@ define(['durandal/system', 'jquery'], function (system, $) {
         createView: function(viewId) {
             var that = this;
             var requirePath = this.convertViewIdToRequirePath(viewId);
-            var existing = this.cache[requirePath];
+            var existing = this.tryGetViewFromCache(requirePath);
 
             if (existing) {
                 return system.defer(function(dfd) {
                     dfd.resolve(existing.cloneNode(true));
-                });
+                }).promise();
             }
 
             return system.defer(function(dfd) {
                 system.acquire(requirePath).then(function(markup) {
                     var element = that.processMarkup(markup);
                     element.setAttribute('data-view', viewId);
-                    that.cache[requirePath] = element;
+                    that.putViewInCache(requirePath, element);
                     dfd.resolve(element.cloneNode(true));
                 }).fail(function(err) {
                     that.createFallbackView(viewId, requirePath, err).then(function(element) {

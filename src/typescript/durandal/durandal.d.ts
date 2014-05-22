@@ -281,6 +281,20 @@ interface DurandalViewEngineModule {
     ensureSingleElement(allElements: Node[]): HTMLElement;
 
     /**
+    * Gets the view associated with the id from the cache of parsed views.
+    * @param {string} id The view id to lookup in the cache.
+    * @return {DOMElement|null} The cached view or null if it's not in the cache.
+    */
+    tryGetViewFromCache(id: string): HTMLElement;
+
+    /**
+     * Puts the view associated with the id into the cache of parsed views.
+     * @param {string} id The view id whose view should be cached.
+     * @param {DOMElement} view The view to cache.
+     */
+    putViewInCache(id:string, view:HTMLElement);
+
+    /**
      * Creates the view associated with the view id.
      * @param {string} viewId The view id whose view should be created.
      * @returns {JQueryPromise<HTMLElement>} A promise of the view.
