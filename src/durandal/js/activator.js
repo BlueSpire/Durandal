@@ -270,6 +270,62 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             return canActivateItem(newItem, activeItem, settings, activeData, activationData);
         };
 
+
+
+        computed.activateItem2 = function (newItem, newActivationData) {
+            var viaSetter = computed.viaSetter;
+            computed.viaSetter = false;
+
+            return system.defer(function (dfd) {
+                if (computed.isActivating()) {
+                    dfd.resolve(false);
+                    return;
+                }
+
+                var currentItem = activeItem();
+                if (settings.areSameItem(currentItem, newItem, activeData, newActivationData)) {
+                    dfd.resolve(function(){ return system.defer(function(dfd3) { dfd3.resolve(true); }).promise(); });
+                    return;
+                }
+
+                computed.isActivating(true);
+                computed.canDeactivateItem(currentItem, settings.closeOnDeactivate).then(function (canDeactivate) {
+                    if (canDeactivate) {
+                        computed.canActivateItem(newItem, newActivationData).then(function (canActivate) {
+                            computed.isActivating(false);
+
+                            if (canActivate)
+                                dfd.resolve(function () {
+                                    computed.isActivating(true);
+                                    return system.defer(function (dfd2) {
+                                        deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2, null);
+                                    }).promise().then(function () {
+                                        return system.defer(function (dfd3) {
+                                            newItem = settings.beforeActivate(newItem, newActivationData);
+                                            activate(newItem, activeItem, function (result) {
+                                                activeData = newActivationData;
+                                                computed.isActivating(false);
+                                                dfd3.resolve(result);
+                                            }, newActivationData);
+                                        }).promise();
+                                    });
+                                });
+
+                            else {
+                                if (viaSetter) computed.notifySubscribers();
+                                dfd.resolve(false);
+                            }
+                        });
+                    } else {
+                        if (viaSetter) computed.notifySubscribers();
+                        computed.isActivating(false);
+                        dfd.resolve(false);
+                    }
+                });
+            }).promise();
+        };
+
+
         /**
          * Activates the specified item.
          * @method activateItem
@@ -278,7 +334,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
          * @param {boolean} resolveWithContinueCb Callback to get called with a deactivation-callback.
          * @return {promise}
          */
-        computed.activateItem = function (newItem, newActivationData, resolveWithContinueCb) {
+        computed.activateItem = function (newItem, newActivationData) {
             var viaSetter = computed.viaSetter;
             computed.viaSetter = false;
 
@@ -293,14 +349,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 var currentItem = activeItem();
                 if (settings.areSameItem(currentItem, newItem, activeData, newActivationData)) {
                     computed.isActivating(false);
-                    if(resolveWithContinueCb)
-                        dfd.resolve(function(){
-                            return system.defer(function(dfd3) {
-                                dfd3.resolve(true);
-                            }).promise();
-                        });
-                    else
-                        dfd.resolve(true);
+                    dfd.resolve(true);
                     return;
                 }
 
@@ -308,29 +357,16 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                     if (canDeactivate) {
                         computed.canActivateItem(newItem, newActivationData).then(function (canActivate) {
                             if (canActivate) {
-                                function continueCb(resolver) {
-                                    system.defer(function (dfd2) {
-                                        deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2, null);
-                                    }).promise().then(function () {
-                                        newItem = settings.beforeActivate(newItem, newActivationData);
-                                        activate(newItem, activeItem, function (result) {
-                                            activeData = newActivationData;
-                                            computed.isActivating(false);
-                                            resolver.resolve(result);
-                                        }, newActivationData);
-                                    });
-                                }
-
-                                if(resolveWithContinueCb)
-                                    dfd.resolve(function(){
-                                        // caller may have logic before deactivation
-                                        return system.defer(function(dfd3) {
-                                            continueCb(dfd3);
-                                            // caller may have logic after activation
-                                        }).promise();
-                                    });
-                                else
-                                    continueCb(dfd);
+                                system.defer(function (dfd2) {
+                                    deactivate(currentItem, settings.closeOnDeactivate, settings, dfd2, null);
+                                }).promise().then(function () {
+                                    newItem = settings.beforeActivate(newItem, newActivationData);
+                                    activate(newItem, activeItem, function (result) {
+                                        activeData = newActivationData;
+                                        computed.isActivating(false);
+                                        dfd.resolve(result);
+                                    }, newActivationData);
+                                });
 
                             } else {
                                 if (viaSetter) {
