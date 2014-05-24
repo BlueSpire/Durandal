@@ -1,4 +1,9 @@
-﻿/**
+/**
+ * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Available via the MIT license.
+ * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
+ */
+/**
  * Connects the history module's url and history tracking support to Durandal's activation and composition engine allowing you to easily build navigation-style applications.
  * @module router
  * @requires system
@@ -10,7 +15,7 @@
  * @requires knockout
  * @requires jquery
  */
-define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/events', 'durandal/composition', 'plugins/history', 'knockout', 'jquery'], function(system, app, activator, events, composition, history, ko, $) {
+define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/events', 'durandal/composition', 'plugins/history', 'knockout', 'jquery'], function (system, app, activator, events, composition, history, ko, $) {
     var optionalParam = /\((.*?)\)/g;
     var namedParam = /(\(\?)?:\w+/g;
     var splatParam = /\*\w+/g;
@@ -18,11 +23,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     var startDeferred, rootRouter;
     var trailingSlash = /\/$/;
     var routesAreCaseSensitive = false;
+    var lastUrl, activeUrl, nextUrl;
+    var contextRouter;
+
 
     function routeStringToRegExp(routeString) {
         routeString = routeString.replace(escapeRegExp, '\\$&')
             .replace(optionalParam, '(?:$1)?')
-            .replace(namedParam, function(match, optional) {
+            .replace(namedParam, function (match, optional) {
                 return optional ? match : '([^\/]+)';
             })
             .replace(splatParam, '(.*?)');
@@ -41,7 +49,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     }
 
     function compareArrays(first, second) {
-        if (!first || !second){
+        if (!first || !second) {
             return false;
         }
 
@@ -58,13 +66,22 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         return true;
     }
 
-    function reconstructUrl(instruction){
-        if(!instruction.queryString){
+    function reconstructUrl(instruction) {
+        if (!instruction.queryString) {
             return instruction.fragment;
         }
 
         return instruction.fragment + '?' + instruction.queryString;
     }
+
+
+    function toPromise(x) {
+        if (x && x.then) return x;
+        return system.defer(function (dfd2) { dfd2.resolve(x); });
+    }
+
+    var noOperation = toPromise(function () { return toPromise(true); });
+
 
     /**
      * @class Router
@@ -139,12 +156,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      * @param {Router} router The router.
      */
 
-    var createRouter = function() {
-        var queue = [],
-            isProcessing = ko.observable(false),
-            currentActivation,
+    var createRouter = function () {
+        var currentActivation,
             currentInstruction,
-            activeItem = activator.create();
+            activeItem = activator.create(),
+            isProcessing = ko.observable(false);
 
         var router = {
             /**
@@ -171,44 +187,41 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
              * Indicates that the router (or a child router) is currently in the process of navigating.
              * @property {KnockoutComputed} isNavigating
              */
-            isNavigating: ko.computed(function() {
+            isNavigating: ko.computed(function () {
                 var current = activeItem();
                 var processing = isProcessing();
-                var currentRouterIsProcesing = current
+                var currentRouterIsProcessing = current
                     && current.router
                     && current.router != router
                     && current.router.isNavigating() ? true : false;
-                return  processing || currentRouterIsProcesing;
+                return  processing || currentRouterIsProcessing;
             }),
             /**
              * An observable surfacing the active routing instruction that is currently being processed or has recently finished processing.
              * The instruction object has `config`, `fragment`, `queryString`, `params` and `queryParams` properties.
              * @property {KnockoutObservable} activeInstruction
              */
-            activeInstruction:ko.observable(null),
-            __router__:true
+            activeInstruction: ko.observable(null),
+            __router__: true
         };
+
 
         events.includeIn(router);
-
         activeItem.settings.areSameItem = function (currentItem, newItem, currentActivationData, newActivationData) {
-            if (currentItem == newItem) {
-                return compareArrays(currentActivationData, newActivationData);
-            }
-
-            return false;
+            return currentItem == newItem
+                && compareArrays(currentActivationData, newActivationData);
         };
 
-        activeItem.settings.findChildActivator = function(item) {
-            if (item && item.router && item.router.parent == router) {
-                return item.router.activeItem;
-            }
 
-            return null;
-        };
+        // ------------------------------------------------------------------------------------------------------
 
-        function hasChildRouter(instance, parentRouter) {
-            return instance.router && instance.router.parent == parentRouter;
+        function hasChildRouter(instance) {
+            return instance && instance.router && instance.router.__router__;
+        }
+
+        function getChildRouter(instance, parentRouter) {
+            if (hasChildRouter(instance) && instance.router.parent == parentRouter)
+                return instance.router;
         }
 
         function setCurrentInstructionRouteIsActive(flag) {
@@ -217,9 +230,23 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
         }
 
-        function completeNavigation(instance, instruction) {
-            system.log('Navigation Complete', instance, instruction);
+        function startNavigation(instruction) {
+            system.log('Navigation Started', instruction);
+            router.trigger('router:navigation:processing', instruction, router);
 
+            isProcessing(true);
+            router.activeInstruction(instruction);
+        }
+
+        function cancelNavigation(instruction) {
+            system.log('Navigation Cancelled', instruction);
+
+            router.activeInstruction(currentInstruction);
+            isProcessing(false);
+            router.trigger('router:navigation:cancelled', instruction, router);
+        }
+
+        function completeNavigation(instance, instruction) {
             var fromModuleId = system.getModuleId(currentActivation);
             if (fromModuleId) {
                 router.trigger('router:navigation:from:' + fromModuleId);
@@ -240,74 +267,36 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 router.updateDocumentTitle(instance, instruction);
             }
 
-            rootRouter.explicitNavigation = false;
-            rootRouter.navigatingBack = false;
             router.trigger('router:navigation:complete', instance, instruction, router);
+            system.log('Navigation Complete', instance, instruction);
         }
 
-        function cancelNavigation(instance, instruction) {
-            system.log('Navigation Cancelled');
-
-            router.activeInstruction(currentInstruction);
-
-            if (currentInstruction) {
-                router.navigate(reconstructUrl(currentInstruction), false);
-            }
-
-            isProcessing(false);
-            rootRouter.explicitNavigation = false;
-            rootRouter.navigatingBack = false;
-            router.trigger('router:navigation:cancelled', instance, instruction, router);
-        }
-
-        function redirect(url) {
-            system.log('Navigation Redirecting');
-
-            isProcessing(false);
-            rootRouter.explicitNavigation = false;
-            rootRouter.navigatingBack = false;
-            router.navigate(url, { trigger: true, replace: true });
-        }
 
         function activateRoute(activator, instance, instruction) {
-            rootRouter.navigatingBack = !rootRouter.explicitNavigation && currentActivation != instruction.fragment;
-            router.trigger('router:route:activating', instance, instruction, router);
+            contextRouter = router;
+            return activator.activateItem(instance, instruction.params, true)
+                .then(function (canContinueCb) {
+                    return canContinueCb && function () {
+                        contextRouter = router;
+                        router.trigger('router:route:activating', instance, instruction, router);
+                        return canContinueCb().then(function (success) {
+                            if (!success) throw new Error('An unexpected error has occurred while activating.');
 
-            var options = {
-                canDeactivate: !router.parent
-            };
+                            var previousActivation = currentActivation;
+                            completeNavigation(instance, instruction);
 
-            activator.activateItem(instance, instruction.params, options).then(function(succeeded) {
-                if (succeeded) {
-                    var previousActivation = currentActivation;
-                    completeNavigation(instance, instruction);
+                            if (previousActivation == instance) {
+                                router.attached();
+                                router.compositionComplete();
+                            }
 
-                    if (hasChildRouter(instance, router)) {
-                        var fullFragment = instruction.fragment;
-                        if (instruction.queryString) {
-                            fullFragment += "?" + instruction.queryString;
-                        }
-
-                        instance.router.loadUrl(fullFragment);
-                    }
-
-                    if (previousActivation == instance) {
-                        router.attached();
-                        router.compositionComplete();
-                    }
-                } else if(activator.settings.lifecycleData && activator.settings.lifecycleData.redirect){
-                    redirect(activator.settings.lifecycleData.redirect);
-                }else{
-                    cancelNavigation(instance, instruction);
-                }
-
-                if (startDeferred) {
-                    startDeferred.resolve();
-                    startDeferred = null;
-                }
-            }).fail(function(err){
-                system.error(err);
-            });
+                            if (startDeferred) {
+                                startDeferred.resolve();
+                                startDeferred = null;
+                            }
+                        });
+                    };
+                });
         }
 
         /**
@@ -318,113 +307,180 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @return {Promise|Boolean|String} If a boolean, determines whether or not the route should activate or be cancelled. If a string, causes a redirect to the specified route. Can also be a promise for either of these value types.
          */
         function handleGuardedRoute(activator, instance, instruction) {
-            var resultOrPromise = router.guardRoute(instance, instruction);
-            if (resultOrPromise || resultOrPromise === '') {
-                if (resultOrPromise.then) {
-                    resultOrPromise.then(function(result) {
-                        if (result) {
-                            if (system.isString(result)) {
-                                redirect(result);
-                            } else {
-                                activateRoute(activator, instance, instruction);
-                            }
-                        } else {
-                            cancelNavigation(instance, instruction);
-                        }
-                    });
-                } else {
-                    if (system.isString(resultOrPromise)) {
-                        redirect(resultOrPromise);
-                    } else {
-                        activateRoute(activator, instance, instruction);
+            return toPromise(router.guardRoute(instance, instruction))
+                .then(function (result) {
+                    if (system.isString(result)) {
+                        rootRouter.navigate(result);
+                        return false;
                     }
-                }
-            } else {
-                cancelNavigation(instance, instruction);
-            }
+                    return result && activateRoute(activator, instance, instruction);
+                });
         }
 
         function ensureActivation(activator, instance, instruction) {
             if (router.guardRoute) {
-                handleGuardedRoute(activator, instance, instruction);
+                return handleGuardedRoute(activator, instance, instruction);
             } else {
-                activateRoute(activator, instance, instruction);
+                return activateRoute(activator, instance, instruction);
             }
         }
 
-        function canReuseCurrentActivation(instruction) {
-            return currentInstruction
-                && currentInstruction.config.moduleId == instruction.config.moduleId
-                && currentActivation
-                && ((currentActivation.canReuseForRoute && currentActivation.canReuseForRoute.apply(currentActivation, instruction.params))
-                || (!currentActivation.canReuseForRoute && currentActivation.router && currentActivation.router.loadUrl));
+        function getChildRouterCanContinue(instance, fragment) {
+            var childRouter = getChildRouter(instance, router);
+            return (!childRouter && noOperation) || childRouter.processFragment(fragment) || toPromise(false);
         }
 
-        function dequeueInstruction() {
-            if (isProcessing()) {
-                return;
+        function getInstructionCanContinue(instruction, reuse) {
+            if (instruction.deactivate) {
+                return (!currentActivation && noOperation) ||
+                    activeItem.canDeactivate(true).then(function (canDeactivate) {
+                        return canDeactivate && function () {
+                            return activeItem.forceDeactivate(true).then(function (deactivated) {
+                                if (!deactivated) throw new Error('An unexpected error has occurred while deactivating.');
+
+                                setCurrentInstructionRouteIsActive(false);
+                                currentActivation = currentInstruction = undefined;
+                            });
+                        };
+                    });
             }
 
-            var instruction = queue.shift();
-            queue = [];
-
-            if (!instruction) {
-                return;
-            }
-
-            isProcessing(true);
-            router.activeInstruction(instruction);
-            router.trigger('router:navigation:processing', instruction, router);
-
-            if (canReuseCurrentActivation(instruction)) {
+            if (reuse) {
                 var tempActivator = activator.create();
                 tempActivator.forceActiveItem(currentActivation); //enforce lifecycle without re-compose
                 tempActivator.settings.areSameItem = activeItem.settings.areSameItem;
-                tempActivator.settings.findChildActivator = activeItem.settings.findChildActivator;
-                ensureActivation(tempActivator, currentActivation, instruction);
-            } else {
-                system.acquire(instruction.config.moduleId).then(function (m) {
-                    var instance = system.resolveObject(m);
-                    ensureActivation(activeItem, instance, instruction);
-                }).fail(function (err) {
-                    system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message, err);
+                tempActivator.settings.closeOnDeactivate = false;
+                return ensureActivation(tempActivator, currentActivation, instruction);
+            }
+
+            if (!instruction.config.moduleId) {
+                return ensureActivation(activeItem, {
+                    viewUrl: instruction.config.viewUrl,
+                    canReuseForRoute: function () {
+                        return true;
+                    }
+                }, instruction);
+            }
+
+            contextRouter = router;
+            return system.acquire(instruction.config.moduleId).then(function (m) {
+                contextRouter = router;
+                var instance = system.resolveObject(m);
+
+                if (instruction.config.viewUrl) {
+                    instance.viewUrl = instruction.config.viewUrl;
+                }
+
+                return ensureActivation(activeItem, instance, instruction).then(function (canContinue) {
+                    return canContinue && getChildRouterCanContinue(instance, reconstructUrl(instruction))
+                        .then(function (childCb) {
+                            return childCb && function () {
+                                return canContinue().then(childCb);
+                            };
+                        });
                 });
-            }
+            });
         }
 
-        function queueInstruction(instruction) {
-            queue.unshift(instruction);
-            dequeueInstruction();
+        function canReuseCurrentActivation(instruction) {
+            return currentActivation
+                && currentInstruction
+                && currentInstruction.config.moduleId == instruction.config.moduleId
+                && ((currentActivation.canReuseForRoute && currentActivation.canReuseForRoute.apply(currentActivation, instruction.params))
+                    || (!currentActivation.canReuseForRoute && currentActivation.router && currentActivation.router.loadUrl));
         }
 
-        // Given a route, and a URL fragment that it matches, return the array of
-        // extracted decoded parameters. Empty or unmatched parameters will be
-        // treated as `null` to normalize cross-browser behavior.
-        function createParams(routePattern, fragment, queryString) {
-            var params = routePattern.exec(fragment).slice(1);
+        function processInstruction(instruction) {
+            // Navigation starts
+            startNavigation(instruction);
+            var canReuse = canReuseCurrentActivation(instruction),
+                childFragment = canReuse ? reconstructUrl(instruction) : null;
 
-            for (var i = 0; i < params.length; i++) {
-                var current = params[i];
-                params[i] = current ? decodeURIComponent(current) : null;
-            }
 
-            var queryParams = router.parseQueryString(queryString);
-            if (queryParams) {
-                params.push(queryParams);
-            }
+            // check canDeactivate and canActivates
+            var canNavigatePromise =
+                getChildRouterCanContinue(currentActivation, childFragment)
+                    .then(function (childCb) {
+                        return childCb && getInstructionCanContinue(instruction, canReuse)
+                            .then(function (instructionCb) {
+                                return instructionCb && function () {
+                                    return childCb().then(instructionCb);
+                                };
+                            });
+                    });
 
-            return {
-                params:params,
-                queryParams:queryParams
-            };
+
+            // when navigation canceled.
+            return canNavigatePromise.then(function (canNavigate) {
+                return canNavigate || cancelNavigation(instruction);
+            });
         }
 
-        function configureRoute(config){
+        // ------------------------------------------------------------------------------------------------------
+
+
+        router.processFragment = function (fragment) {
+            if (fragment === null) return processInstruction({ deactivate: true, config: {} });
+
+            var handlers = router.handlers,
+                queryString = null,
+                coreFragment = fragment,
+                queryIndex = fragment.indexOf('?');
+
+            if (queryIndex != -1) {
+                coreFragment = fragment.substring(0, queryIndex);
+                queryString = fragment.substr(queryIndex + 1);
+            }
+
+            if (router.relativeToParentRouter) {
+                var instruction = this.parent.activeInstruction();
+                coreFragment = queryIndex == -1 ? instruction.params.join('/') : instruction.params.slice(0, -1).join('/');
+
+                if (coreFragment && coreFragment.charAt(0) == '/') {
+                    coreFragment = coreFragment.substr(1);
+                }
+
+                if (!coreFragment) {
+                    coreFragment = '';
+                }
+
+                coreFragment = coreFragment.replace('//', '/').replace('//', '/');
+            }
+
+            coreFragment = coreFragment.replace(trailingSlash, '');
+
+            for (var i = 0; i < handlers.length; i++) {
+                var current = handlers[i];
+                if (current.routePattern.test(coreFragment))
+                    return current.callback(coreFragment, queryString);
+            }
+
+            system.log('Route Not Found', fragment, currentInstruction);
+            router.trigger('router:route:not-found', fragment, router);
+        };
+
+
+        /**
+         * Add a route to be tested when the url fragment changes.
+         * @method route
+         * @param {RegEx} routePattern The route pattern to test against.
+         * @param {function} callback The callback to execute when the route pattern is matched.
+         */
+        router.route = function (routePattern, callback) {
+            router.handlers.push({ routePattern: routePattern, callback: callback });
+        };
+
+
+        function configureRoute(config) {
             router.trigger('router:route:before-config', config, router);
 
             if (!system.isRegExp(config.route)) {
                 config.title = config.title || router.convertRouteToTitle(config.route);
-                config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
+
+                if (!config.viewUrl) {
+                    config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
+                }
+
                 config.hash = config.hash || router.convertRouteToHash(config.route);
 
                 if (config.hasChildRoutes) {
@@ -432,48 +488,293 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 }
 
                 config.routePattern = routeStringToRegExp(config.route);
-            }else{
+            } else {
                 config.routePattern = config.route;
             }
 
             config.isActive = config.isActive || ko.observable(false);
             router.trigger('router:route:after-config', config, router);
-            router.routes.push(config);
 
-            router.route(config.routePattern, function(fragment, queryString) {
+            router.routes.push(config);
+            router.route(config.routePattern, function (fragment, queryString) {
                 var paramInfo = createParams(config.routePattern, fragment, queryString);
-                queueInstruction({
+                return processInstruction({
                     fragment: fragment,
-                    queryString:queryString,
+                    queryString: queryString,
                     config: config,
                     params: paramInfo.params,
-                    queryParams:paramInfo.queryParams
+                    queryParams: paramInfo.queryParams
                 });
             });
-        };
+        }
 
         function mapRoute(config) {
-            if(system.isArray(config.route)){
+            if (system.isArray(config.route)) {
                 var isActive = config.isActive || ko.observable(false);
 
-                for(var i = 0, length = config.route.length; i < length; i++){
+                for (var i = 0, length = config.route.length; i < length; i++) {
                     var current = system.extend({}, config);
 
                     current.route = config.route[i];
                     current.isActive = isActive;
 
-                    if(i > 0){
+                    if (i > 0) {
                         delete current.nav;
                     }
 
                     configureRoute(current);
                 }
-            }else{
+            } else {
                 configureRoute(config);
             }
 
             return router;
         }
+
+        /**
+         * Maps route patterns to modules.
+         * @method map
+         * @param {string|object|object[]} route A route, config or array of configs.
+         * @param {object} [config] The config for the specified route.
+         * @chainable
+         * @example
+         router.map([
+         { route: '', title:'Home', moduleId: 'homeScreen', nav: true },
+         { route: 'customer/:id', moduleId: 'customerDetails'}
+         ]);
+         */
+        router.map = function (route, config) {
+            if (system.isArray(route)) {
+                for (var i = 0; i < route.length; i++) {
+                    router.map(route[i]);
+                }
+
+                return router;
+            }
+
+            if (system.isString(route) || system.isRegExp(route)) {
+                if (!config) {
+                    config = {};
+                } else if (system.isString(config)) {
+                    config = { moduleId: config };
+                }
+
+                config.route = route;
+            } else {
+                config = route;
+            }
+
+            return mapRoute(config);
+        };
+
+        /**
+         * Builds an observable array designed to bind a navigation UI to. The model will exist in the `navigationModel` property.
+         * @method buildNavigationModel
+         * @param {number} defaultOrder The default order to use for navigation visible routes that don't specify an order. The default is 100 and each successive route will be one more than that.
+         * @chainable
+         */
+        router.buildNavigationModel = function (defaultOrder) {
+            var nav = [], routes = router.routes;
+            var fallbackOrder = defaultOrder || 100;
+
+            for (var i = 0; i < routes.length; i++) {
+                var current = routes[i];
+
+                if (current.nav) {
+                    if (!system.isNumber(current.nav)) {
+                        current.nav = ++fallbackOrder;
+                    }
+
+                    nav.push(current);
+                }
+            }
+
+            nav.sort(function (a, b) { return a.nav - b.nav; });
+            router.navigationModel(nav);
+
+            return router;
+        };
+
+        /**
+         * Configures how the router will handle unknown routes.
+         * @method mapUnknownRoutes
+         * @param {string|function} [config] If not supplied, then the router will map routes to modules with the same name.
+         * If a string is supplied, it represents the module id to route all unknown routes to.
+         * Finally, if config is a function, it will be called back with the route instruction containing the route info. The function can then modify the instruction by adding a moduleId and the router will take over from there.
+         * @param {string} [replaceRoute] If config is a module id, then you can optionally provide a route to replace the url with.
+         * @chainable
+         */
+        router.mapUnknownRoutes = function (config, replaceRoute) {
+            var catchAllRoute = "*catchall";
+            var catchAllPattern = routeStringToRegExp(catchAllRoute);
+
+            router.route(catchAllPattern, function (fragment, queryString) {
+                var paramInfo = createParams(catchAllPattern, fragment, queryString);
+                var instruction = {
+                    fragment: fragment,
+                    queryString: queryString,
+                    config: {
+                        route: catchAllRoute,
+                        routePattern: catchAllPattern
+                    },
+                    params: paramInfo.params,
+                    queryParams: paramInfo.queryParams
+                };
+
+                if (!config) {
+                    instruction.config.moduleId = fragment;
+                } else if (system.isString(config)) {
+                    instruction.config.moduleId = config;
+                    if (replaceRoute) {
+                        history.navigate(replaceRoute, { trigger: false, replace: true });
+                    }
+                } else if (system.isFunction(config)) {
+                    var result = config(instruction);
+                    if (result && result.then) {
+                        return result.then(function () {
+                            router.trigger('router:route:before-config', instruction.config, router);
+                            router.trigger('router:route:after-config', instruction.config, router);
+                            return processInstruction(instruction);
+                            // TODO: not sure if promise will continue
+                        });
+                    }
+                } else {
+                    instruction.config = config;
+                    instruction.config.route = catchAllRoute;
+                    instruction.config.routePattern = catchAllPattern;
+                }
+
+                router.trigger('router:route:before-config', instruction.config, router);
+                router.trigger('router:route:after-config', instruction.config, router);
+                return processInstruction(instruction);
+            });
+
+            return router;
+        };
+
+        /**
+         * Makes all configured routes and/or module ids relative to a certain base url.
+         * @method makeRelative
+         * @param {string|object} settings If string, the value is used as the base for routes and module ids. If an object, you can specify `route` and `moduleId` separately. In place of specifying route, you can set `fromParent:true` to make routes automatically relative to the parent router's active route.
+         * @chainable
+         */
+        router.makeRelative = function (settings) {
+            if (system.isString(settings)) {
+                settings = {
+                    moduleId: settings,
+                    route: settings
+                };
+            }
+
+            if (settings.moduleId && !endsWith(settings.moduleId, '/')) {
+                settings.moduleId += '/';
+            }
+
+            if (settings.route && !endsWith(settings.route, '/')) {
+                settings.route += '/';
+            }
+
+            if (settings.fromParent) {
+                router.relativeToParentRouter = true;
+            }
+
+
+            // relative navigation is on when fromParent is set, can be set to false if needed.
+            // for absolute-path navigation, developer may use rootRouter.
+            router.relativeNavigation = settings.relativeNavigation
+                || (settings.fromParent && settings.relativeNavigation!==false);
+
+
+
+            router.on('router:route:before-config').then(function (config) {
+                if (settings.moduleId) {
+                    config.moduleId = settings.moduleId + config.moduleId;
+                }
+
+                if (settings.route) {
+                    if (config.route === '') {
+                        config.route = settings.route.substring(0, settings.route.length - 1);
+                    } else {
+                        config.route = settings.route + config.route;
+                    }
+                }
+            });
+
+            if (settings.dynamicHash) {
+                router.on('router:route:after-config').then(function (config) {
+                    config.routePattern = routeStringToRegExp(settings.dynamicHash + (config.route ? '/' + config.route : ''));
+                    config.dynamicHash = config.dynamicHash || ko.observable(config.hash);
+                });
+
+                router.on('router:navigation:complete')
+                    .then(function (instance, instruction, parentRouter) {
+                        var childRouter = getChildRouter(instance, parentRouter);
+                        if (childRouter)
+                            for (var i = 0; i < childRouter.routes.length; i++) {
+                                var params = instruction.params.slice(0);
+                                var route = childRouter.routes[i];
+                                route.hash = childRouter.convertRouteToHash(route.route)
+                                    .replace(namedParam, function (match) {
+                                        return params.length > 0 ? params.shift() : match;
+                                    });
+                                route.dynamicHash(route.hash);
+                            }
+                    });
+            }
+
+            return router;
+        };
+
+
+        /**
+         * Converts a route to a hash suitable for binding to a link's href.
+         * @method convertRouteToHash
+         * @param {string} route
+         * @return {string} The hash.
+         */
+        router.convertRouteToHash = function (route) {
+            route = route.replace(/\*.*$/, '');
+
+            if (router.relativeToParentRouter) {
+                var instruction = router.parent.activeInstruction(),
+                    hash = route ? instruction.config.hash + '/' + route : instruction.config.hash;
+
+                if (history._hasPushState) {
+                    hash = '/' + hash;
+                }
+
+                hash = hash.replace('//', '/').replace('//', '/');
+                return hash;
+            }
+
+            if (history._hasPushState) {
+                return route;
+            }
+
+            return "#" + route;
+        };
+
+        /**
+         * Converts a route to a module id. This is only called if no module id is supplied as part of the route mapping.
+         * @method convertRouteToModuleId
+         * @param {string} route
+         * @return {string} The module id.
+         */
+        router.convertRouteToModuleId = function (route) {
+            return stripParametersFromRoute(route);
+        };
+
+        /**
+         * Converts a route to a displayable title. This is only called if no title is specified as part of the route mapping.
+         * @method convertRouteToTitle
+         * @param {string} route
+         * @return {string} The title.
+         */
+        router.convertRouteToTitle = function (route) {
+            var value = stripParametersFromRoute(route);
+            return value.substring(0, 1).toUpperCase() + value.substring(1);
+        };
+
 
         /**
          * Parses a query string into an object.
@@ -523,91 +824,37 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return queryObject;
         };
 
-        /**
-         * Add a route to be tested when the url fragment changes.
-         * @method route
-         * @param {RegEx} routePattern The route pattern to test against.
-         * @param {function} callback The callback to execute when the route pattern is matched.
-         */
-        router.route = function(routePattern, callback) {
-            router.handlers.push({ routePattern: routePattern, callback: callback });
-        };
+        // Given a route, and a URL fragment that it matches, return the array of
+        // extracted decoded parameters. Empty or unmatched parameters will be
+        // treated as `null` to normalize cross-browser behavior.
+        function createParams(routePattern, fragment, queryString) {
+            var params = routePattern.exec(fragment).slice(1);
 
-        /**
-         * Attempt to load the specified URL fragment. If a route succeeds with a match, returns `true`. If no defined routes matches the fragment, returns `false`.
-         * @method loadUrl
-         * @param {string} fragment The URL fragment to find a match for.
-         * @return {boolean} True if a match was found, false otherwise.
-         */
-        router.loadUrl = function(fragment) {
-            var handlers = router.handlers,
-                queryString = null,
-                coreFragment = fragment,
-                queryIndex = fragment.indexOf('?');
-
-            if (queryIndex != -1) {
-                coreFragment = fragment.substring(0, queryIndex);
-                queryString = fragment.substr(queryIndex + 1);
+            for (var i = 0; i < params.length; i++) {
+                var current = params[i];
+                params[i] = current ? decodeURIComponent(current) : null;
             }
 
-            if(router.relativeToParentRouter){
-                var instruction = this.parent.activeInstruction();
-				coreFragment = queryIndex == -1 ? instruction.params.join('/') : instruction.params.slice(0, -1).join('/');
-
-                if(coreFragment && coreFragment.charAt(0) == '/'){
-                    coreFragment = coreFragment.substr(1);
-                }
-
-                if(!coreFragment){
-                    coreFragment = '';
-                }
-
-                coreFragment = coreFragment.replace('//', '/').replace('//', '/');
+            var queryParams = router.parseQueryString(queryString);
+            if (queryParams) {
+                params.push(queryParams);
             }
 
-            coreFragment = coreFragment.replace(trailingSlash, '');
-
-            for (var i = 0; i < handlers.length; i++) {
-                var current = handlers[i];
-                if (current.routePattern.test(coreFragment)) {
-                    current.callback(coreFragment, queryString);
-                    return true;
-                }
-            }
-
-            system.log('Route Not Found', fragment, currentInstruction);
-            router.trigger('router:route:not-found', fragment, router);
-
-            if (currentInstruction) {
-                history.navigate(reconstructUrl(currentInstruction), { trigger:false, replace:true });
-            }
-
-            rootRouter.explicitNavigation = false;
-            rootRouter.navigatingBack = false;
-
-            return false;
-        };
-
-        var titleSubscription;
-        function setTitle(value) {
-            var appTitle = ko.unwrap(app.title);
-
-            if (appTitle) {
-                document.title = value + " | " + appTitle;
-            } else {
-                document.title = value;
-            }
-        }  
-        
-        // Allow observable to be used for app.title
-        if(ko.isObservable(app.title)) {
-            app.title.subscribe(function () {
-                var instruction = router.activeInstruction();
-                var title = instruction != null ? ko.unwrap(instruction.config.title) : '';
-                setTitle(title);
-            });
+            return {
+                params: params,
+                queryParams: queryParams
+            };
         }
-        
+
+        router.attached = function () {
+            router.trigger('router:navigation:attached', currentActivation, currentInstruction, router);
+        };
+
+        router.compositionComplete = function () {
+            router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
+            isProcessing(false);
+        };
+
         /**
          * Updates the document title based on the activated module instance, the routing instruction and the app.title.
          * @method updateDocumentTitle
@@ -617,7 +864,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         router.updateDocumentTitle = function (instance, instruction) {
             var appTitle = ko.unwrap(app.title),
                 title = instruction.config.title;
-                
+
             if (titleSubscription) {
                 titleSubscription.dispose();
             }
@@ -633,6 +880,71 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 document.title = appTitle;
             }
         };
+        var titleSubscription;
+
+        function setTitle(value) {
+            var appTitle = ko.unwrap(app.title);
+
+            if (appTitle) {
+                document.title = value + " | " + appTitle;
+            } else {
+                document.title = value;
+            }
+        }
+
+        // Allow observable to be used for app.title
+        if (ko.isObservable(app.title)) {
+            app.title.subscribe(function () {
+                var instruction = router.activeInstruction();
+                var title = instruction != null ? ko.unwrap(instruction.config.title) : '';
+                setTitle(title);
+            });
+        }
+
+
+        // ------------------------------------------------------------------------------------------------------
+
+        /**
+         * Attempt to load the specified URL fragment. If a route succeeds with a match, returns `true`. If no defined routes matches the fragment, returns `false`.
+         * @method loadUrl
+         * @param {string} fragment The URL fragment to find a match for.
+         * @return {boolean} True if a match was found, false otherwise.
+         */
+        router.loadUrl = function (fragment) {
+            if (isProcessing()) {
+                nextUrl = nextUrl || fragment;
+                history.navigate(activeUrl, { trigger: false, replace: true });
+                return false;
+            }
+
+            activeUrl = fragment;
+            return toPromise(router.processFragment(fragment))
+                .then(function (canContinue) {
+                    if (!canContinue) checkNext() || revert();
+
+                    return canContinue && canContinue().then(function () {
+                        lastUrl = fragment;
+                        activeUrl = lastUrl;
+                    });
+                }).fail(function (err) {
+                    isProcessing(false);
+                    checkNext() || history.navigate(lastUrl);
+                    system.log('Failure when navigating.', fragment, err);
+                });
+
+            function revert() {
+                history.navigate(lastUrl, { trigger: false, replace: true });
+            }
+
+            function checkNext() {
+                if (nextUrl) {
+                    history.navigate(nextUrl);
+                    nextUrl = undefined;
+                    return true;
+                }
+            }
+        };
+
 
         /**
          * Save a fragment into the hash history, or replace the URL state if the
@@ -646,213 +958,43 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @param {object|boolean} options An options object with optional trigger and replace flags. You can also pass a boolean directly to set the trigger option. Trigger is `true` by default.
          * @return {boolean} Returns true/false from loading the url.
          */
-        router.navigate = function(fragment, options) {
-            if(fragment && fragment.indexOf('://') != -1) {
+        router.navigate = function (fragment, options) {
+            if (fragment && fragment.indexOf('://') != -1) {
                 window.location.href = fragment;
                 return true;
             }
 
-            if(options === undefined || (system.isBoolean(options) && options) || (system.isObject(options) && options.trigger)) {
-                rootRouter.explicitNavigation = true;
+            if (router.relativeNavigation) {
+                var instruction = router.parent.activeInstruction();
+                fragment = instruction.config.hash + (fragment ? '/' + fragment : '');
+                fragment = fragment.replace('//', '/').replace('//', '/');
+            }
+
+            if (options === false || (options && options.trigger != undefined && !options.trigger)) {
+                lastUrl = fragment;
             }
 
             return history.navigate(fragment, options);
         };
 
+
         /**
          * Navigates back in the browser history.
          * @method navigateBack
          */
-        router.navigateBack = function() {
+        router.navigateBack = function () {
             history.navigateBack();
         };
 
-        router.attached = function() {
-            router.trigger('router:navigation:attached', currentActivation, currentInstruction, router);
-        };
+        // ------------------------------------------------------------------------------------------------------
 
-        router.compositionComplete = function(){
-            isProcessing(false);
-            router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
-            dequeueInstruction();
-        };
-
-        /**
-         * Converts a route to a hash suitable for binding to a link's href.
-         * @method convertRouteToHash
-         * @param {string} route
-         * @return {string} The hash.
-         */
-        router.convertRouteToHash = function(route) {
-            route = route.replace(/\*.*$/, '');
-
-            if(router.relativeToParentRouter){
-                var instruction = router.parent.activeInstruction(),
-                    hash = instruction.config.hash + '/' + route;
-
-                if(history._hasPushState){
-                    hash = '/' + hash;
-                }
-
-                hash = hash.replace('//', '/').replace('//', '/');
-                return hash;
-            }
-
-            if(history._hasPushState){
-                return route;
-            }
-
-            return "#" + route;
-        };
-
-        /**
-         * Converts a route to a module id. This is only called if no module id is supplied as part of the route mapping.
-         * @method convertRouteToModuleId
-         * @param {string} route
-         * @return {string} The module id.
-         */
-        router.convertRouteToModuleId = function(route) {
-            return stripParametersFromRoute(route);
-        };
-
-        /**
-         * Converts a route to a displayable title. This is only called if no title is specified as part of the route mapping.
-         * @method convertRouteToTitle
-         * @param {string} route
-         * @return {string} The title.
-         */
-        router.convertRouteToTitle = function(route) {
-            var value = stripParametersFromRoute(route);
-            return value.substring(0, 1).toUpperCase() + value.substring(1);
-        };
-
-        /**
-         * Maps route patterns to modules.
-         * @method map
-         * @param {string|object|object[]} route A route, config or array of configs.
-         * @param {object} [config] The config for the specified route.
-         * @chainable
-         * @example
-         router.map([
-         { route: '', title:'Home', moduleId: 'homeScreen', nav: true },
-         { route: 'customer/:id', moduleId: 'customerDetails'}
-         ]);
-         */
-        router.map = function(route, config) {
-            if (system.isArray(route)) {
-                for (var i = 0; i < route.length; i++) {
-                    router.map(route[i]);
-                }
-
-                return router;
-            }
-
-            if (system.isString(route) || system.isRegExp(route)) {
-                if (!config) {
-                    config = {};
-                } else if (system.isString(config)) {
-                    config = { moduleId: config };
-                }
-
-                config.route = route;
-            } else {
-                config = route;
-            }
-
-            return mapRoute(config);
-        };
-
-        /**
-         * Builds an observable array designed to bind a navigation UI to. The model will exist in the `navigationModel` property.
-         * @method buildNavigationModel
-         * @param {number} defaultOrder The default order to use for navigation visible routes that don't specify an order. The default is 100 and each successive route will be one more than that.
-         * @chainable
-         */
-        router.buildNavigationModel = function(defaultOrder) {
-            var nav = [], routes = router.routes;
-            var fallbackOrder = defaultOrder || 100;
-
-            for (var i = 0; i < routes.length; i++) {
-                var current = routes[i];
-
-                if (current.nav) {
-                    if (!system.isNumber(current.nav)) {
-                        current.nav = ++fallbackOrder;
-                    }
-
-                    nav.push(current);
-                }
-            }
-
-            nav.sort(function(a, b) { return a.nav - b.nav; });
-            router.navigationModel(nav);
-
-            return router;
-        };
-
-        /**
-         * Configures how the router will handle unknown routes.
-         * @method mapUnknownRoutes
-         * @param {string|function} [config] If not supplied, then the router will map routes to modules with the same name.
-         * If a string is supplied, it represents the module id to route all unknown routes to.
-         * Finally, if config is a function, it will be called back with the route instruction containing the route info. The function can then modify the instruction by adding a moduleId and the router will take over from there.
-         * @param {string} [replaceRoute] If config is a module id, then you can optionally provide a route to replace the url with.
-         * @chainable
-         */
-        router.mapUnknownRoutes = function(config, replaceRoute) {
-            var catchAllRoute = "*catchall";
-            var catchAllPattern = routeStringToRegExp(catchAllRoute);
-
-            router.route(catchAllPattern, function (fragment, queryString) {
-                var paramInfo = createParams(catchAllPattern, fragment, queryString);
-                var instruction = {
-                    fragment: fragment,
-                    queryString: queryString,
-                    config: {
-                        route: catchAllRoute,
-                        routePattern: catchAllPattern
-                    },
-                    params: paramInfo.params,
-                    queryParams: paramInfo.queryParams
-                };
-
-                if (!config) {
-                    instruction.config.moduleId = fragment;
-                } else if (system.isString(config)) {
-                    instruction.config.moduleId = config;
-                    if(replaceRoute){
-                        history.navigate(replaceRoute, { trigger:false, replace:true });
-                    }
-                } else if (system.isFunction(config)) {
-                    var result = config(instruction);
-                    if (result && result.then) {
-                        result.then(function() {
-                            router.trigger('router:route:before-config', instruction.config, router);
-                            router.trigger('router:route:after-config', instruction.config, router);
-                            queueInstruction(instruction);
-                        });
-                        return;
-                    }
-                } else {
-                    instruction.config = config;
-                    instruction.config.route = catchAllRoute;
-                    instruction.config.routePattern = catchAllPattern;
-                }
-
-                router.trigger('router:route:before-config', instruction.config, router);
-                router.trigger('router:route:after-config', instruction.config, router);
-                queueInstruction(instruction);
-            });
-
-            return router;
-        };
 
         /**
          * Resets the router by removing handlers, routes, event handlers and previously configured options.
          * @method reset
          * @chainable
          */
-        router.reset = function() {
+        router.reset = function () {
             currentInstruction = currentActivation = undefined;
             router.handlers = [];
             router.routes = [];
@@ -862,61 +1004,19 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         };
 
         /**
-         * Makes all configured routes and/or module ids relative to a certain base url.
-         * @method makeRelative
-         * @param {string|object} settings If string, the value is used as the base for routes and module ids. If an object, you can specify `route` and `moduleId` separately. In place of specifying route, you can set `fromParent:true` to make routes automatically relative to the parent router's active route.
-         * @chainable
-         */
-        router.makeRelative = function(settings){
-            if(system.isString(settings)){
-                settings = {
-                    moduleId:settings,
-                    route:settings
-                };
-            }
-
-            if(settings.moduleId && !endsWith(settings.moduleId, '/')){
-                settings.moduleId += '/';
-            }
-
-            if(settings.route && !endsWith(settings.route, '/')){
-                settings.route += '/';
-            }
-
-            if(settings.fromParent){
-                router.relativeToParentRouter = true;
-            }
-
-            router.on('router:route:before-config').then(function(config){
-                if(settings.moduleId){
-                    config.moduleId = settings.moduleId + config.moduleId;
-                }
-
-                if(settings.route){
-                    if(config.route === ''){
-                        config.route = settings.route.substring(0, settings.route.length - 1);
-                    }else{
-                        config.route = settings.route + config.route;
-                    }
-                }
-            });
-
-            return router;
-        };
-
-        /**
          * Creates a child router.
          * @method createChildRouter
          * @return {Router} The child router.
          */
-        router.createChildRouter = function() {
+        router.createChildRouter = function () {
             var childRouter = createRouter();
-            childRouter.parent = router;
+            childRouter.parent = contextRouter;
             return childRouter;
         };
 
         return router;
     };
+
 
     /**
      * @class RouterModule
@@ -924,14 +1024,12 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      * @static
      */
     rootRouter = createRouter();
-    rootRouter.explicitNavigation = false;
-    rootRouter.navigatingBack = false;
 
     /**
      * Makes the RegExp generated for routes case sensitive, rather than the default of case insensitive.
      * @method makeRoutesCaseSensitive
      */
-    rootRouter.makeRoutesCaseSensitive = function(){
+    rootRouter.makeRoutesCaseSensitive = function () {
         routesAreCaseSensitive = true;
     };
 
@@ -940,15 +1038,13 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      * @method targetIsThisWindow
      * @return {boolean} True if the event's target is the current window, false otherwise.
      */
-    rootRouter.targetIsThisWindow = function(event) {
+    rootRouter.targetIsThisWindow = function (event) {
         var targetWindow = $(event.target).attr('target');
 
-        if (!targetWindow ||
+        return  !targetWindow ||
             targetWindow === window.name ||
             targetWindow === '_self' ||
-            (targetWindow === 'top' && window === window.top)) { return true; }
-
-        return false;
+            (targetWindow === 'top' && window === window.top)
     };
 
     /**
@@ -956,18 +1052,18 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      * @method activate
      * @return {Promise} A promise that resolves when the router is ready.
      */
-    rootRouter.activate = function(options) {
-        return system.defer(function(dfd) {
+    rootRouter.activate = function (options) {
+        return system.defer(function (dfd) {
             startDeferred = dfd;
             rootRouter.options = system.extend({ routeHandler: rootRouter.loadUrl }, rootRouter.options, options);
 
             history.activate(rootRouter.options);
 
-            if(history._hasPushState){
+            if (history._hasPushState) {
                 var routes = rootRouter.routes,
                     i = routes.length;
 
-                while(i--){
+                while (i--) {
                     var current = routes[i];
                     current.hash = current.hash.replace('#', '/');
                 }
@@ -975,15 +1071,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             var rootStripper = rootRouter.options.root && new RegExp("^" + rootRouter.options.root + "/");
 
-            $(document).delegate("a", 'click', function(evt){
-                if(history._hasPushState){
-                    if(!evt.altKey && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey && rootRouter.targetIsThisWindow(evt)){
+            $(document).delegate("a", 'click', function (evt) {
+                if (history._hasPushState) {
+                    if (!evt.altKey && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey && rootRouter.targetIsThisWindow(evt)) {
                         var href = $(this).attr("href");
 
                         // Ensure the protocol is not part of URL, meaning its relative.
                         // Stop the event bubbling to ensure the link will not cause a page refresh.
                         if (href != null && !(href.charAt(0) === "#" || /^[a-z]+:/i.test(href))) {
-                            rootRouter.explicitNavigation = true;
                             evt.preventDefault();
 
                             if (rootStripper) {
@@ -993,12 +1088,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                             history.navigate(href);
                         }
                     }
-                }else{
-                    rootRouter.explicitNavigation = true;
                 }
             });
 
-            if(history.options.silent && startDeferred){
+            if (history.options.silent && startDeferred) {
                 startDeferred.resolve();
                 startDeferred = null;
             }
@@ -1009,7 +1102,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      * Disable history, perhaps temporarily. Not useful in a real app, but possibly useful for unit testing Routers.
      * @method deactivate
      */
-    rootRouter.deactivate = function() {
+    rootRouter.deactivate = function () {
         history.deactivate();
     };
 
@@ -1017,19 +1110,19 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      * Installs the router's custom ko binding handler.
      * @method install
      */
-    rootRouter.install = function(){
+    rootRouter.install = function () {
         ko.bindingHandlers.router = {
-            init: function() {
+            init: function () {
                 return { controlsDescendantBindings: true };
             },
-            update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                 var settings = ko.utils.unwrapObservable(valueAccessor()) || {};
 
                 if (settings.__router__) {
                     settings = {
-                        model:settings.activeItem(),
-                        attached:settings.attached,
-                        compositionComplete:settings.compositionComplete,
+                        model: settings.activeItem(),
+                        attached: settings.attached,
+                        compositionComplete: settings.compositionComplete,
                         activate: false
                     };
                 } else {
