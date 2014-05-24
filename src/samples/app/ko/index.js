@@ -1,4 +1,4 @@
-﻿define(['plugins/router', 'knockout'], function(router, ko) {
+define(['plugins/router', 'knockout'], function(router, ko) {
     var childRouter = router.createChildRouter()
         .makeRelative({
             moduleId:'ko',
@@ -14,7 +14,8 @@
             { route: 'animatedTrans',       moduleId: 'animatedTrans/index',    title: 'Animated Transition',   type: 'intro',      nav: true },
             { route: 'contactsEditor',      moduleId: 'contactsEditor/index',   title: 'Contacts Editor',       type: 'detailed',   nav: true },
             { route: 'gridEditor',          moduleId: 'gridEditor/index',       title: 'Grid Editor',           type: 'detailed',   nav: true },
-            { route: 'shoppingCart',        moduleId: 'shoppingCart/index',     title: 'Shopping Cart',         type: 'detailed',   nav: true }
+            { route: 'shoppingCart',        moduleId: 'shoppingCart/index',     title: 'Shopping Cart',         type: 'detailed',   nav: true },
+            { route: 'level3*rest',         moduleId: 'level3/index',           title: 'Level-3 Router',        type: 'detailed',   nav: true }
         ]).buildNavigationModel();
 
     return {
@@ -28,6 +29,20 @@
             return ko.utils.arrayFilter(childRouter.navigationModel(), function(route) {
                 return route.type == 'detailed';
             });
-        })
+        }),
+        canActivate: function(){
+            console.log('canActivate of ko');
+            return true;
+        },
+        activate: function(){
+            console.log('activate of ko ');
+        },
+        canDeactivate: function(isClose){
+            console.log('canDeactivate of ko ' + !!isClose);
+            return true;
+        },
+        deactivate: function(isClose){
+            console.log('deactivate of ko ' + !!isClose);
+        }
     };
 });
