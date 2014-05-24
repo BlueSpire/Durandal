@@ -4,6 +4,9 @@
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
 /**
+ * * -- Cleanup and re-design of hierarchical routers, By arash.shakery@gmail.com, May 2014
+ */
+/**
  * Connects the history module's url and history tracking support to Durandal's activation and composition engine allowing you to easily build navigation-style applications.
  * @module router
  * @requires system
