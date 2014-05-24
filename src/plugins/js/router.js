@@ -327,7 +327,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         function getChildRouterCanContinue(instance, fragment) {
             var childRouter = getChildRouter(instance, router);
-            return (!childRouter && noOperation) || childRouter.processFragment(fragment) || toPromise(false);
+            return (!childRouter && noOperation) || childRouter.processFragment(fragment);
         }
 
         function getInstructionCanContinue(instruction, reuse) {
@@ -452,11 +452,15 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             for (var i = 0; i < handlers.length; i++) {
                 var current = handlers[i];
                 if (current.routePattern.test(coreFragment))
-                    return current.callback(coreFragment, queryString);
+                    return toPromise(current.callback(coreFragment, queryString))
+                        .then(function (res) {
+                            return system.isFunction(res) ? function () { return toPromise(res()); } : false;
+                        });
             }
 
             system.log('Route Not Found', fragment, currentInstruction);
             router.trigger('router:route:not-found', fragment, router);
+            return toPromise(false);
         };
 
 
