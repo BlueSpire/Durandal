@@ -1188,6 +1188,15 @@ declare module 'plugins/router' {
     export = theModule;
 }
 
+declare module 'plugins/i18n' {
+    var i18n: DurandalI18n;
+    export = i18n;
+}
+
+interface DurandalI18n {
+    changeCulture: (culture: string) => void;
+}
+
 interface DurandalEventSubscription {
     /**
      * Attaches a callback to the event subscription.
