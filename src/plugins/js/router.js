@@ -3,6 +3,9 @@
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
+/*
+ * Cleanup and re-design of hierarchical routers, By arash.shakery@gmail.com, May 2014
+ */
 /**
  * Connects the history module's url and history tracking support to Durandal's activation and composition engine allowing you to easily build navigation-style applications.
  * @module router
@@ -222,6 +225,27 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         function getChildRouter(instance, parentRouter) {
             if (hasChildRouter(instance) && instance.router.parent == parentRouter)
                 return instance.router;
+            else {
+                contextRouter = router;
+                if (instance && system.isFunction(instance.getRouter)) {
+                    var result,
+                        params = router.activeInstruction().params,
+                        args = [parentRouter];
+
+                    if (params)
+                        if (Array.isArray(params))
+                            args.push.apply(args, params); else
+                            args.push(params);
+
+                    try {
+                        result = instance.getRouter.apply(instance, args);
+                    } catch (error) {
+                        system.log('ERROR: ' + error.message, error);
+                        return;
+                    }
+                    return result;
+                }
+            }
         }
 
         function setCurrentInstructionRouteIsActive(flag) {
@@ -326,8 +350,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         }
 
         function getChildRouterCanContinue(instance, fragment) {
-            var childRouter = getChildRouter(instance, router);
-            return (!childRouter && noOperation) || childRouter.processFragment(fragment);
+            return toPromise(getChildRouter(instance, router))
+                .then(function (childRouter) {
+                    return (!childRouter && noOperation) || childRouter.processFragment(fragment);
+                });
         }
 
         function getInstructionCanContinue(instruction, reuse) {
@@ -686,8 +712,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             // relative navigation is on when fromParent is set, can be set to false if needed.
             // for absolute-path navigation, developer may use rootRouter.
             router.relativeNavigation = settings.relativeNavigation
-                || (settings.fromParent && settings.relativeNavigation!==false);
-
+                || (settings.fromParent && settings.relativeNavigation !== false);
 
 
             router.on('router:route:before-config').then(function (config) {
@@ -712,8 +737,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                 router.on('router:navigation:complete')
                     .then(function (instance, instruction, parentRouter) {
-                        var childRouter = getChildRouter(instance, parentRouter);
-                        if (childRouter)
+                        var childRouter = instance.router;
+                        if (childRouter && childRouter.__router__ && childRouter.parent == parentRouter)
                             for (var i = 0; i < childRouter.routes.length; i++) {
                                 var params = instruction.params.slice(0);
                                 var route = childRouter.routes[i];
@@ -915,7 +940,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          */
         router.loadUrl = function (fragment) {
             if (isProcessing()) {
-                if(nextUrl == undefined) nextUrl = fragment;
+                if (nextUrl == undefined) nextUrl = fragment;
                 history.navigate(activeUrl, { trigger: false, replace: true });
                 return false;
             }
@@ -924,7 +949,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return toPromise(router.processFragment(fragment))
                 .then(function (canContinue) {
                     if (!canContinue) {
-                        history.navigate(lastUrl, { trigger: false, replace: true });
+                        if (typeof lastUrl == 'string')
+                            history.navigate(lastUrl, { trigger: false, replace: true });
+
                         checkNext();
                     }
 
@@ -946,7 +973,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 return true;
             }
         }
-        router.on('router:navigation:composition-complete', function(){
+
+        router.on('router:navigation:composition-complete', function () {
             isProcessing(false);
             checkNext();
         });
@@ -1014,9 +1042,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          * @method createChildRouter
          * @return {Router} The child router.
          */
-        router.createChildRouter = function () {
+        router.createChildRouter = function (parent) {
             var childRouter = createRouter();
-            childRouter.parent = contextRouter;
+            childRouter.parent = parent || contextRouter;
             return childRouter;
         };
 
