@@ -4,9 +4,6 @@
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
 /**
- * * -- Cleanup and re-design of hierarchical routers, By arash.shakery@gmail.com, May 2014
- */
-/**
  * Connects the history module's url and history tracking support to Durandal's activation and composition engine allowing you to easily build navigation-style applications.
  * @module router
  * @requires system
@@ -277,7 +274,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         function activateRoute(activator, instance, instruction) {
             contextRouter = router;
-            return activator.activateItem(instance, instruction.params, true)
+            return activator.activateItem2(instance, instruction.params)
                 .then(function (canContinueCb) {
                     return canContinueCb && function () {
                         contextRouter = router;
@@ -855,7 +852,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         router.compositionComplete = function () {
             router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
-            isProcessing(false);
         };
 
         /**
@@ -915,7 +911,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          */
         router.loadUrl = function (fragment) {
             if (isProcessing()) {
-                nextUrl = nextUrl || fragment;
+                if(nextUrl == undefined) nextUrl = fragment;
                 history.navigate(activeUrl, { trigger: false, replace: true });
                 return false;
             }
@@ -923,30 +919,33 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             activeUrl = fragment;
             return toPromise(router.processFragment(fragment))
                 .then(function (canContinue) {
-                    if (!canContinue) checkNext() || revert();
+                    if (!canContinue) {
+                        history.navigate(lastUrl, { trigger: false, replace: true });
+                        checkNext();
+                    }
 
                     return canContinue && canContinue().then(function () {
                         lastUrl = fragment;
                         activeUrl = lastUrl;
+                        checkNext();
                     });
                 }).fail(function (err) {
                     isProcessing(false);
-                    checkNext() || history.navigate(lastUrl);
+                    checkNext() || router.navigate(lastUrl);
                     system.log('Failure when navigating.', fragment, err);
                 });
-
-            function revert() {
-                history.navigate(lastUrl, { trigger: false, replace: true });
-            }
-
-            function checkNext() {
-                if (nextUrl) {
-                    history.navigate(nextUrl);
-                    nextUrl = undefined;
-                    return true;
-                }
-            }
         };
+        function checkNext() {
+            if (typeof nextUrl == 'string') {
+                router.navigate(nextUrl);
+                nextUrl = undefined;
+                return true;
+            }
+        }
+        router.on('router:navigation:composition-complete', function(){
+            isProcessing(false);
+            checkNext();
+        });
 
 
         /**
