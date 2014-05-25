@@ -70,11 +70,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     }
 
     function reconstructUrl(instruction) {
-        if (!instruction.queryString) {
-            return instruction.fragment;
-        }
-
-        return instruction.fragment + '?' + instruction.queryString;
+        return instruction.fragment + (instruction.queryString ? '?' + instruction.queryString : '');
     }
 
     function toPromise(x) {
@@ -456,7 +452,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             // Navigation starts.
             startNavigation(instruction);
 
-            // canReuseForRoute may return promise.
+            // canReuseForRoute may return a promise.
             return toPromise(canReuseCurrentActivation(instruction))
                 .then(function (canReuse) {
 
@@ -465,22 +461,22 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                     // check canDeactivate/canActivate of childs
                     return getChildRouterCanContinue(currentActivation, childFragment)
-                        .then(function (childCb) {
+                        .then(function (canContinueChilds) {
 
                             // Only if childs permit, check canDeactivate/canActivate of current.
-                            return childCb && getInstructionCanContinue(instruction, canReuse)
+                            return canContinueChilds && getInstructionCanContinue(instruction, canReuse)
                                 .then(function (instructionCb) {
                                     return instructionCb && function () {
 
                                         // Call child's deactivate/activate followed by current.
-                                        return childCb().then(instructionCb);
+                                        return canContinueChilds().then(instructionCb);
                                     };
                                 });
                         });
 
                 })  // When navigation is canceled.
-                .then(function (canNavigate) {
-                    return canNavigate || cancelNavigation(instruction);
+                .then(function (canContinueAll) {
+                    return canContinueAll || cancelNavigation(canContinueAll);
                 });
         }
 
@@ -1068,8 +1064,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         };
 
         /**
-         * Creates a child router.
+         * Creates a child router, parent router is the one activating current module (context router). Context router is only available in module resolution and activation life-cycle calls.
          * @method createChildRouter
+         * @param {string} parent router, if not specified context router will be used.
          * @return {Router} The child router.
          */
         router.createChildRouter = function (parent) {
@@ -1091,10 +1088,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
 
     /**
-     * Attempt to load the specified URL fragment. If a route succeeds with a match, returns `true`. If no defined routes matches the fragment, returns `false`.
+     * Attempt to load the specified URL fragment. If a route succeeds with a match, and navigation succeeds to completion resolves to `true`. If no defined routes matches the fragment or navigation is canceled for whatever reason, resolves to `false`.
      * @method loadUrl
      * @param {string} fragment The URL fragment to find a match for.
-     * @return {boolean} True if a match was found, false otherwise.
+     * @return {promise} Resolves to true when navigation completes, or false if navigation is canceled.
      */
     rootRouter.loadUrl = function (fragment) {
         return rootRouter.loadFragment(fragment)
