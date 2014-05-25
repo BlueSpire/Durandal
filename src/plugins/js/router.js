@@ -576,8 +576,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         };
 
         router.compositionComplete = function () {
-            if (currentInstruction)
-                console.log('composition complete : ' + currentInstruction.fragment);
             router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
             dequeueNextFragment();
         };
