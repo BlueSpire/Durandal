@@ -357,7 +357,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         }
 
         function getInstructionCanContinue(instruction, reuse) {
-            if (instruction.deactivate) { // TODO: set context router
+            if (instruction.deactivate) {
                 if (!currentActivation) return noOperation;
                 contextRouter = router;
                 return activeItem.canDeactivate(true).then(function (canDeactivate) {
