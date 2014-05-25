@@ -41,6 +41,14 @@
         },
         key5: "root 5"
       }
+    },
+    "global": {
+      "fr-ca": {
+        key1: "global fr-ca 1"
+      },
+      "root": {
+        key1: "global root 1"
+      }
     }
   };
 
@@ -58,7 +66,7 @@
         })
       });
 
-      i18n.install({ culture: "fr-ca" });
+      i18n.install({ culture: "fr-ca", globalModules: "global" });
     });
 
     describe("the culture fallback", function () {
@@ -69,35 +77,39 @@
 
       describe("after initialization", function () {
         it("can get the right value if present in the culture file and it doesn't exist in parent cultures", function () {
-          expect(module.__i18n__().key1).toBe("fr-ca 1");
+          expect(i18n.getValue(module, "key1")).toBe("fr-ca 1");
         });
 
         it("can get the right value if present in the culture file and exists in parent cultures", function () {
-          expect(module.__i18n__().key2).toBe("fr-ca 2");
+          expect(i18n.getValue(module, "key2")).toBe("fr-ca 2");
         });
 
         it("can get the right value if not present in the culture file and exists in direct parent", function () {
-          expect(module.__i18n__().key4).toBe("fr 4");
+          expect(i18n.getValue(module, "key4")).toBe("fr 4");
         });
 
         it("can get the right value if not present in the culture file and exists in grand parent", function () {
-          expect(module.__i18n__().key5).toBe("root 5");
+          expect(i18n.getValue(module, "key5")).toBe("root 5");
         });
 
         it("can get the right complex value if it doesn't exist in parent cultures", function () {
-          expect(module.__i18n__().key3.key1).toBe("fr-ca 3-1");
+          expect(i18n.getValue(module, "key3.key1")).toBe("fr-ca 3-1");
         });
 
         it("can get the right copmlex value if it exists in parent cultures", function () {
-          expect(module.__i18n__().key3.key2).toBe("fr-ca 3-2");
+          expect(i18n.getValue(module, "key3.key2")).toBe("fr-ca 3-2");
         });
 
         it("can get the right complex value if not present in the culture file and exists in direct parent", function () {
-          expect(module.__i18n__().key3.key3).toBe("fr 3-3");
+          expect(i18n.getValue(module, "key3.key3")).toBe("fr 3-3");
         });
 
         it("can get the right complex value if not present in the culture file and exists in grand parent", function () {
-          expect(module.__i18n__().key3.key4).toBe("root 3-4");
+          expect(i18n.getValue(module, "key3.key4")).toBe("root 3-4");
+        });
+
+        it("can get the right value from a global file", function () {
+          expect(i18n.getValue("global", "key1")).toBe("global fr-ca 1");
         });
       });
 
@@ -107,38 +119,41 @@
         });
 
         it("can get the right value if present in the culture file and it doesn't exist in parent cultures", function () {
-          expect(module.__i18n__().key1).toBe("en-ca 1");
+          expect(i18n.getValue(module, "key1")).toBe("en-ca 1");
         });
 
         it("can get the right value if present in the culture file and exists in parent cultures", function () {
-          expect(module.__i18n__().key2).toBe("en-ca 2");
+          expect(i18n.getValue(module, "key2")).toBe("en-ca 2");
         });
 
         it("can get the right value if not present in the culture file and exists in direct parent", function () {
-          expect(module.__i18n__().key4).toBe("en 4");
+          expect(i18n.getValue(module, "key4")).toBe("en 4");
         });
 
         it("can get the right value if not present in the culture file and exists in grand parent", function () {
-          expect(module.__i18n__().key5).toBe("root 5");
+          expect(i18n.getValue(module, "key5")).toBe("root 5");
         });
 
         it("can get the right complex value if it doesn't exist in parent cultures", function () {
-          expect(module.__i18n__().key3.key1).toBe("en-ca 3-1");
+          expect(i18n.getValue(module, "key3.key1")).toBe("en-ca 3-1");
         });
 
         it("can get the right copmlex value if it exists in parent cultures", function () {
-          expect(module.__i18n__().key3.key2).toBe("en-ca 3-2");
+          expect(i18n.getValue(module, "key3.key2")).toBe("en-ca 3-2");
         });
 
         it("can get the right complex value if not present in the culture file and exists in direct parent", function () {
-          expect(module.__i18n__().key3.key3).toBe("en 3-3");
+          expect(i18n.getValue(module, "key3.key3")).toBe("en 3-3");
         });
 
         it("can get the right complex value if not present in the culture file and exists in grand parent", function () {
-          expect(module.__i18n__().key3.key4).toBe("root 3-4");
+          expect(i18n.getValue(module, "key3.key4")).toBe("root 3-4");
+        });
+
+        it("can get the right value from a global file", function () {
+          expect(i18n.getValue("global", "key1")).toBe("global root 1");
         });
       });
-
     });
   });
 });
