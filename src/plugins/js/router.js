@@ -77,8 +77,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         return instruction.fragment + '?' + instruction.queryString;
     }
 
-
     function toPromise(x) {
+        // where ever we don't know result of some function is promise or not
+        // we simply convert to promise and treat them in same way, so no code duplicates.
         if (x && x.then) return x;
         return system.defer(function (dfd2) { dfd2.resolve(x); });
     }
@@ -265,7 +266,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         function cancelNavigation(instruction) {
             system.log('Navigation Cancelled', instruction);
-
             router.activeInstruction(currentInstruction);
             router.trigger('router:navigation:cancelled', instruction, router);
         }
@@ -297,6 +297,13 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
 
         function activateRoute(activator, instance, instruction) {
+            // activateItem2 only invokes canDeactivate/canActivate calls,
+            // and if they resolve to true, activateItem2 resolves to some callback function
+            // invoking this callback function continues the process of deactivate/activate calls.
+            // Callback function is only invoked in "rootRouter.loadUrl", so in all other places
+            // where we need to orchestrate some actions right before/after of complete deactivate/activate
+            // (like current function activateRoute), we invoke callback in a wrapped function and return the new one.
+
             contextRouter = router;
             return activator.activateItem2(instance, instruction.params)
                 .then(function (canContinueCb) {
@@ -334,7 +341,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return toPromise(router.guardRoute(instance, instruction))
                 .then(function (result) {
                     if (system.isString(result)) {
-                        rootRouter.navigate(result);
+                        // if some router's guardRoute returns a string, it's treated as redirect
+                        // and also if router is fromParent=true, redirect url is relative to this router.
+                        router.navigate(result);
                         return false;
                     }
                     return result && activateRoute(activator, instance, instruction);
@@ -352,11 +361,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         function getChildRouterCanContinue(instance, fragment) {
             return toPromise(getChildRouter(instance, router))
                 .then(function (childRouter) {
+                    // If there's any child router, recursively ask whether it can continue with fragment.
+                    // if there's no child, return a callback function which does nothing.
                     return (!childRouter && noOperation) || childRouter.loadFragment(fragment);
                 });
         }
 
         function getInstructionCanContinue(instruction, reuse) {
+            // case 1: router is going to deactivated (by parent router), so activeItem must deactivate too.
             if (instruction.deactivate) {
                 if (!currentActivation) return noOperation;
                 contextRouter = router;
@@ -373,6 +385,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 });
             }
 
+            // case 2: module is reusable (canReuseForRoute has returned true, or module has a child router)
             if (reuse) {
                 var tempActivator = activator.create();
                 tempActivator.forceActiveItem(currentActivation); //enforce lifecycle without re-compose
@@ -381,6 +394,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 return ensureActivation(tempActivator, currentActivation, instruction);
             }
 
+            // case 3: only view
             if (!instruction.config.moduleId) {
                 return ensureActivation(activeItem, {
                     viewUrl: instruction.config.viewUrl,
@@ -390,6 +404,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 }, instruction);
             }
 
+            // case 4: cannot reuse module
             contextRouter = router;
             return system.acquire(instruction.config.moduleId).then(function (m) {
                 contextRouter = router;
@@ -399,14 +414,23 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     instance.viewUrl = instruction.config.viewUrl;
                 }
 
-                return ensureActivation(activeItem, instance, instruction).then(function (canContinue) {
-                    return canContinue && getChildRouterCanContinue(instance, reconstructUrl(instruction))
-                        .then(function (childCb) {
-                            return childCb && function () {
-                                return canContinue().then(childCb);
-                            };
-                        });
-                });
+                // here activation calls are invoked in a interleaving fashion
+                // first we invoke canDeactivate/canActivate of current/new module
+                return ensureActivation(activeItem, instance, instruction)
+                    .then(function (canContinueModule) {
+
+                        // then if canContinueModule is a callback, we must recursively invoke canActivate of
+                        // new child router. (canDeactivate is already called in a previous call to case 1)
+                        return canContinueModule && getChildRouterCanContinue(instance, reconstructUrl(instruction))
+                            .then(function (canContinueChilds) {
+
+                                // if childs permits too, then we return a new callback function
+                                // which invokes deactivate/activate of current level, followed by childs.
+                                return canContinueChilds && function () {
+                                    return canContinueModule().then(canContinueChilds);
+                                };
+                            });
+                    });
             });
         }
 
@@ -429,28 +453,32 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         }
 
         function processInstruction(instruction) {
-            // Navigation starts
+            // Navigation starts.
             startNavigation(instruction);
 
-            // canReuseForRoute may return promise
+            // canReuseForRoute may return promise.
             return toPromise(canReuseCurrentActivation(instruction))
                 .then(function (canReuse) {
 
-                    // If canReuse is false, any possible child router must deactivate, which what null fragment do.
+                    // If canReuse is false, current child router must deactivate, which is what null fragment do.
                     var childFragment = canReuse ? reconstructUrl(instruction) : null;
 
-                    // check canDeactivate and canActivates
+                    // check canDeactivate/canActivate of childs
                     return getChildRouterCanContinue(currentActivation, childFragment)
                         .then(function (childCb) {
+
+                            // Only if childs permit, check canDeactivate/canActivate of current.
                             return childCb && getInstructionCanContinue(instruction, canReuse)
                                 .then(function (instructionCb) {
                                     return instructionCb && function () {
+
+                                        // Call child's deactivate/activate followed by current.
                                         return childCb().then(instructionCb);
                                     };
                                 });
                         });
 
-                })  // when navigation canceled.
+                })  // When navigation is canceled.
                 .then(function (canNavigate) {
                     return canNavigate || cancelNavigation(instruction);
                 });
