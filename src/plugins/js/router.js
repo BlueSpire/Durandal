@@ -26,7 +26,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     var startDeferred, rootRouter;
     var trailingSlash = /\/$/;
     var routesAreCaseSensitive = false;
-    var contextRouter;
+    var contextRouter = [];
     var lastUrl;
 
 
@@ -215,6 +215,21 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         // ------------------------------------------------------------------------------------------------------
 
+        function withContextRouter(fn) {
+            contextRouter.push(router);
+            var res = fn();
+            if (res && res.then)
+                return res.then(function (x) {
+                    contextRouter.pop();
+                    return  x;
+                }).fail(function (err) {
+                    contextRouter.pop();
+                    throw err;
+                });
+            contextRouter.pop();
+            return res;
+        }
+
         function hasChildRouter(instance) {
             return instance && instance.router && instance.router.__router__;
         }
@@ -234,7 +249,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                             args.push(params);
 
                     try {
-                        contextRouter = router;
                         result = instance.getRouter.apply(instance, args);
                     } catch (error) {
                         system.log('ERROR: ' + error.message, error);
@@ -300,12 +314,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             // where we need to orchestrate some actions right before/after of complete deactivate/activate
             // (like current function activateRoute), we invoke callback in a wrapped function and return the new one.
 
-            contextRouter = router;
+
             return activator.activateItem2(instance, instruction.params)
                 .then(function (canContinueCb) {
                     return canContinueCb && function () {
                         router.trigger('router:route:activating', instance, instruction, router);
-                        contextRouter = router;
                         return canContinueCb().then(function (success) {
                             if (!success) throw new Error('An unexpected error has occurred while activating.');
 
@@ -367,18 +380,18 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             // case 1: router is going to deactivated (by parent router), so activeItem must deactivate too.
             if (instruction.deactivate) {
                 if (!currentActivation) return noOperation;
-                contextRouter = router;
-                return activeItem.canDeactivate(true).then(function (canDeactivate) {
-                    return canDeactivate && function () {
-                        contextRouter = router;
-                        return activeItem.forceDeactivate(true).then(function (deactivated) {
-                            if (!deactivated) throw new Error('An unexpected error has occurred while deactivating.');
+                return activeItem.canDeactivate(true)
+                    .then(function (canDeactivate) {
+                        return canDeactivate && function () {
+                            return activeItem.forceDeactivate(true)
+                                .then(function (deactivated) {
+                                    if (!deactivated) throw new Error('An unexpected error has occurred while deactivating.');
 
-                            setCurrentInstructionRouteIsActive(false);
-                            currentActivation = currentInstruction = undefined;
-                        });
-                    };
-                });
+                                    setCurrentInstructionRouteIsActive(false);
+                                    currentActivation = currentInstruction = undefined;
+                                });
+                        };
+                    });
             }
 
             // case 2: module is reusable (canReuseForRoute has returned true, or module has a child router)
@@ -401,33 +414,32 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
 
             // case 4: cannot reuse module
-            contextRouter = router;
-            return system.acquire(instruction.config.moduleId).then(function (m) {
-                contextRouter = router;
-                var instance = system.resolveObject(m);
+            return system.acquire(instruction.config.moduleId)
+                .then(function (m) {
+                    var instance = system.resolveObject(m);
 
-                if (instruction.config.viewUrl) {
-                    instance.viewUrl = instruction.config.viewUrl;
-                }
+                    if (instruction.config.viewUrl) {
+                        instance.viewUrl = instruction.config.viewUrl;
+                    }
 
-                // here activation calls are invoked in a interleaving fashion
-                // first we invoke canDeactivate/canActivate of current/new module
-                return ensureActivation(activeItem, instance, instruction)
-                    .then(function (canContinueModule) {
+                    // here activation calls are invoked in a interleaving fashion
+                    // first we invoke canDeactivate/canActivate of current/new module
+                    return ensureActivation(activeItem, instance, instruction)
+                        .then(function (canContinueModule) {
 
-                        // then if canContinueModule is a callback, we must recursively invoke canActivate of
-                        // new child router. (canDeactivate is already called in a previous call to case 1)
-                        return canContinueModule && getChildRouterCanContinue(instance, reconstructUrl(instruction))
-                            .then(function (canContinueChilds) {
+                            // then if canContinueModule is a callback, we must recursively invoke canActivate of
+                            // new child router. (canDeactivate is already called in a previous call to case 1)
+                            return canContinueModule && getChildRouterCanContinue(instance, reconstructUrl(instruction))
+                                .then(function (canContinueChilds) {
 
-                                // if childs permits too, then we return a new callback function
-                                // which invokes deactivate/activate of current level, followed by childs.
-                                return canContinueChilds && function () {
-                                    return canContinueModule().then(canContinueChilds);
-                                };
-                            });
-                    });
-            });
+                                    // if childs permits too, then we return a new callback function
+                                    // which invokes deactivate/activate of current level, followed by childs.
+                                    return canContinueChilds && function () {
+                                        return canContinueModule().then(canContinueChilds);
+                                    };
+                                });
+                        });
+                });
         }
 
         function canReuseCurrentActivation(instruction) {
@@ -436,7 +448,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             if (system.isFunction(currentActivation.canReuseForRoute)) {
                 try {
-                    contextRouter = router;
                     return currentActivation.canReuseForRoute.apply(currentActivation, instruction.params);
                 }
                 catch (error) {
@@ -535,7 +546,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
 
             isProcessing(true);
-            return toPromise(processFragment(fragment))
+            return withContextRouter(function(){ return toPromise(processFragment(fragment)) })
                 .then(function (res) {
                     return system.isFunction(res) ? function () { return toPromise(res()); } : false;
                 })
@@ -545,7 +556,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     }
 
                     return canContinue && function () {
-                        return canContinue()
+                        return withContextRouter(canContinue)
                             .fail(function (error) {
                                 dequeueNextFragment();
                                 throw error;
@@ -565,6 +576,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         };
 
         router.compositionComplete = function () {
+            if (currentInstruction)
+                console.log('composition complete : ' + currentInstruction.fragment);
             router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
             dequeueNextFragment();
         };
@@ -1071,8 +1084,25 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
          */
         router.createChildRouter = function (parent) {
             var childRouter = createRouter();
-            childRouter.parent = parent || contextRouter;
+            childRouter.parent = parent || (contextRouter.length > 0 && contextRouter[contextRouter.length - 1]) || router;
             return childRouter;
+        };
+
+        /**
+         * Returns the current context router. It may be called in the process of activation life-cycle.
+         * @method getContextRouter
+         * @param {string} depth optionally a depth parameter can be passed to some level deeper. 0 is current context router.
+         * @return {Router} The context router.
+         */
+        router.getContextRouter = function (depth) {
+            if (contextRouter.length == 0)
+                throw new Error('No context router is available. Context router is only available in activation life-cycle calls.');
+
+            depth = depth || 0;
+            if (depth > contextRouter.length)
+                throw new Error('No context router is available in the specified depth.');
+
+            return contextRouter[contextRouter.length - depth - 1];
         };
 
         return router;
