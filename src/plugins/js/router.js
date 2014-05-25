@@ -26,8 +26,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     var startDeferred, rootRouter;
     var trailingSlash = /\/$/;
     var routesAreCaseSensitive = false;
-    var lastUrl, activeUrl, nextUrl;
     var contextRouter;
+    var lastUrl;
 
 
     function routeStringToRegExp(routeString) {
@@ -226,7 +226,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             if (hasChildRouter(instance) && instance.router.parent == parentRouter)
                 return instance.router;
             else {
-                contextRouter = router;
                 if (instance && system.isFunction(instance.getRouter)) {
                     var result,
                         params = router.activeInstruction().params,
@@ -238,12 +237,16 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                             args.push(params);
 
                     try {
+                        contextRouter = router;
                         result = instance.getRouter.apply(instance, args);
                     } catch (error) {
                         system.log('ERROR: ' + error.message, error);
                         return;
                     }
-                    return result;
+
+                    return toPromise(result).then(function (rt) {
+                        if (rt && rt.__router__ && rt.parent == parentRouter) return rt;
+                    });
                 }
             }
         }
@@ -257,8 +260,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         function startNavigation(instruction) {
             system.log('Navigation Started', instruction);
             router.trigger('router:navigation:processing', instruction, router);
-
-            isProcessing(true);
             router.activeInstruction(instruction);
         }
 
@@ -266,7 +267,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             system.log('Navigation Cancelled', instruction);
 
             router.activeInstruction(currentInstruction);
-            isProcessing(false);
             router.trigger('router:navigation:cancelled', instruction, router);
         }
 
@@ -301,8 +301,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return activator.activateItem2(instance, instruction.params)
                 .then(function (canContinueCb) {
                     return canContinueCb && function () {
-                        contextRouter = router;
                         router.trigger('router:route:activating', instance, instruction, router);
+                        contextRouter = router;
                         return canContinueCb().then(function (success) {
                             if (!success) throw new Error('An unexpected error has occurred while activating.');
 
@@ -352,23 +352,25 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         function getChildRouterCanContinue(instance, fragment) {
             return toPromise(getChildRouter(instance, router))
                 .then(function (childRouter) {
-                    return (!childRouter && noOperation) || childRouter.processFragment(fragment);
+                    return (!childRouter && noOperation) || childRouter.loadFragment(fragment);
                 });
         }
 
         function getInstructionCanContinue(instruction, reuse) {
-            if (instruction.deactivate) {
-                return (!currentActivation && noOperation) ||
-                    activeItem.canDeactivate(true).then(function (canDeactivate) {
-                        return canDeactivate && function () {
-                            return activeItem.forceDeactivate(true).then(function (deactivated) {
-                                if (!deactivated) throw new Error('An unexpected error has occurred while deactivating.');
+            if (instruction.deactivate) { // TODO: set context router
+                if (!currentActivation) return noOperation;
+                contextRouter = router;
+                return activeItem.canDeactivate(true).then(function (canDeactivate) {
+                    return canDeactivate && function () {
+                        contextRouter = router;
+                        return activeItem.forceDeactivate(true).then(function (deactivated) {
+                            if (!deactivated) throw new Error('An unexpected error has occurred while deactivating.');
 
-                                setCurrentInstructionRouteIsActive(false);
-                                currentActivation = currentInstruction = undefined;
-                            });
-                        };
-                    });
+                            setCurrentInstructionRouteIsActive(false);
+                            currentActivation = currentInstruction = undefined;
+                        });
+                    };
+                });
             }
 
             if (reuse) {
@@ -409,43 +411,52 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         }
 
         function canReuseCurrentActivation(instruction) {
-            return currentActivation
-                && currentInstruction
-                && currentInstruction.config.moduleId == instruction.config.moduleId
-                && ((currentActivation.canReuseForRoute && currentActivation.canReuseForRoute.apply(currentActivation, instruction.params))
-                    || (!currentActivation.canReuseForRoute && currentActivation.router && currentActivation.router.loadUrl));
+            if (!currentActivation || !currentInstruction || currentInstruction.config.moduleId != instruction.config.moduleId)
+                return false;
+
+            if (system.isFunction(currentActivation.canReuseForRoute)) {
+                try {
+                    contextRouter = router;
+                    return currentActivation.canReuseForRoute.apply(currentActivation, instruction.params);
+                }
+                catch (error) {
+                    system.log('ERROR: ' + error.message, error);
+                    return false;
+                }
+            }
+
+            return hasChildRouter(currentActivation) || system.isFunction(currentActivation.getRouter);
         }
 
         function processInstruction(instruction) {
             // Navigation starts
             startNavigation(instruction);
-            var canReuse = canReuseCurrentActivation(instruction),
-                childFragment = canReuse ? reconstructUrl(instruction) : null;
 
+            // canReuseForRoute may return promise
+            return toPromise(canReuseCurrentActivation(instruction))
+                .then(function (canReuse) {
 
-            // check canDeactivate and canActivates
-            var canNavigatePromise =
-                getChildRouterCanContinue(currentActivation, childFragment)
-                    .then(function (childCb) {
-                        return childCb && getInstructionCanContinue(instruction, canReuse)
-                            .then(function (instructionCb) {
-                                return instructionCb && function () {
-                                    return childCb().then(instructionCb);
-                                };
-                            });
-                    });
+                    // If canReuse is false, any possible child router must deactivate, which what null fragment do.
+                    var childFragment = canReuse ? reconstructUrl(instruction) : null;
 
+                    // check canDeactivate and canActivates
+                    return getChildRouterCanContinue(currentActivation, childFragment)
+                        .then(function (childCb) {
+                            return childCb && getInstructionCanContinue(instruction, canReuse)
+                                .then(function (instructionCb) {
+                                    return instructionCb && function () {
+                                        return childCb().then(instructionCb);
+                                    };
+                                });
+                        });
 
-            // when navigation canceled.
-            return canNavigatePromise.then(function (canNavigate) {
-                return canNavigate || cancelNavigation(instruction);
-            });
+                })  // when navigation canceled.
+                .then(function (canNavigate) {
+                    return canNavigate || cancelNavigation(instruction);
+                });
         }
 
-        // ------------------------------------------------------------------------------------------------------
-
-
-        router.processFragment = function (fragment) {
+        function processFragment(fragment) {
             if (fragment === null) return processInstruction({ deactivate: true, config: {} });
 
             var handlers = router.handlers,
@@ -459,7 +470,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
 
             if (router.relativeToParentRouter) {
-                var instruction = this.parent.activeInstruction();
+                var instruction = router.parent.activeInstruction();
                 coreFragment = queryIndex == -1 ? instruction.params.join('/') : instruction.params.slice(0, -1).join('/');
 
                 if (coreFragment && coreFragment.charAt(0) == '/') {
@@ -478,17 +489,64 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             for (var i = 0; i < handlers.length; i++) {
                 var current = handlers[i];
                 if (current.routePattern.test(coreFragment))
-                    return toPromise(current.callback(coreFragment, queryString))
-                        .then(function (res) {
-                            return system.isFunction(res) ? function () { return toPromise(res()); } : false;
-                        });
+                    return current.callback(coreFragment, queryString)
             }
 
             system.log('Route Not Found', fragment, currentInstruction);
             router.trigger('router:route:not-found', fragment, router);
-            return toPromise(false);
+        }
+
+
+        var fragmentQueue = [];
+        router.loadFragment = function (fragment) {
+            if (isProcessing()) {
+                return system.defer(function (dfd) {
+                    if (fragmentQueue.length < 3)
+                        fragmentQueue.push(dfd);
+                    else
+                        dfd.resolve(false);
+                }).promise().then(function (x) {
+                    return x && router.loadFragment(fragment);
+                });
+            }
+
+            isProcessing(true);
+            return toPromise(processFragment(fragment))
+                .then(function (res) {
+                    return system.isFunction(res) ? function () { return toPromise(res()); } : false;
+                })
+                .then(function (canContinue) {
+                    if (!canContinue) {
+                        dequeueNextFragment();
+                    }
+
+                    return canContinue && function () {
+                        return canContinue()
+                            .fail(function (error) {
+                                dequeueNextFragment();
+                                throw error;
+                            });
+                    };
+                });
         };
 
+        function dequeueNextFragment() {
+            isProcessing(false);
+            var dfd = fragmentQueue.shift();
+            if (dfd) dfd.resolve(true);
+        }
+
+        router.attached = function () {
+            router.trigger('router:navigation:attached', currentActivation, currentInstruction, router);
+        };
+
+        router.compositionComplete = function () {
+            router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
+            dequeueNextFragment();
+        };
+
+
+        // ------------------------------------------------------------------------------------------------------
 
         /**
          * Add a route to be tested when the url fragment changes.
@@ -665,7 +723,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                             router.trigger('router:route:before-config', instruction.config, router);
                             router.trigger('router:route:after-config', instruction.config, router);
                             return processInstruction(instruction);
-                            // TODO: not sure if promise will continue
                         });
                     }
                 } else {
@@ -875,14 +932,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             };
         }
 
-        router.attached = function () {
-            router.trigger('router:navigation:attached', currentActivation, currentInstruction, router);
-        };
-
-        router.compositionComplete = function () {
-            router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
-        };
-
         /**
          * Updates the document title based on the activated module instance, the routing instruction and the app.title.
          * @method updateDocumentTitle
@@ -931,53 +980,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
 
         // ------------------------------------------------------------------------------------------------------
-
-        /**
-         * Attempt to load the specified URL fragment. If a route succeeds with a match, returns `true`. If no defined routes matches the fragment, returns `false`.
-         * @method loadUrl
-         * @param {string} fragment The URL fragment to find a match for.
-         * @return {boolean} True if a match was found, false otherwise.
-         */
-        router.loadUrl = function (fragment) {
-            if (isProcessing()) {
-                if (nextUrl == undefined) nextUrl = fragment;
-                history.navigate(activeUrl, { trigger: false, replace: true });
-                return false;
-            }
-
-            activeUrl = fragment;
-            return toPromise(router.processFragment(fragment))
-                .then(function (canContinue) {
-                    if (!canContinue) {
-                        if (typeof lastUrl == 'string')
-                            history.navigate(lastUrl, { trigger: false, replace: true });
-
-                        checkNext();
-                    }
-
-                    return canContinue && canContinue().then(function () {
-                        lastUrl = fragment;
-                        activeUrl = lastUrl;
-                        checkNext();
-                    });
-                }).fail(function (err) {
-                    isProcessing(false);
-                    checkNext() || router.navigate(lastUrl);
-                    system.log('Failure when navigating.', fragment, err);
-                });
-        };
-        function checkNext() {
-            if (typeof nextUrl == 'string') {
-                router.navigate(nextUrl);
-                nextUrl = undefined;
-                return true;
-            }
-        }
-
-        router.on('router:navigation:composition-complete', function () {
-            isProcessing(false);
-            checkNext();
-        });
 
 
         /**
@@ -1058,6 +1060,34 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      * @static
      */
     rootRouter = createRouter();
+
+
+    /**
+     * Attempt to load the specified URL fragment. If a route succeeds with a match, returns `true`. If no defined routes matches the fragment, returns `false`.
+     * @method loadUrl
+     * @param {string} fragment The URL fragment to find a match for.
+     * @return {boolean} True if a match was found, false otherwise.
+     */
+    rootRouter.loadUrl = function (fragment) {
+        return rootRouter.loadFragment(fragment)
+            .then(function (canContinue) {
+                if (!canContinue && typeof lastUrl == 'string')
+                    history.navigate(lastUrl, { trigger: false, replace: true });
+
+                return canContinue && canContinue()
+                    .then(function () {
+                        lastUrl = fragment;
+
+                        // Make sure url is correct, it may have changed
+                        history.navigate(fragment, { trigger: false, replace: true });
+                    });
+            })
+            .fail(function (err) {
+                rootRouter.navigate(lastUrl);
+                system.log('Failure when navigating to: ' + fragment, err);
+            });
+    };
+
 
     /**
      * Makes the RegExp generated for routes case sensitive, rather than the default of case insensitive.
