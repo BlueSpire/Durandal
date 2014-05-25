@@ -239,17 +239,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 return instance.router;
             else {
                 if (instance && system.isFunction(instance.getRouter)) {
-                    var result,
-                        params = router.activeInstruction().params,
-                        args = [parentRouter];
-
-                    if (params)
-                        if (Array.isArray(params))
-                            args.push.apply(args, params); else
-                            args.push(params);
+                    var result;
 
                     try {
-                        result = instance.getRouter.apply(instance, args);
+                        result = instance.getRouter.apply(instance, router.activeInstruction().params);
                     } catch (error) {
                         system.log('ERROR: ' + error.message, error);
                         return;
@@ -473,6 +466,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     // check canDeactivate/canActivate of childs
                     return getChildRouterCanContinue(currentActivation, childFragment)
                         .then(function (canContinueChilds) {
+
+                            // If canReuseForRoute returns {reactivate: false} we don't execute module's activation hooks.
+                            if(system.isObject(canReuse) && canReuse.reactivate != undefined && !canReuse.reactivate)
+                                return canContinueChilds;
 
                             // Only if childs permit, check canDeactivate/canActivate of current.
                             return canContinueChilds && getInstructionCanContinue(instruction, canReuse)
