@@ -1,40 +1,39 @@
 ﻿define(['durandal/system', 'durandal/binder', 'require', 'jquery', 'knockout'], function (system, binder, require, $, ko) {
-    var modules = {};
+    var modules;
     var mainConfig;
     var i18n = {};
 
     i18n.install = function (config) {
-        if (!mainConfig) {
-            mainConfig = config || {};
+        mainConfig = config || {};
+        modules = {};
         
-            if (mainConfig.globalModules) {
-                if ($.isArray(mainConfig.globalModules)) {
-                    for (var cpt = 0; cpt < mainConfig.globalModules.length; cpt++) {
-                        prepareModule(mainConfig.globalModules[cpt]);
-                    }
-                } else {
-                    prepareModule(mainConfig.globalModules);
+        if (mainConfig.globalModules) {
+            if ($.isArray(mainConfig.globalModules)) {
+                for (var cpt = 0; cpt < mainConfig.globalModules.length; cpt++) {
+                    prepareModule(mainConfig.globalModules[cpt]);
                 }
+            } else {
+                prepareModule(mainConfig.globalModules);
             }
+        }
 
-            if (!ko.bindingHandlers.i18n) {
-                ko.bindingHandlers.i18n = {
-                    update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                        var data = bindingContext.$root.__i18n__();
+        if (!ko.bindingHandlers.i18n) {
+            ko.bindingHandlers.i18n = {
+                update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                    var data = bindingContext.$root.__i18n__();
 
-                        var value = getValueInternal(data, ko.unwrap(valueAccessor()));
+                    var value = getValueInternal(data, ko.unwrap(valueAccessor()));
 
-                        if (value !== undefined) {
-                            $(element).text(data);
-                        }
+                    if (value !== undefined) {
+                        $(element).text(data);
                     }
-                };
-            }
-
-            binder.binding = function (obj) {
-                prepareModule(obj);
+                }
             };
         }
+
+        binder.binding = function (obj) {
+            prepareModule(obj);
+        };
     };
     
     i18n.changeCulture = function (culture) {
@@ -71,6 +70,7 @@
                         return;
                     } else {
                         var dfd = system.defer();
+
                         modules[module].callbacks.push(function (data) {
                             dfd.resolve(getValueInternal(data, key));
                         });
@@ -149,7 +149,7 @@
             module.data($.extend.apply($, [true, {}].concat(module.files)));
 
             // Callback all getValue methods registered before we got the resources
-            for (var cptCallbacks = 0; cptCallbacks > module.callbacks.length; cptCallbacks++) {
+            for (var cptCallbacks = 0; cptCallbacks < module.callbacks.length; cptCallbacks++) {
                 module.callbacks[0](module.data());
             }
 
@@ -159,25 +159,39 @@
         }
     }
 
-    function getValueInternal(data, key) {
-        var keys = key.split(".");
+    function getValueInternal(data, keys) {
+        var isKeyArray = true;
 
-        for (var cpt = 0; cpt < keys.length; cpt++) {
-            var value = data[keys[cpt]];
+        if (!$.isArray(keys)) {
+            keys = [keys];
+            isKeyArray = false;
+        }
 
-            if (value !== undefined) {
-                data = value;
-            } else {
-                data = undefined;
-                break;
+        var results = [];
+
+        for (var cptKeys = 0; cptKeys < keys.length; cptKeys++) {
+            var key = keys[cptKeys];
+            var keyParts = key.split(".");
+
+            var value = data;
+
+            for (var cptKeyParts = 0; cptKeyParts < keyParts.length; cptKeyParts++) {
+                value = value[keyParts[cptKeyParts]];
+
+                if (value === undefined) {
+                    // [TODO] Report missing resource.
+                    break;
+                }
             }
+
+            results.push(value);
         }
 
-        if (data === undefined) {
-            // [TODO] Report missing resource.
+        if (isKeyArray) {
+            return results;
+        } else {
+            return results[0];
         }
-
-        return data;
     }
 
     return i18n;

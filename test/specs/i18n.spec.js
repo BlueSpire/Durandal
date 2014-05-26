@@ -191,5 +191,195 @@
         });
       });
     });
+
+    describe("the value getter", function () {
+      it("returns a promise if no callback is provided", function () {
+        var value;
+        var promise = i18n.getValue("global", "key1");
+        expect(promise).not.toBeUndefined();
+        expect(promise.then).not.toBeUndefined();
+
+        promise.then(function (val) { value = val });
+
+        expect(value).toBe("global fr-ca 1");
+      });
+
+      it("returns nothing if a callback is provided", function () {
+        var value;
+        var promise = i18n.getValue("global", "key1", function (val) { value = val });
+
+        expect(promise).toBeUndefined();
+        expect(value).toBe("global fr-ca 1");
+      });
+
+      it("returns an array if we ask for an array of keys", function () {
+        var values;
+        i18n.getValue("global", ["key1", "key2"], function (val) { values = val });
+
+        expect($.isArray(values)).toBe(true);
+        expect(values.length).toBe(2);
+        expect(values[0]).toBe("global fr-ca 1");
+        expect(values[1]).toBeUndefined();
+      });
+    });
+  });
+
+  describe("plugins/i18n with delay", function () {
+    var dfds;
+
+    beforeEach(function () {
+      dfds = [];
+
+      spyOn(system, "acquire").andCallFake(function (module) {
+        var splitter = module.lastIndexOf(".");
+        var moduleId = module.substring(0, splitter);
+        var culture = module.substring(splitter + 1);
+
+        var resourceFile = modules[moduleId][culture];
+        var dfd = $.Deferred();
+        
+        dfds.push({
+          resourceFile: resourceFile,
+          dfd: dfd
+        });
+
+        return dfd;
+      });
+      
+      i18n.install({ culture: "fr-ca", globalModules: "global" });
+    });
+
+    it("waits for the reception of all files to complete before calling the callback of a single value", function () {
+      var value;
+      i18n.getValue("global", "key1", function (val) { value = val; });
+
+      expect(value).toBeUndefined();
+
+      dfds[0].dfd.resolve(dfds[0].resourceFile);
+      expect(value).toBeUndefined();
+
+      dfds[2].dfd.resolve(dfds[2].resourceFile);
+      expect(value).toBeUndefined();
+
+      dfds[1].dfd.resolve(dfds[1].resourceFile);
+      expect(value).toBe("global fr-ca 1");
+    });
+
+    it("waits for the reception of all files to complete before resolving the promise of a single value", function () {
+      var value;
+      i18n.getValue("global", "key1").then(function (val) { value = val; });
+
+      expect(value).toBeUndefined();
+
+      dfds[0].dfd.resolve(dfds[0].resourceFile);
+      expect(value).toBeUndefined();
+
+      dfds[2].dfd.resolve(dfds[2].resourceFile);
+      expect(value).toBeUndefined();
+
+      dfds[1].dfd.resolve(dfds[1].resourceFile);
+      expect(value).toBe("global fr-ca 1");
+    });
+
+    it("waits for the reception of all files to complete before calling the callback of an array of values", function () {
+      var value;
+      i18n.getValue("global", ["key1", "key2"]).then(function (val) { value = val; });
+
+      expect(value).toBeUndefined();
+
+      dfds[0].dfd.resolve(dfds[0].resourceFile);
+      expect(value).toBeUndefined();
+
+      dfds[2].dfd.resolve(dfds[2].resourceFile);
+      expect(value).toBeUndefined();
+
+      dfds[1].dfd.resolve(dfds[1].resourceFile);
+      expect($.isArray(value)).toBe(true);
+      expect(value.length).toBe(2);
+      expect(value[0]).toBe("global fr-ca 1");
+      expect(value[1]).toBeUndefined();
+    });
+
+    it("waits for the reception of all files to complete before resolving the promise of an array of values", function () {
+      var value;
+      i18n.getValue("global", ["key1", "key2"]).then(function (val) { value = val; });
+
+      expect(value).toBeUndefined();
+
+      dfds[0].dfd.resolve(dfds[0].resourceFile);
+      expect(value).toBeUndefined();
+
+      dfds[2].dfd.resolve(dfds[2].resourceFile);
+      expect(value).toBeUndefined();
+
+      dfds[1].dfd.resolve(dfds[1].resourceFile);
+      expect($.isArray(value)).toBe(true);
+      expect(value.length).toBe(2);
+      expect(value[0]).toBe("global fr-ca 1");
+      expect(value[1]).toBeUndefined();
+    });
+
+  });
+  describe("plugins/i18n with delay and culture change", function () {
+    var dfds;
+
+    beforeEach(function () {
+      dfds = [];
+
+      spyOn(system, "acquire").andCallFake(function (module) {
+        var splitter = module.lastIndexOf(".");
+        var moduleId = module.substring(0, splitter);
+        var culture = module.substring(splitter + 1);
+
+        var value = modules[moduleId][culture];
+
+        return $.Deferred(function (dfd) {
+          dfd.resolve(value);
+        })
+      });
+
+      i18n.install({ culture: "fr-ca", globalModules: "global" });
+
+      system.acquire.isSpy = false;
+
+      spyOn(system, "acquire").andCallFake(function (module) {
+        var splitter = module.lastIndexOf(".");
+        var moduleId = module.substring(0, splitter);
+        var culture = module.substring(splitter + 1);
+
+        var resourceFile = modules[moduleId][culture];
+        var dfd = $.Deferred();
+
+        dfds.push({
+          resourceFile: resourceFile,
+          dfd: dfd
+        });
+
+        return dfd;
+      });
+    });
+
+    it("waits for the reception of all files to complete after a culture change", function () {
+      var value;
+      i18n.getValue("global", "key1", function (val) { value = val; });
+
+      expect(value).toBe("global fr-ca 1");
+
+      i18n.changeCulture("en-ca");
+
+      value = undefined;
+      i18n.getValue("global", "key1", function (val) { value = val; });
+
+      expect(value).toBeUndefined();
+
+      dfds[0].dfd.resolve(dfds[0].resourceFile);
+      expect(value).toBeUndefined();
+
+      dfds[2].dfd.resolve(dfds[2].resourceFile);
+      expect(value).toBeUndefined();
+
+      dfds[1].dfd.resolve(dfds[1].resourceFile);
+      expect(value).toBe("global root 1");
+    });
   });
 });
