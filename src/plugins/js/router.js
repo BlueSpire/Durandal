@@ -27,7 +27,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     var trailingSlash = /\/$/;
     var routesAreCaseSensitive = false;
     var contextRouter = [];
-    var lastUrl;
+    var lastUrl, currentUrl;
 
 
     function routeStringToRegExp(routeString) {
@@ -80,7 +80,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         return system.defer(function (dfd2) { dfd2.resolve(x); });
     }
 
-    var noOperation = toPromise(function () { return toPromise(true); });
+    var noOperation = function (instance) { return toPromise(function () { return toPromise(instance); }); };
 
 
     /**
@@ -160,7 +160,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         var currentActivation,
             currentInstruction,
             activeItem = activator.create(),
-            isProcessing = ko.observable(false);
+            isProcessing = ko.observable(false),
+            activeTitle = ko.observable('');
 
         var router = {
             /**
@@ -263,8 +264,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         function startNavigation(instruction) {
             system.log('Navigation Started', instruction);
-            router.trigger('router:navigation:processing', instruction, router);
             router.activeInstruction(instruction);
+            router.trigger('router:navigation:processing', instruction, router);
         }
 
         function cancelNavigation(instruction) {
@@ -279,6 +280,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 router.trigger('router:navigation:from:' + fromModuleId);
             }
 
+            var previousActivation = currentActivation;
             currentActivation = instance;
 
             setCurrentInstructionRouteIsActive(false);
@@ -290,11 +292,17 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 router.trigger('router:navigation:to:' + toModuleId);
             }
 
-            if (!hasChildRouter(instance, router)) {
+            if (instance && !hasChildRouter(instance, router)) {
                 router.updateDocumentTitle(instance, instruction);
             }
 
             router.trigger('router:navigation:complete', instance, instruction, router);
+
+            if (previousActivation == instance) {
+                router.attached();
+                router.compositionComplete();
+            }
+
             system.log('Navigation Complete', instance, instruction);
         }
 
@@ -313,24 +321,16 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     return canContinueCb && function () {
                         router.trigger('router:route:activating', instance, instruction, router);
                         return canContinueCb().then(function (success) {
-                            if (!success) throw new Error('An unexpected error has occurred while activating.');
+                            if (!success)
+                                throw new Error('An unexpected error has occurred while activating.');
 
-                            var previousActivation = currentActivation;
-                            completeNavigation(instance, instruction);
-
-                            if (previousActivation == instance) {
-                                router.attached();
-                                router.compositionComplete();
-                            }
-
-                            if (startDeferred) {
-                                startDeferred.resolve();
-                                startDeferred = null;
-                            }
+                            // return activated instance for further use
+                            return instance;
                         });
                     };
                 });
         }
+
 
         /**
          * Inspects routes and modules before activation. Can be used to protect access by cancelling navigation or redirecting.
@@ -352,6 +352,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 });
         }
 
+
         function ensureActivation(activator, instance, instruction) {
             if (router.guardRoute) {
                 return handleGuardedRoute(activator, instance, instruction);
@@ -365,23 +366,24 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 .then(function (childRouter) {
                     // If there's any child router, recursively ask whether it can continue with fragment.
                     // if there's no child, return a callback function which does nothing.
-                    return (!childRouter && noOperation) || childRouter.loadFragment(fragment);
+                    return (!childRouter && noOperation()) || childRouter.loadFragment(fragment);
                 });
         }
 
+
         function getInstructionCanContinue(instruction, reuse) {
-            // case 1: router is going to deactivated (by parent router), so activeItem must deactivate too.
+            // case 1: router is going to be deactivated (by parent router), so activeItem must deactivate too.
             if (instruction.deactivate) {
-                if (!currentActivation) return noOperation;
+                if (!currentActivation) return noOperation();
                 return activeItem.canDeactivate(true)
                     .then(function (canDeactivate) {
                         return canDeactivate && function () {
                             return activeItem.forceDeactivate(true)
                                 .then(function (deactivated) {
-                                    if (!deactivated) throw new Error('An unexpected error has occurred while deactivating.');
+                                    if (!deactivated)
+                                        throw new Error('An unexpected error has occurred while deactivating.');
 
-                                    setCurrentInstructionRouteIsActive(false);
-                                    currentActivation = currentInstruction = undefined;
+                                    return undefined;
                                 });
                         };
                     });
@@ -389,11 +391,21 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             // case 2: module is reusable (canReuseForRoute has returned true, or module has a child router)
             if (reuse) {
-                var tempActivator = activator.create();
-                tempActivator.forceActiveItem(currentActivation); //enforce lifecycle without re-compose
-                tempActivator.settings.areSameItem = activeItem.settings.areSameItem;
-                tempActivator.settings.closeOnDeactivate = false;
-                return ensureActivation(tempActivator, currentActivation, instruction);
+                // If canReuseForRoute returns {reactivate: false} we don't execute module's activation life-cycle hooks.
+                // even though that, compositionComplete and attached will be invoked.
+                if (system.isObject(reuse) && reuse.reactivate !== undefined && !reuse.reactivate)
+                    return toPromise(function () {
+                        router.trigger('router:route:activating', currentActivation, instruction, router);
+                        return currentActivation;
+                    });
+                else {
+                    var tempActivator = activator.create();
+                    tempActivator.forceActiveItem(currentActivation); //enforce lifecycle without re-compose
+                    tempActivator.settings.areSameItem = activeItem.settings.areSameItem;
+                    tempActivator.settings.closeOnDeactivate = false;
+
+                    return ensureActivation(tempActivator, currentActivation, instruction);
+                }
             }
 
             // case 3: only view
@@ -428,7 +440,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                                     // if childs permits too, then we return a new callback function
                                     // which invokes deactivate/activate of current level, followed by childs.
                                     return canContinueChilds && function () {
-                                        return canContinueModule().then(canContinueChilds);
+                                        return canContinueModule().then(function (activatedModule) {
+                                            return canContinueChilds().then(function (activatedChild) {
+                                                return activatedModule;
+                                            });
+                                        });
                                     };
                                 });
                         });
@@ -452,9 +468,17 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             return hasChildRouter(currentActivation) || system.isFunction(currentActivation.getRouter);
         }
 
+
         function processInstruction(instruction) {
             // Navigation starts.
             startNavigation(instruction);
+
+            // if config has authorize attribute, check if it is authorized to execute
+            // instruction is passed in, just for flexibility when developer may override hasPermission of router.
+            if (!authorize(instruction.config.authorize, instruction)) {
+                cancelNavigation(instruction);
+                return toPromise(false);
+            }
 
             // canReuseForRoute may return a promise.
             return toPromise(canReuseCurrentActivation(instruction))
@@ -467,10 +491,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     return getChildRouterCanContinue(currentActivation, childFragment)
                         .then(function (canContinueChilds) {
 
-                            // If canReuseForRoute returns {reactivate: false} we don't execute module's activation hooks.
-                            if(system.isObject(canReuse) && canReuse.reactivate != undefined && !canReuse.reactivate)
-                                return canContinueChilds;
-
                             // Only if childs permit, check canDeactivate/canActivate of current.
                             return canContinueChilds && getInstructionCanContinue(instruction, canReuse)
                                 .then(function (instructionCb) {
@@ -482,11 +502,41 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                                 });
                         });
 
-                })  // When navigation is canceled.
+                })
                 .then(function (canContinueAll) {
-                    return canContinueAll || cancelNavigation(canContinueAll);
+                    if (!canContinueAll) cancelNavigation(instruction);
+
+                    return canContinueAll && function () {
+                        return canContinueAll().then(function (instance) {
+                            completeNavigation(instance, instruction);
+
+                            return instance;
+                        });
+                    };
                 });
         }
+
+
+        router.permissions = ko.observableArray([]);
+        router.hasPermission = function (token, instruction) {
+            return router.permissions.indexOf(token) != -1 ||
+                (router.parent && router.parent.hasPermission(token, instruction));
+        };
+
+        function authorize(token, instruction) {
+            if (ko.isObservable(token)) return authorize(token());
+            if (typeof token == 'boolean') return token;
+            if (typeof token == 'string') return router.hasPermission(token, instruction);
+            if (typeof token == 'function') return authorize(token(router, instruction), instruction);
+
+            if (Array.isArray(token))
+                for (var i = 0; i < token.length; i++)
+                    if (!authorize(token[i], instruction))
+                        return false;
+
+            return typeof token == 'undefined' || !!token;
+        }
+
 
         function processFragment(fragment) {
             if (fragment === null) return processInstruction({ deactivate: true, config: {} });
@@ -543,7 +593,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
 
             isProcessing(true);
-            return withContextRouter(function(){ return toPromise(processFragment(fragment)) })
+            return withContextRouter(function () { return toPromise(processFragment(fragment)) })
                 .then(function (res) {
                     return system.isFunction(res) ? function () { return toPromise(res()); } : false;
                 })
@@ -573,8 +623,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         };
 
         router.compositionComplete = function () {
-            router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
             dequeueNextFragment();
+            router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
         };
 
 
@@ -597,6 +647,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             if (!system.isRegExp(config.route)) {
                 config.title = config.title || router.convertRouteToTitle(config.route);
 
+//                config.observableTitle = ko.computed(function () {
+//                    return (router.parent
+//                        && router.parent.activeInstruction()
+//                        && router.parent.activeInstruction().config.observableTitle
+//                        ? router.parent.activeInstruction().config.observableTitle() + ' | ' : '')
+//                        + (ko.isObservable(config.title) ? config.title() : config.title);
+//                });
+
                 if (!config.viewUrl) {
                     config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
                 }
@@ -611,6 +669,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             } else {
                 config.routePattern = config.route;
             }
+
+            config.isAuthorized = ko.computed(function () {
+                return authorize(config.authorize);
+            });
 
             config.isActive = config.isActive || ko.observable(false);
             router.trigger('router:route:after-config', config, router);
@@ -747,6 +809,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     instruction.config.moduleId = config;
                     if (replaceRoute) {
                         history.navigate(replaceRoute, { trigger: false, replace: true });
+                        return toPromise(function () { });
                     }
                 } else if (system.isFunction(config)) {
                     var result = config(instruction);
@@ -1038,11 +1101,27 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 fragment = fragment.replace('//', '/').replace('//', '/');
             }
 
-            if (options === false || (options && options.trigger != undefined && !options.trigger)) {
-                lastUrl = fragment;
+            var trigger = (options === undefined) ||
+                (system.isBoolean(options) && options) ||
+                (system.isObject(options) && (options.trigger || options.trigger === undefined));
+
+            if (!trigger) {
+                currentUrl = fragment;
+                if (options && options.replace)
+                    lastUrl = fragment;
+
+                return history.navigate(fragment, options);
             }
 
-            return history.navigate(fragment, options);
+
+            // calls through api doesn't change url until navigation is going to activate.
+            // also we don't set rootRouter.explicitNavigation here, because it can affect other navigations currently in progress
+            return loadTriggeredUrl(fragment, {
+                apiNavigation: true,
+                currentUrl:currentUrl ,
+                lastUrl: lastUrl,
+                replace: options && options.replace
+            });
         };
 
 
@@ -1112,6 +1191,45 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     rootRouter = createRouter();
 
 
+    function loadTriggeredUrl(fragment, options) {
+        return rootRouter.loadFragment(fragment)
+            .then(function (canContinue) {
+                // if fragment is not the same as active url when trigger is called, it means trigger has been called by api
+                rootRouter.navigatingBack = !options.clickNavigation && !options.apiNavigation;
+                rootRouter.explicitNavigation = options.clickNavigation || options.apiNavigation;
+
+                if (!canContinue) {
+                    // even if navigation is canceled, we don't wanna mess url of other navigations in queue
+                    if (fragment == currentUrl && currentUrl == options.currentUrl) {
+                        history.navigate(lastUrl, { trigger: false, replace: rootRouter.explicitNavigation });
+                        currentUrl = lastUrl;
+                    }
+                    return false;
+                }
+
+                return canContinue()
+                    .then(function () {
+                        if (options.apiNavigation && currentUrl == options.currentUrl) {
+                            history.navigate(fragment, { trigger: false, replace: options.replace });
+                            currentUrl = fragment;
+                        }
+                        lastUrl = fragment;
+
+                        return true;
+                    });
+            })
+            .then(function (res) {
+                if (startDeferred) {
+                    startDeferred.resolve();
+                    startDeferred = null;
+                }
+                rootRouter.navigatingBack = undefined;
+                rootRouter.explicitNavigation = undefined;
+                return res;
+            });
+    }
+
+
     /**
      * Attempt to load the specified URL fragment. If a route succeeds with a match, and navigation succeeds to completion resolves to `true`. If no defined routes matches the fragment or navigation is canceled for whatever reason, resolves to `false`.
      * @method loadUrl
@@ -1119,24 +1237,19 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      * @return {promise} Resolves to true when navigation completes, or false if navigation is canceled.
      */
     rootRouter.loadUrl = function (fragment) {
-        return rootRouter.loadFragment(fragment)
-            .then(function (canContinue) {
-                if (!canContinue && typeof lastUrl == 'string')
-                    history.navigate(lastUrl, { trigger: false, replace: true });
+        currentUrl = fragment;
+        var isClick = clickNavigation;
+        clickNavigation = false;
 
-                return canContinue && canContinue()
-                    .then(function () {
-                        lastUrl = fragment;
-
-                        // Make sure url is correct, it may have changed
-                        history.navigate(fragment, { trigger: false, replace: true });
-                    });
-            })
-            .fail(function (err) {
-                rootRouter.navigate(lastUrl);
-                system.log('Failure when navigating to: ' + fragment, err);
-            });
+        return loadTriggeredUrl(fragment, {
+            clickNavigation: isClick,
+            currentUrl: currentUrl
+        });
     };
+
+    var clickNavigation = false;
+
+
 
 
     /**
@@ -1193,6 +1306,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                         // Ensure the protocol is not part of URL, meaning its relative.
                         // Stop the event bubbling to ensure the link will not cause a page refresh.
                         if (href != null && !(href.charAt(0) === "#" || /^[a-z]+:/i.test(href))) {
+                            clickNavigation = true;
                             evt.preventDefault();
 
                             if (rootStripper) {
@@ -1202,6 +1316,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                             history.navigate(href);
                         }
                     }
+                } else {
+                    clickNavigation = true;
                 }
             });
 
