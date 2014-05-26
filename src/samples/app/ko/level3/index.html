@@ -1,16 +1,46 @@
 <section class="level3-router">
+    <div>
+        <p>
+            For showcase of api user's roles can be changed here, but in a real scenario they could be managed in code.
+        </p>
+        <div class="form-horizontal" role="form">
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        <span>User Permissions :</span>
+                    </label>
+
+                    <div class="col-sm-9">
+                        <select class="form-control" style="max-width: 100px" multiple data-bind="selectedOptions: myRouter.permissions">
+                            <option value="admin">admin</option>
+                            <option value="user">user</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <p>Unauthorized links can be hided in ui, however even if they're not hided user cannot navigate to them.</p>
+        <ul data-bind="foreach: myRouter.navigationModel">
+            <li>
+                <a data-bind="attr: { href: hash }, text: title"></a>
+            </li>
+        </ul>
+    </div>
+    <hr />
+
     <div class="row">
         <div class="col-md-2">
-            <ul class="well nav nav-pills nav-stacked">
-                <!--ko foreach: router.navigationModel-->
-                <li data-bind="css: { active: isActive }">
-                    <a data-bind="attr: { href: hash }, text: title"></a>
-                </li>
+            <ul class="well nav nav-pills nav-stacked" data-bind="foreach: myRouter.navigationModel">
+                <!--ko if: isAuthorized -->
+                    <li data-bind="css: { active: isActive, 'bg-error': isAuthorized }">
+                        <a data-bind="attr: { href: hash }, text: title"></a>
+                    </li>
                 <!--/ko-->
             </ul>
         </div>
         <div class="col-md-10" style="padding: 0">
-            <!--ko router: { transition:'entrance', cacheViews:true }--><!--/ko-->
+            <!--ko router: { router: myRouter, transition:'entrance' }--><!--/ko-->
         </div>
     </div>
 </section>
