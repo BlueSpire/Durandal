@@ -4,8 +4,11 @@
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
 /*
- * Cleanup and re-design of hierarchical routers, By arash.shakery@gmail.com, May 2014
+ * - Cleanup and re-design of hierarchical routers
+ * - Role based route authorization
+ * arash.shakery@gmail.com, May 2014
  */
+
 /**
  * Connects the history module's url and history tracking support to Durandal's activation and composition engine allowing you to easily build navigation-style applications.
  * @module router
@@ -364,9 +367,13 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         function getChildRouterCanContinue(instance, fragment) {
             return toPromise(getChildRouter(instance, router))
                 .then(function (childRouter) {
-                    // If there's any child router, recursively ask whether it can continue with fragment.
                     // if there's no child, return a callback function which does nothing.
-                    return (!childRouter && noOperation()) || childRouter.loadFragment(fragment);
+                    if(!childRouter) return noOperation();
+
+                    childRouter.trigger('router:route:before-child-routes', instance, router);
+
+                    // If there's any child router, recursively ask whether it can continue with fragment.
+                    return childRouter.loadFragment(fragment);
                 });
         }
 
@@ -887,19 +894,18 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     config.dynamicHash = config.dynamicHash || ko.observable(config.hash);
                 });
 
-                router.on('router:navigation:complete')
-                    .then(function (instance, instruction, parentRouter) {
-                        var childRouter = instance.router;
-                        if (childRouter && childRouter.__router__ && childRouter.parent == parentRouter)
-                            for (var i = 0; i < childRouter.routes.length; i++) {
-                                var params = instruction.params.slice(0);
-                                var route = childRouter.routes[i];
-                                route.hash = childRouter.convertRouteToHash(route.route)
-                                    .replace(namedParam, function (match) {
-                                        return params.length > 0 ? params.shift() : match;
-                                    });
-                                route.dynamicHash(route.hash);
-                            }
+                router.on('router:route:before-child-routes')
+                    .then(function (instance, parentRouter) {
+                        var instructionParams = parentRouter.activeInstruction().params;
+                        for (var i = 0; i < router.routes.length; i++) {
+                            var params = instructionParams.slice(0);
+                            var route = router.routes[i];
+                            route.hash = router.convertRouteToHash(route.route)
+                                .replace(namedParam, function (match) {
+                                    return params.length > 0 ? params.shift() : match;
+                                });
+                            route.dynamicHash(route.hash);
+                        }
                     });
             }
 
