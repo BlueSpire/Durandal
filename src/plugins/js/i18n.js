@@ -4,45 +4,39 @@
     var i18n = {};
 
     i18n.install = function (config) {
-        mainConfig = config || {};
-
-        if (!ko.bindingHandlers.i18n) {
-            ko.bindingHandlers.i18n = {
-                update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                    var accessors = ko.unwrap(valueAccessor()).split(".");
-                    var data = bindingContext.$root.__i18n__();
-
-                    for (var cpt = 0; cpt < accessors.length; cpt++) {
-                        var value = data[accessors[cpt]];
-                        if (value !== undefined) {
-                            data = value;
-                        } else {
-                            data = undefined;
-                            break;
-                        }
+        if (!mainConfig) {
+            mainConfig = config || {};
+        
+            if (mainConfig.globalModules) {
+                if ($.isArray(mainConfig.globalModules)) {
+                    for (var cpt = 0; cpt < mainConfig.globalModules.length; cpt++) {
+                        prepareModule(mainConfig.globalModules[cpt]);
                     }
-
-                    if (data !== undefined) {
-                        $(element).text(data);
-                    } else {
-                        // [TODO] Report missing resource.
-                    }
+                } else {
+                    prepareModule(mainConfig.globalModules);
                 }
-            };
-        }
-
-        binder.binding = function (obj) {
-            var moduleId = obj.__moduleId__;
-            if (!modules[moduleId]) {
-                modules[moduleId] = ko.observable({});
             }
 
-            obj.__i18n__ = modules[moduleId];
+            if (!ko.bindingHandlers.i18n) {
+                ko.bindingHandlers.i18n = {
+                    update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                        var data = bindingContext.$root.__i18n__();
 
-            getModules(moduleId);
-        };
+                        var value = getValueInternal(data, ko.unwrap(valueAccessor()));
+
+                        if (value !== undefined) {
+                            $(element).text(data);
+                        }
+                    }
+                };
+            }
+
+            binder.binding = function (obj) {
+                prepareModule(obj);
+            };
+        }
     };
-
+    
     i18n.changeCulture = function (culture) {
         mainConfig.culture = culture;
 
@@ -52,41 +46,138 @@
             }
         }
     };
-  
-    function getModules(moduleId) {
-        var cultureParts = mainConfig.culture.split("-");
+
+    i18n.getValue = function (module, key, callback) {
+        if (module && key) {
+            if ($.type(module) !== "string" && module.__moduleId__) {
+                module = module.__moduleId__;
+            }
+
+            if (modules[module] !== undefined) {
+                if (modules[module].queryCounter === 0) {
+                    var value = getValueInternal(modules[module].data(), key);
+                    if (callback) {
+                        callback(value);
+                        return;
+                    } else {
+                        return system.defer(function (dfd) { dfd.resolve(value); });
+                    }
+                } else {
+                    if (callback) {
+                        modules[module].callbacks.push(function (data) {
+                            callback(getValueInternal(data, key));
+                        });
+
+                        return;
+                    } else {
+                        var dfd = system.defer();
+                        modules[module].callbacks.push(function (data) {
+                            dfd.resolve(getValueInternal(data, key));
+                        });
+
+                        return dfd;
+                    }
+                }
+            }
+        }
         
-        var computedData = {
-            queryCounter: cultureParts.length + 1,
-            results: []
-        };
-
-        var culturePart = "";
-
-        getModule(moduleId, "root", computedData, 0);
-
-        for (var cptParts = 0; cptParts < cultureParts.length; cptParts++) {
-            culturePart = (!culturePart ? "" : culturePart + "-") + cultureParts[cptParts];
-            getModule(moduleId, culturePart, computedData, cptParts + 1);
+        if (callback) {
+            callback(undefined);
+        } else {
+            return system.defer(function (dfd) { dfd.resolve(undefined); });
         }
     }
 
-    function getModule(moduleId, culturePart, computedData, cpt) {
+    function prepareModule(module) {
+        var moduleId = module;
+
+        if ($.type(moduleId) !== "string") {
+            moduleId = system.getModuleId(module);
+        }
+
+        if (!modules[moduleId]) {
+            modules[moduleId] = {
+                data: ko.observable({}),
+                queryCounter: 999
+            }
+
+            getModules(moduleId);
+        }
+
+        if ($.type(moduleId) !== "string") {
+            module.__i18n__ = modules[moduleId].data;
+        }
+    }
+
+    function getModules(moduleId) {
+        var cultureParts = mainConfig.culture.split("-");
+        var module = modules[moduleId];
+
+        module.queryCounter = cultureParts.length + 1;
+        module.callbacks = [];
+        module.files = [];
+
+        var culturePart = "";
+
+        getModule(moduleId, "root", 0);
+
+        for (var cptParts = 0; cptParts < cultureParts.length; cptParts++) {
+            culturePart = (!culturePart ? "" : culturePart + "-") + cultureParts[cptParts];
+            getModule(moduleId, culturePart, cptParts + 1);
+        }
+    }
+
+    function getModule(moduleId, culturePart, cpt) {
+        var module = modules[moduleId];
         system.acquire(moduleId + "." + culturePart).then(function (data) {
-            computedData.results[cpt] = data;
-            computedData.queryCounter--;
-            completeModule(moduleId, computedData);
+            module.files[cpt] = data;
+            module.queryCounter--;
+            completeModule(moduleId);
         }, function (error) {
             // [TODO] Report missing resource file.
-            computedData.queryCounter--;
-            completeModule(moduleId, computedData);
+            module.queryCounter--;
+            completeModule(moduleId);
         });
     }
 
     function completeModule(moduleId, computedData) {
-        if (computedData.queryCounter === 0) {
-            modules[moduleId]($.extend.apply($, [true, {}].concat(computedData.results)));
+        var module = modules[moduleId];
+
+        // If we received all the resource files...
+        if (module.queryCounter === 0) {
+            // Build final resource file from all files
+            module.data($.extend.apply($, [true, {}].concat(module.files)));
+
+            // Callback all getValue methods registered before we got the resources
+            for (var cptCallbacks = 0; cptCallbacks > module.callbacks.length; cptCallbacks++) {
+                module.callbacks[0](module.data());
+            }
+
+            // Clear temporary files and callbacks
+            module.files = null;
+            module.callbacks = null;
         }
+    }
+
+    function getValueInternal(data, key) {
+        var keys = key.split(".");
+
+        for (var cpt = 0; cpt < keys.length; cpt++) {
+            var value = data[keys[cpt]];
+
+            if (value !== undefined) {
+                data = value;
+            } else {
+                data = undefined;
+                break;
+            }
+        }
+
+        if (data === undefined) {
+            // [TODO] Report missing resource.
+        }
+
+        return data;
     }
 
     return i18n;
