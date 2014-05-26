@@ -77,39 +77,57 @@
 
       describe("after initialization", function () {
         it("can get the right value if present in the culture file and it doesn't exist in parent cultures", function () {
-          expect(i18n.getValue(module, "key1")).toBe("fr-ca 1");
+          var value;
+          i18n.getValue(module, "key1", function (val) { value = val });
+          expect(value).toBe("fr-ca 1");
         });
 
         it("can get the right value if present in the culture file and exists in parent cultures", function () {
-          expect(i18n.getValue(module, "key2")).toBe("fr-ca 2");
+          var value;
+          i18n.getValue(module, "key2", function (val) { value = val });
+          expect(value).toBe("fr-ca 2");
         });
 
         it("can get the right value if not present in the culture file and exists in direct parent", function () {
-          expect(i18n.getValue(module, "key4")).toBe("fr 4");
+          var value;
+          i18n.getValue(module, "key4", function (val) { value = val });
+          expect(value).toBe("fr 4");
         });
 
         it("can get the right value if not present in the culture file and exists in grand parent", function () {
-          expect(i18n.getValue(module, "key5")).toBe("root 5");
+          var value;
+          i18n.getValue(module, "key5", function (val) { value = val });
+          expect(value).toBe("root 5");
         });
 
         it("can get the right complex value if it doesn't exist in parent cultures", function () {
-          expect(i18n.getValue(module, "key3.key1")).toBe("fr-ca 3-1");
+          var value;
+          i18n.getValue(module, "key3.key1", function (val) { value = val });
+          expect(value).toBe("fr-ca 3-1");
         });
 
         it("can get the right copmlex value if it exists in parent cultures", function () {
-          expect(i18n.getValue(module, "key3.key2")).toBe("fr-ca 3-2");
+          var value;
+          i18n.getValue(module, "key3.key2", function (val) { value = val });
+          expect(value).toBe("fr-ca 3-2");
         });
 
         it("can get the right complex value if not present in the culture file and exists in direct parent", function () {
-          expect(i18n.getValue(module, "key3.key3")).toBe("fr 3-3");
+          var value;
+          i18n.getValue(module, "key3.key3", function (val) { value = val });
+          expect(value).toBe("fr 3-3");
         });
 
         it("can get the right complex value if not present in the culture file and exists in grand parent", function () {
-          expect(i18n.getValue(module, "key3.key4")).toBe("root 3-4");
+          var value;
+          i18n.getValue(module, "key3.key4", function (val) { value = val });
+          expect(value).toBe("root 3-4");
         });
 
         it("can get the right value from a global file", function () {
-          expect(i18n.getValue("global", "key1")).toBe("global fr-ca 1");
+          var value;
+          i18n.getValue("global", "key1", function (val) { value = val });
+          expect(value).toBe("global fr-ca 1");
         });
       });
 
@@ -119,39 +137,57 @@
         });
 
         it("can get the right value if present in the culture file and it doesn't exist in parent cultures", function () {
-          expect(i18n.getValue(module, "key1")).toBe("en-ca 1");
+          var value;
+          i18n.getValue(module, "key1", function (val) { value = val });
+          expect(value).toBe("en-ca 1");
         });
 
         it("can get the right value if present in the culture file and exists in parent cultures", function () {
-          expect(i18n.getValue(module, "key2")).toBe("en-ca 2");
+          var value;
+          i18n.getValue(module, "key2", function (val) { value = val });
+          expect(value).toBe("en-ca 2");
         });
 
         it("can get the right value if not present in the culture file and exists in direct parent", function () {
-          expect(i18n.getValue(module, "key4")).toBe("en 4");
+          var value;
+          i18n.getValue(module, "key4", function (val) { value = val });
+          expect(value).toBe("en 4");
         });
 
         it("can get the right value if not present in the culture file and exists in grand parent", function () {
-          expect(i18n.getValue(module, "key5")).toBe("root 5");
+          var value;
+          i18n.getValue(module, "key5", function (val) { value = val });
+          expect(value).toBe("root 5");
         });
 
         it("can get the right complex value if it doesn't exist in parent cultures", function () {
-          expect(i18n.getValue(module, "key3.key1")).toBe("en-ca 3-1");
+          var value;
+          i18n.getValue(module, "key3.key1", function (val) { value = val });
+          expect(value).toBe("en-ca 3-1");
         });
 
         it("can get the right copmlex value if it exists in parent cultures", function () {
-          expect(i18n.getValue(module, "key3.key2")).toBe("en-ca 3-2");
+          var value;
+          i18n.getValue(module, "key3.key2", function (val) { value = val });
+          expect(value).toBe("en-ca 3-2");
         });
 
         it("can get the right complex value if not present in the culture file and exists in direct parent", function () {
-          expect(i18n.getValue(module, "key3.key3")).toBe("en 3-3");
+          var value;
+          i18n.getValue(module, "key3.key3", function (val) { value = val });
+          expect(value).toBe("en 3-3");
         });
 
         it("can get the right complex value if not present in the culture file and exists in grand parent", function () {
-          expect(i18n.getValue(module, "key3.key4")).toBe("root 3-4");
+          var value;
+          i18n.getValue(module, "key3.key4", function (val) { value = val });
+          expect(value).toBe("root 3-4");
         });
 
         it("can get the right value from a global file", function () {
-          expect(i18n.getValue("global", "key1")).toBe("global root 1");
+          var value;
+          i18n.getValue("global", "key1", function (val) { value = val });
+          expect(value).toBe("global root 1");
         });
       });
     });
