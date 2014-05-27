@@ -1,0 +1,17 @@
+<div class="container text-center">
+    <h2 class="page-header">Please enter username and password: </h2>
+
+    <form class="form-signin" role="form" method="post" data-bind="submit: submit">
+        <input type="text" data-bind="value: username" class="form-control" placeholder="Username" required autofocus>
+        <input type="password" data-bind="value: password" class="form-control" placeholder="Password" required>
+
+        <div class="alert alert-danger alert-dismissable text-left" data-bind="visible: badTry">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            Username or password is wrong.
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+    </form>
+
+    <p style="font-style: italic">Username: admin | Password: admin</p>
+</div>
