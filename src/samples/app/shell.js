@@ -1,14 +1,15 @@
 define(['plugins/router'], function (router) {
     function unauthorized() {
-        return router.permissions.indexOf('admin')==-1;
+        return !router.hasPermission('admin');
     }
 
     return {
         router: router,
         activate: function () {
+            console.log('activate of shell ');
             return router.map([
-                { route: '*all',    authorize: unauthorized,    moduleId: 'login/index',                title: 'Login Page',            nav: false},
                 { route: ['', 'home'],                          moduleId: 'hello/index',                title: 'Hello World',           nav: 1 },
+                { route: '*rest',   authorize: unauthorized,    moduleId: 'login/index',                title: 'Login Page',            nav: false},
                 { route: 'view-composition',                    moduleId: 'viewComposition/index',      title: 'View Composition',      nav: true },
                 { route: 'modal',                               moduleId: 'modal/index',                title: 'Modal Dialogs',         nav: 3 },
                 { route: 'event-aggregator',                    moduleId: 'eventAggregator/index',      title: 'Events',                nav: 2 },
