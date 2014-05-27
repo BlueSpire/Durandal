@@ -1139,19 +1139,15 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 return true;
             }
 
-            if (router.relativeNavigation) {
+            if (router.relativeNavigation && fragment !== undefined) {
                 var instruction = router.parent.activeInstruction();
                 fragment = instruction.config.hash + (fragment ? '/' + fragment : '');
                 fragment = fragment.replace('//', '/').replace('//', '/');
             }
 
-
             // calls through api doesn't change url until navigation is going to activate.
             // also we don't set rootRouter.explicitNavigation here, because it can affect other navigations currently in progress
-            return rootRouter.loadUrl(fragment, {
-                replace: options && options.replace,
-                apiNavigation: true
-            });
+            return rootRouter.loadUrl(fragment, system.extend({ apiNavigation: true }, options));
         };
 
 
@@ -1231,7 +1227,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     /**
      * Attempt to load the specified URL fragment. If a route succeeds with a match, and navigation succeeds to completion resolves to `true`. If no defined routes matches the fragment or navigation is canceled for whatever reason, resolves to `false`.
      * @method loadUrl
-     * @param {string} fragment The URL fragment to find a match for.
+     * @param {string} fragment The URL fragment to find a match for. If not specified, current url is tried to be reloaded.
      * @return {promise} Resolves to true when navigation completes, or false if navigation is canceled.
      */
     rootRouter.loadUrl = function (fragment, options) {
@@ -1243,22 +1239,21 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 options['apiNavigation'] = true;
         }
 
+        if(fragment === undefined) fragment = currentUrl;
 
-        if (!system.isObject(options)) {
-            var trigger = (options === undefined) ||
-                (system.isBoolean(options) && options) ||
-                (system.isObject(options) && (options.trigger || options.trigger === undefined));
+        var replace = options && options.replace;
+        var trigger = (options === undefined) ||
+            (system.isBoolean(options) && options) ||
+            (system.isObject(options) && (options.trigger || options.trigger === undefined));
 
-            var replace = options && options.replace;
+        if (!system.isObject(options))
             options = { trigger: trigger, replace: replace, apiNavigation: true };
-        }
 
 
-        if (!options.trigger) {
+
+        if (!trigger) {
             currentUrl = fragment;
-            if (options && options.replace)
-                lastUrl = fragment;
-
+            if (replace) lastUrl = fragment;
             return history.navigate(fragment, options);
         }
 
