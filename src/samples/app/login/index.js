@@ -1,8 +1,5 @@
 define(['plugins/router', 'knockout'], function(router, ko){
     return {
-        canReuseForRoute: function(){
-            return router.permissions.indexOf('admin') == -1;
-        },
         activate: function(){
             this.badTry(false);
         },
