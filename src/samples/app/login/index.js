@@ -9,7 +9,7 @@ define(['plugins/router', 'knockout'], function(router, ko){
         submit: function(){
             if(this.username()=='admin' && this.password()=='admin') {
                 router.permissions(['admin']);
-                router.loadUrl({trigger: true, replace: false});
+                router.navigate();
             }
             else {
                 this.badTry(true);
