@@ -479,12 +479,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             // Navigation starts.
             startNavigation(instruction);
 
-            // if config has authorize attribute, check if it is authorized to execute
-            // instruction is passed in, just for flexibility when developer may override hasPermission of router.
-            if (!authorize(instruction.config.authorize, instruction)) {
-                cancelNavigation(instruction);
-                return toPromise(false);
-            }
 
             // canReuseForRoute may return a promise.
             return toPromise(canReuseCurrentActivation(instruction))
@@ -628,11 +622,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         }
 
 
+        // if config has authorize attribute, check if it is authorized to execute
+        // instruction is passed in, just for flexibility when developer may override hasPermission of router.
         function authorize(token, instruction) {
             if (ko.isObservable(token)) return authorize(token());
             if (typeof token == 'boolean') return token;
             if (typeof token == 'string') return router.hasPermission(token, instruction);
-            if (typeof token == 'function') return authorize(token.apply(instruction.config, [router, instruction]), instruction);
+            if (typeof token == 'function')
+                return authorize(token.apply(instruction.config, [router, instruction]), instruction);
 
             if (Array.isArray(token))
                 for (var i = 0; i < token.length; i++)
@@ -688,7 +685,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             }
 
             config.isAuthorized = ko.computed(function () {
-                return authorize(config.authorize);
+                return authorize(config.authorize, { config: config });
             });
 
             config.isActive = config.isActive || ko.observable(false);
@@ -697,22 +694,22 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             // ------------------------------------------------------------------------
 
             router.routes.push(config);
-            router.route(new RoutePattern(function(fragment, queryString){
-                    if (!config.routePattern.test(fragment)) return false;
+            router.route(new RoutePattern(function (fragment, queryString) {
+                if (!config.routePattern.test(fragment)) return false;
 
-                    var paramInfo = createParams(config.routePattern, fragment, queryString);
-                    var instruction = {
-                        fragment: fragment,
-                        queryString: queryString,
-                        config: config,
-                        params: paramInfo.params,
-                        queryParams: paramInfo.queryParams
-                    };
-                    if (!authorize(config.authorize, instruction)) return false;
+                var paramInfo = createParams(config.routePattern, fragment, queryString);
+                var instruction = {
+                    fragment: fragment,
+                    queryString: queryString,
+                    config: config,
+                    params: paramInfo.params,
+                    queryParams: paramInfo.queryParams
+                };
+                if (!authorize(config.authorize, instruction)) return false;
 
-                    // return continuation callback
-                    return function () { return processInstruction(instruction); }
-                }));
+                // return continuation callback
+                return function () { return processInstruction(instruction); }
+            }));
         }
 
 
@@ -820,7 +817,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             var catchAllPattern = routeStringToRegExp(catchAllRoute);
 
             router.route(new RoutePattern(function (fragment, queryString) {
-                if(!catchAllPattern.test(fragment)) return false;
+                if (!catchAllPattern.test(fragment)) return false;
 
 
                 var paramInfo = createParams(catchAllPattern, fragment, queryString);
@@ -849,7 +846,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                         return result.then(function () {
                             router.trigger('router:route:before-config', instruction.config, router);
                             router.trigger('router:route:after-config', instruction.config, router);
-                            return function(){ return processInstruction(instruction); };
+                            return function () { return processInstruction(instruction); };
                         });
                     }
                 } else {
@@ -860,7 +857,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                 router.trigger('router:route:before-config', instruction.config, router);
                 router.trigger('router:route:after-config', instruction.config, router);
-                return function(){ return processInstruction(instruction); };
+                return function () { return processInstruction(instruction); };
             }));
 
             return router;
@@ -1148,15 +1145,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 fragment = fragment.replace('//', '/').replace('//', '/');
             }
 
-            var trigger = (options === undefined) ||
-                (system.isBoolean(options) && options) ||
-                (system.isObject(options) && (options.trigger || options.trigger === undefined));
-
 
             // calls through api doesn't change url until navigation is going to activate.
             // also we don't set rootRouter.explicitNavigation here, because it can affect other navigations currently in progress
             return rootRouter.loadUrl(fragment, {
-                trigger: trigger,
                 replace: options && options.replace,
                 apiNavigation: true
             });
@@ -1243,6 +1235,25 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      * @return {promise} Resolves to true when navigation completes, or false if navigation is canceled.
      */
     rootRouter.loadUrl = function (fragment, options) {
+        if (system.isObject(fragment)) {
+            options = fragment;
+            fragment = currentUrl;
+
+            if (typeof options.apiNavigation == 'undefined')
+                options['apiNavigation'] = true;
+        }
+
+
+        if (!system.isObject(options)) {
+            var trigger = (options === undefined) ||
+                (system.isBoolean(options) && options) ||
+                (system.isObject(options) && (options.trigger || options.trigger === undefined));
+
+            var replace = options && options.replace;
+            options = { trigger: trigger, replace: replace, apiNavigation: true };
+        }
+
+
         if (!options.trigger) {
             currentUrl = fragment;
             if (options && options.replace)
