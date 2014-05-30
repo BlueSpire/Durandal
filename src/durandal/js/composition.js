@@ -203,6 +203,14 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
         for (var partId in replacementParts) {
             var toReplace = standardParts[partId];
+            if (!toReplace) {
+                toReplace = $('[data-part="' + partId + '"]', context.child).get(0);
+                if (!toReplace) {
+                    system.log('Could not find part to override: ' + partId);
+                    continue;
+                }
+            }
+
             toReplace.parentNode.replaceChild(replacementParts[partId], toReplace);
         }
     }
