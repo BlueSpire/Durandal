@@ -96,6 +96,19 @@ define(['require', 'jquery'], function(require, $) {
         }
         
         exception.innerError = err;
+        
+        //Report the error as an error, not as a log
+        try {
+            // Modern browsers (it's only a single item, no need for argument splitting as in log() above)
+            if (typeof console != 'undefined' && typeof console.error == 'function') {
+                console.error(exception)
+            }
+            // IE8
+            else if ((!Function.prototype.bind || treatAsIE8) && typeof console != 'undefined' && typeof console.error == 'object') {
+                Function.prototype.call.call(console.error, console, exception);
+            }
+            // IE7 and lower, and other old browsers
+        } catch (ignore) { }
 
         throw exception;
     };
