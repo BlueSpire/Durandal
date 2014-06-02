@@ -101,7 +101,7 @@ define(['require', 'jquery'], function(require, $) {
         try {
             // Modern browsers (it's only a single item, no need for argument splitting as in log() above)
             if (typeof console != 'undefined' && typeof console.error == 'function') {
-                console.error(exception)
+                console.error(exception);
             }
             // IE8
             else if ((!Function.prototype.bind || treatAsIE8) && typeof console != 'undefined' && typeof console.error == 'object') {
