@@ -56,7 +56,7 @@ define(function(require) {
 Notice the call to _setRoot_. This actually invokes the composition engine. What is the result?
 
 1. RequireJS is used to find the module with id _shell_ (shell.js on the file system).
-2. The view locator is used to locate the appropriate view for _shell_. The defult configuration will find _shell.html_.
+2. The view locator is used to locate the appropriate view for _shell_. The default configuration will find _shell.html_.
 3. The view engine is used to create the view from the markup in _shell.html_.
 4. The _shell_ module and the _shell_ view are data-bound together using Knockout.
 5. The bound _shell_ view is inserted into the DOM (in the default _applicationHost_ div).
