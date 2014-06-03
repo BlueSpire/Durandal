@@ -16,7 +16,7 @@
  */
 define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/activator', 'durandal/viewEngine', 'jquery', 'knockout'], function (system, app, composition, activator, viewEngine, $, ko) {
     var contexts = {},
-        dialogCount = 0,
+        dialogCount = ko.observable(0),
         dialog;
 
     /**
@@ -222,9 +222,9 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @method isOpen
          * @return {boolean} True if a dialog is open. false otherwise.
          */
-        isOpen: function () {
-            return dialogCount > 0;
-        },
+        isOpen: ko.computed(function() {
+            return dialogCount() > 0;
+        }),
         /**
          * Gets the dialog context by name or returns the default context if no name is specified.
          * @method getContext
@@ -322,7 +322,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                                     var args = arguments;
                                     dialogActivator.deactivateItem(instance, true).then(function (closeSuccess) {
                                         if (closeSuccess) {
-                                            dialogCount--;
+                                            dialogCount(dialogCount() - 1);
                                             dialogContext.removeHost(theDialog);
                                             delete instance.__dialog__;
 
@@ -341,7 +341,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                             theDialog.settings = that.createCompositionSettings(instance, dialogContext);
                             dialogContext.addHost(theDialog);
 
-                            dialogCount++;
+                            dialogCount(dialogCount() + 1);
                             composition.compose(theDialog.host, theDialog.settings);
                         } else {
                             dfd.resolve(false);

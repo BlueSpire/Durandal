@@ -75,6 +75,7 @@
 -Fix Issue #479: Can't use template with vs2013 express
 -Fix Issue #523: viewEngine$createView does not deliver promise but deferred object when returning cached element
 -Fix issue #530: add console.error call to logError 
+-Fix Issue #531: Made dialog.isOpen computed
 -Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
 -Added a string.trim polyfill
 -Updated Bootstrap to 3.1.1

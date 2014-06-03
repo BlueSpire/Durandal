@@ -217,9 +217,9 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @method isOpen
          * @return {boolean} True if a dialog is open. false otherwise.
          */
-        isOpen: ko.computed( function () {
+        isOpen: ko.computed(function() {
             return dialogCount() > 0;
-        } ),
+        }),
         /**
          * Gets the dialog context by name or returns the default context if no name is specified.
          * @method getContext
