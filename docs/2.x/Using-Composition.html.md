@@ -216,7 +216,7 @@ The default composition mode interprets the child elements of a composition site
 
 In this case, the compositoin system will locate the "myModel" module and then it will databind it against the `h3` inside the composition element.
 
-You can also use `mode:'templated'`. This mode allows you to create replacable parts in your view, which can be overridden at the composition site. Let say we have the following view:
+You can also use `mode:'templated'`. This mode allows you to create replacable parts in your view, which can be overridden at the composition site. Let's say we have the following view:
 
 ```html
 <div>
