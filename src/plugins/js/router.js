@@ -189,7 +189,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
         function setCurrentInstructionRouteIsActive(flag) {
             if (currentInstruction && currentInstruction.config.isActive) {
-                currentInstruction.config.isActive(flag)
+                currentInstruction.config.isActive(flag);
             }
         }
 
