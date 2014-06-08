@@ -19,17 +19,15 @@ Durandal Release Checklist
 	* Include Readme.md
 9. Update Website with New Downloads, Documentation and API data
 10. Merge version branch into master.
-11. Publish Bower
-	* Include License and Readme
+11. Release on Github
+	* Tag with semver
+	* Attach all artifacts
+12. Publish Bower
+	* Include License, Readme and Changes
 	* Test Locally
 	* Update Github
 	* Github Tag
-	* (Register with Bower)
-12. Publish Mimosa Skeleton via Github
-13. Publish Nugets
-14. Publish VSIX
-15. Publish TypeScript definitions
-16. Release on Github
-	* Tag with semver
-	* Attach all artifacts
-17. Publish Website
+13. Publish Mimosa Skeleton via Github
+14. Publish Nugets
+15. Publish Website
+16. Send pull request to definitely typed
