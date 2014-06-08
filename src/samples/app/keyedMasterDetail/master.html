@@ -1,0 +1,12 @@
+﻿<div>
+    <div class="page-header">
+        <h4><span data-bind="text: masterVm().name"></span><small>&nbsp;&nbsp;Id&nbsp;<span data-bind="text: masterVm().id"></span></small></h4>
+    </div>
+    <ul class="nav nav-tabs" data-bind="foreach: router.navigationModel">
+        <li data-bind="css: { active: isActive }"><a data-bind="attr: { href: dynamicHash }, text: title" /></li>
+    </ul>
+
+    <div class="tab-content" id="content">
+        <!--ko router: {router: router}--><!--/ko-->
+    </div>
+</div>

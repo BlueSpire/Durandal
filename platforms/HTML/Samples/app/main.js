@@ -4,7 +4,7 @@
         'durandal':'../lib/durandal/js',
         'plugins' : '../lib/durandal/js/plugins',
         'transitions' : '../lib/durandal/js/transitions',
-        'knockout': '../lib/knockout/knockout-2.3.0',
+        'knockout': '../lib/knockout/knockout-3.1.0',
         'bootstrap': '../lib/bootstrap/js/bootstrap',
         'jquery': '../lib/jquery/jquery-1.9.1'
     },
@@ -33,11 +33,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
     });
 
     app.start().then(function () {
-        //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
-        //Look for partial views in a 'views' folder in the root.
         viewLocator.useConvention();
-
-        //Show the app by setting the root view model for our application.
         app.setRoot('shell');
     });
 });

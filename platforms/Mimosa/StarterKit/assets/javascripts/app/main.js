@@ -1,7 +1,7 @@
 requirejs.config({
     paths: {
         'text': '../vendor/requirejs-text/text',
-        'knockout': '../vendor/knockout.js/knockout',
+        'knockout': '../vendor/knockout.js/knockout-3.1.0',
         'jquery': '../vendor/jquery/jquery',
         'bootstrap': '../vendor/bootstrap/bootstrap',
         'durandal':'../vendor/durandal',
@@ -29,8 +29,7 @@ define(function(require) {
 
     app.configurePlugins({
         router:true,
-        dialog: true,
-        widget: true
+        dialog: true
     });
 
     app.start().then(function() {

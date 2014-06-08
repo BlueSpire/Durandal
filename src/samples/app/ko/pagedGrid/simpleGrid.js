@@ -5,7 +5,7 @@
         this.pageSize = configuration.pageSize || 5;
 
         // If you don't specify columns configuration, we'll use scaffolding
-        this.columns = configuration.columns || getColumnsForScaffolding(ko.utils.unwrapObservable(this.data));
+        this.columns = configuration.columns || this.getColumnsForScaffolding(ko.utils.unwrapObservable(this.data));
 
         this.itemsOnCurrentPage = ko.computed(function() {
             var startIndex = this.pageSize * this.currentPageIndex();

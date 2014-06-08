@@ -33,5 +33,6 @@ docs/api*
 
 !build.bat
 !*.ps1
-
+!docs/2.x/*
+!docs/1.2/*
 !platforms/Microsoft.NET/StarterKit/vsix/DurandalMvcSpaTemplateVsix/packages

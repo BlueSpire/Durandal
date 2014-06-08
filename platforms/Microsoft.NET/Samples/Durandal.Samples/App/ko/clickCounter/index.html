@@ -1,13 +1,13 @@
 ﻿<div>
-    <h2>Click Counter</h2>
-    <div class="well liveExample">
+    <h1>Click Counter</h1>
+    <div class="well">
         <div>You've clicked <span data-bind='text: numberOfClicks'>&nbsp;</span> times</div>
         <br />
-        <button data-bind='click: registerClick, disable: hasClickedTooManyTimes'>Click me</button>
-        <br /><br />
+        <button class="btn btn-default" data-bind='click: registerClick, disable: hasClickedTooManyTimes'>Click Me</button>
+        <br />
         <div data-bind='visible: hasClickedTooManyTimes'>
             That's too many clicks! Please stop before you wear out your fingers.
-            <button data-bind='click: resetClicks'>Reset clicks</button>
+            <button class="btn btn-default btn-danger" data-bind='click: resetClicks'>Reset Clicks</button>
         </div>
     </div>
 </div>

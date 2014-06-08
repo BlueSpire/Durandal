@@ -1,8 +1,10 @@
-﻿<form class="form-inline">
-    <fieldset>
-        <legend data-bind="html: displayName"></legend>
-        <label>Name</label>
-        <input type="text" data-bind="value: name, valueUpdate: 'afterkeydown'"/>
-        <button type="submit" class="btn" data-bind="click: sayHello, enable: canSayHello">Click Me</button>
-    </fieldset>
-</form>
+﻿<section>
+    <h1 data-bind="text: displayName"></h1>
+    <form class="form-inline" role="form">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="name" data-bind="value: name, valueUpdate: 'afterkeydown'">
+        </div>
+        <button type="submit" class="btn btn-default" data-bind="click: sayHello, enable: canSayHello">Click Me</button>
+    </form>
+</section>
+

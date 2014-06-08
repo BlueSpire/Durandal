@@ -49,7 +49,7 @@ SPA development. The API uses promises for all asynchronous code, highly favors 
 composition, and gives you a simple convention for organizing and easily optimizing your project. All of Durandal is
 provided as AMD modules, each of which has it's API documented on web site at http://durandaljs.com/pages/docs. 
 You can head over there for more in depth information. There are also other articles you may wish to read in order to learn how to create
-skinnable, bindable and templatable widgets as well as how to use weyland to create an optimized build file, which contains all the JS and HTML for your app in a single file.
+skinnable, bindable and templatable widgets as well as how to create an optimized build file, which contains all the JS and HTML for your app in a single file.
 
 We sincerely hope you enjoy working with Durandal and that it makes your SPA application development a joy. Please 
 join the community by participating in our google group, forking and submitting pull requests for bug fixes and new

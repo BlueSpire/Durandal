@@ -11,7 +11,7 @@ tags: ['docs','lifecycle','how to']
   <ul>
     <li>The view locator, binder, composition engine and activator all look for callbacks related to their individual functions.</li>
     <li>Composition involves the view locator, the binder and it's own DOM manipulation.</li>
-    <li>Activator callbacks are not executed unless an [activator](/documentation/View-Model) is present.</li>
+    <li>Activator callbacks are not executed unless an [activator](/documentation/Using-Activators.html) is present.</li>
     <li>Built-in activators include the Router and the Dialog system.</li>
   </ul>
 </blockquote>

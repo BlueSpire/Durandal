@@ -1,33 +1,29 @@
 ﻿/*!
- * Durandal 2.0.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details
  */
 
 .page-host {
-    position: relative;
-    top: 40px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50px;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-.navbar-fixed-top .navbar-inner {
-    padding-left: 1em;
-    padding-right: 1em;
+section {
+    margin: 0 20px;
 }
 
-.navbar-fixed-top .icon-home {
-    font-size: 18px
-}
-
-.well {
-    padding: 8px 0;
-}
-
-.loader {
-    margin: 6px 8px 4px 8px;
+.navbar-nav li.loader {
+    margin: 12px 20px 0 0;
     visibility: hidden;
 }
 
-.loader.active {
+.navbar-nav li.loader.active {
     visibility: visible;
 }
 
@@ -35,19 +31,8 @@
     margin-top: 20px;
 }
 
-.knockout-samples .liveExample {
-    padding: 20px;
-}
-
-@media (max-width: 979px) {
-    .page-host {
-        top: 0;
-    }
-
-    .navbar-fixed-top {
-        margin-bottom: 0;
-    }
-}
+.planet { background-color: #AAEECC; padding: 0.35em; border: 1px solid silver; margin-bottom: 0.5em; font-size: 0.95em; }
+.planet.rock { background-color: #EECCAA; }
 
 ﻿.configuration, .tweets, .tweets td { font-size: 14px; }
 .configuration { background-color: #DEDEDE; border: 2px solid gray; float:left; height: 31em; padding: 0.5em; border-right-width:0; }

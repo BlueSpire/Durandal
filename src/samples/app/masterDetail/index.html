@@ -1,8 +1,14 @@
-﻿<div>
+﻿<section>
     <h1>Master Detail</h1>
-    
-    <label>Select Project</label>
-    <select data-bind="options: projects, optionsText: 'name', value: activeProject"></select>
-    
+
+    <form class="form-inline" role="form">
+        <div class="form-group">
+            <label class="control-label">Project</label>
+        </div>
+        <div class="form-group">
+            <select class="form-control" data-bind="options: projects, optionsText: 'name', value: activeProject"></select>
+        </div>
+    </form>
+
     <!--ko compose: activeProject--><!--/ko-->
-</div>
+</section>

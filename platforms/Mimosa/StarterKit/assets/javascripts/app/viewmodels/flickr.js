@@ -8,7 +8,7 @@
         displayName: 'Flickr',
         images: ko.observableArray([]),
         activate: function () {
-            //the router's activator calls this function and waits for it to complete before proceding
+            //the router's activator calls this function and waits for it to complete before proceeding
             if (this.images().length > 0) {
                 return;
             }

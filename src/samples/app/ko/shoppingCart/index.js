@@ -1,8 +1,4 @@
 ﻿define(['durandal/system', 'durandal/app', './sampleProductCategories', 'jquery', 'knockout'], function (system, app, sampleProductCategories, $, ko) {
-    function formatCurrency(value) {
-        return "$" + value.toFixed(2);
-    };
-
     var CartLine = function () {
         var self = this;
         self.category = ko.observable();
@@ -42,14 +38,16 @@
                     quantity: line.quantity()
                 } : undefined
             });
-            //alert("Could now send this to server: " + JSON.stringify(dataToSave));
-            app.showMessage('You could now send this to server: <br/>' + JSON.stringify(dataToSave),'Your Shopping Cart');
+
+            app.showMessage('You could now send this to server: ' + JSON.stringify(dataToSave),'Your Shopping Cart');
         };
     };
 
     return {
         Cart: new Cart(),
-        formatCurrency : formatCurrency,
+        formatCurrency : function(value) {
+            return "$" + value.toFixed(2);
+        },
         sampleProductCategories: sampleProductCategories
     };
 });

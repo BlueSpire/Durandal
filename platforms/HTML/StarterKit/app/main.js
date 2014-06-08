@@ -4,7 +4,7 @@
         'durandal':'../lib/durandal/js',
         'plugins' : '../lib/durandal/js/plugins',
         'transitions' : '../lib/durandal/js/transitions',
-        'knockout': '../lib/knockout/knockout-2.3.0',
+        'knockout': '../lib/knockout/knockout-3.1.0',
         'bootstrap': '../lib/bootstrap/js/bootstrap',
         'jquery': '../lib/jquery/jquery-1.9.1'
     },
@@ -25,8 +25,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
 
     app.configurePlugins({
         router:true,
-        dialog: true,
-        widget: true
+        dialog: true
     });
 
     app.start().then(function() {

@@ -1,10 +1,10 @@
 ﻿define(['knockout'], function (ko) {
-    var counter = ko.observable(0);
-    var limiter = ko.computed(function () {
-        return counter() >= 3;
-    });
+    var counter = ko.observable(0),
+        limiter = ko.computed(function () {
+            return counter() >= 3;
+        });
 
-    var om = {
+    return {
         numberOfClicks: counter,
         hasClickedTooManyTimes: limiter,
         registerClick: function () {
@@ -14,6 +14,4 @@
             counter(0);
         }
     }
-
-    return om;
 });
