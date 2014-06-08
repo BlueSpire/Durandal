@@ -2,7 +2,7 @@
     "project": {
         "name": "Durandal API",
         "description": "Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain.",
-        "version": "2.0.1",
+        "version": "2.1.0",
         "url": "http://durandaljs.com/"
     },
     "files": {
@@ -205,7 +205,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src\\durandal\\js\\activator.js",
-            "line": 582,
+            "line": 610,
             "description": "The activator module encapsulates all logic related to screen/component activation.\nAn activator is essentially an asynchronous state machine that understands a particular state transition protocol.\nThe protocol ensures that the following series of events always occur: `canDeactivate` (previous state), `canActivate` (new state), `deactivate` (previous state), `activate` (new state).\nEach of the _can_ callbacks may return a boolean, affirmative value or promise for one of those. If either of the _can_ functions yields a false result, then activation halts.",
             "requires": [
                 "system",
@@ -260,7 +260,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src\\durandal\\js\\composition.js",
-            "line": 244,
+            "line": 274,
             "description": "The composition module encapsulates all functionality related to visual composition.",
             "requires": [
                 "system",
@@ -300,7 +300,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src\\durandal\\js\\system.js",
-            "line": 90,
+            "line": 116,
             "description": "The system module encapsulates the most basic features used by other modules.",
             "requires": [
                 "require",
@@ -353,7 +353,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 302,
+            "line": 405,
             "description": "The dialog module enables the display of message boxes, custom modal dialogs and other overlays or slide-out UI abstractions. Dialogs are constructed by the composition system which interacts with a user defined dialog context. The dialog module enforced the activator lifecycle.",
             "requires": [
                 "system",
@@ -376,7 +376,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src\\plugins\\js\\history.js",
-            "line": 288,
+            "line": 293,
             "description": "This module is based on Backbone's core history support. It abstracts away the low level details of working with browser history and url changes in order to provide a solid foundation for a router.",
             "requires": [
                 "system",
@@ -410,7 +410,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src\\plugins\\js\\observable.js",
-            "line": 19,
+            "line": 23,
             "description": "Enables automatic observability of plain javascript object for ES5 compatible browsers. Also, converts promise properties into observables that are updated when the promise resolves.",
             "requires": [
                 "system",
@@ -429,7 +429,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src\\plugins\\js\\router.js",
-            "line": 836,
+            "line": 995,
             "description": "Connects the history module's url and history tracking support to Durandal's activation and composition engine allowing you to easily build navigation-style applications.",
             "requires": [
                 "system",
@@ -487,7 +487,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "src\\transitions\\js\\entrance.js",
-            "line": 22,
+            "line": 57,
             "description": "The entrance transition module.",
             "requires": [
                 "system",
@@ -508,7 +508,7 @@
             "module": "activator",
             "namespace": "",
             "file": "src\\durandal\\js\\activator.js",
-            "line": 191,
+            "line": 208,
             "description": "An activator is a read/write computed observable that enforces the activation lifecycle whenever changing values."
         },
         "ActivatorSettings": {
@@ -522,7 +522,7 @@
             "module": "activator",
             "namespace": "",
             "file": "src\\durandal\\js\\activator.js",
-            "line": 514,
+            "line": 539,
             "static": 1
         },
         "ActivatorModule": {
@@ -536,7 +536,7 @@
             "module": "activator",
             "namespace": "",
             "file": "src\\durandal\\js\\activator.js",
-            "line": 582,
+            "line": 610,
             "static": 1
         },
         "AppModule": {
@@ -581,7 +581,7 @@
             "module": "composition",
             "namespace": "",
             "file": "src\\durandal\\js\\composition.js",
-            "line": 229,
+            "line": 259,
             "static": 1
         },
         "CompositionModule": {
@@ -595,7 +595,7 @@
             "module": "composition",
             "namespace": "",
             "file": "src\\durandal\\js\\composition.js",
-            "line": 244,
+            "line": 274,
             "static": 1
         },
         "Subscription": {
@@ -655,7 +655,7 @@
             "module": "system",
             "namespace": "",
             "file": "src\\durandal\\js\\system.js",
-            "line": 90,
+            "line": 116,
             "static": 1
         },
         "ViewEngineModule": {
@@ -711,7 +711,7 @@
             "module": "dialog",
             "namespace": "",
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 105,
+            "line": 192,
             "static": 1
         },
         "DialogContext": {
@@ -725,7 +725,7 @@
             "module": "dialog",
             "namespace": "",
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 302
+            "line": 405
         },
         "HistoryModule": {
             "name": "HistoryModule",
@@ -738,7 +738,7 @@
             "module": "history",
             "namespace": "",
             "file": "src\\plugins\\js\\history.js",
-            "line": 32,
+            "line": 37,
             "static": 1
         },
         "HistoryOptions": {
@@ -752,7 +752,7 @@
             "module": "history",
             "namespace": "",
             "file": "src\\plugins\\js\\history.js",
-            "line": 288,
+            "line": 293,
             "static": 1
         },
         "HTTPModule": {
@@ -780,7 +780,7 @@
             "module": "observable",
             "namespace": "",
             "file": "src\\plugins\\js\\observable.js",
-            "line": 19,
+            "line": 23,
             "description": "You can call observable(obj, propertyName) to get the observable function for the specified property on the object."
         },
         "Router": {
@@ -794,7 +794,7 @@
             "module": "router",
             "namespace": "",
             "file": "src\\plugins\\js\\router.js",
-            "line": 60,
+            "line": 70,
             "uses": [
                 "Events"
             ]
@@ -810,7 +810,7 @@
             "module": "router",
             "namespace": "",
             "file": "src\\plugins\\js\\router.js",
-            "line": 836,
+            "line": 995,
             "extends": "Router",
             "static": 1
         },
@@ -853,14 +853,14 @@
             "module": "entrance",
             "namespace": "",
             "file": "src\\transitions\\js\\entrance.js",
-            "line": 22,
+            "line": 57,
             "is_constructor": 1
         }
     },
     "classitems": [
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 213,
+            "line": 230,
             "description": "The settings for this activator.",
             "itemtype": "property",
             "name": "settings",
@@ -870,7 +870,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 220,
+            "line": 237,
             "description": "An observable which indicates whether or not the activator is currently in the process of activating an instance.",
             "itemtype": "method",
             "name": "isActivating",
@@ -883,7 +883,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 227,
+            "line": 248,
             "description": "Determines whether or not the specified item can be deactivated.",
             "itemtype": "method",
             "name": "canDeactivateItem",
@@ -897,6 +897,11 @@
                     "name": "close",
                     "description": "Whether or not to check if close is possible.",
                     "type": "Boolean"
+                },
+                {
+                    "name": "options",
+                    "description": "Options for controlling the activation process.",
+                    "type": "Object"
                 }
             ],
             "return": {
@@ -908,7 +913,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 238,
+            "line": 260,
             "description": "Deactivates the specified item.",
             "itemtype": "method",
             "name": "deactivateItem",
@@ -933,7 +938,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 258,
+            "line": 280,
             "description": "Determines whether or not the specified item can be activated.",
             "itemtype": "method",
             "name": "canActivateItem",
@@ -958,7 +963,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 269,
+            "line": 291,
             "description": "Activates the specified item.",
             "itemtype": "method",
             "name": "activateItem",
@@ -972,6 +977,11 @@
                     "name": "newActivationData",
                     "description": "Data associated with the activation.",
                     "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "Options for controlling the activation process.",
+                    "type": "Object"
                 }
             ],
             "return": {
@@ -983,7 +993,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 330,
+            "line": 353,
             "description": "Determines whether or not the activator, in its current state, can be activated.",
             "itemtype": "method",
             "name": "canActivate",
@@ -996,7 +1006,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 348,
+            "line": 371,
             "description": "Activates the activator, in its current state.",
             "itemtype": "method",
             "name": "activate",
@@ -1009,7 +1019,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 366,
+            "line": 389,
             "description": "Determines whether or not the activator, in its current state, can be deactivated.",
             "itemtype": "method",
             "name": "canDeactivate",
@@ -1022,7 +1032,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 375,
+            "line": 398,
             "description": "Deactivates the activator, in its current state.",
             "itemtype": "method",
             "name": "deactivate",
@@ -1035,7 +1045,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 519,
+            "line": 544,
             "description": "The default value passed to an object's deactivate function as its close parameter.",
             "itemtype": "property",
             "name": "closeOnDeactivate",
@@ -1046,7 +1056,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 525,
+            "line": 550,
             "description": "Lower-cased words which represent a truthy value.",
             "itemtype": "property",
             "name": "affirmations",
@@ -1057,7 +1067,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 531,
+            "line": 556,
             "description": "Interprets the response of a `canActivate` or `canDeactivate` call using the known affirmative values in the `affirmations` array.",
             "itemtype": "method",
             "name": "interpretResponse",
@@ -1077,7 +1087,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 548,
+            "line": 573,
             "description": "Determines whether or not the current item and the new item are the same.",
             "itemtype": "method",
             "name": "areSameItem",
@@ -1112,7 +1122,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 560,
+            "line": 585,
             "description": "Called immediately before the new item is activated.",
             "itemtype": "method",
             "name": "beforeActivate",
@@ -1128,7 +1138,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 568,
+            "line": 593,
             "description": "Called immediately after the old item is deactivated.",
             "itemtype": "method",
             "name": "afterDeactivate",
@@ -1154,7 +1164,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 587,
+            "line": 615,
             "description": "The default settings used by activators.",
             "itemtype": "property",
             "name": "defaults",
@@ -1164,7 +1174,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 592,
+            "line": 620,
             "description": "Creates a new activator.",
             "itemtype": "method",
             "name": "create",
@@ -1191,7 +1201,7 @@
         },
         {
             "file": "src\\durandal\\js\\activator.js",
-            "line": 600,
+            "line": 628,
             "description": "Determines whether or not the provided object is an activator or not.",
             "itemtype": "method",
             "name": "isActivator",
@@ -1387,6 +1397,12 @@
                     "description": "The data to bind to, causing the creation of a child binding context if present.",
                     "type": "Object",
                     "optional": true
+                },
+                {
+                    "name": "dataAlias",
+                    "description": "An alias for $data if present.",
+                    "type": "String",
+                    "optional": true
                 }
             ],
             "class": "BinderModule",
@@ -1394,7 +1410,7 @@
         },
         {
             "file": "src\\durandal\\js\\binder.js",
-            "line": 136,
+            "line": 137,
             "description": "Binds the view, preserving the existing binding context. Optionally, a new context can be created, parented to the previous context.",
             "itemtype": "method",
             "name": "bind",
@@ -1415,7 +1431,7 @@
         },
         {
             "file": "src\\durandal\\js\\composition.js",
-            "line": 234,
+            "line": 264,
             "description": "Registers a callback which will be invoked when the current composition transaction has completed. The transaction includes all parent and children compositions.",
             "itemtype": "method",
             "name": "complete",
@@ -1431,7 +1447,7 @@
         },
         {
             "file": "src\\durandal\\js\\composition.js",
-            "line": 249,
+            "line": 279,
             "description": "An array of all the binding handler names (includeing :) that trigger a composition.",
             "itemtype": "property",
             "name": "composeBindings",
@@ -1442,7 +1458,7 @@
         },
         {
             "file": "src\\durandal\\js\\composition.js",
-            "line": 255,
+            "line": 285,
             "description": "Converts a transition name to its moduleId.",
             "itemtype": "method",
             "name": "convertTransitionToModuleId",
@@ -1462,7 +1478,7 @@
         },
         {
             "file": "src\\durandal\\js\\composition.js",
-            "line": 264,
+            "line": 294,
             "description": "The name of the transition to use in all compositions.",
             "itemtype": "property",
             "name": "defaultTransitionName",
@@ -1473,7 +1489,7 @@
         },
         {
             "file": "src\\durandal\\js\\composition.js",
-            "line": 270,
+            "line": 300,
             "description": "Represents the currently executing composition transaction.",
             "itemtype": "property",
             "name": "current",
@@ -1483,7 +1499,7 @@
         },
         {
             "file": "src\\durandal\\js\\composition.js",
-            "line": 275,
+            "line": 305,
             "description": "Registers a binding handler that will be invoked when the current composition transaction is complete.",
             "itemtype": "method",
             "name": "addBindingHandler",
@@ -1511,7 +1527,7 @@
         },
         {
             "file": "src\\durandal\\js\\composition.js",
-            "line": 338,
+            "line": 368,
             "description": "Gets an object keyed with all the elements that are replacable parts, found within the supplied elements. The key will be the part name and the value will be the element itself.",
             "itemtype": "method",
             "name": "getParts",
@@ -1531,7 +1547,7 @@
         },
         {
             "file": "src\\durandal\\js\\composition.js",
-            "line": 498,
+            "line": 535,
             "description": "Eecutes the default view location strategy.",
             "itemtype": "method",
             "name": "defaultStrategy",
@@ -1551,7 +1567,7 @@
         },
         {
             "file": "src\\durandal\\js\\composition.js",
-            "line": 591,
+            "line": 628,
             "description": "Initiates a composition.",
             "itemtype": "method",
             "name": "compose",
@@ -1751,7 +1767,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 95,
+            "line": 121,
             "description": "Durandal's version.",
             "itemtype": "property",
             "name": "version",
@@ -1761,7 +1777,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 100,
+            "line": 126,
             "description": "A noop function.",
             "itemtype": "method",
             "name": "noop",
@@ -1770,7 +1786,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 105,
+            "line": 131,
             "description": "Gets the module id for the specified object.",
             "itemtype": "method",
             "name": "getModuleId",
@@ -1790,7 +1806,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 126,
+            "line": 152,
             "description": "Sets the module id for the specified object.",
             "itemtype": "method",
             "name": "setModuleId",
@@ -1811,7 +1827,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 148,
+            "line": 174,
             "description": "Resolves the default object instance for a module. If the module is an object, the module is returned. If the module is a function, that function is called with `new` and it's result is returned.",
             "itemtype": "method",
             "name": "resolveObject",
@@ -1831,7 +1847,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 161,
+            "line": 187,
             "description": "Gets/Sets whether or not Durandal is in debug mode.",
             "itemtype": "method",
             "name": "debug",
@@ -1852,7 +1868,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 183,
+            "line": 209,
             "description": "Logs data to the console. Pass any number of parameters to be logged. Log output is not processed if the framework is not running in debug mode.",
             "itemtype": "method",
             "name": "log",
@@ -1869,7 +1885,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 189,
+            "line": 215,
             "description": "Logs an error.",
             "itemtype": "method",
             "name": "error",
@@ -1885,7 +1901,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 195,
+            "line": 221,
             "description": "Asserts a condition by throwing an error if the condition fails.",
             "itemtype": "method",
             "name": "assert",
@@ -1906,7 +1922,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 206,
+            "line": 232,
             "description": "Creates a deferred object which can be used to create a promise. Optionally pass a function action to perform which will be passed an object used in resolving the promise.",
             "itemtype": "method",
             "name": "defer",
@@ -1927,7 +1943,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 215,
+            "line": 241,
             "description": "Creates a simple V4 UUID. This should not be used as a PK in your database. It can be used to generate internal, unique ids. For a more robust solution see [node-uuid](https://github.com/broofa/node-uuid).",
             "itemtype": "method",
             "name": "guid",
@@ -1940,7 +1956,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 226,
+            "line": 254,
             "description": "Uses require.js to obtain a module. This function returns a promise which resolves with the module instance. You can pass more than one module id to this function or an array of ids. If more than one or an array is passed, then the promise will resolve with an array of module instances.",
             "itemtype": "method",
             "name": "acquire",
@@ -1960,7 +1976,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 259,
+            "line": 287,
             "description": "Extends the first object with the properties of the following objects.",
             "itemtype": "method",
             "name": "extend",
@@ -1982,7 +1998,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 280,
+            "line": 308,
             "description": "Uses a setTimeout to wait the specified milliseconds.",
             "itemtype": "method",
             "name": "wait",
@@ -2002,7 +2018,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 293,
+            "line": 321,
             "description": "Gets all the owned keys of the specified object.",
             "itemtype": "method",
             "name": "keys",
@@ -2022,7 +2038,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 315,
+            "line": 343,
             "description": "Determines if the specified object is an html element.",
             "itemtype": "method",
             "name": "isElement",
@@ -2042,7 +2058,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 325,
+            "line": 353,
             "description": "Determines if the specified object is an array.",
             "itemtype": "method",
             "name": "isArray",
@@ -2062,7 +2078,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 335,
+            "line": 363,
             "description": "Determines if the specified object is...an object. ie. Not an array, string, etc.",
             "itemtype": "method",
             "name": "isObject",
@@ -2082,7 +2098,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 345,
+            "line": 373,
             "description": "Determines if the specified object is a boolean.",
             "itemtype": "method",
             "name": "isBoolean",
@@ -2102,7 +2118,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 355,
+            "line": 383,
             "description": "Determines if the specified object is a promise.",
             "itemtype": "method",
             "name": "isPromise",
@@ -2122,7 +2138,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 365,
+            "line": 393,
             "description": "Determines if the specified object is a function arguments object.",
             "itemtype": "method",
             "name": "isArguments",
@@ -2142,7 +2158,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 372,
+            "line": 400,
             "description": "Determines if the specified object is a function.",
             "itemtype": "method",
             "name": "isFunction",
@@ -2162,7 +2178,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 379,
+            "line": 407,
             "description": "Determines if the specified object is a string.",
             "itemtype": "method",
             "name": "isString",
@@ -2182,7 +2198,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 386,
+            "line": 414,
             "description": "Determines if the specified object is a number.",
             "itemtype": "method",
             "name": "isNumber",
@@ -2202,7 +2218,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 393,
+            "line": 421,
             "description": "Determines if the specified object is a date.",
             "itemtype": "method",
             "name": "isDate",
@@ -2222,7 +2238,7 @@
         },
         {
             "file": "src\\durandal\\js\\system.js",
-            "line": 400,
+            "line": 428,
             "description": "Determines if the specified object is a boolean.",
             "itemtype": "method",
             "name": "isBoolean",
@@ -2242,7 +2258,7 @@
         },
         {
             "file": "src\\durandal\\js\\viewEngine.js",
-            "line": 25,
+            "line": 26,
             "description": "The file extension that view source files are expected to have.",
             "itemtype": "property",
             "name": "viewExtension",
@@ -2253,7 +2269,7 @@
         },
         {
             "file": "src\\durandal\\js\\viewEngine.js",
-            "line": 31,
+            "line": 32,
             "description": "The name of the RequireJS loader plugin used by the viewLocator to obtain the view source. (Use requirejs to map the plugin's full path).",
             "itemtype": "property",
             "name": "viewPlugin",
@@ -2264,7 +2280,18 @@
         },
         {
             "file": "src\\durandal\\js\\viewEngine.js",
-            "line": 37,
+            "line": 38,
+            "description": "Parameters passed to the RequireJS loader plugin used by the viewLocator to obtain the view source.",
+            "itemtype": "property",
+            "name": "viewPluginParameters",
+            "type": "String",
+            "default": "The empty string by default.",
+            "class": "ViewEngineModule",
+            "module": "viewEngine"
+        },
+        {
+            "file": "src\\durandal\\js\\viewEngine.js",
+            "line": 44,
             "description": "Determines if the url is a url for a view, according to the view engine.",
             "itemtype": "method",
             "name": "isViewUrl",
@@ -2284,7 +2311,7 @@
         },
         {
             "file": "src\\durandal\\js\\viewEngine.js",
-            "line": 46,
+            "line": 53,
             "description": "Converts a view url into a view id.",
             "itemtype": "method",
             "name": "convertViewUrlToViewId",
@@ -2304,7 +2331,7 @@
         },
         {
             "file": "src\\durandal\\js\\viewEngine.js",
-            "line": 55,
+            "line": 62,
             "description": "Converts a view id into a full RequireJS path.",
             "itemtype": "method",
             "name": "convertViewIdToRequirePath",
@@ -2324,7 +2351,7 @@
         },
         {
             "file": "src\\durandal\\js\\viewEngine.js",
-            "line": 64,
+            "line": 72,
             "description": "Parses the view engine recognized markup and returns DOM elements.",
             "itemtype": "method",
             "name": "parseMarkup",
@@ -2344,7 +2371,7 @@
         },
         {
             "file": "src\\durandal\\js\\viewEngine.js",
-            "line": 71,
+            "line": 79,
             "description": "Calls `parseMarkup` and then pipes the results through `ensureSingleElement`.",
             "itemtype": "method",
             "name": "processMarkup",
@@ -2364,7 +2391,7 @@
         },
         {
             "file": "src\\durandal\\js\\viewEngine.js",
-            "line": 81,
+            "line": 89,
             "description": "Converts an array of elements into a single element. White space and comments are removed. If a single element does not remain, then the elements are wrapped.",
             "itemtype": "method",
             "name": "ensureSingleElement",
@@ -2384,7 +2411,48 @@
         },
         {
             "file": "src\\durandal\\js\\viewEngine.js",
-            "line": 114,
+            "line": 122,
+            "description": "Gets the view associated with the id from the cache of parsed views.",
+            "itemtype": "method",
+            "name": "tryGetViewFromCache",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The view id to lookup in the cache.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The cached view or null if it's not in the cache.",
+                "type": "DOMElement|null"
+            },
+            "class": "ViewEngineModule",
+            "module": "viewEngine"
+        },
+        {
+            "file": "src\\durandal\\js\\viewEngine.js",
+            "line": 131,
+            "description": "Puts the view associated with the id into the cache of parsed views.",
+            "itemtype": "method",
+            "name": "putViewInCache",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "The view id whose view should be cached.",
+                    "type": "String"
+                },
+                {
+                    "name": "view",
+                    "description": "The view to cache.",
+                    "type": "DOMElement"
+                }
+            ],
+            "class": "ViewEngineModule",
+            "module": "viewEngine"
+        },
+        {
+            "file": "src\\durandal\\js\\viewEngine.js",
+            "line": 140,
             "description": "Creates the view associated with the view id.",
             "itemtype": "method",
             "name": "createView",
@@ -2404,7 +2472,7 @@
         },
         {
             "file": "src\\durandal\\js\\viewEngine.js",
-            "line": 137,
+            "line": 172,
             "description": "Called when a view cannot be found to provide the opportunity to locate or generate a fallback view. Mainly used to ease development.",
             "itemtype": "method",
             "name": "createFallbackView",
@@ -2592,7 +2660,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 27,
+            "line": 29,
             "description": "Selects an option and closes the message box, returning the selected option through the dialog system's promise.",
             "itemtype": "method",
             "name": "selectOption",
@@ -2608,7 +2676,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 36,
+            "line": 38,
             "description": "Provides the view to the composition system.",
             "itemtype": "method",
             "name": "getView",
@@ -2621,7 +2689,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 45,
+            "line": 47,
             "description": "Configures a custom view to use when displaying message boxes.",
             "itemtype": "method",
             "name": "setViewUrl",
@@ -2638,7 +2706,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 56,
+            "line": 58,
             "description": "The title to be used for the message box if one is not provided.",
             "itemtype": "property",
             "name": "defaultTitle",
@@ -2650,8 +2718,8 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 64,
-            "description": "The options to display in the message box of none are specified.",
+            "line": 66,
+            "description": "The options to display in the message box if none are specified.",
             "itemtype": "property",
             "name": "defaultOptions",
             "type": "String[]",
@@ -2662,7 +2730,23 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 72,
+            "line": 77,
+            "description": "Sets the classes and styles used throughout the message box markup.",
+            "itemtype": "method",
+            "name": "setDefaults",
+            "params": [
+                {
+                    "name": "settings",
+                    "description": "A settings object containing the following optional properties: buttonClass, primaryButtonClass, secondaryButtonClass, class, style.",
+                    "type": "Object"
+                }
+            ],
+            "class": "MessageBox",
+            "module": "dialog"
+        },
+        {
+            "file": "src\\plugins\\js\\dialog.js",
+            "line": 156,
             "description": "The markup for the message box's view.",
             "itemtype": "property",
             "name": "defaultViewMarkup",
@@ -2673,7 +2757,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 110,
+            "line": 197,
             "description": "The constructor function used to create message boxes.",
             "itemtype": "property",
             "name": "MessageBox",
@@ -2683,7 +2767,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 115,
+            "line": 202,
             "description": "The css zIndex that the last dialog was displayed at.",
             "itemtype": "property",
             "name": "currentZIndex",
@@ -2693,7 +2777,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 120,
+            "line": 207,
             "description": "Gets the next css zIndex at which a dialog should be displayed.",
             "itemtype": "method",
             "name": "getNextZIndex",
@@ -2706,7 +2790,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 128,
+            "line": 215,
             "description": "Determines whether or not there are any dialogs open.",
             "itemtype": "method",
             "name": "isOpen",
@@ -2719,7 +2803,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 136,
+            "line": 223,
             "description": "Gets the dialog context by name or returns the default context if no name is specified.",
             "itemtype": "method",
             "name": "getContext",
@@ -2740,7 +2824,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 145,
+            "line": 232,
             "description": "Adds (or replaces) a dialog context.",
             "itemtype": "method",
             "name": "addContext",
@@ -2761,7 +2845,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 177,
+            "line": 268,
             "description": "Gets the dialog model that is associated with the specified object.",
             "itemtype": "method",
             "name": "getDialog",
@@ -2781,7 +2865,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 190,
+            "line": 281,
             "description": "Closes the dialog associated with the specified object.",
             "itemtype": "method",
             "name": "close",
@@ -2803,7 +2887,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 203,
+            "line": 294,
             "description": "Shows a dialog.",
             "itemtype": "method",
             "name": "show",
@@ -2835,7 +2919,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 257,
+            "line": 348,
             "description": "Shows a message box.",
             "itemtype": "method",
             "name": "showMessage",
@@ -2856,6 +2940,18 @@
                     "description": "The options to provide to the user.",
                     "type": "String[]",
                     "optional": true
+                },
+                {
+                    "name": "autoclose",
+                    "description": "Automatically close the the message box when clicking outside?",
+                    "type": "Boolean",
+                    "optional": true
+                },
+                {
+                    "name": "settings",
+                    "description": "Custom settings for this instance of the messsage box, used to change classes and styles.",
+                    "type": "Object",
+                    "optional": true
                 }
             ],
             "return": {
@@ -2867,14 +2963,14 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 276,
+            "line": 371,
             "description": "Installs this module into Durandal; called by the framework. Adds `app.showDialog` and `app.showMessage` convenience methods.",
             "itemtype": "method",
             "name": "install",
             "params": [
                 {
                     "name": "config",
-                    "description": "Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box.",
+                    "description": "Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box. You can also use messageBoxViewUrl to specify the view url.",
                     "type": "Object",
                     "optional": true
                 }
@@ -2884,7 +2980,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 308,
+            "line": 411,
             "description": "In this function, you are expected to add a DOM element to the tree which will serve as the \"host\" for the modal's composed view. You must add a property called host to the modalWindow object which references the dom element. It is this host which is passed to the composition module.",
             "itemtype": "method",
             "name": "addHost",
@@ -2900,7 +2996,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 339,
+            "line": 442,
             "description": "This function is expected to remove any DOM machinery associated with the specified dialog and do any other necessary cleanup.",
             "itemtype": "method",
             "name": "removeHost",
@@ -2916,7 +3012,7 @@
         },
         {
             "file": "src\\plugins\\js\\dialog.js",
-            "line": 369,
+            "line": 472,
             "description": "This function is called after the modal is fully composed into the DOM, allowing your implementation to do any final modifications, such as positioning or animation. You can obtain the original dialog object by using `getDialog` on context.model.",
             "itemtype": "method",
             "name": "compositionComplete",
@@ -2941,8 +3037,24 @@
             "module": "dialog"
         },
         {
+            "file": "src\\plugins\\js\\dialog.js",
+            "line": 515,
+            "description": "This function is called to reposition the model view.",
+            "itemtype": "method",
+            "name": "reposition",
+            "params": [
+                {
+                    "name": "view",
+                    "description": "The dialog view.",
+                    "type": "DOMElement"
+                }
+            ],
+            "class": "DialogContext",
+            "module": "dialog"
+        },
+        {
             "file": "src\\plugins\\js\\history.js",
-            "line": 37,
+            "line": 42,
             "description": "The setTimeout interval used when the browser does not support hash change events.",
             "itemtype": "property",
             "name": "interval",
@@ -2953,7 +3065,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 43,
+            "line": 48,
             "description": "Indicates whether or not the history module is actively tracking history.",
             "itemtype": "property",
             "name": "active",
@@ -2963,7 +3075,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 56,
+            "line": 61,
             "description": "Gets the true hash value. Cannot use location.hash directly due to a bug in Firefox where location.hash will always be decoded.",
             "itemtype": "method",
             "name": "getHash",
@@ -2984,7 +3096,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 67,
+            "line": 72,
             "description": "Get the cross-browser normalized URL fragment, either from the URL, the hash, or the override.",
             "itemtype": "method",
             "name": "getFragment",
@@ -3009,7 +3121,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 90,
+            "line": 95,
             "description": "Activate the hash change handling, returning `true` if the current URL matches an existing route, and `false` otherwise.",
             "itemtype": "method",
             "name": "activate",
@@ -3029,7 +3141,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 162,
+            "line": 167,
             "description": "Disable history, perhaps temporarily. Not useful in a real app, but possibly useful for unit testing Routers.",
             "itemtype": "method",
             "name": "deactivate",
@@ -3038,7 +3150,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 172,
+            "line": 177,
             "description": "Checks the current URL to see if it has changed, and if it has, calls `loadUrl`, normalizing across the hidden iframe.",
             "itemtype": "method",
             "name": "checkUrl",
@@ -3051,7 +3163,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 194,
+            "line": 199,
             "description": "Attempts to load the current URL fragment. A pass-through to options.routeHandler.",
             "itemtype": "method",
             "name": "loadUrl",
@@ -3064,7 +3176,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 207,
+            "line": 212,
             "description": "Save a fragment into the hash history, or replace the URL state if the\n'replace' option is passed. You are responsible for properly URL-encoding\nthe fragment in advance.\nThe options object can contain `trigger: false` if you wish to not have the\nroute callback be fired, or `replace: true`, if\nyou wish to modify the current URL without adding an entry to the history.",
             "itemtype": "method",
             "name": "navigate",
@@ -3089,7 +3201,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 280,
+            "line": 285,
             "description": "Navigates back in the browser history.",
             "itemtype": "method",
             "name": "navigateBack",
@@ -3098,7 +3210,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 293,
+            "line": 298,
             "description": "The function that will be called back when the fragment changes.",
             "itemtype": "property",
             "name": "routeHandler",
@@ -3108,7 +3220,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 298,
+            "line": 303,
             "description": "The url root used to extract the fragment when using push state.",
             "itemtype": "property",
             "name": "root",
@@ -3118,7 +3230,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 303,
+            "line": 308,
             "description": "Use hash change when present.",
             "itemtype": "property",
             "name": "hashChange",
@@ -3129,7 +3241,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 309,
+            "line": 314,
             "description": "Use push state when present.",
             "itemtype": "property",
             "name": "pushState",
@@ -3140,7 +3252,7 @@
         },
         {
             "file": "src\\plugins\\js\\history.js",
-            "line": 315,
+            "line": 320,
             "description": "Prevents loading of the current url when activating history.",
             "itemtype": "property",
             "name": "silent",
@@ -3163,6 +3275,26 @@
         {
             "file": "src\\plugins\\js\\http.js",
             "line": 19,
+            "description": "Converts the data to JSON.",
+            "itemtype": "method",
+            "name": "toJSON",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The data to convert to JSON.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "JSON.",
+                "type": "String"
+            },
+            "class": "HTTPModule",
+            "module": "http"
+        },
+        {
+            "file": "src\\plugins\\js\\http.js",
+            "line": 28,
             "description": "Makes an HTTP GET request.",
             "itemtype": "method",
             "name": "get",
@@ -3177,6 +3309,12 @@
                     "description": "An optional key/value object to transform into query string parameters.",
                     "type": "Object",
                     "optional": true
+                },
+                {
+                    "name": "headers",
+                    "description": "The data to add to the request header.  It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.",
+                    "type": "Object",
+                    "optional": true
                 }
             ],
             "return": {
@@ -3188,7 +3326,7 @@
         },
         {
             "file": "src\\plugins\\js\\http.js",
-            "line": 29,
+            "line": 39,
             "description": "Makes an JSONP request.",
             "itemtype": "method",
             "name": "jsonp",
@@ -3209,6 +3347,12 @@
                     "description": "The name of the callback parameter the api expects (overrides the default callbackParam).",
                     "type": "String",
                     "optional": true
+                },
+                {
+                    "name": "headers",
+                    "description": "The data to add to the request header.  It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.",
+                    "type": "Object",
+                    "optional": true
                 }
             ],
             "return": {
@@ -3220,7 +3364,38 @@
         },
         {
             "file": "src\\plugins\\js\\http.js",
-            "line": 56,
+            "line": 68,
+            "description": "Makes an HTTP PUT request.",
+            "itemtype": "method",
+            "name": "put",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "The url to send the put request to.",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "The data to put. It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.",
+                    "type": "Object"
+                },
+                {
+                    "name": "headers",
+                    "description": "The data to add to the request header.  It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise of the response data.",
+                "type": "Promise"
+            },
+            "class": "HTTPModule",
+            "module": "http"
+        },
+        {
+            "file": "src\\plugins\\js\\http.js",
+            "line": 86,
             "description": "Makes an HTTP POST request.",
             "itemtype": "method",
             "name": "post",
@@ -3234,6 +3409,12 @@
                     "name": "data",
                     "description": "The data to post. It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.",
                     "type": "Object"
+                },
+                {
+                    "name": "headers",
+                    "description": "The data to add to the request header.  It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.",
+                    "type": "Object",
+                    "optional": true
                 }
             ],
             "return": {
@@ -3244,8 +3425,40 @@
             "module": "http"
         },
         {
+            "file": "src\\plugins\\js\\http.js",
+            "line": 104,
+            "description": "Makes an HTTP DELETE request.",
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "The url to send the delete request to.",
+                    "type": "String"
+                },
+                {
+                    "name": "query",
+                    "description": "An optional key/value object to transform into query string parameters.",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "headers",
+                    "description": "The data to add to the request header.  It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A promise of the get response data.",
+                "type": "Promise"
+            },
+            "class": "HTTPModule",
+            "module": "http"
+        },
+        {
             "file": "src\\plugins\\js\\observable.js",
-            "line": 121,
+            "line": 159,
             "description": "Converts an entire object into an observable object by re-writing its attributes using ES5 getters and setters. Attributes beginning with '_' or '$' are ignored.",
             "itemtype": "method",
             "name": "convertObject",
@@ -3261,7 +3474,7 @@
         },
         {
             "file": "src\\plugins\\js\\observable.js",
-            "line": 187,
+            "line": 242,
             "description": "Converts a normal property into an observable property using ES5 getters and setters.",
             "itemtype": "method",
             "name": "convertProperty",
@@ -3292,7 +3505,7 @@
         },
         {
             "file": "src\\plugins\\js\\observable.js",
-            "line": 250,
+            "line": 319,
             "description": "Defines a computed property using ES5 getters and setters.",
             "itemtype": "method",
             "name": "defineProperty",
@@ -3322,7 +3535,7 @@
         },
         {
             "file": "src\\plugins\\js\\observable.js",
-            "line": 311,
+            "line": 380,
             "description": "Installs the plugin into the view model binder's `beforeBind` hook so that objects are automatically converted before being bound.",
             "itemtype": "method",
             "name": "install",
@@ -3331,7 +3544,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 65,
+            "line": 75,
             "description": "Triggered when the navigation logic has completed.",
             "itemtype": "event",
             "name": "router:navigation:complete",
@@ -3357,7 +3570,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 73,
+            "line": 83,
             "description": "Triggered when the navigation has been cancelled.",
             "itemtype": "event",
             "name": "router:navigation:cancelled",
@@ -3383,7 +3596,28 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 81,
+            "line": 91,
+            "description": "Triggered when navigation begins.",
+            "itemtype": "event",
+            "name": "router:navigation:processing",
+            "params": [
+                {
+                    "name": "instruction",
+                    "description": "The routing instruction.",
+                    "type": "Object"
+                },
+                {
+                    "name": "router",
+                    "description": "The router.",
+                    "type": "Router"
+                }
+            ],
+            "class": "Router",
+            "module": "router"
+        },
+        {
+            "file": "src\\plugins\\js\\router.js",
+            "line": 98,
             "description": "Triggered right before a route is activated.",
             "itemtype": "event",
             "name": "router:route:activating",
@@ -3409,7 +3643,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 89,
+            "line": 106,
             "description": "Triggered right before a route is configured.",
             "itemtype": "event",
             "name": "router:route:before-config",
@@ -3430,7 +3664,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 96,
+            "line": 113,
             "description": "Triggered just after a route is configured.",
             "itemtype": "event",
             "name": "router:route:after-config",
@@ -3451,7 +3685,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 103,
+            "line": 120,
             "description": "Triggered when the view for the activated instance is attached.",
             "itemtype": "event",
             "name": "router:navigation:attached",
@@ -3477,7 +3711,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 111,
+            "line": 128,
             "description": "Triggered when the composition that the activated instance participates in is complete.",
             "itemtype": "event",
             "name": "router:navigation:composition-complete",
@@ -3503,7 +3737,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 119,
+            "line": 136,
             "description": "Triggered when the router does not find a matching route.",
             "itemtype": "event",
             "name": "router:route:not-found",
@@ -3524,7 +3758,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 134,
+            "line": 151,
             "description": "The route handlers that are registered. Each handler consists of a `routePattern` and a `callback`.",
             "itemtype": "property",
             "name": "handlers",
@@ -3534,7 +3768,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 139,
+            "line": 156,
             "description": "The route configs that are registered.",
             "itemtype": "property",
             "name": "routes",
@@ -3544,7 +3778,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 144,
+            "line": 161,
             "description": "The route configurations that have been designated as displayable in a nav ui (nav:true).",
             "itemtype": "property",
             "name": "navigationModel",
@@ -3554,7 +3788,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 149,
+            "line": 166,
             "description": "The active item/screen based on the current navigation state.",
             "itemtype": "property",
             "name": "activeItem",
@@ -3564,7 +3798,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 154,
+            "line": 171,
             "description": "Indicates that the router (or a child router) is currently in the process of navigating.",
             "itemtype": "property",
             "name": "isNavigating",
@@ -3574,7 +3808,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 167,
+            "line": 184,
             "description": "An observable surfacing the active routing instruction that is currently being processed or has recently finished processing.\nThe instruction object has `config`, `fragment`, `queryString`, `params` and `queryParams` properties.",
             "itemtype": "property",
             "name": "activeInstruction",
@@ -3584,7 +3818,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 285,
+            "line": 342,
             "description": "Inspects routes and modules before activation. Can be used to protect access by cancelling navigation or redirecting.",
             "itemtype": "method",
             "name": "guardRoute",
@@ -3609,7 +3843,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 440,
+            "line": 523,
             "description": "Parses a query string into an object.",
             "itemtype": "method",
             "name": "parseQueryString",
@@ -3629,7 +3863,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 474,
+            "line": 571,
             "description": "Add a route to be tested when the url fragment changes.",
             "itemtype": "method",
             "name": "route",
@@ -3650,7 +3884,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 484,
+            "line": 581,
             "description": "Attempt to load the specified URL fragment. If a route succeeds with a match, returns `true`. If no defined routes matches the fragment, returns `false`.",
             "itemtype": "method",
             "name": "loadUrl",
@@ -3670,7 +3904,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 539,
+            "line": 658,
             "description": "Updates the document title based on the activated module instance, the routing instruction and the app.title.",
             "itemtype": "method",
             "name": "updateDocumentTitle",
@@ -3691,7 +3925,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 557,
+            "line": 684,
             "description": "Save a fragment into the hash history, or replace the URL state if the\n'replace' option is passed. You are responsible for properly URL-encoding\nthe fragment in advance.\nThe options object can contain `trigger: false` if you wish to not have the\nroute callback be fired, or `replace: true`, if\nyou wish to modify the current URL without adding an entry to the history.",
             "itemtype": "method",
             "name": "navigate",
@@ -3716,7 +3950,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 579,
+            "line": 713,
             "description": "Navigates back in the browser history.",
             "itemtype": "method",
             "name": "navigateBack",
@@ -3725,7 +3959,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 597,
+            "line": 731,
             "description": "Converts a route to a hash suitable for binding to a link's href.",
             "itemtype": "method",
             "name": "convertRouteToHash",
@@ -3745,7 +3979,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 623,
+            "line": 759,
             "description": "Converts a route to a module id. This is only called if no module id is supplied as part of the route mapping.",
             "itemtype": "method",
             "name": "convertRouteToModuleId",
@@ -3765,7 +3999,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 633,
+            "line": 769,
             "description": "Converts a route to a displayable title. This is only called if no title is specified as part of the route mapping.",
             "itemtype": "method",
             "name": "convertRouteToTitle",
@@ -3785,7 +4019,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 644,
+            "line": 780,
             "description": "Maps route patterns to modules.",
             "itemtype": "method",
             "name": "map",
@@ -3804,14 +4038,14 @@
             ],
             "chainable": 1,
             "example": [
-                "\nrouter.map([\n   { route: '', title:'Home', moduleId: 'homeScreen', nav: true },\n   { route: 'customer/:id', moduleId: 'customerDetails'}\n]);"
+                "\n        router.map([\n        { route: '', title:'Home', moduleId: 'homeScreen', nav: true },\n        { route: 'customer/:id', moduleId: 'customerDetails'}\n        ]);"
             ],
             "class": "Router",
             "module": "router"
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 680,
+            "line": 816,
             "description": "Builds an observable array designed to bind a navigation UI to. The model will exist in the `navigationModel` property.",
             "itemtype": "method",
             "name": "buildNavigationModel",
@@ -3828,7 +4062,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 708,
+            "line": 844,
             "description": "Configures how the router will handle unknown routes.",
             "itemtype": "method",
             "name": "mapUnknownRoutes",
@@ -3852,7 +4086,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 765,
+            "line": 901,
             "description": "Resets the router by removing handlers, routes, event handlers and previously configured options.",
             "itemtype": "method",
             "name": "reset",
@@ -3862,7 +4096,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 779,
+            "line": 915,
             "description": "Makes all configured routes and/or module ids relative to a certain base url.",
             "itemtype": "method",
             "name": "makeRelative",
@@ -3879,7 +4113,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 822,
+            "line": 981,
             "description": "Creates a child router.",
             "itemtype": "method",
             "name": "createChildRouter",
@@ -3892,7 +4126,16 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 845,
+            "line": 1004,
+            "description": "Makes the RegExp generated for routes case sensitive, rather than the default of case insensitive.",
+            "itemtype": "method",
+            "name": "makeRoutesCaseSensitive",
+            "class": "RouterModule",
+            "module": "router"
+        },
+        {
+            "file": "src\\plugins\\js\\router.js",
+            "line": 1012,
             "description": "Verify that the target is the current window",
             "itemtype": "method",
             "name": "targetIsThisWindow",
@@ -3905,7 +4148,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 861,
+            "line": 1028,
             "description": "Activates the router and the underlying history tracking mechanism.",
             "itemtype": "method",
             "name": "activate",
@@ -3918,7 +4161,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 908,
+            "line": 1082,
             "description": "Disable history, perhaps temporarily. Not useful in a real app, but possibly useful for unit testing Routers.",
             "itemtype": "method",
             "name": "deactivate",
@@ -3927,7 +4170,7 @@
         },
         {
             "file": "src\\plugins\\js\\router.js",
-            "line": 916,
+            "line": 1090,
             "description": "Installs the router's custom ko binding handler.",
             "itemtype": "method",
             "name": "install",
@@ -4114,6 +4357,32 @@
             ],
             "return": {
                 "description": "The deserialized object.",
+                "type": "Object"
+            },
+            "class": "SerializerModule",
+            "module": "serializer"
+        },
+        {
+            "file": "src\\plugins\\js\\serializer.js",
+            "line": 132,
+            "description": "Clone the object.",
+            "itemtype": "method",
+            "name": "clone",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The object to clone.",
+                    "type": "Object"
+                },
+                {
+                    "name": "settings",
+                    "description": "Settings can specify any of the options allowed by the serialize or deserialize methods.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The new clone.",
                 "type": "Object"
             },
             "class": "SerializerModule",

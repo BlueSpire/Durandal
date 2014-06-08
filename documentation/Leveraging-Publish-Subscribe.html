@@ -121,7 +121,8 @@ Events.includeIn(myObj);</pre>
 <li><code>trigger</code> - Trigger this object&#39;s events.</li>
 <li><code>proxy</code> - Proxy this object&#39;s events.</li>
 </ul>
-<p>You can see the <a href="/documentation/api.html#module/events">events</a> module reference documentation for more detailed information on these.
+<p>You can pass the <code>all</code> event name to subscribe to all events.</p>
+<p>You can see the <a href="/documentation/api#module/events">events</a> module reference documentation for more detailed information on these.
 Some examples of using the <em>app</em> module&#39;s events are demonstrated below.</p>
 <blockquote>
 <p><strong>Note:</strong> The <em>eventList</em> that is passed to the functions above can be a list of events to publish or subscribe to. Whitespace is used to delimit events.</p>
@@ -134,6 +135,10 @@ This sets you up to do application-wide messaging out-of-the-box. In light of th
 <p><strong>Subscribing to an app-wide message.</strong></p>
 <pre class="prettyprint linenums">app.on(&#39;customer:new&#39;).then(function(customer){
   //do something with the payload
+});</pre>
+<p><strong>Subscribing to all app-wide messages.</strong></p>
+<pre class="prettyprint linenums">app.on(&#39;all&#39;).then(function(event){
+  //the arguments array contains the payload
 });</pre>
 <p><strong>Un-subscribing from an app-wide message.</strong></p>
 <pre class="prettyprint linenums">var subscription = app.on(&#39;customer:new&#39;).then(function(customer){

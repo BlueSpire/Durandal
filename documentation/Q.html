@@ -114,8 +114,8 @@ To integrate the Q library, follow these steps:</p>
 };</pre>
 <blockquote>
 <p><strong>Note:</strong> When working with Breeze or any other library which depends on Q, you should make the above patch.</p>
-<p><strong>Note:</strong> The above patch will not change promises returned from the <a href="/documentation/api.html#module/http">http plugin</a> since that uses jQuery&#39;s ajax API directly.
-If you are using the <a href="/documentation/api.html#module/http">http plugin</a>, then you may want to consider patching that manually. Something like this:</p>
+<p><strong>Note:</strong> The above patch will not change promises returned from the <a href="/documentation/api#module/http">http plugin</a> since that uses jQuery&#39;s ajax API directly.
+If you are using the <a href="/documentation/api#module/http">http plugin</a>, then you may want to consider patching that manually. Something like this:</p>
 <pre class="prettyprint linenums">http.get = function(url, query) {
   return Q.when($.ajax(url, { data: query }));
 }</pre>

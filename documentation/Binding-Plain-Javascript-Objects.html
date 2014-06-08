@@ -94,14 +94,14 @@
 <blockquote>
   <strong>Key Points</strong>
   <ul>
-    <li>Install the <a href="/documentation/api.html#module/observable">observable plugin</a> to databind to plain JavaScript objects without needing Knockout observables in your model.</li>
+    <li>Install the <a href="/documentation/api#module/observable">observable plugin</a> to databind to plain JavaScript objects without needing Knockout observables in your model.</li>
     <li>The observable plugin only works with ES5 compatible browsers.</li>
     <li>The plugin simplifies working with promised data.</li>
   </ul>
 </blockquote>
 
 <h3 id="configuration">Configuration</h3>
-<p>Durandal&#39;s <a href="/documentation/api.html#module/observable">observable plugin</a> can hook into the <a href="/documentation/api.html#module/binder">binder</a> and ensure that all bound objects are observable. Let&#39;s see how to install the plugin. In your <em>main.js</em> file, before calling <a href="/documentation/api.html#module/app/method/start">app.start()</a> you will need to make a call to <a href="/documentation/api.html#module/app/method/configurePlugins">configurePlugins(...)</a>. Here&#39;s what your code might look like:</p>
+<p>Durandal&#39;s <a href="/documentation/api#module/observable">observable plugin</a> can hook into the <a href="/documentation/api#module/binder">binder</a> and ensure that all bound objects are observable. Let&#39;s see how to install the plugin. In your <em>main.js</em> file, before calling <a href="/documentation/api#module/app/method/start">app.start()</a> you will need to make a call to <a href="/documentation/api#module/app/method/configurePlugins">configurePlugins(...)</a>. Here&#39;s what your code might look like:</p>
 <pre class="prettyprint linenums">define([&#39;durandal/app&#39;],  function (app) {
     app.configurePlugins({
         observable: true
@@ -139,7 +139,7 @@ observable(viewModel, &#39;firstName&#39;).subscribe(function(value){
 viewModel.firstName = &#39;Test&#39;;</pre>
 <p>Calling the observable module as a function, and passing the object and the property name, will return the underlying Knockout observable instance. This is also handy for extending observables or passing them around.</p>
 <h4 id="creating-computed-observables">Creating Computed Observables</h4>
-<p>If you wish to create a computed observable, you can use the <a href="/documentation/api.html#module/observable/method/defineProperty">observable.defineProperty</a> API like so:</p>
+<p>If you wish to create a computed observable, you can use the <a href="/documentation/api#module/observable/method/defineProperty">observable.defineProperty</a> API like so:</p>
 <pre class="prettyprint linenums">var observable = require(&#39;plugins/observable&#39;);
 
 var viewModel:{
@@ -152,7 +152,7 @@ observable.defineProperty(viewModel, &#39;fullName&#39;, function(){
 });
 
 console.log(viewModel.fullName);</pre>
-<p>The third argument to <a href="/documentation/api.html#module/observable/method/defineProperty">observable.defineProperty</a> functions just like the argument to a Knockout computed.</p>
+<p>The third argument to <a href="/documentation/api#module/observable/method/defineProperty">observable.defineProperty</a> functions just like the argument to a Knockout computed.</p>
 <h3 id="promises">Promises</h3>
 <p>The observable module also understands promises. If you have an attribute that is an instance of a promise on your bound model, the observable module will convert this into a getter that returns the promised value. Under the covers it will register a callback with the promise and then update the observable for you. Here&#39;s an example of code you might write in light of this:</p>
 <pre class="prettyprint linenums">define(function (require) {
@@ -171,6 +171,26 @@ console.log(viewModel.fullName);</pre>
     &lt;p data-bind=&quot;text: content&quot;&gt;&lt;/p&gt;
     &lt;hr&gt;
 &lt;/div&gt;</pre>
+<h3 id="change-detection">Change Detection</h3>
+<p>The observable module supports optional changed detection. To activate it, simply add the changeDetection parameter to the plugin activation:</p>
+<pre class="prettyprint linenums">  app.configurePlugins({
+    observable: {
+      changeDetection: &quot;hasChanged&quot; // The name of your method.
+    },
+    // ... other plugins.
+  });</pre>
+<p>Then, add a method of the same name to your shell, model, viewmodel or controller:</p>
+<pre class="prettyprint linenums">  hasChanged = function (obj, propertyName, newValue, arrayChanges) {
+    // obj is the object on which the property &quot;propertyName&quot; has changed.
+
+    if (arrayChanges) {
+      // Array changes needs version 3+ of Knockout and is called on changes
+      // to an observable array.
+    } else {
+      // newValue contains the new value of the observable having changed.
+    }
+  }</pre>
+<p>Multiple objects can receive notifications when changes are detected. Simply add the method to all the objects you need to detect those changes.</p>
 
 </section>
 

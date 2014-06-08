@@ -95,21 +95,20 @@
 <h4 id="install-dependencies">Install Dependencies</h4>
 <ol>
 <li>Install NodeJS from <a href="http://nodejs.org">http://nodejs.org</a></li>
-<li>Install Weyland via NPM using the following command <code>npm install -g weyland</code></li>
+<li>Install a build tool such as Gulp or Grunt via NPM</li>
 </ol>
 <h4 id="add-a-config-file">Add A Config File</h4>
-<p>At the project root create a js file named <em>weyland-config.js</em>
-You can use the config file from the Nuget or VSIX install as is, except remove this line or your build will fail: <code>mainConfigFile: &#39;App/main.js&#39;</code> (This is fixed as of 2.0.1.)</p>
+<p>At the project root create your build config file, per the instructions from your chosen build tool.</p>
 <h4 id="add-the-post-build-event">Add the Post Build Event</h4>
-<p>Go to the project&#39;s properties and select <code>Build Events</code>. In the post build event add the following:</p>
+<p>Go to the project&#39;s properties and select <code>Build Events</code>. In the post build event add the following (note that this example uses a hypothetical gulp build):</p>
 <pre class="prettyprint linenums">cd $(ProjectDir)
-weyland build</pre>
+gulp build</pre>
 <p>If you ony want to build when the Release configuration is selected, use the following:</p>
 <pre class="prettyprint linenums">if &#39;$(Configuration)&#39;==&#39;Release&#39; (
     cd $(ProjectDir)
-    weyland build
+    gulp build
 )</pre>
-<p>Build your project. You should see the weyland build output in the Output window, with a last line similar to: &quot;Optimized build created at ...App\main-built.js&quot;</p>
+<p>Build your project. You should see the build output in the Output window.</p>
 <h4 id="include-generated-files">Include Generated Files</h4>
 <p>In the solution explorer, select &quot;Show All Files&quot;. Under the App folder, locate <em>main-built.js</em>.
 Right click and select &#39;Include in Project&#39;.</p>

@@ -108,12 +108,12 @@ It&#39;s a simple way to encapsulate view-related code, keeping your normal modu
 This is the most common mechanism for interacting with the DOM in an application, particularly if the logic is reusable.
 For example, it&#39;s common to wrap jQuery plugins inside of a custom binding handler so they can be declaratively applied to any element.
 It&#39;s extremely efficient as well, since the jQuery plugin will gain access to the element it&#39;s declared on and won&#39;t need to execute any selectors.
-Lest you feel that such a mechanism can&#39;t be very powerful, it&#39;s important to note that Durandal&#39;s <a href="/documentation/Using-Composition.html">composition</a> and <a href="/documentation/Creating-A-Widget.html">widget</a> bindings are just custom KO binding handlers.
+Lest you feel that such a mechanism can&#39;t be very powerful, it&#39;s important to note that Durandal&#39;s <a href="/documentation/Using-Composition">composition</a> and <a href="/documentation/Creating-A-Widget">widget</a> bindings are just custom KO binding handlers.
 For information on building your own binding handlers, see <a href="http://knockoutjs.com/documentation/custom-bindings.html">the Knockout documentation on the subject</a>.</p>
 <p>A visit to the KO site or a quick search on github will also help you find many existing community binding handlers which are usable with Durandal.
 A useful example of what can be done is <a href="https://github.com/rniemeyer/knockout-delegatedEvents">knockout-delegatedEvents</a> which makes delegated events bindable, without resorting to manual jQuery code.</p>
 <h4 id="delayed-binding-handlers">Delayed Binding Handlers</h4>
-<p>Sometimes your binding handler needs to work with an element only after it is attached to the DOM and when the entire composition of the view is complete. An example of this is any code that needs to measure the size of an HTML element. Durandal provides a way to register a knockout binding handler so that it does not execute until the composition is complete. To do this, use <a href="/documentation/api.html#module/composition/method/addBindingHandler">composition.addBindingHandler</a>. One common use is in focusing elements. Let&#39;s re-write Knockout&#39;s <code>hasFocus</code> binding so that it is executed after composition is complete. If you have an existing registered binding handler, you can change its execution time simply by doing this:</p>
+<p>Sometimes your binding handler needs to work with an element only after it is attached to the DOM and when the entire composition of the view is complete. An example of this is any code that needs to measure the size of an HTML element. Durandal provides a way to register a knockout binding handler so that it does not execute until the composition is complete. To do this, use <a href="/documentation/api#module/composition/method/addBindingHandler">composition.addBindingHandler</a>. One common use is in focusing elements. Let&#39;s re-write Knockout&#39;s <code>hasFocus</code> binding so that it is executed after composition is complete. If you have an existing registered binding handler, you can change its execution time simply by doing this:</p>
 <pre class="prettyprint linenums">composition.addBindingHandler(&#39;hasFocus&#39;);</pre>
 <p>If you wanted to write a custom binding handler, then provide it as the second argument:</p>
 <pre class="prettyprint linenums">composition.addBindingHandler(&#39;myCustomHandler&#39;,{
@@ -130,11 +130,11 @@ A useful example of what can be done is <a href="https://github.com/rniemeyer/kn
 <h4 id="getview-and-viewurl">getView and viewUrl</h4>
 <p>When the composition engine uses the view locator to find the view for an object, one of the first things the view locator does is check to see if the object has a <code>getView()</code> function or <code>viewUrl</code> property.
 The <code>getView</code> function allows the object to manually construct a view, wiring any events and doing whatever it desires before handing it back to the locator.
-This is the earliest event that can be hooked and provides complete control over the view. Usually, conventional location of HTML files is sufficient, but this hook provides a very powerful alternative. See the <a href="/documentation/View-Location.html">view location docs</a> for more information.</p>
+This is the earliest event that can be hooked and provides complete control over the view. Usually, conventional location of HTML files is sufficient, but this hook provides a very powerful alternative. See the <a href="/documentation/View-Location">view location docs</a> for more information.</p>
 <h4 id="activate">activate</h4>
 <p>This callback happens before databinding. It is passed the composition&#39;s <code>activationData</code> if available. If this function returns a promise, the binding system will wait for it&#39;s resolution before completing. You don&#39;t have access to the view at this time, but we wanted to list this callback here for completeness.</p>
 <h4 id="binding-bindingcomplete">binding &amp; bindingComplete</h4>
-<p>When the composition engine takes your view and object, and uses the <a href="/documentation/api.html#module/binder">binder</a> to bind them together, two other callbacks are executed before and after the binding takes place.
+<p>When the composition engine takes your view and object, and uses the <a href="/documentation/api#module/binder">binder</a> to bind them together, two other callbacks are executed before and after the binding takes place.
 <code>binding(view)</code> is called prior to binding and <code>bindingComplete(view)</code> is called immeidately after. Each call passes the view to your object. One added capability of the <code>binding</code> callback is that it can return an &quot;instruction&quot; object to the binding system. If this object is a <code>boolean</code> value of <code>false</code>, then Knockout&#39;s applyBindings call will not be run. You can also return an object like so <code>{ applyBindings:false }</code>.</p>
 <h4 id="attached">attached</h4>
 <p>Finally, after the composition engine attaches the bound view to its parent in the DOM, the <code>attached(view, parent)</code> callback is called.
@@ -148,7 +148,7 @@ It&#39;s a perfect time to add additional behavior, execute selectors, etc.</p>
 <p>Widgets also provide a way to encapsulate DOM interactions. A widget is most approriate when you have a combination of view+behavior that you want to reuse.
 In many cases, you may want this re-usable component to be bindable and templatable as well. 
 This shouldn&#39;t be your first choice when just needing to interact with the DOM. But, it&#39;s listed here for completeness.
-You can read more about widgets <a href="/documentation/Creating-A-Widget.html">here</a>.</p>
+You can read more about widgets <a href="/documentation/Creating-A-Widget">here</a>.</p>
 
 </section>
 
