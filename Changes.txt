@@ -1,4 +1,7 @@
-﻿2.1.0
+﻿Next Version
+-Fix Issue #542: SampleApp page-host overflow-y slow on Webkit
+
+2.1.0
 -Fix Issue #381: Update Durandal to use KO 3
 -Fix Issue #374: Bootstrap 3.0 & Font-Awesome Update
 -Fix Issue #380: Replaced html bindings with text bindings in sample application codes
