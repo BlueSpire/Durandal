@@ -1,5 +1,6 @@
 ﻿Next Version
 -Fix Issue #542: SampleApp page-host overflow-y slow on Webkit
+-Fix Issue #541: Fail on logging activate promise
 
 2.1.0
 -Fix Issue #381: Update Durandal to use KO 3

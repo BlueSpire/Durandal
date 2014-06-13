@@ -80,7 +80,10 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                     settings.afterDeactivate(item, close, setter);
                     dfd.resolve(true);
                 }, function(reason) {
-                    system.log(reason);
+                    if (reason) {
+                        system.log(reason);
+                    }
+
                     dfd.resolve(false);
                 });
             } else {
@@ -104,7 +107,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
 
             try {
                 result = invoke(newItem, 'activate', activationData);
-            } catch(error) {
+            } catch (error) {
                 system.log('ERROR: ' + error.message, error);
                 callback(false);
                 return;
@@ -115,8 +118,11 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             result.then(function() {
                 activeItem(newItem);
                 callback(true);
-            }, function(reason) {
-                system.log('ERROR: ' + reason.message, reason);
+            }, function (reason) {
+                if (reason) {
+                    system.log('ERROR: ' + reason.message, reason);
+                }
+
                 callback(false);
             });
         } else {
@@ -146,7 +152,10 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                             settings.lifecycleData = result;
                             dfd.resolve(settings.interpretResponse(result));
                         }, function (reason) {
-                            system.log('ERROR: ' + reason.message, reason);
+                            if (reason) {
+                                system.log('ERROR: ' + reason.message, reason);
+                            }
+
                             dfd.resolve(false);
                         });
                     } else {
@@ -197,7 +206,10 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                         settings.lifecycleData = result;
                         dfd.resolve(settings.interpretResponse(result));
                     }, function(reason) {
-                        system.log('ERROR: ' + reason.message, reason);
+                        if (reason) {
+                            system.log('ERROR: ' + reason.message, reason);
+                        }
+
                         dfd.resolve(false);
                     });
                 } else {
