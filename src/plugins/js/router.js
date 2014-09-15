@@ -264,7 +264,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             router.activeInstruction(currentInstruction);
 
-            router.navigate(lastUrl, false);
+            router.navigate(lastUrl, {trigger: false, replace: true});
 
             isProcessing(false);
             rootRouter.explicitNavigation = false;
