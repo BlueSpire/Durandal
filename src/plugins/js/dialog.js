@@ -525,6 +525,10 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
             if (!$view.data("predefinedWidth")) {
                 $view.css({ width: '' }); //Reset width
             }
+            
+            // clear the height
+            $view.css({ height: '' });
+
             var width = $view.outerWidth(false),
                 height = $view.outerHeight(false),
                 windowHeight = $window.height() - 10, //leave at least 10 pixels free
