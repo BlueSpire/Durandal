@@ -276,3 +276,15 @@ theDialog.context.reposition(view);
 ```
 
 where _view_ is the view that needs to be repositioned. You need to call this method, for example, after you have loaded some content via AJAX to the dialog.
+
+
+### Setting Full Screen Dialog Margins
+
+The default margins for a dialog that fills the whole screen is 5 pixels on each side. If you want to alter these margins, you can do it as follows, preferably in your main.js:
+
+```javascript
+dialog.getContext().minYMargin = 35;
+dialog.getContext().minXMargin = 50;
+```
+
+This will set the top and bottom margins to 35 px each and the left and right margins to 50 px each.
