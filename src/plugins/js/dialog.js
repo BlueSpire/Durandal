@@ -527,6 +527,10 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
             if (!$view.data("predefinedWidth")) {
                 $view.css({ width: '' }); //Reset width
             }
+			
+			// clear the height
+            $view.css({ height: '' });
+
             var width = $view.outerWidth(false),
                 height = $view.outerHeight(false),
                 windowHeight = $window.height() - 2 * this.minYMargin, //leave at least some pixels free
@@ -541,7 +545,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
 
             if (height > windowHeight) {
                 $view.css("overflow-y", "auto").outerHeight(windowHeight);
-            } else if (height < windowHeight) {
+            } else {
                 $view.css({
                     "overflow-y": "",
                     "height": ""
@@ -550,7 +554,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
 
             if (width > windowWidth) {
                 $view.css("overflow-x", "auto").outerWidth(windowWidth);
-            } else if (width < windowWidth) {
+            } else {
                 $view.css("overflow-x", "");
 
                 if (!$view.data("predefinedWidth")) {
