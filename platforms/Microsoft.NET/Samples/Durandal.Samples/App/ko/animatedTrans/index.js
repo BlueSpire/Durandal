@@ -28,35 +28,37 @@
 
     var typeToShow = ko.observable("all");
 
-    var displayAdvancedOptions = ko.observable(false);
-
-    var addPlanet = function (type) {
-        planets.push({
-            name: "New planet",
-            type: type
-        });
-    };
-
-    var planetsToShow = ko.computed(function () {
-        // Represents a filtered list of planets
-        // i.e., only those matching the "typeToShow" condition
-        var desiredType = typeToShow();
-        if (desiredType == "all") return planets();
-        return ko.utils.arrayFilter(planets(), function (planet) {
-            return planet.type == desiredType;
-        });
-    });
-
-    var showPlanetElement = function (elem) { if (elem.nodeType === 1) $(elem).hide().slideDown() }
-    var hidePlanetElement = function (elem) { if (elem.nodeType === 1) $(elem).slideUp(function () { $(elem).remove(); }) }
-
     return {
         planets: planets,
         typeToShow: typeToShow,
-        displayAdvancedOptions: displayAdvancedOptions,
-        addPlanet: addPlanet,
-        planetsToShow: planetsToShow,
-        showPlanetElement: showPlanetElement,
-        hidePlanetElement: hidePlanetElement
+        displayAdvancedOptions: ko.observable(false),
+        addPlanet: function (type) {
+            planets.push({
+                name: "New planet",
+                type: type
+            });
+        },
+        planetsToShow: ko.computed(function () {
+            // Represents a filtered list of planets
+            // i.e., only those matching the "typeToShow" condition
+            var desiredType = typeToShow();
+            if (desiredType == "all") {
+                return planets();
+            }
+
+            return ko.utils.arrayFilter(planets(), function (planet) {
+                return planet.type == desiredType;
+            });
+        }),
+        showPlanetElement: function (elem) {
+            if (elem.nodeType === 1) {
+                $(elem).hide().slideDown()
+            }
+        },
+        hidePlanetElement: function (elem) {
+            if (elem.nodeType === 1) {
+                $(elem).slideUp(function () { $(elem).remove(); })
+            }
+        }
     }
 });

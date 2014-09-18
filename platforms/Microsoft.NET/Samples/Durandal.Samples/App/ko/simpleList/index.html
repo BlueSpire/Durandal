@@ -1,15 +1,19 @@
 ﻿<div>
-    <h2>Simple List</h2>
-    <div class="well liveExample">
+    <h1>Simple List</h1>
+    <div class="well">
         <form data-bind="submit: addItem">
-            <label>Add item:</label>
-            <div class="input-append">
-                <input class="span3" data-bind='value: itemToAdd, valueUpdate: "afterkeydown"' />
-                <button class="btn" type="submit" data-bind="enable: itemToAdd().length > 0">Add</button>
+            <label>Add Item</label>
+            <div class="input-group">
+                <input class="form-control" data-bind='value: itemToAdd, valueUpdate: "afterkeydown"' />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit" data-bind="enable: itemToAdd().length > 0">Add</button>
+                </span>
             </div>
-            <br />
-            <p>Your items:</p>
-            <select multiple="multiple" width="50" data-bind="options: items"></select>
+            <br/>
+            <div>
+                <label>Your Items</label>
+                <select class="form-control" multiple="multiple" data-bind="options: items"></select>
+            </div>
         </form>
     </div>
 </div>

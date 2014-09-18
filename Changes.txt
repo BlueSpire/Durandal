@@ -1,4 +1,93 @@
-﻿2.0.1
+﻿2.1.0
+-Fix Issue #381: Update Durandal to use KO 3
+-Fix Issue #374: Bootstrap 3.0 & Font-Awesome Update
+-Fix Issue #380: Replaced html bindings with text bindings in sample application codes
+-Fix Issue #375: Potentially insecure code in Durandal example app
+-Fix Issue #372: Better system.guid implementation
+-Fix Issue #385: Routes are case sensitive (and should not be by default)
+-Fix Issue #357: Child routers which are 3 levels deep are broken with 2.0.1
+-Fix Issue #376: returning false in canDeactivate strips queryString
+-Fix Issue #354: Check for obj.prototype before reading or assigning
+-Fix Issue #407: Entrance Transition Bug
+-Fix Issue #337: module canActivate is not fired when module is already active
+-Fix Issue #382: Allow more granular control for module comparison during activation
+-Fix Issue #293: Transitions now use CSS3 animations when available.
+-Fix Issue #440: Remove *details part when hash generated #440
+-Fix Issues #386 and #437: Double activate when using activator with compose binding
+-Fix Issue #257: Add PUT and DELETE methods to http plugin
+-Fix Issue #270: Add "as" parameter to compose binding
+-Fix Issue #409: Navigate method: Only set explicitNavigation to true when trigger is true
+-Fix Issue #286: Adding the ability to use a .hasChildRoutes boolean route property rather than *details
+-Fix Issue #312: Improved query string to handle multiple occurences of the same key
+-Fix Issue #315: Append startRoute option to router activate options 
+-Fix Issue #343: Support for observable route titles 
+-Fix Issue #355: Fix bug where IE will fail to load view due to wrong typeName 
+-Fix Issue #360: Added a toJSON function to the http module to allow customizing how objects are converted
+-Fix Issue #405: Added Layout = null to index view for vs template and nuget starter kit
+-Fix Issue #368: Added headers to http.js plugin
+-Fix Issue #412/#413: Route configured as RegExp object throwing error
+-Fix Issue #426: Fix bug where guardRoute cannot redirect to '' 
+-Fix Issue #480: DurandalRouteConfiguration.nav to be optional in Typescript definition
+-Fix Issue #449: dialog's config.messageBoxView working improperly 
+-Fix Issue #445: Improve 'Route Not Found' message 
+-Fix Issue #362: Dialog improvements
+-Fix Issue #452: Provide original error to system.error 
+-Fix Issue #459: Fixed bug in router where querystring in child routes causes Route Not Found errors
+-Fix Issue #464: Fix a bug that causes routes to be relative even when in pushState
+-Fix Issue #473 and 476: Querystring function should only split on first '='
+-Fix Issue #482: Support full HTML templates
+-Fix Issue #486: Allow `app.title` to be an observable.
+-Fix Issue #483: Renaming "module" variable 
+-Fix Issue #300: closeDialog convenience API
+-Fix Issue #361: TS File has incorrect sig for observable.defineProperty by making the actual implementation more flexible
+-Fix Issue #436, #453 and #371: Composition complete callbacks not trigged
+-Fix Issue #481: Dialog improvement (adding binding callback to custom contexts)
+-Fix Issue #346 and #438: various composition part pass through issues
+-Fix Issue #475 and #432: Abort composition when the context is changed during activation
+-Fix Issue #488/#421: TypeScript - expose durandal/system and durandal/viewEngine in module 
+-Fix Issue #490: Add optional change detection via the observable module. See docs for details.
+-Fix Issue #494: Feature: serializer.clone
+-Fix Issue #495: Maybe add a router navigation started event (added router:navigation:processing)
+-Fix Issue #498 and #496: Overwriting an observable array results in one-way binding of the new array
+-Fix Issue #489: Observable plugin resetting Deferred properties as undefined
+-Fix Issue #366: Make Observable Tracking Non-Enumerable
+-Fix Issue #501: Entrance transition bug in Chrome 34 
+-Fix Issue #503: Updated showMessage overload
+-Fix Issue #395: setRoot() composition skips canActivate 
+-Fix Issues #418, #181, #297: Various fixes to activator hierarchies and child routers
+-Fix Issue #461: Router: Click binding not stripping root path 
+-Fix Issue #508: Composition on error override 
+-Fix Issue #511: Always end composition, even on error 
+-Fix Issue #509: Unable to set activator settings "closeOnDeactivate" property to false 
+-Fix Issue #512: Multi-item activator issue 
+-Fix Issue #356: Don't throw exception in deferred fail in canActivate 
+-Fix Issue #417: Added support for null routes. 
+-Fix Issue #500: Observable.js - Custom shouldIgnorePropertyName 
+-Fix Issue #505: Make observable plug-in convert existing properties 
+-Fix Issue #262: binding different views to the same view-model (enable default behavior of router) 
+-Fix Issue #430: Sometimes, negative response from CanDeactivate doesn't restore previous URL 
+-Fix Issue #520: Ensuring that composition show never inadvertently hides elements
+-Fix Issue #514: Don't enforce viewPlugin
+-Fix Issue #519: Optimize Part Replacement
+-Fix Issue #513: Navigating back refreshes the page in latest chrome, when using router.navigate with {replace: true}
+-Fix Issue #516: Add dynamic child hash via cwooldridge
+-Fix Issue #515: Cache Parsed Views
+-Fix Issue #479: Can't use template with vs2013 express
+-Fix Issue #523: viewEngine$createView does not deliver promise but deferred object when returning cached element
+-Fix issue #530: add console.error call to logError 
+-Fix Issue #531: Made dialog.isOpen computed
+-Fixed a bug with activation when modules were reused. Lifecycle wasn't fully enforced.
+-Added a string.trim polyfill
+-Updated Bootstrap to 3.1.1
+-Updated FontAwesome to 4.0.3.1
+-Updated Knockout to 3.1.0
+-Updated RequireJS to 2.1.11
+-Updated RequireJS Text Plugin to 2.0.7
+-Updated Mimosa skeleton to 2.x
+-Various fixes/extensions to the docs and readme
+-Various css improvements and typographic fixes
+
+2.0.1
 -Fix Issue #259: Fragment doesn't include query when using push state
 -Fix Issue #258: Absolute links not working when using push state
 -Fix Issue #254: Bad mainConfigFile entry in the default weyland-config of the Durandal nuget package

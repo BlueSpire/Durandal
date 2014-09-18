@@ -17,7 +17,6 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
 
     app.title = 'Durandal Samples';
     
-    //specify which plugins to install and their configuration
     app.configurePlugins({
         router: true,
         dialog: true,
@@ -27,11 +26,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
     });
 
     app.start().then(function () {
-        //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
-        //Look for partial views in a 'views' folder in the root.
         viewLocator.useConvention();
-
-        //Show the app by setting the root view model for our application.
         app.setRoot('shell');
     });
 });

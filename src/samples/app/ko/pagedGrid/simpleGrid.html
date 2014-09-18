@@ -11,13 +11,11 @@
             </tr>
         </tbody>
     </table>
-    <div class="pagination">
-        <ul>
-            <!-- ko foreach: ko.utils.range(0, maxPageIndex) -->
-            <li>
-                <a href="#" data-bind="text: $data + 1, click: function () { $root.currentPageIndex($data); }"></a>
-            </li>
-            <!-- /ko -->
-        </ul>
-    </div>
+    <ul class="pagination">
+        <!-- ko foreach: ko.utils.range(0, maxPageIndex) -->
+        <li>
+            <a href="#" data-bind="text: $data + 1, click: function () { $root.currentPageIndex($data); }"></a>
+        </li>
+        <!-- /ko -->
+    </ul>
 </div>

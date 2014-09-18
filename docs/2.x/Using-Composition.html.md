@@ -56,7 +56,7 @@ define(function(require) {
 Notice the call to _setRoot_. This actually invokes the composition engine. What is the result?
 
 1. RequireJS is used to find the module with id _shell_ (shell.js on the file system).
-2. The view locator is used to locate the appropriate view for _shell_. The defult configuration will find _shell.html_.
+2. The view locator is used to locate the appropriate view for _shell_. The default configuration will find _shell.html_.
 3. The view engine is used to create the view from the markup in _shell.html_.
 4. The _shell_ module and the _shell_ view are data-bound together using Knockout.
 5. The bound _shell_ view is inserted into the DOM (in the default _applicationHost_ div).
@@ -216,7 +216,7 @@ The default composition mode interprets the child elements of a composition site
 
 In this case, the compositoin system will locate the "myModel" module and then it will databind it against the `h3` inside the composition element.
 
-You can also use `mode:'templated'`. This mode allows you to create replacable parts in your view, which can be overridden at the composition site. Let say we have the following view:
+You can also use `mode:'templated'`. This mode allows you to create replacable parts in your view, which can be overridden at the composition site. Let's say we have the following view:
 
 ```html
 <div>
@@ -242,6 +242,15 @@ When this composition activates, the myView.html will be located and its content
 There are three hooks into the composition pipeline which you can specify as callbacks on the composition settings object. Set _binding_ to be called immediately before the [binder](/documentation/api#module/binder) is called. The signature is `binding(child, parent, settings)` Set _attached_ to be called immediately after the view is attached to the DOM. The signature is `attached(child, parent, settings)`. Set _compositionComplete_ to be called back after the entire composition has finished (parents and children included). The signature is `compositionComplete(child, parent, settings)`. These aren't typically used in markup. They are intended to be used when utilizing the composition module in code. For example, they are used internally by the dialog plugin.
 
 #### Composition Lifecycle
-Whenever Durandal composes, it also checks your model for various callback functions at different points in the compositoin process. The sequence of callbacks is referred to as the _composition lifecycle_. The lifecycle is as follows: getView, activate, binding, bindingComplete, attached, compositionComplete, detached. You can find more information in the section on [Hooking Lifecycle Callbacks](/documentation/Hooking-Lifecycle-Callbacks).
+Whenever Durandal composes, it also checks your model for various callback functions at different points in the composition process. The sequence of callbacks is referred to as the _composition lifecycle_. The lifecycle is as follows: getView, activate, binding, bindingComplete, attached, compositionComplete, detached. You can find more information in the section on [Hooking Lifecycle Callbacks](/documentation/Hooking-Lifecycle-Callbacks).
 
 > **Note:** If you have set `cacheViews:true` then _attached_ will only be called the first time the view is shown, on the initial bind, since technically the view is only attached once. If you wish to override this behavior, then set `alwaysTriggerAttach:true` on your composition binding.
+
+#### Custom Error Management
+You can replace the default error management during composition by adding an error handler to the binding:
+
+```html
+<div data-bind="compose: { model: model, onError: errorHandlerFunction }"></div>
+``` 
+
+The error handler is called with 2 parameters: the error or exception and the binded element.

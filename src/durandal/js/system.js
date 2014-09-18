@@ -14,6 +14,13 @@ define(['require', 'jquery'], function(require, $) {
         nativeIsArray = Array.isArray,
         slice = Array.prototype.slice;
 
+    //polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+    if (!String.prototype.trim) {
+        String.prototype.trim = function () {
+            return this.replace(/^\s+|\s+$/g, '');
+        };
+    }
+
     //see http://patik.com/blog/complete-cross-browser-console-log/
     // Tell IE9 to use its built-in console
     if (Function.prototype.bind && (typeof console === 'object' || typeof console === 'function') && typeof console.log == 'object') {
@@ -79,12 +86,31 @@ define(['require', 'jquery'], function(require, $) {
         } catch (ignore) { }
     };
 
-    var logError = function(error) {
+    var logError = function(error, err) {
+        var exception;
+        
         if(error instanceof Error){
-            throw error;
+            exception = error;
+        } else {
+            exception = new Error(error);
         }
+        
+        exception.innerError = err;
+        
+        //Report the error as an error, not as a log
+        try {
+            // Modern browsers (it's only a single item, no need for argument splitting as in log() above)
+            if (typeof console != 'undefined' && typeof console.error == 'function') {
+                console.error(exception);
+            }
+            // IE8
+            else if ((!Function.prototype.bind || treatAsIE8) && typeof console != 'undefined' && typeof console.error == 'object') {
+                Function.prototype.call.call(console.error, console, exception);
+            }
+            // IE7 and lower, and other old browsers
+        } catch (ignore) { }
 
-        throw new Error(error);
+        throw exception;
     };
 
     /**
@@ -96,7 +122,7 @@ define(['require', 'jquery'], function(require, $) {
          * Durandal's version.
          * @property {string} version
          */
-        version: "2.0.1",
+        version: "2.1.0",
         /**
          * A noop function.
          * @method noop
@@ -113,7 +139,7 @@ define(['require', 'jquery'], function(require, $) {
                 return null;
             }
 
-            if (typeof obj == 'function') {
+            if (typeof obj == 'function' && obj.prototype) {
                 return obj.prototype.__moduleId__;
             }
 
@@ -134,7 +160,7 @@ define(['require', 'jquery'], function(require, $) {
                 return;
             }
 
-            if (typeof obj == 'function') {
+            if (typeof obj == 'function' && obj.prototype) {
                 obj.prototype.__moduleId__ = id;
                 return;
             }
@@ -218,9 +244,11 @@ define(['require', 'jquery'], function(require, $) {
          * @return {string} The guid.
          */
         guid: function() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
+            var d = new Date().getTime();
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d/16);
+                return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16);
             });
         },
         /**

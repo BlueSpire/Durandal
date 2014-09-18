@@ -1,16 +1,19 @@
 exports.config =
-  minMimosaVersion:'1.0.0'
+  minMimosaVersion:'2.0.0'
 
   modules: [
     'server'
     'require'
-    'minify'
+    'minify-js'
+    'minify-css'
     'live-reload'
     'combine'
     'requirebuild-include'
     'requirebuild-textplugin-include'
     'bower'
-    'lint'
+    'csslint'
+    'jshint'
+    'copy'
   ]
 
   watch:

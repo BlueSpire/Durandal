@@ -1,5 +1,5 @@
 ﻿/*!
- * Durandal 2.0.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details
  */
@@ -17,7 +17,7 @@
     text-transform: uppercase;
 }
 
-.splash .icon-spinner {
+.splash .fa-spinner {
     text-align: center;
     display: inline-block;
     font-size: 5em;
@@ -25,34 +25,28 @@
 }
 
 .page-host {
-    position: relative;
-    top: 40px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50px;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-.navbar-fixed-top .navbar-inner {
-    padding-left: 1em;
-    padding-right: 1em;
+section {
+    margin: 0 20px;
 }
 
-.navbar-fixed-top .icon-home {
-    font-size: 18px
-}
-
-.loader {
-    margin: 6px 8px 4px 8px;
+.navbar-nav li.loader {
+    margin: 12px 6px 0 6px;
     visibility: hidden;
 }
 
-.loader.active {
+.navbar-nav li.loader.active {
     visibility: visible;
 }
 
-@media (max-width: 979px) {
-    .page-host {
-        top: 0;
-    }
-
-    .navbar-fixed-top {
-        margin-bottom: 0;
-    }
+.pictureDetail {
+    max-width: 425px;
 }

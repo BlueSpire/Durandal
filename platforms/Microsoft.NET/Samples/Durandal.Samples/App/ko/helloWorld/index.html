@@ -1,8 +1,23 @@
 ﻿<div>
-    <h2>Hello World</h2>
-    <div class="well liveExample">
-        <p>First name: <input data-bind="value: firstName" /></p>
-        <p>Last name: <input data-bind="value: lastName" /></p>
-        <h3>Hello, <span data-bind="text: fullName"> </span>!</h3>
-    </div>
+    <h1>Hello World</h1>
+    <form class="form-horizontal well" role="form">
+        <div class="form-group">
+            <label class="col-sm-1 control-label">First Name:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" placeholder="first name" data-bind="value: firstName">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label">Last Name:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" placeholder="last name" data-bind="value: lastName">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-4">
+                <h3 class="text-center">Hello, <span data-bind="text: fullName"> </span>!</h3>
+            </div>
+        </div>
+    </form>
 </div>

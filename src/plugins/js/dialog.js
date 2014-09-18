@@ -11,7 +11,7 @@
  */
 define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/activator', 'durandal/viewEngine', 'jquery', 'knockout'], function (system, app, composition, activator, viewEngine, $, ko) {
     var contexts = {},
-        dialogCount = 0,
+        dialogCount = ko.observable(0),
         dialog;
 
     /**
@@ -64,15 +64,21 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
     MessageBox.defaultTitle = app.title || 'Application';
 
     /**
-     * The options to display in the message box of none are specified.
+     * The options to display in the message box if none are specified.
      * @property {string[]} defaultOptions
      * @default ['Ok']
      * @static
      */
     MessageBox.defaultOptions = ['Ok'];
 
-    MessageBox.defaultSettings = { buttonClass: "btn", primaryButtonClass: "btn-primary", secondaryButtonClass: "", "class": "messageBox", style: null };
+    
+    MessageBox.defaultSettings = { buttonClass: "btn btn-default", primaryButtonClass: "btn-primary autofocus", secondaryButtonClass: "", "class": "modal-content messageBox", style: null };
 
+    /**
+    * Sets the classes and styles used throughout the message box markup.
+    * @method setDefaults
+    * @param {object} settings A settings object containing the following optional properties: buttonClass, primaryButtonClass, secondaryButtonClass, class, style.
+    */
     MessageBox.setDefaults = function (settings) {
         $.extend(MessageBox.defaultSettings, settings);
     };
@@ -211,9 +217,9 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @method isOpen
          * @return {boolean} True if a dialog is open. false otherwise.
          */
-        isOpen: function () {
-            return dialogCount > 0;
-        },
+        isOpen: ko.computed(function() {
+            return dialogCount() > 0;
+        }),
         /**
          * Gets the dialog context by name or returns the default context if no name is specified.
          * @method getContext
@@ -244,6 +250,10 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 activate: false,
                 transition: false
             };
+
+            if (dialogContext.binding) {
+                settings.binding = dialogContext.binding;
+            }
 
             if (dialogContext.attached) {
                 settings.attached = dialogContext.attached;
@@ -307,7 +317,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                                     var args = arguments;
                                     dialogActivator.deactivateItem(instance, true).then(function (closeSuccess) {
                                         if (closeSuccess) {
-                                            dialogCount--;
+                                            dialogCount(dialogCount() - 1);
                                             dialogContext.removeHost(theDialog);
                                             delete instance.__dialog__;
 
@@ -326,7 +336,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                             theDialog.settings = that.createCompositionSettings(instance, dialogContext);
                             dialogContext.addHost(theDialog);
 
-                            dialogCount++;
+                            dialogCount(dialogCount() + 1);
                             composition.compose(theDialog.host, theDialog.settings);
                         } else {
                             dfd.resolve(false);
@@ -341,6 +351,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
          * @param {string} message The message to display in the dialog.
          * @param {string} [title] The title message.
          * @param {string[]} [options] The options to provide to the user.
+         * @param {boolean} [autoclose] Automatically close the the message box when clicking outside?
+         * @param {Object} [settings] Custom settings for this instance of the messsage box, used to change classes and styles.
          * @return {Promise} A promise that resolves when the message box is closed and returns the selected option.
          */
         showMessage: function (message, title, options, autoclose, settings) {
@@ -359,11 +371,15 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
         /**
          * Installs this module into Durandal; called by the framework. Adds `app.showDialog` and `app.showMessage` convenience methods.
          * @method install
-         * @param {object} [config] Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box.
+         * @param {object} [config] Add a `messageBox` property to supply a custom message box constructor. Add a `messageBoxView` property to supply custom view markup for the built-in message box. You can also use messageBoxViewUrl to specify the view url.
          */
         install: function (config) {
             app.showDialog = function (obj, activationData, context) {
                 return dialog.show(obj, activationData, context);
+            };
+
+            app.closeDialog = function () {
+                return dialog.close.apply(dialog, arguments);
             };
 
             app.showMessage = function (message, title, options, autoclose, settings) {
@@ -376,8 +392,12 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
 
             if (config.messageBoxView) {
                 dialog.MessageBox.prototype.getView = function () {
-                    return config.messageBoxView;
+                    return viewEngine.processMarkup(config.messageBoxView);
                 };
+            }
+
+            if (config.messageBoxViewUrl) {
+                dialog.MessageBox.setViewUrl(config.messageBoxViewUrl);
             }
         }
     };
@@ -492,6 +512,11 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 });
             }
         },
+        /**
+         * This function is called to reposition the model view.
+         * @method reposition
+         * @param {DOMElement} view The dialog view.
+         */
         reposition: function (view) {
             var $view = $(view),
                 $window = $(window);

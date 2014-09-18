@@ -1,5 +1,5 @@
 ---
-title: Docs - Showing Mssage Boxes and Modals
+title: Docs - Showing Message Boxes and Modals
 layout: docs
 tags: ['docs','modals','how to']
 ---
