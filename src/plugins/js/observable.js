@@ -25,18 +25,25 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
      * @class ObservableModule
      */
 
-    if (!('getPropertyDescriptor' in Object)) {
+    if (!('getPropertyDescriptorDefinition' in Object)) {
         var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
         var getPrototypeOf = Object.getPrototypeOf;
 
-        Object['getPropertyDescriptor'] = function(o, name) {
+        Object['getPropertyDescriptorDefinition'] = function (o, name) {
             var proto = o, descriptor;
 
             while(proto && !(descriptor = getOwnPropertyDescriptor(proto, name))) {
                 proto = getPrototypeOf(proto);
             }
 
-            return descriptor;
+            if (!descriptor) {
+                return null;
+            } else {
+                return {
+                    target: proto,
+                    descriptor: descriptor
+                }
+            }
         };
     }
 
@@ -198,11 +205,12 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
                 }
 
                 if (!lookup[propertyName]) {
-                    var descriptor = Object.getPropertyDescriptor(obj, propertyName);
+                    var definition = Object.getPropertyDescriptorDefinition(obj, propertyName);
+                    var descriptor = definition ? definition.descriptor : null;
                     if (descriptor && (descriptor.get || descriptor.set)) {
-                        defineProperty(obj, propertyName, {
-                            get:descriptor.get,
-                            set:descriptor.set
+                        defineProperty(obj, definition.target, propertyName, {
+                            get: descriptor.get,
+                            set: descriptor.set
                         });
                     } else {
                         value = obj[propertyName];
@@ -320,11 +328,12 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
      * Defines a computed property using ES5 getters and setters.
      * @method defineProperty
      * @param {object} obj The target object on which to create the property.
+     * @param {object} descriptorTarget The object or prototype on which the descriptor is defined.
      * @param {string} propertyName The name of the property to define.
      * @param {function|object} evaluatorOrOptions The Knockout computed function or computed options object.
      * @return {KnockoutObservable} The underlying computed observable.
      */
-    function defineProperty(obj, propertyName, evaluatorOrOptions) {
+    function defineProperty(obj, descriptorTarget, propertyName, evaluatorOrOptions) {
         var computedOptions = { owner: obj, deferEvaluation: true },
             computed;
 
@@ -344,6 +353,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         }
 
         computed = ko.computed(computedOptions);
+        delete descriptorTarget[propertyName];
         obj[propertyName] = computed;
 
         return convertProperty(obj, propertyName, computed);
