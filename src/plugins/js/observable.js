@@ -18,33 +18,30 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         logConversion = false,
         changeDetectionMethod = undefined,
         skipPromises = false,
-        shouldIgnorePropertyName;
+        shouldIgnorePropertyName,
+        getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor,
+        getPrototypeOf = Object.getPrototypeOf;
 
     /**
      * You can call observable(obj, propertyName) to get the observable function for the specified property on the object.
      * @class ObservableModule
      */
 
-    if (!('getPropertyDescriptorDefinition' in Object)) {
-        var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-        var getPrototypeOf = Object.getPrototypeOf;
+    function getPropertyDescriptorDefinition(o, name) {
+        var proto = o, descriptor;
 
-        Object['getPropertyDescriptorDefinition'] = function (o, name) {
-            var proto = o, descriptor;
+        while (proto && !(descriptor = getOwnPropertyDescriptor(proto, name))) {
+            proto = getPrototypeOf(proto);
+        }
 
-            while(proto && !(descriptor = getOwnPropertyDescriptor(proto, name))) {
-                proto = getPrototypeOf(proto);
+        if (!descriptor) {
+            return null;
+        } else {
+            return {
+                target: proto,
+                descriptor: descriptor
             }
-
-            if (!descriptor) {
-                return null;
-            } else {
-                return {
-                    target: proto,
-                    descriptor: descriptor
-                }
-            }
-        };
+        }
     }
 
     function defaultShouldIgnorePropertyName(propertyName){
@@ -205,7 +202,7 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
                 }
 
                 if (!lookup[propertyName]) {
-                    var definition = Object.getPropertyDescriptorDefinition(obj, propertyName);
+                    var definition = getPropertyDescriptorDefinition(obj, propertyName);
                     var descriptor = definition ? definition.descriptor : null;
                     if (descriptor && (descriptor.get || descriptor.set)) {
                         defineProperty(obj, definition.target, propertyName, {
