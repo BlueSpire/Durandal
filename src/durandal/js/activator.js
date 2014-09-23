@@ -112,6 +112,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 callback(true);
             }, function(reason) {
                 system.log('ERROR: ' + reason.message, reason);
+                activeItem(newItem);
                 callback(false);
             });
         } else {
