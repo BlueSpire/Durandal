@@ -490,7 +490,7 @@ interface DurandalViewLocatorModule {
  * @requires knockout
  */
 declare module 'durandal/composition' {
-    interface CompositionTransation {
+    interface CompositionTransaction {
         /**
          * Registers a callback which will be invoked when the current composition transaction has completed. The transaction includes all parent and children compositions.
          * @param {function} callback The callback to be invoked when composition is complete.
@@ -536,7 +536,7 @@ declare module 'durandal/composition' {
     /**
      * Represents the currently executing composition transaction.
      */
-    export var current: CompositionTransation;
+    export var current: CompositionTransaction;
 
     /**
      * Registers a binding handler that will be invoked when the current composition transaction is complete.
