@@ -597,7 +597,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             if(router.relativeToParentRouter){
                 var instruction = this.parent.activeInstruction();
-				coreFragment = queryIndex == -1 ? instruction.params.join('/') : instruction.params.slice(0, -1).join('/');
+				coreFragment = (queryIndex == -1 ? instruction.params : instruction.params.slice(0, -1)).filter(function(param){return typeof param === 'string'}).join('/');
 
                 if(coreFragment && coreFragment.charAt(0) == '/'){
                     coreFragment = coreFragment.substr(1);
