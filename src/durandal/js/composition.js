@@ -14,12 +14,13 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         activeViewAttributeName = 'data-active-view',
         composition,
         compositionCompleteCallbacks = [],
-        compositionCount = 0,
+        compositionCount = [],
         compositionDataKey = 'durandal-composition-data',
         partAttributeName = 'data-part',
         bindableSettings = ['model', 'view', 'transition', 'area', 'strategy', 'activationData', 'onError'],
         visibilityKey = "durandal-visibility-data",
-        composeBindings = ['compose:'];
+        composeBindings = ['compose:'],
+	transactionSequence = 0;
     
     function onError(context, error, element) {
         try {
@@ -34,6 +35,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             }
         } finally {
             endComposition(context, element, true);
+            cleanUp(context);
         }
     }
 
@@ -63,30 +65,105 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
         return state;
     }
+function fixChildTransaction(child, parent) {
+        if (!child)
+            return;
+        child.__compose_tid = parent.__compose_tid;
 
-    function endComposition(context, element, error) {
-        compositionCount--;
+        //for virtual bindings the element is not the parent of child but is a sibling, so keep the relationship hierarchy this way.
+        child.__compose_parent = parent;
+    }
 
-        if(compositionCount === 0) {
-            var callBacks = compositionCompleteCallbacks;
-            compositionCompleteCallbacks = [];
-            
-            if (!error) {
-                setTimeout(function () {
-                    var i = callBacks.length;
+    function getTransactionIdForContext(context) {
+        var tid = context.__compose_tid; /*searchParentsForTransaction(context.child || context.parent); */
+        return tid;
+    }
 
-                    while (i--) {
-                        try {
-                            callBacks[i]();
-                        } catch (e) {
-                            onError(context, e, element);
-                        }
-                    }
-                }, 1);
-            }
+    function searchParentsForTransaction(element) {
+        // search parent nodes for any valid transaction to attach to
+        var parent = element;
+        while (parent && !hasValidTransactionId(parent)) {
+            parent = parent.__compose_parent || parent.parentNode;
+        }
+        return parent && parent.__compose_tid;
+    }
+
+    /**
+    *   @param {element} Node object which we are going to find its transaction id
+    */
+    function getTransactionIdForNode(element, context, transactionId) {
+
+        function checkAndGenerateTransactionId() {
+            var tid = searchParentsForTransaction(element)
+            if (tid == null)
+                tid = transactionSequence++;
+            return tid;
+        }
+        var tid = transactionId != null ? transactionId : checkAndGenerateTransactionId();
+        if (element)
+            element.__compose_tid = tid;
+        if (context)
+            context.__compose_tid = tid;
+
+        //if new transaction...
+        if (!compositionCompleteCallbacks[tid]) {
+
+            // create composition callback list for new transaction 
+            compositionCompleteCallbacks[tid] = [];
+            compositionCount[tid] = 0;
+            system.log('created a new compostion transaction #' + tid);
+        } else {
+            system.log('attaching to an existing compostion transaction #' + tid);
         }
 
-        cleanUp(context);
+        return tid;
+    }
+
+    function hasValidTransactionId(node) {
+        var id = node && node.__compose_tid;
+        return !!(typeof id !== "undefined" && compositionCompleteCallbacks[id]);
+    }
+
+    function endComposition(context, element, error) {
+        var transactionId = getTransactionIdForContext(context);
+        if (transactionId == null) //null or undefined
+        {
+            system.log('WARN: no composition transaction!');
+            return;
+        }
+
+        if (!compositionCount[transactionId])
+            system.log("ERROR:no such transaction for composition end.");
+        compositionCount[transactionId]--;
+
+        system.log('ending composition transaction #' + transactionId, compositionCount[transactionId]);
+
+        if (compositionCount[transactionId] === 0) {
+
+            //cache the composition chain 
+            var compositionCompleteCallback = compositionCompleteCallbacks[transactionId];
+            var callbackChainListLength = compositionCompleteCallback.length;
+
+            //release the current composition chain to mark the current transaction as finished so that no one else would attach himself to this one.
+            delete compositionCount[transactionId];
+            delete compositionCompleteCallbacks[transactionId];
+
+            setTimeout(function(){
+                while (compositionCompleteCallback.length > 0) {
+                    try {
+                        var callback = compositionCompleteCallback.pop();
+                        callback();
+                    } catch (e) {
+                        system.log("compositionComplete callback thrown an exception:", [e]);
+                    } finally {
+
+                        //remove reference to parent
+                        context.child && (context.child.__compose_parent = null);
+                    }
+                }
+                system.log('ended composition transaction #' + transactionId, callbackChainListLength);
+            }, 1);
+        }
     }
 
     function cleanUp(context){
@@ -116,6 +193,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                     successCallback();
                 } else {
                     endComposition(context, element);
+                    cleanUp(context);
                 }
             }
             catch(e){
@@ -265,9 +343,10 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
          * Registers a callback which will be invoked when the current composition transaction has completed. The transaction includes all parent and children compositions.
          * @method complete
          * @param {function} callback The callback to be invoked when composition is complete.
+         * @param {number}
          */
-        complete: function (callback) {
-            compositionCompleteCallbacks.push(callback);
+        complete: function (callback, transactionId) {
+            compositionCompleteCallbacks[transactionId].push(callback);
         }
     };
 
@@ -319,7 +398,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
             handler = ko.bindingHandlers[name] = {
                 init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                    if(compositionCount > 0){
+                     if(compositionCount[getTransactionIdForNode(element)] > 0){
                         var data = {
                             trigger:ko.observable(null)
                         };
@@ -413,6 +492,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
                 context.triggerAttach(context, element);
                 endComposition(context, element);
+                cleanUp(context);
             } else if (shouldTransition(context)) {
                 var transitionModuleId = this.convertTransitionToModuleId(context.transition);
 
@@ -441,6 +521,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
                         context.triggerAttach(context, element);
                         endComposition(context, element);
+                        cleanUp(context);
                     });
                 }).fail(function(err){
                     onError(context, 'Failed to load transition (' + transitionModuleId + '). Details: ' + err.message, element);
@@ -474,6 +555,13 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             }
         },
         bindAndShow: function (child, element, context, skipActivation) {
+            if (typeof context.__compose_tid === "undefined") {
+
+                //we reached this point from a path other than calling compose! (happens applicationHost)
+                var currentTransaction = getTransactionIdForNode(child, context);
+                compositionCount[currentTransaction]++;
+            }
+            fixChildTransaction(child, context.parent);
             context.child = child;
             context.parent.__composition_context = context;
 
@@ -633,19 +721,22 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
          * @param {object} [bindingContext] The current binding context.
          */
         compose: function (element, settings, bindingContext, fromBinding) {
-            compositionCount++;
+            var currentTransaction = settings.__compose_tid = getTransactionIdForNode(element, settings, transactionId);
+            compositionCount[currentTransaction]++;
+
+            system.log('started composition transaction #' + currentTransaction);
 
             if(!fromBinding){
                 settings = composition.getSettings(function() { return settings; }, element);
             }
 
             if (settings.compositionComplete) {
-                compositionCompleteCallbacks.push(function () {
+                compositionCompleteCallbacks[currentTransaction].push(function () {
                     settings.compositionComplete(settings.child, settings.parent, settings);
                 });
             }
 
-            compositionCompleteCallbacks.push(function () {
+            compositionCompleteCallbacks[currentTransaction].push(function () {
                 if(settings.composingNewView && settings.model && settings.model.compositionComplete){
                     settings.model.compositionComplete(settings.child, settings.parent, settings);
                 }
