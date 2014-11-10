@@ -732,12 +732,17 @@ function fixChildTransaction(child, parent) {
 
             if (settings.compositionComplete) {
                 compositionCompleteCallbacks[currentTransaction].push(function () {
+
+                    //release the child link to parent (router does not have 'child')
+                    settings.child && settings.child.__compose_parent && (settings.child.__compose_parent = null);
                     settings.compositionComplete(settings.child, settings.parent, settings);
                 });
             }
 
             compositionCompleteCallbacks[currentTransaction].push(function () {
                 if(settings.composingNewView && settings.model && settings.model.compositionComplete){
+                    //release the child link to parent
+                    settings.child.__compose_parent && (settings.child.__compose_parent = null);
                     settings.model.compositionComplete(settings.child, settings.parent, settings);
                 }
             });
