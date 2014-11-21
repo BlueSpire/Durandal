@@ -473,6 +473,9 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                 endComposition(context, element);
             }
         },
+        canReuseCurrentView: function(currentView, currentModel, modelToBind) {
+            return false;
+        },
         bindAndShow: function (child, element, context, skipActivation) {
             context.child = child;
             context.parent.__composition_context = context;
@@ -485,7 +488,12 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
             tryActivate(context, function () {
                 if (context.parent.__composition_context == context) {
-                    delete context.parent.__composition_context;
+                    try {
+                        delete context.parent.__composition_context;
+                    }
+                    catch(e) {
+                        context.parent.__composition_context = undefined;
+                    }
 
                     if (context.binding) {
                         context.binding(context.child, context.parent, context);
@@ -506,7 +514,11 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                         var modelToBind = context.model || dummyModel;
                         var currentModel = ko.dataFor(child);
 
-                        if (currentModel != modelToBind) {
+                        if (composition.canReuseCurrentView(child, currentModel, modelToBind)) {
+                          ko.cleanNode(child);
+                          binder.bind(modelToBind, child);
+                        }
+                        else if (currentModel != modelToBind) {
                             if (!context.composingNewView) {
                                 ko.removeNode(child);
                                 viewEngine.createView(child.getAttribute('data-view')).then(function(recreatedView) {
@@ -533,7 +545,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             }, skipActivation, element);
         },
         /**
-         * Eecutes the default view location strategy.
+         * Executes the default view location strategy.
          * @method defaultStrategy
          * @param {object} context The composition context containing the model and possibly existing viewElements.
          * @return {promise} A promise for the view.
