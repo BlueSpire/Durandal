@@ -268,16 +268,19 @@ define(['require', 'jquery'], function(require, $) {
             }else{
                 modules = slice.call(arguments, 0);
             }
-
+			
+			var that = this;
             return this.defer(function(dfd) {
                 require(modules, function() {
                     var args = arguments;
                     setTimeout(function() {
-                        if(args.length > 1 || arrayRequest){
-                            dfd.resolve(slice.call(args, 0));
-                        }else{
-                            dfd.resolve(args[0]);
-                        }
+					    var moduleInstance = (args.length > 1 || arrayRequest) ? slice.call(args, 0) : args[0];
+						if(moduleInstance && moduleInstance.moduleInstance) {
+							var moduleId = that.getModuleId(moduleInstance);
+							moduleInstance = moduleInstance.moduleInstance;
+							that.setModuleId(moduleInstance, moduleId);
+						}
+						dfd.resolve(moduleInstance);
                     }, 1);
                 }, function(err){
                     dfd.reject(err);

@@ -111,7 +111,14 @@ As you can see _customerList_ depends on _backend_ and uses the _new_ modifier t
 <div class="alert alert-block">
   <h4>Important!</h4>
   <p>
-  A module's <em>define</em> is only exeucted once, at the time the module is first required. As a result, if you return an object instance, you have created a singleton which will stay in memory for the lifetime of your application. If this is not desired, return a constructor function to retain greater control of the lifetime of your objects by allowing consumers to create/release them as needed.
+  A module's <em>define</em> is only executed once, at the time the module is first required. As a result, if you return an object instance, you have created a singleton which will stay in memory for the lifetime of your application. If this is not desired, return a constructor function to retain greater control of the lifetime of your objects by allowing consumers to create/release them as needed.
+  </p>
+</div>
+
+<div class="alert alert-block">
+  <h4>Important for ES6 modules (TypeScript and the like)!</h4>
+  <p>
+  In ES6 it is not recommended to simply return a value from a module, but instead exporting items is the common pattern. Therefore, Durandal supports modules exporting a variable named <em>moduleInstance</em>, which will be used instead of the whole module. Naturally, this moduleInstance variable can be either an object or a class, to support both singleton and factory use cases described above.
   </p>
 </div>
 
