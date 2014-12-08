@@ -1,4 +1,5 @@
 {
+  "watch": true,
   "bowerDir": {
     "path": ".mimosa/bower/bower_components",
     "clean": true,
@@ -12,24 +13,29 @@
     "strategy": {},
     "forceLatest": true,
     "exclude": [],
+    "unknownMainFullCopy": false,
     "overridesArrays": {
       "knockout.js": [
         "knockout.js",
-        "knockout-2.3.0.debug.js"
-      ],
-      "bootstrap": [
-        "docs/assets/js/bootstrap.js",
-        "docs/assets/css/bootstrap.css",
-        "docs/assets/css/bootstrap-responsive.css"
+        "knockout.debug.js"
       ],
       "font-awesome": [
-        "css/font-awesome.css",
-        "css/font-awesome-ie7.css"
+        "css/font-awesome.css"
+      ],
+      "jquery": [
+        "jquery.js"
+      ],
+      "bootstrap": [
+        "dist/js/bootstrap.js",
+        "dist/css/bootstrap.css"
       ]
     },
     "overridesObjects": {
       "font-awesome": {
-        "font": "../../font"
+        "fonts": "../../fonts"
+      },
+      "bootstrap": {
+        "dist/fonts": "../../fonts"
       },
       "durandal": {
         "img": "../../images",
@@ -40,19 +46,23 @@
     "mainOverrides": {
       "knockout.js": [
         "knockout.js",
-        "knockout-2.3.0.debug.js"
-      ],
-      "bootstrap": [
-        "docs/assets/js/bootstrap.js",
-        "docs/assets/css/bootstrap.css",
-        "docs/assets/css/bootstrap-responsive.css"
+        "knockout.debug.js"
       ],
       "font-awesome": [
         {
-          "font": "../../font"
+          "fonts": "../../fonts"
         },
-        "css/font-awesome.css",
-        "css/font-awesome-ie7.css"
+        "css/font-awesome.css"
+      ],
+      "jquery": [
+        "jquery.js"
+      ],
+      "bootstrap": [
+        "dist/js/bootstrap.js",
+        "dist/css/bootstrap.css",
+        {
+          "dist/fonts": "../../fonts"
+        }
       ],
       "durandal": [
         {
