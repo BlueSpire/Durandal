@@ -18,7 +18,6 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         compositionDataKey = 'durandal-composition-data',
         partAttributeName = 'data-part',
         bindableSettings = ['model', 'view', 'transition', 'area', 'strategy', 'activationData', 'onError'],
-        visibilityKey = "durandal-visibility-data",
         composeBindings = ['compose:'];
     
     function onError(context, error, element) {
@@ -232,13 +231,11 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
     }
 
     function hide(view) {
-        ko.utils.domData.set(view, visibilityKey, view.style.display);
-        view.style.display = 'none';
+        view.style.visibility = 'hidden';
     }
 
     function show(view) {
-        var displayStyle = ko.utils.domData.get(view, visibilityKey);
-        view.style.display = displayStyle === 'none' ? 'block' : displayStyle;
+        view.style.visibility = 'visible';
     }
 
     function hasComposition(element){
