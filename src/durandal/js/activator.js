@@ -140,9 +140,15 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                         resultOrPromise.then(function (result) {
                             settings.lifecycleData = result;
                             dfd.resolve(settings.interpretResponse(result));
-                        }, function (reason) {
-                            system.log('ERROR: ' + reason.message, reason);
-                            dfd.resolve(false);
+                        }, function (errorResult) {
+                            if (errorResult.redirect) {
+                                settings.lifecycleData = errorResult;
+                                dfd.resolve(settings.interpretResponse(errorResult));
+                            }
+                            else {
+                                system.log('ERROR: ' + errorResult.message, errorResult);
+                                dfd.resolve(false);
+                            }
                         });
                     } else {
                         settings.lifecycleData = resultOrPromise;
@@ -188,12 +194,18 @@ define(['durandal/system', 'knockout'], function (system, ko) {
                 }
 
                 if (resultOrPromise.then) {
-                    resultOrPromise.then(function(result) {
+                    resultOrPromise.then(function (result) {
                         settings.lifecycleData = result;
                         dfd.resolve(settings.interpretResponse(result));
-                    }, function(reason) {
-                        system.log('ERROR: ' + reason.message, reason);
-                        dfd.resolve(false);
+                    }, function (errorResult) {
+                        if (errorResult.redirect) {
+                            settings.lifecycleData = errorResult;
+                            dfd.resolve(settings.interpretResponse(errorResult));
+                        }
+                        else {
+                            system.log('ERROR: ' + errorResult.message, errorResult);
+                            dfd.resolve(false);
+                        }
                     });
                 } else {
                     settings.lifecycleData = resultOrPromise;
