@@ -48,6 +48,11 @@ exports.config =
             css: "durandal"
           }
         ]
+        "almond-custom": [
+          {
+            "almond.js": "almond-custom.js"
+          }
+        ]
 
   combine:
     folders: [

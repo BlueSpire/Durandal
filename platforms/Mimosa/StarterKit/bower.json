@@ -8,6 +8,7 @@
     "knockout.js":"3.1.0",
     "bootstrap":"3.1.1",
     "font-awesome":"4.0.3",
-    "durandal":"2.1.0"
+    "durandal":"2.1.0",
+    "almond-custom":"BlueSpire/almond#c7ee3a17b9c10c38f79ed12780e027f4290bfb47"
   }
 }
