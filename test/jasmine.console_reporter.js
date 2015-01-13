@@ -8,9 +8,12 @@ jasmine.getEnv().addReporter(new jasmine.ConsoleReporter());
 jasmine.getEnv().execute();
 */
 
-(function (jasmine, console) {
-    if (!jasmine) {
-        throw "jasmine library isn't loaded!";
+(function (global) {
+    var exportObject;
+    if (typeof module !== "undefined" && module.exports) {
+        exportObject = exports;
+    } else {
+        exportObject = global.jasmineReporters = global.jasmineReporters || {};
     }
 
     var ANSI = {}
@@ -37,15 +40,21 @@ jasmine.getEnv().execute();
         success: "success"
     };
 
-    proto.reportRunnerStarting = function (runner) {
+    function isFailed(obj) { return obj.status === "failed"; }
+    function isPassed(obj) { return obj.status === "passed"; }
+    function isSkipped(obj) { return obj.status === "pending"; }
+    function isDisabled(obj) { return obj.status === "disabled"; }
+
+    proto.jasmineStarted = function (runner) {
         this.status = this.statuses.running;
         this.start_time = (new Date()).getTime();
         this.executed_specs = 0;
         this.passed_specs = 0;
         this.log("Starting...");
+        this.currentSuites = [];
     };
 
-    proto.reportRunnerResults = function (runner) {
+    proto.jasmineDone = function (runner) {
         var failed = this.executed_specs - this.passed_specs;
         var spec_str = this.executed_specs + (this.executed_specs === 1 ? " spec, " : " specs, ");
         var fail_str = failed + (failed === 1 ? " failure in " : " failures in ");
@@ -66,32 +75,46 @@ jasmine.getEnv().execute();
     };
 
 
-    proto.reportSpecStarting = function (spec) {
-        this.executed_specs++;
+    proto.specStarted = function (spec) {
+        this.currentSuites[0].specCount++;
     };
 
-    proto.reportSpecResults = function (spec) {
-        if (spec.results().passed()) {
-            this.passed_specs++;
+    proto.specDone = function (spec) {
+        var suite = this.currentSuites[0];
+        if (isPassed(spec)) {
+            this.passed_specs ++;
+            suite.passedSpecCount++;
             return;
         }
 
-        var resultText = spec.suite.description + " : " + spec.description;
-        this.log(resultText, "red");
+        if (isSkipped(spec) || isDisabled(spec)) {
+            suite.skippedSpecCount++;
+            return;
+        }
 
-        var items = spec.results().getItems()
+        this.log(spec.fullName, "red");
+        var items = spec.failedExpectations;
         for (var i = 0; i < items.length; i++) {
-            var trace = items[i].trace.stack || items[i].trace;
+            var trace = items[i].stack || items[i].message;
             this.log(trace, "red");
         }
     };
 
-    proto.reportSuiteResults = function (suite) {
-        if (!suite.parentSuite) { return; }
-        var results = suite.results();
-        var failed = results.totalCount - results.passedCount;
+    proto.suiteStarted = function(suite) {
+        suite.specCount = 0;
+        suite.passedSpecCount = 0;
+        suite.skippedSpecCount = 0;
+        this.currentSuites.unshift(suite);
+    };
+
+    proto.suiteDone = function (suite) {
+        var executedSpecs = suite.specCount - suite.skippedSpecCount;
+        this.executed_specs += executedSpecs;
+        this.currentSuites.shift();
+        if (executedSpecs == 0) { return; }
+        var failed = executedSpecs - suite.passedSpecCount;
         var color = (failed > 0) ? "red" : "green";
-        this.log(suite.description + ": " + results.passedCount + " of " + results.totalCount + " passed.", color);
+        this.log(suite.fullName + ": " + suite.passedSpecCount + " of " + executedSpecs + " passed.", color);
     };
 
     proto.log = function (str, color) {
@@ -99,5 +122,5 @@ jasmine.getEnv().execute();
         console.log(text)
     };
 
-    jasmine.ConsoleReporter = ConsoleReporter;
-})(jasmine, console);
+    exportObject.ConsoleReporter = ConsoleReporter;
+})(this);
