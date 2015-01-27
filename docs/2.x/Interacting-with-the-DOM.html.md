@@ -20,7 +20,7 @@ Below are a few ways you can do this depending on your situation.
 
 ### Knockout Binding Handlers
 
-The databinding infrastructure prodived by [Knockout](http://knockoutjs.com/) is very robust. In addition to the built-in bindings, it provides a way to [create custom bindings](http://knockoutjs.com/documentation/custom-bindings.html).
+The databinding infrastructure provided by [Knockout](http://knockoutjs.com/) is very robust. In addition to the built-in bindings, it provides a way to [create custom bindings](http://knockoutjs.com/documentation/custom-bindings.html).
 It's a simple way to encapsulate view-related code, keeping your normal modules free from the ugliness of DOM manipulation.
 This is the most common mechanism for interacting with the DOM in an application, particularly if the logic is reusable.
 For example, it's common to wrap jQuery plugins inside of a custom binding handler so they can be declaratively applied to any element.
