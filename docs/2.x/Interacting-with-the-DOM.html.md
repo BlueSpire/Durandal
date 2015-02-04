@@ -71,7 +71,7 @@ This callback happens before databinding. It is passed the composition's `activa
 #### binding & bindingComplete
 
 When the composition engine takes your view and object, and uses the [binder](/documentation/api#module/binder) to bind them together, two other callbacks are executed before and after the binding takes place.
-`binding(view)` is called prior to binding and `bindingComplete(view)` is called immeidately after. Each call passes the view to your object. One added capability of the `binding` callback is that it can return an "instruction" object to the binding system. If this object is a `boolean` value of `false`, then Knockout's applyBindings call will not be run. You can also return an object like so `{ applyBindings:false }`.
+`binding(view)` is called prior to binding and `bindingComplete(view)` is called immediately after. Each call passes the view to your object. One added capability of the `binding` callback is that it can return an "instruction" object to the binding system. If this object is a `boolean` value of `false`, then Knockout's applyBindings call will not be run. You can also return an object like so `{ applyBindings:false }`.
 
 #### attached
 
