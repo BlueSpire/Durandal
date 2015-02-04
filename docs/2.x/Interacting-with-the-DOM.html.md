@@ -81,7 +81,7 @@ It's a perfect time to add additional behavior, execute selectors, etc.
 
 #### compositionComplete
 
-After the entire view is composed, inlcuding all parent and child compositions that the current component is part of, the `compositionComplete(view, parent)` callbacks will be executed, bubbling from child to parent. You can use this as the latest point of interaction with the view during the composition process. If you need to measure DOM elements, this is the place to do it.
+After the entire view is composed, including all parent and child compositions that the current component is part of, the `compositionComplete(view, parent)` callbacks will be executed, bubbling from child to parent. You can use this as the latest point of interaction with the view during the composition process. If you need to measure DOM elements, this is the place to do it.
 
 #### detached
 
