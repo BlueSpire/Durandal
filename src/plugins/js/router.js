@@ -549,7 +549,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                 var parts = pair.split(/=(.+)?/),
                     key = parts[0],
-                    value = parts[1] && decodeURIComponent(parts[1].replace(/\+/g, ' '));
+                    value = (parts[1] && decodeURIComponent(parts[1].replace(/\+/g, ' '))) || null;
 
                 var existing = queryObject[key];
 
