@@ -52,17 +52,17 @@
 
             it('applies bindings with before and after hooks', function () {
                 var bindStatus = 0;
-                spyOn(sut, 'binding').andCallFake(function (dataArg, viewArg) {
+                spyOn(sut, 'binding').and.callFake(function (dataArg, viewArg) {
                     expect(dataArg).toBe(settings.data);
                     expect(viewArg).toBe(view);
                     expect(bindStatus).toBe(0);
                     bindStatus = 1;
                 });
-                ko.applyBindings.andCallFake(function () {
+                ko.applyBindings.and.callFake(function () {
                     expect(bindStatus).toBe(1);
                     bindStatus = 2;
                 });
-                spyOn(sut, 'bindingComplete').andCallFake(function (dataArg, viewArg) {
+                spyOn(sut, 'bindingComplete').and.callFake(function (dataArg, viewArg) {
                     expect(dataArg).toBe(settings.data);
                     expect(viewArg).toBe(view);
                     expect(bindStatus).toBe(2);
@@ -75,7 +75,7 @@
             });
 
             it('logs binding error', function () {
-                ko.applyBindings.andCallFake(function () {
+                ko.applyBindings.and.callFake(function () {
                     throw new Error('FakeError');
                 });
 
@@ -92,30 +92,30 @@
                 it('throws and returns with null view', function () {
                     view = null;
 
-                    expect(function () { sutAction(); }).toThrow(insufficientInfoMessage);
+                    expect(function () { sutAction(); }).toThrowError(insufficientInfoMessage);
                     expect(ko.applyBindings).not.toHaveBeenCalledWith(settings.bindingTarget, view);
                 });
 
                 it('throws and returns with null obj', function () {
                     settings.bindingTarget = null;
 
-                    expect(function () { sutAction(); }).toThrow(insufficientInfoMessage);
+                    expect(function () { sutAction(); }).toThrowError(insufficientInfoMessage);
                     expect(ko.applyBindings).not.toHaveBeenCalledWith(settings.bindingTarget, view);
                 });
 
                 it('throws and returns with no getAttribute function on view', function () {
                     view.getAttribute = null;
 
-                    expect(function () { sutAction(); }).toThrow(unexpectedViewMessage);
+                    expect(function () { sutAction(); }).toThrowError(unexpectedViewMessage);
                     expect(ko.applyBindings).not.toHaveBeenCalledWith(settings.bindingTarget, view);
                 });
 
                 it('throws binding error', function () {
-                    ko.applyBindings.andCallFake(function () {
+                    ko.applyBindings.and.callFake(function () {
                         throw new Error('FakeError');
                     });
 
-                    expect(function () { sutAction(); }).toThrow(jasmine.any(String));
+                    expect(function () { sutAction(); }).toThrowError(/.*/);
                 });
             });
         }

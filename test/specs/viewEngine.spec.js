@@ -75,7 +75,7 @@
                 };
 
                 oldParseMarkup = sut.parseMarkup;
-                var spied = spyOn(spyable, 'parseIt').andCallThrough();
+                var spied = spyOn(spyable, 'parseIt').and.callThrough();
                 sut.parseMarkup = spied;
             });
 
@@ -120,7 +120,7 @@
 
         describe('createView', function () {
             it('view acquire and data-view attribute added', function () {
-                spyOn(system, 'acquire').andCallFake(function (req) {
+                spyOn(system, 'acquire').and.callFake(function (req) {
                     var d = system.defer();
                     d.resolve('<div>test</div>');
                     return d.promise();
