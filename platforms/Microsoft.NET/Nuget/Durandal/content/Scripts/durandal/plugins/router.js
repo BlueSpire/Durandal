@@ -433,6 +433,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                     ensureActivation(activeItem, instance, instruction);
                 }).fail(function(err) {
+                    cancelNavigation(null, instruction);
                     system.error('Failed to load routed module (' + instruction.config.moduleId + '). Details: ' + err.message, err);
                 });
             }
@@ -552,9 +553,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                     continue;
                 }
 
-                var parts = pair.split(/=(.+)?/),
-                    key = parts[0],
-                    value = parts[1] && decodeURIComponent(parts[1].replace(/\+/g, ' '));
+                var sp = pair.indexOf("="),
+                    key = sp === -1 ? pair : pair.substr(0, sp),
+                    value = sp === -1 ? null : decodeURIComponent(pair.substr(sp + 1).replace(/\+/g, ' '));
 
                 var existing = queryObject[key];
 

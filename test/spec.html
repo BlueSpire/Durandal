@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="text/javascript" src="jasmine-1.2.0.js"></script>
-    <script type="text/javascript" src="jasmine.console_reporter.js"></script>
+    <script src="lib/jasmine-2.1.3/jasmine.js"></script>
+    <script src="lib/jasmine-2.1.3/jasmine-html.js"></script>
+    <script src="jasmine.console_reporter.js"></script>
+    <script src="lib/jasmine-2.1.3/boot.js"></script>
+
     <script type="text/javascript" src="../lib/jquery/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="../lib/knockout/knockout-3.1.0.js"></script>
     <script type="text/javascript" src="../lib/require/require.js"></script>
@@ -21,7 +24,7 @@
         });
         var runTests = function (specfiles) {
             require(specfiles, function () {
-                var consoleReporter = new jasmine.ConsoleReporter();
+                var consoleReporter = new jasmineReporters.ConsoleReporter();
                 jasmine.getEnv().addReporter(consoleReporter);
                 jasmine.getEnv().execute();
             });

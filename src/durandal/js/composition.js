@@ -485,7 +485,12 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
 
             tryActivate(context, function () {
                 if (context.parent.__composition_context == context) {
-                    delete context.parent.__composition_context;
+                    try {
+                        delete context.parent.__composition_context;
+                    }
+                    catch(e) {
+                        context.parent.__composition_context = undefined;
+                    }
 
                     if (context.binding) {
                         context.binding(context.child, context.parent, context);

@@ -55,12 +55,12 @@ copySamples "Microsoft.NET/Samples/Durandal.Samples/App" `
 
 Write-Host "Building .NET/StarterKit"
 
-copyDurandal "Microsoft.NET/StarterKit/vstemplate/DurandalTemplate/DurandalTemplate/Scripts/durandal" `
-		 	 "Microsoft.NET/StarterKit/vstemplate/DurandalTemplate/DurandalTemplate/Content" `
-		 	 "Microsoft.NET/StarterKit/vstemplate/DurandalTemplate/DurandalTemplate/Content/images"
+copyDurandal "Microsoft.NET/StarterKit/DurandalTemplate/Scripts/durandal" `
+		 	 "Microsoft.NET/StarterKit/DurandalTemplate/Content" `
+		 	 "Microsoft.NET/StarterKit/DurandalTemplate/Content/images"
 
-copyStarterKit "Microsoft.NET/StarterKit/vstemplate/DurandalTemplate/DurandalTemplate/App" `
-		 	   "Microsoft.NET/StarterKit/vstemplate/DurandalTemplate/DurandalTemplate/Content"
+copyStarterKit "Microsoft.NET/StarterKit/DurandalTemplate/App" `
+		 	   "Microsoft.NET/StarterKit/DurandalTemplate/Content"
 
 Write-Host "Building .NET/Core Nuget Packages"
 
@@ -77,13 +77,13 @@ Write-Host "Building .NET/StarterKit Nuget Package"
 copyStarterKit "Microsoft.NET/Nuget/Durandal.StarterKit/content/App" `
 		 	   "Microsoft.NET/Nuget/Durandal.StarterKit/content/Content"
 
-Copy-Item "Microsoft.NET/StarterKit/vstemplate/DurandalTemplate/DurandalTemplate/App_Start/DurandalBundleConfig.cs.pp" `
+Copy-Item "Microsoft.NET/StarterKit/DurandalTemplate/App_Start/DurandalBundleConfig.cs.pp" `
           "Microsoft.NET/Nuget/Durandal.StarterKit/content/App_Start" -recurse -force
 
-Copy-Item "Microsoft.NET/StarterKit/vstemplate/DurandalTemplate/DurandalTemplate/Controllers/DurandalController.cs.pp" `
+Copy-Item "Microsoft.NET/StarterKit/DurandalTemplate/Controllers/DurandalController.cs.pp" `
           "Microsoft.NET/Nuget/Durandal.StarterKit/content/Controllers" -recurse -force
 
-Copy-Item "Microsoft.NET/StarterKit/vstemplate/DurandalTemplate/DurandalTemplate/Views/Durandal/*" `
+Copy-Item "Microsoft.NET/StarterKit/DurandalTemplate/Views/Durandal/*" `
           "Microsoft.NET/Nuget/Durandal.StarterKit/content/Views/Durandal" -recurse -force
 
 Write-Host "Building Mimosa/StarterKit"

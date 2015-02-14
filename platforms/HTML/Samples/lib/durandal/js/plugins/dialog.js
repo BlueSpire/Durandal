@@ -147,7 +147,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
             return stringOrObject;
         }
         else if (t === "object") {
-            if ($.type(stringOrObject.text) === "undefined") {
+            if ($.type(stringOrObject.value) === "undefined") {
                 system.error('The object for a MessageBox button does not have a value property defined.');
                 return null;
             } else {
@@ -413,6 +413,8 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
     dialog.addContext('default', {
         blockoutOpacity: 0.2,
         removeDelay: 200,
+        minYMargin: 5,
+        minXMargin: 5,
         /**
          * In this function, you are expected to add a DOM element to the tree which will serve as the "host" for the modal's composed view. You must add a property called host to the modalWindow object which references the dom element. It is this host which is passed to the composition module.
          * @method addHost
@@ -530,10 +532,14 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
             if (!$view.data("predefinedWidth")) {
                 $view.css({ width: '' }); //Reset width
             }
+			
+			// clear the height
+            $view.css({ height: '' });
+
             var width = $view.outerWidth(false),
                 height = $view.outerHeight(false),
-                windowHeight = $window.height() - 10, //leave at least 10 pixels free
-                windowWidth = $window.width() - 10, //leave at least 10 pixels free
+                windowHeight = $window.height() - 2 * this.minYMargin, //leave at least some pixels free
+                windowWidth = $window.width() - 2 * this.minXMargin, //leave at least some pixels free
                 constrainedHeight = Math.min(height, windowHeight),
                 constrainedWidth = Math.min(width, windowWidth);
 

@@ -1,4 +1,14 @@
-﻿2.1.0
+﻿2.1.1
+-Fix Issue #542: SampleApp page-host overflow-y slow on Webkit
+-Fix Issue #541: Fail on logging activate promise
+-Fix Issue #545: navigation breaks after failing to load module
+-Fix Issue #547: Navbar collapse broken in starterkit
+-Fix Issue #552, #567: attach viewmodel lifecycle callback get improper query string, IE8
+-Fix Issue #563, #564, #565: Links to Bootstrap's site are outdated
+-Fix Issue #569, #575: composition.js issue in ie7
+-Fix Issue #574, #577, #578: Fixed some bugs in dialog.js and added customizability to full screen dialog margins
+
+2.1.0
 -Fix Issue #381: Update Durandal to use KO 3
 -Fix Issue #374: Bootstrap 3.0 & Font-Awesome Update
 -Fix Issue #380: Replaced html bindings with text bindings in sample application codes

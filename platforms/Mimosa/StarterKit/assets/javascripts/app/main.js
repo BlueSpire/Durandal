@@ -21,6 +21,8 @@ define(function(require) {
         viewLocator = require('durandal/viewLocator'),
         system = require('durandal/system');
 
+    require('bootstrap');
+
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
