@@ -20,7 +20,7 @@ Below are a few ways you can do this depending on your situation.
 
 ### Knockout Binding Handlers
 
-The databinding infrastructure prodived by [Knockout](http://knockoutjs.com/) is very robust. In addition to the built-in bindings, it provides a way to [create custom bindings](http://knockoutjs.com/documentation/custom-bindings.html).
+The databinding infrastructure provided by [Knockout](http://knockoutjs.com/) is very robust. In addition to the built-in bindings, it provides a way to [create custom bindings](http://knockoutjs.com/documentation/custom-bindings.html).
 It's a simple way to encapsulate view-related code, keeping your normal modules free from the ugliness of DOM manipulation.
 This is the most common mechanism for interacting with the DOM in an application, particularly if the logic is reusable.
 For example, it's common to wrap jQuery plugins inside of a custom binding handler so they can be declaratively applied to any element.
@@ -71,7 +71,7 @@ This callback happens before databinding. It is passed the composition's `activa
 #### binding & bindingComplete
 
 When the composition engine takes your view and object, and uses the [binder](/documentation/api#module/binder) to bind them together, two other callbacks are executed before and after the binding takes place.
-`binding(view)` is called prior to binding and `bindingComplete(view)` is called immeidately after. Each call passes the view to your object. One added capability of the `binding` callback is that it can return an "instruction" object to the binding system. If this object is a `boolean` value of `false`, then Knockout's applyBindings call will not be run. You can also return an object like so `{ applyBindings:false }`.
+`binding(view)` is called prior to binding and `bindingComplete(view)` is called immediately after. Each call passes the view to your object. One added capability of the `binding` callback is that it can return an "instruction" object to the binding system. If this object is a `boolean` value of `false`, then Knockout's applyBindings call will not be run. You can also return an object like so `{ applyBindings:false }`.
 
 #### attached
 
@@ -81,7 +81,7 @@ It's a perfect time to add additional behavior, execute selectors, etc.
 
 #### compositionComplete
 
-After the entire view is composed, inlcuding all parent and child compositions that the current component is part of, the `compositionComplete(view, parent)` callbacks will be executed, bubbling from child to parent. You can use this as the latest point of interaction with the view during the composition process. If you need to measure DOM elements, this is the place to do it.
+After the entire view is composed, including all parent and child compositions that the current component is part of, the `compositionComplete(view, parent)` callbacks will be executed, bubbling from child to parent. You can use this as the latest point of interaction with the view during the composition process. If you need to measure DOM elements, this is the place to do it.
 
 #### detached
 
