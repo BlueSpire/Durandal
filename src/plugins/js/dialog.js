@@ -181,7 +181,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 system.acquire(objOrModuleId).then(function (module) {
                     dfd.resolve(system.resolveObject(module));
                 }).fail(function (err) {
-                    system.error('Failed to load dialog module (' + objOrModuleId + '). Details: ' + err.message);
+                    system.error('Failed to load dialog module (' + objOrModuleId + '). Details: ' + err.message, err);
                 });
             } else {
                 dfd.resolve(objOrModuleId);

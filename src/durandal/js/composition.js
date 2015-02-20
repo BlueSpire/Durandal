@@ -21,16 +21,16 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         visibilityKey = "durandal-visibility-data",
         composeBindings = ['compose:'];
     
-    function onError(context, error, element) {
+    function onError(context, reason, element, error) {
         try {
             if (context.onError) {
                 try {
-                    context.onError(error, element);
+                    context.onError(reason, element, error);
                 } catch (e) {
-                    system.error(e);
+                    system.error(e, error);
                 }
             } else {
-                system.error(error);
+                system.error(reason, error);
             }
         } finally {
             endComposition(context, element, true);
@@ -443,7 +443,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                         endComposition(context, element);
                     });
                 }).fail(function(err){
-                    onError(context, 'Failed to load transition (' + transitionModuleId + '). Details: ' + err.message, element);
+                    onError(context, 'Failed to load transition (' + transitionModuleId + '). Details: ' + err.message, element, err);
                 });
             } else {
                 if (context.child != context.activeView) {
@@ -624,7 +624,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                     context.strategy = strategy;
                     composition.executeStrategy(context, element);
                 }).fail(function (err) {
-                    onError(context, 'Failed to load view strategy (' + context.strategy + '). Details: ' + err.message, element);
+                    onError(context, 'Failed to load view strategy (' + context.strategy + '). Details: ' + err.message, element, err);
                 });
             } else {
                 this.executeStrategy(context, element);
@@ -683,7 +683,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                     settings.model = system.resolveObject(module);
                     composition.inject(settings, element);
                 }).fail(function (err) {
-                    onError(settings, 'Failed to load composed module (' + settings.model + '). Details: ' + err.message, element);
+                    onError(settings, 'Failed to load composed module (' + settings.model + '). Details: ' + err.message, element, err);
                 });
             } else {
                 composition.inject(settings, element);

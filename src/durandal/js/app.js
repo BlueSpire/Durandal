@@ -38,7 +38,7 @@ define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'duran
 
                 dfd.resolve();
             }).fail(function(err){
-                system.error('Failed to load plugin(s). Details: ' + err.message);
+                system.error('Failed to load plugin(s). Details: ' + err.message, err);
             });
         }).promise();
     }
@@ -137,8 +137,8 @@ define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'duran
                             } else if (result) {
                                 composition.compose(hostElement, settings);
                             }
-                        } catch (er) {
-                            system.error(er);
+                        } catch (err) {
+                            system.error(err);
                         }
                     } else {
                         composition.compose(hostElement, settings);
@@ -153,7 +153,7 @@ define(['durandal/system', 'durandal/viewEngine', 'durandal/composition', 'duran
                     settings.model = system.resolveObject(module);
                     finishComposition();
                 }).fail(function(err) {
-                    system.error('Failed to load root module (' + settings.model + '). Details: ' + err.message);
+                    system.error('Failed to load root module (' + settings.model + '). Details: ' + err.message, err);
                 });
             } else {
                 finishComposition();

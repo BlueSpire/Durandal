@@ -73,12 +73,12 @@ define(['durandal/system', 'knockout'], function (system, ko) {
 
             ko.utils.domData.set(view, bindingInstructionKey, instruction);
             return instruction;
-        } catch (e) {
-            e.message = e.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(data);
+        } catch (err) {
+            err.message = err.message + ';\nView: ' + viewName + ";\nModuleId: " + system.getModuleId(data);
             if (binder.throwOnErrors) {
-                system.error(e);
+                system.error(err);
             } else {
-                system.log(e.message);
+                system.log(err.message);
             }
         }
     }
