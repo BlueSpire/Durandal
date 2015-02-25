@@ -470,7 +470,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 if (!config.viewUrl) {
                     config.moduleId = config.moduleId || router.convertRouteToModuleId(config.route);
                 }
-                
+
                 config.hash = config.hash || router.convertRouteToHash(config.route);
 
                 if (config.hasChildRoutes) {
@@ -550,7 +550,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                 var sp = pair.indexOf("="),
                     key = sp === -1 ? pair : pair.substr(0, sp),
-                    value = (parts[1] && decodeURIComponent(parts[1].replace(/\+/g, ' '))) || null;
+                    value = sp === -1 ? null : decodeURIComponent(pair.substr(sp + 1).replace(/\+/g, ' '));
 
                 var existing = queryObject[key];
 
@@ -645,8 +645,8 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             } else {
                 document.title = value;
             }
-        }  
-        
+        }
+
         // Allow observable to be used for app.title
         if(ko.isObservable(app.title)) {
             app.title.subscribe(function () {
@@ -655,7 +655,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
                 setTitle(title);
             });
         }
-        
+
         /**
          * Updates the document title based on the activated module instance, the routing instruction and the app.title.
          * @method updateDocumentTitle
@@ -665,7 +665,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         router.updateDocumentTitle = function (instance, instruction) {
             var appTitle = ko.unwrap(app.title),
                 title = instruction.config.title;
-                
+
             if (titleSubscription) {
                 titleSubscription.dispose();
             }
