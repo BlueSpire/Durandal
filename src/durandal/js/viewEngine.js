@@ -93,7 +93,9 @@ define(['durandal/system', 'jquery'], function (system, $) {
          * @return {DOMElement} A single element.
          */
         ensureSingleElement:function(allElements){
-            if (allElements.length == 1) {
+            if (!allElements) { 
+                $('<div></div>')[0];
+            } else if (allElements.length == 1) {
                 return allElements[0];
             }
 
