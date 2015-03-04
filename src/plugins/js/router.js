@@ -1051,6 +1051,12 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             var rootStripper = rootRouter.options.root && new RegExp("^" + rootRouter.options.root + "/");
 
             $(document).delegate("a", 'click', function(evt){
+                
+                // ignore default prevented since these are not supposed to behave like links anyway
+                if(evt.isDefaultPrevented()){
+                    return;
+                }
+
                 if(history._hasPushState){
                     if(!evt.altKey && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey && rootRouter.targetIsThisWindow(evt)){
                         var href = $(this).attr("href");
