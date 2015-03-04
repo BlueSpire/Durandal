@@ -1081,10 +1081,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     };
 
     /**
-     * Disable history, perhaps temporarily. Not useful in a real app, but possibly useful for unit testing Routers.
+     * Deactivate current items and turn history listening off.
      * @method deactivate
      */
     rootRouter.deactivate = function() {
+        rootRouter.activeItem(null);
         history.deactivate();
     };
 
