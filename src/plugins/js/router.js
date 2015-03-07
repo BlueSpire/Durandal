@@ -18,6 +18,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
     var startDeferred, rootRouter;
     var trailingSlash = /\/$/;
     var routesAreCaseSensitive = false;
+    var decodeRouteParameter = true;
     var lastUrl = '/', lastTryUrl = '/';
 
     function routeStringToRegExp(routeString) {
@@ -447,7 +448,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             for (var i = 0; i < params.length; i++) {
                 var current = params[i];
-                params[i] = current ? decodeURIComponent(current) : null;
+                params[i] = current ? (decodeRouteParameter ? decodeURIComponent(current) : current) : null;
             }
 
             var queryParams = router.parseQueryString(queryString);
@@ -550,7 +551,11 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                 var sp = pair.indexOf("="),
                     key = sp === -1 ? pair : pair.substr(0, sp),
-                    value = sp === -1 ? null : decodeURIComponent(pair.substr(sp + 1).replace(/\+/g, ' '));
+                    value = sp === -1 ? null : pair.substr(sp + 1).replace(/\+/g, ' ');
+
+                if (decodeRouteParameter) {
+                    value = decodeURIComponent(value);
+                }
 
                 var existing = queryObject[key];
 
@@ -1008,6 +1013,14 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      */
     rootRouter.makeRoutesCaseSensitive = function(){
         routesAreCaseSensitive = true;
+    };
+
+    /**
+     * Instructs the router not to decode the route parameters and query string values.
+     * @method turnOffParameterDecoding
+     */
+    rootRouter.turnOffParameterDecoding = function () {
+        decodeRouteParameter = false;
     };
 
     /**

@@ -1775,6 +1775,11 @@ interface DurandalRootRouter extends DurandalRouterBase<DurandalRootRouter> {
     makeRoutesCaseSensitive(): void;
 
     /**
+     * Instructs the router not to decode the route parameters and query string values.
+     */
+    turnOffParameterDecoding(): void;
+
+    /**
      * Activates the router and the underlying history tracking mechanism.
      * @returns {Promise} A promise that resolves when the router is ready.
      */
