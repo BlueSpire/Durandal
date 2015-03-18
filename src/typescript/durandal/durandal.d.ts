@@ -1506,8 +1506,7 @@ interface DurandalRouteConfiguration {
     title?: any;
     moduleId?: string;
     hash?: string;
-    /** string or string[] */
-    route?: any;
+    route?: string|string[];
     routePattern?: RegExp;
     isActive?: KnockoutComputed<boolean>;
     nav?: any;
@@ -1561,6 +1560,11 @@ interface DurandalRouterBase<T> extends DurandalEventSupport<T> {
     */
     activeInstruction: KnockoutObservable<DurandalRouteInstruction>;
 
+    /**
+     * Parent router of the current child router.
+     */
+    parent?: DurandalRouter;
+	
     /**
      * Parses a query string into an object.
      * @param {string} queryString The query string to parse.
@@ -1763,7 +1767,7 @@ interface DurandalRouterBase<T> extends DurandalEventSupport<T> {
      * @param {object} instruction The route instruction. The instruction object has config, fragment, queryString, params and queryParams properties.
      * @returns {Promise|Boolean|String} If a boolean, determines whether or not the route should activate or be cancelled. If a string, causes a redirect to the specified route. Can also be a promise for either of these value types.
      */
-    guardRoute?: (instance: Object, instruction: DurandalRouteInstruction) => any;
+    guardRoute?: (instance: Object, instruction: DurandalRouteInstruction) => JQueryPromise<boolean|string>|boolean|string;
 }
 
 interface DurandalRouter extends DurandalRouterBase<DurandalRouter> { }
