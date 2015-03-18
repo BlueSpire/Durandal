@@ -370,7 +370,14 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
             return value;
         }
 
-        return convertProperty(obj, propertyName, value);
+        hasChanged = [];
+        if (changeDetectionMethod) {
+            if(obj && obj[changeDetectionMethod]) {
+                hasChanged.push(obj[changeDetectionMethod]);
+            }
+        }
+
+        return convertProperty(obj, propertyName, value, hasChanged);
     };
 
     observableModule.defineProperty = defineProperty;
