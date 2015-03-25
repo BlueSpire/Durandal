@@ -547,15 +547,15 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                 $view.css("overflow-y", "auto").outerHeight(windowHeight);
             } else {
                 $view.css({
-                    "overflow-y": "",
-                    "height": ""
+                    "overflow-y": $view.css("overflow-y"),
+                    "height": $view.css("height")
                 });
             }
 
             if (width > windowWidth) {
                 $view.css("overflow-x", "auto").outerWidth(windowWidth);
             } else {
-                $view.css("overflow-x", "");
+                $view.css("overflow-x", $view.css("overflow-x"));
 
                 if (!$view.data("predefinedWidth")) {
                     //Ensure the correct width after margin-left has been set
