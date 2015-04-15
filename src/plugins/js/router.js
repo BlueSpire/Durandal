@@ -451,6 +451,10 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             if (!queryString) {
                 return null;
             }
+            
+            if (queryString.charAt(0) === '?') {
+                queryString = queryString.substr(1);
+            }
 
             pairs = queryString.split('&');
 
