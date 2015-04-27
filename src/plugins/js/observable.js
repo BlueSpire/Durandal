@@ -344,7 +344,12 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         }
 
         computed = ko.computed(computedOptions);
-        obj[propertyName] = computed;
+
+        Object.defineProperty(obj, propertyName, {
+            configurable: true,
+            enumerable: true,
+            value: computed
+        });
 
         return convertProperty(obj, propertyName, computed);
     }
