@@ -442,13 +442,17 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         // Given a route, and a URL fragment that it matches, return the array of
         // extracted decoded parameters. Empty or unmatched parameters will be
         // treated as `null` to normalize cross-browser behavior.
-        function createParams(routePattern, fragment, queryString) {
-            var params = routePattern.exec(fragment).slice(1);
-
-            for (var i = 0; i < params.length; i++) {
-                var current = params[i];
-                params[i] = current ? decodeURIComponent(current) : null;
-            }
+        function createParams(routePattern, fragment, queryString, defaultParams) {
+            var params = defaultParams || [];
+            
+            var fragmentParams = routePattern.exec(fragment).slice(1);
+            fragmentParams.forEach(function (current, i) {
+                if (current) {
+                    params[i] = decodeURIComponent(current);
+                } else if (!params[i]) {
+                    params[i] = null;
+                }
+            });
 
             var queryParams = router.parseQueryString(queryString);
             if (queryParams) {
@@ -487,7 +491,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
             router.routes.push(config);
 
             router.route(config.routePattern, function(fragment, queryString) {
-                var paramInfo = createParams(config.routePattern, fragment, queryString);
+                var paramInfo = createParams(config.routePattern, fragment, queryString, config.params);
                 queueInstruction({
                     fragment: fragment,
                     queryString:queryString,
