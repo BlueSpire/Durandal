@@ -1,6 +1,6 @@
-.video{box-shadow:0 0 15px rgba(0,0,0,0.5)}
+.video{box-shadow:0 0 15px rgba(0,0,0,0.5);max-width:100%}
 body,input{font-family:"proxima-nova";font-weight:300}
-body{position:relative;font-size:16px}
+body{position:relative;font-size:16px;padding-top:50px}
 blockquote{line-height:25px;margin:20px 0;}
 blockquote p{font-size:16px}
 blockquote small{line-height:25px}
