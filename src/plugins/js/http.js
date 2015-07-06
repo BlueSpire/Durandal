@@ -101,6 +101,26 @@ define(['jquery', 'knockout'], function ($, ko) {
                 headers: ko.toJS(headers)
             });
         },
+         /**
+         * Makes an AJAX request.
+         * @param {string} [method] The HTTP method to use for the request.
+         * @param {string} url The url to send the request to.
+         * @param {object} data The data to be sent. It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
+         * @param {object} [headers] The data to add to the request header.  It will be converted to JSON. If the data contains Knockout observables, they will be converted into normal properties before serialization.
+         * @param {callback} [beforeSend] The pre-request callback function that can be used to modify the object before it is sent.
+         * @return {Promise} A promise of the response data.
+         */
+        ajax: function (method, url, data, headers, beforeSend) {
+            return $.ajax({
+                url: url,
+                data: this.toJSON(data),
+                type: method,
+                contentType: 'application/json',
+                dataType: 'json',
+                headers: ko.toJS(headers),
+                beforeSend: beforeSend
+            });
+        },
         /**
          * Makes an HTTP DELETE request.
          * @method remove
