@@ -116,6 +116,19 @@ define(['jquery', 'knockout'], function ($, ko) {
                 type: 'DELETE',
                 headers: ko.toJS(headers)
             });
+        },
+        /**
+         * Makes an HTTP DELETE request.
+         * @method ajax
+         * @param {object} settings A set of key/value pairs that configure the Ajax request. If the data contains Knockout observables, they will be converted into normal properties before serialization. The data attribtue will additionally be converted to JSON if contentType is set to 'application/json'.
+         * @return {Promise} A promise of the get response data.
+         */
+        ajax:function(settings) {
+            settings = ko.toJS(settings);
+            if (/application\/json/.test(settings.contentType)) {
+                settings.data = JSON.stringify(settings.data);
+            }
+            return $.ajax(settings);
         }
     };
 });
