@@ -21,7 +21,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         visibilityKey = "durandal-visibility-data",
         composeBindings = ['compose:'];
     
-    function onError(context, error, element) {
+    function onError(context, error, element, errorInCompositionCompleteCallback) {
         try {
             if (context.onError) {
                 try {
@@ -33,7 +33,9 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                 system.error(error);
             }
         } finally {
-            endComposition(context, element, true);
+            if (!errorInCompositionCompleteCallback) {
+                endComposition(context, element);
+            }
         }
     }
 
@@ -64,29 +66,30 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
         return state;
     }
 
-    function endComposition(context, element, error) {
+    function endComposition(context, element) {
         compositionCount--;
-
-        if(compositionCount === 0) {
-            var callBacks = compositionCompleteCallbacks;
-            compositionCompleteCallbacks = [];
-            
-            if (!error) {
+        
+        try {
+            if(compositionCount === 0) {
+                var callBacks = compositionCompleteCallbacks;
+                compositionCompleteCallbacks = [];
+                
                 setTimeout(function () {
                     var i = callBacks.length;
-
+    
                     while (i--) {
                         try {
                             callBacks[i]();
                         } catch (e) {
-                            onError(context, e, element);
+                            onError(context, e, element, true);
                         }
                     }
                 }, 1);
             }
         }
-
-        cleanUp(context);
+        finally {
+            cleanUp(context);
+        }
     }
 
     function cleanUp(context){
