@@ -1459,6 +1459,7 @@ declare module 'durandal/typescript' {
         moduleId?: string;
         route?: string;
         fromParent?: boolean;
+		dynamicHash?: string;
     }
 
     export interface Router {
