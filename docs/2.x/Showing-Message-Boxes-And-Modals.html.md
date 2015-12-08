@@ -237,10 +237,10 @@ All dialogs are shown in a particular visual context. This is a customization po
 
 The default context has the following basic behavior:
 
-1. Displays a blockout over your app. You can change it's opacity by using [getContext](/documentation/api#module/dialog/method/getContext) and changing the context's blockoutOpacity property.
+1. Displays a blockout over your app. You can change its opacity by using [getContext](/documentation/api#module/dialog/method/getContext) and changing the context's blockoutOpacity property.
 2. Displays your dialog's view centered on the screen.
 3. Displays your dialog's view by toggling its opacity from 0 to 1 when ready. This allows for a css 3 transition animation. (Default styles are provided by bootstrap and the durandal.css under source.)
-4. When displaying your view, if it's root html element has a class of _autoclose_ then the context will ensure that clicking outside of your dialog automatically causes it to close.
+4. When displaying your view, if its root html element has a class of _autoclose_ then the context will ensure that clicking outside of your dialog automatically causes it to close.
 5. When displaying your view, the context will look for any child elements with a class of _autofocus_ and focus them.
 6. When removing your view, the same css 3 opacity animation is applied. If you wish to change the timing of this, after you change the animation, you should alter the context's _removeDelay_. This is a delay in milliseconds that waits for the animation to complete before removing the dom nodes from the tree.
 7. While the dialog is visible, scroll bars are hidden on the body/html.
