@@ -30,7 +30,7 @@ exports.config =
   bower:
     copy:
       mainOverrides:
-        "knockout.js":["knockout.js","knockout-2.3.0.debug.js"]
+        "knockout.js":["knockout-3.4.0.js","knockout-3.4.0.debug.js"]
         "bootstrap": [
           "docs/assets/js/bootstrap.js"
           "docs/assets/css/bootstrap.css"
