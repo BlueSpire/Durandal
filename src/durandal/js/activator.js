@@ -58,39 +58,48 @@ define(['durandal/system', 'knockout'], function (system, ko) {
     }
 
     function deactivate(item, close, settings, dfd, setter) {
-        if (item && item.deactivate) {
-            system.log('Deactivating', item);
+        function continueDeactivate() {
+            if (item && item.deactivate) {
+                system.log('Deactivating', item);
+                var result;
+                try {
+                    result = item.deactivate(close);
+                } catch (error) {
+                    system.log('ERROR: ' + error.message, error);
+                    dfd.resolve(false);
+                    return;
+                }
 
-            var result;
-            try {
-                result = item.deactivate(close);
-            } catch(error) {
-                system.log('ERROR: ' + error.message, error);
-                dfd.resolve(false);
-                return;
-            }
-
-            if (result && result.then) {
-                result.then(function() {
+                if (result && result.then) {
+                    result.then(function () {
+                        settings.afterDeactivate(item, close, setter);
+                        dfd.resolve(true);
+                    }, function (reason) {
+                        system.log(reason);
+                        dfd.resolve(false);
+                    });
+                } else {
                     settings.afterDeactivate(item, close, setter);
                     dfd.resolve(true);
-                }, function(reason) {
-                    if (reason) {
-                        system.log(reason);
-                    }
-
-                    dfd.resolve(false);
-                });
+                }
             } else {
-                settings.afterDeactivate(item, close, setter);
+                if (item) {
+                    settings.afterDeactivate(item, close, setter);
+                }
+
                 dfd.resolve(true);
             }
+        }
+        var childActivator = settings.findChildActivator(item);
+        if (childActivator) {
+            var chlidItem = childActivator();
+            system.defer(function (dfd2) {
+                deactivate(chlidItem, close, settings, dfd2, setter);
+            }).promise().then(function () {
+                continueDeactivate();
+            });
         } else {
-            if (item) {
-                settings.afterDeactivate(item, close, setter);
-            }
-
-            dfd.resolve(true);
+            continueDeactivate();
         }
     }
 
