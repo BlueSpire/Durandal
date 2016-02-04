@@ -128,7 +128,7 @@ If the compose binding resolves to a string, it is assumed to be an identifier e
 
 If it is not recognized by the [viewLocator](/documentation/api#module/viewLocator), then it is assumed to be a module id. RequireJS is then used to require the module. Once this is done, the [viewLocator](/documentation/api#module/viewLocator) is used to locate the conventional view for the module, the [binder](/documentation/api#module/binder) is used to bind them, and it is injected into the element.
 
-> **Note:** If the module that is resolved by RequireJS is a function, rather than an abject, the function will be invoked with the _new_ modifier.
+> **Note:** If the module that is resolved by RequireJS is a function, rather than an object, the function will be invoked with the _new_ modifier.
 
 **Binding Examples**
 
