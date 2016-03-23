@@ -1016,7 +1016,7 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
      * @return {boolean} True if the event's target is the current window, false otherwise.
      */
     rootRouter.targetIsThisWindow = function(event) {
-        var targetWindow = $(event.target).attr('target');
+        var targetWindow = $(event.currentTarget||event.srcElement).attr('target');
 
         if (!targetWindow ||
             targetWindow === window.name ||
