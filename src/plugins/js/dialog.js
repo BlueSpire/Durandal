@@ -161,6 +161,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
     MessageBox.defaultViewMarkup = [
         '<div data-view="plugins/messageBox" data-bind="css: getClass(), style: getStyle()">',
             '<div class="modal-header">',
+                '<button type="button" class="close" data-dismiss="modal" aria-label="Close" data-bind="click: selectOption"><span aria-hidden="true">&times;</span></button>',
                 '<h3 data-bind="html: title"></h3>',
             '</div>',
             '<div class="modal-body">',
@@ -502,6 +503,18 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
                     $childView.find('.autofocus').first().focus();
                 }, 1);
             };
+            theDialog.height = $(child).height();
+            MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+            var observer = new MutationObserver(function(mutations, observer) {
+	        	if($(child).height() > theDialog.height){
+	        	    theDialog.context.reposition(child);
+	        	    theDialog.height = $(child).height();
+	        	}
+            });
+            observer.observe(child, {
+              subtree: true,
+              attributes: true
+            });
 
             setDialogPosition(child, theDialog);
             loadables.load(function () {
@@ -529,28 +542,21 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
             }
 			
 			// clear the height
-            $view.css({ height: '' });
+            //$view.css({ height: '' });
 
-            var width = $view.outerWidth(false),
-                height = $view.outerHeight(false),
+            var width = $view.find(".modal-content").outerWidth() || $view.outerWidth(false),
+                height = $view.find(".modal-content").outerHeight() || $view.outerHeight(false),
                 windowHeight = $window.height() - 2 * this.minYMargin, //leave at least some pixels free
                 windowWidth = $window.width() - 2 * this.minXMargin, //leave at least some pixels free
-                constrainedHeight = Math.min(height, windowHeight),
-                constrainedWidth = Math.min(width, windowWidth);
+                constrainedHeight = Math.max(0, windowHeight-height),
+                constrainedWidth = Math.max(0, windowWidth-width);
 
             $view.css({
-                'margin-top': (-constrainedHeight / 2).toString() + 'px',
-                'margin-left': (-constrainedWidth / 2).toString() + 'px'
+                'margin-top': (constrainedHeight / 2).toString() + 'px',
+                'margin-left': (constrainedWidth / 2).toString() + 'px',
+                "overflow-y": "",
+                "height": ""
             });
-
-            if (height > windowHeight) {
-                $view.css("overflow-y", "auto").outerHeight(windowHeight);
-            } else {
-                $view.css({
-                    "overflow-y": "",
-                    "height": ""
-                });
-            }
 
             if (width > windowWidth) {
                 $view.css("overflow-x", "auto").outerWidth(windowWidth);
