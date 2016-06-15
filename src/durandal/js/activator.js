@@ -30,7 +30,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             settings.afterDeactivate = activator.defaults.afterDeactivate;
         }
 
-        if(!settings.affirmations){
+        if (!settings.affirmations) {
             settings.affirmations = activator.defaults.affirmations;
         }
 
