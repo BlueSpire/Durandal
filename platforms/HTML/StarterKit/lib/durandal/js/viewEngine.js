@@ -1,5 +1,5 @@
 /**
- * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Durandal 2.2.0 Copyright (c) 2010-2016 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
@@ -98,7 +98,9 @@ define(['durandal/system', 'jquery'], function (system, $) {
          * @return {DOMElement} A single element.
          */
         ensureSingleElement:function(allElements){
-            if (allElements.length == 1) {
+            if (!allElements) { 
+                $('<div></div>')[0];
+            } else if (allElements.length == 1) {
                 return allElements[0];
             }
 

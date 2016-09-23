@@ -34,10 +34,10 @@ define(['require', 'jquery'], function(require, $) {
         }
     }
 
-    // callback for dojo's loader 
+    // callback for dojo's loader
     // note: if you wish to use Durandal with dojo's AMD loader,
     // currently you must fork the dojo source with the following
-    // dojo/dojo.js, line 1187, the last line of the finishExec() function: 
+    // dojo/dojo.js, line 1187, the last line of the finishExec() function:
     //  (add) signal("moduleLoaded", [module.result, module.mid]);
     // an enhancement request has been submitted to dojo to make this
     // a permanent change. To view the status of this request, visit:
@@ -88,15 +88,15 @@ define(['require', 'jquery'], function(require, $) {
 
     var logError = function(error, err) {
         var exception;
-        
+
         if(error instanceof Error){
             exception = error;
         } else {
             exception = new Error(error);
         }
-        
+
         exception.innerError = err;
-        
+
         //Report the error as an error, not as a log
         try {
             // Modern browsers (it's only a single item, no need for argument splitting as in log() above)
@@ -122,7 +122,7 @@ define(['require', 'jquery'], function(require, $) {
          * Durandal's version.
          * @property {string} version
          */
-        version: "2.1.0",
+        version: "2.2.0",
         /**
          * A noop function.
          * @method noop

@@ -1,5 +1,5 @@
 /**
- * Durandal 2.1.0 Copyright (c) 2012 Blue Spire Consulting, Inc. All Rights Reserved.
+ * Durandal 2.2.0 Copyright (c) 2010-2016 Blue Spire Consulting, Inc. All Rights Reserved.
  * Available via the MIT license.
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details.
  */
@@ -349,7 +349,12 @@ define(['durandal/system', 'durandal/binder', 'knockout'], function(system, bind
         }
 
         computed = ko.computed(computedOptions);
-        obj[propertyName] = computed;
+
+        Object.defineProperty(obj, propertyName, {
+            configurable: true,
+            enumerable: true,
+            value: computed
+        });
 
         return convertProperty(obj, propertyName, computed);
     }
