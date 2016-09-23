@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,73 +36,72 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="building-with-gulp">Building with Gulp</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <blockquote>
 <p>This article describes using the <code>gulp-durandal</code> plugin for building Durandal apps with <a href="http://gulpjs.com/">Gulp</a>.</p>
 </blockquote>
 <p>Both scripts and views can be compiled into a single output file with this plugin. There is no double maintenance of path mapping required. The plugin allows various code layouts (bower, app.net etc), using the paths already configured in your <code>main.js</code> file.</p>
 <p>There&#39;s no need to be an expert with <a href="http://requirejs.org/docs/optimization.html">r.js&#39;s 60+ options</a>. In many cases, the following should be enough:</p>
-<pre class="prettyprint linenums">gulp.task(&#39;durandal&#39;, function(){
+<pre class="prettyprint linenums lang-javascript">gulp.task(&#39;durandal&#39;, function(){
    durandal()
       .pipe(gulp.dest(&#39;dir/to/save/the/output&#39;));
-}</pre>
+}
+</pre>
 <h3 id="getting-started">Getting Started</h3>
 <blockquote>
 <p><strong>Note:</strong> This plugin requires Gulp ~3.5.5.</p>
 </blockquote>
 <p>If you haven&#39;t used Gulp before, be sure to check out the <a href="https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md#getting-started">Getting Started guide</a>, as it explains how to create a <code>Gulpfile</code> as well as install and use Gulp plugins. Once you&#39;re familiar with that process, you may install this plugin with this command:</p>
-<pre class="prettyprint linenums">npm install gulp-durandal --save-dev</pre>
-<p>Once the plugin has been installed, it should be required inside your Gulpfile:</p>
-<pre class="prettyprint linenums">var durandal = require(&#39;gulp-durandal&#39;);</pre>
+<pre><code>npm install gulp-durandal --save-dev
+</code></pre><p>Once the plugin has been installed, it should be required inside your Gulpfile:</p>
+<pre class="prettyprint linenums lang-javascript">var durandal = require(&#39;gulp-durandal&#39;);
+</pre>
 <h3 id="the-durandal-stream">The &quot;durandal&quot; Stream</h3>
-<p>This plugin compiles all the scripts and views of a Durandal project into a single js file. The task expects that the Durandal files are under a single app dir (usually named <em>app) and that there is a single main module (usually at _app/main.js</em>) that contains both the requirejs path configuration and the initial module that executes.</p>
+<p>This plugin compiles all the scripts and views of a Durandal project into a single js file. The task expects that the Durandal files are under a single app dir (usually named _app) and that there is a single main module (usually at <em>app/main.js</em>) that contains both the requirejs path configuration and the initial module that executes.</p>
 <p>While simple and minimalistic, this task can handle all known Durandal 2.x samples and starter kits (html, bower, node, asp.net, etc.) with almost no configuration.</p>
 <h3 id="overview">Overview</h3>
 <p>In your project&#39;s Gulpfile, launch the plugin inside a task with the wanted configurations. The plugin will return the stream of the wanted file and it&#39;s source map.</p>
-<pre class="prettyprint linenums">var durandal = require(&#39;gulp-durandal&#39;);
+<pre class="prettyprint linenums lang-javascript">var durandal = require(&#39;gulp-durandal&#39;);
 
 gulp.task(&#39;durandal&#39;, function(){
     durandal({
@@ -113,15 +112,17 @@ gulp.task(&#39;durandal&#39;, function(){
             minify: true
         })
         .pipe(gulp.dest(&#39;dir/to/save/the/output&#39;));
-});</pre>
+});
+</pre>
 <p>For async tasks, handling of error and end events should be added.</p>
-<pre class="prettyprint linenums">gulp.task(&#39;durandal-async&#39;, function(cb){
+<pre class="prettyprint linenums lang-javascript">gulp.task(&#39;durandal-async&#39;, function(cb){
     durandal({
             ...
         })
         .on(&#39;error&#39;, cb)
         .pipe(gulp.dest(&#39;dir/to/save/the/output&#39;))
-        .on(&#39;end&#39;, cb);</pre>
+        .on(&#39;end&#39;, cb);
+</pre>
 <h4 id="options">Options</h4>
 <p><strong>options.verbose</strong></p>
 <p>Type: Boolean, Default value: false</p>
@@ -166,9 +167,10 @@ gulp.task(&#39;durandal&#39;, function(){
 <p>Type: Function, Default value: function(moduleName){return true;}</p>
 <p>After all top level modules are resolved, they are passed via a filter function, so that you have a chance to exclude any modules for any reason you might have.</p>
 <p>For example, if you would not like to include the views, you could supply the following function:</p>
-<pre class="prettyprint linenums">function(moduleName){
+<pre class="prettyprint linenums lang-javascript">function(moduleName){
   return moduleName.indexOf(&#39;text!&#39;) == -1;
-}</pre>
+}
+</pre>
 <blockquote>
 <p><strong>Note:</strong> This plugin is maintained by the community and is not part of the core Durandal project. More information can be found <a href="https://www.npmjs.org/package/gulp-durandal">here</a>.</p>
 </blockquote>
@@ -183,8 +185,9 @@ gulp.task(&#39;durandal&#39;, function(){
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

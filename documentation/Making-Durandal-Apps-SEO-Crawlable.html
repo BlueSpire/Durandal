@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,50 +36,47 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="making-durandal-apps-seo-crawlable">Making Durandal Apps SEO Crawlable</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <h3 id="why-do-i-need-to-be-aware-of-seo-">Why do I need to be aware of SEO?</h3>
 <p>The web is changing. JavaScript frameworks like Durandal are rising and more and more applications are created this way, offering excellent user experiences. But, is the web ready for this movement? Let&#39;s just say that it&#39;s a &quot;work in progress&quot;.</p>
 <p>There are a lot of things we have to be aware of when developing a dynamic JavaScript application and one of the most important things is SEO. When we develop a Durandal application and make it available to the world, one of the first things we would like to see is the application being indexed by google. But without any configuration, the only thing we will see indexed is the root page of our site. What&#39;s the problem? I created one of my best web applications, the users love it, it&#39;s quick and optimized...but nobody can enjoy it because google can&#39;t see it.</p>
@@ -98,32 +95,36 @@
 <p>The first scheme implies that our urls are using hashbangs (#!) instead hashes (#) so we´ll have urls like <code>http://mysite.com/#!home/index</code> or <code>http://mysite.com/#!account/user</code>. These kinds of urls are kwown as &quot;pretty urls&quot;. When a googlebot arrives at this kind of url, it knows that the site supports the AJAX crawling sheme so it will change the url. The previous urls would be converted to <code>http://mysite.com/?_escaped_fragment_=home/index</code> and <code>http://mysite.com/?_escaped_fragment_=account/user</code>. These type of urls are known as a &quot;ugly urls&quot;.</p>
 <p>Durandal 2.0 supports the hashbang scheme by plugging into the router&#39;s <code>convertRouteToHash</code> function and replacing it with an implementation that uses &quot;#!&quot;.  But a better solution is to use Durandal&#39;s support for push-state, allowing us to make our application crawlable using the second option.</p>
 <p>With the second scheme we don´t have hashbangs. So, how can we tell the googlebot to crawl our site properly? Google says we have to add a new meta tag to each page that uses AJAX-generated content.</p>
-<pre class="prettyprint linenums">&lt;meta name=&quot;fragment&quot; content=&quot;!&quot;&gt;</pre>
+<pre class="prettyprint linenums lang-html">&lt;meta name=&quot;fragment&quot; content=&quot;!&quot;&gt;
+</pre>
 <p>In our case, we have to put the meta tag in our index page. Once the meta tag is there, the googlebot will start crawling the site in a different way.</p>
-<p>When arriving at urls like these <code>http://mysite.com/home/index</code> and <code>http://mysite.com/account/user</code> the bot will actually crawl <code>http://mysite.com/home/index?_escaped_fragment_=</code> and <code>http://mysite.com/account/user?_escaped_fragment_=</code>. So it is pretty much the same as &quot;#!&quot; but with the &quot;?<em>escaped_fragment</em>=&quot; at the end of the url.</p>
-<p>Once we have one of these schemes implemented in out Durandal app, we have to start listening for these urls on the server side. We have to listen for urls containing the &quot;?<em>escaped_fragment</em>=&quot;  in order to check for bot requests. Once we are capable of listening for them, Google tells us to return an <a href="https://developers.google.com/webmasters/ajax-crawling/docs/html-snapshot">HTML Snapshot</a> of the page.</p>
+<p>When arriving at urls like these <code>http://mysite.com/home/index</code> and <code>http://mysite.com/account/user</code> the bot will actually crawl <code>http://mysite.com/home/index?_escaped_fragment_=</code> and <code>http://mysite.com/account/user?_escaped_fragment_=</code>. So it is pretty much the same as &quot;#!&quot; but with the &quot;?_escaped<em>fragment</em>=&quot; at the end of the url.</p>
+<p>Once we have one of these schemes implemented in out Durandal app, we have to start listening for these urls on the server side. We have to listen for urls containing the &quot;?_escaped<em>fragment</em>=&quot;  in order to check for bot requests. Once we are capable of listening for them, Google tells us to return an <a href="https://developers.google.com/webmasters/ajax-crawling/docs/html-snapshot">HTML Snapshot</a> of the page.</p>
 <h3 id="html-snapshots">HTML Snapshots</h3>
 <p>What is an HTML Snapshot? An HTML Snapshot is a static version of our dynamically generated content. How can I get this working? Well, your best bet is using a <em>headless browser</em> to crawl your page. What is a headless browser? A headless browser is a web browser without a graphical user interface. In other words, it is a browser, a piece of software, that accesses web pages but doesn’t show them to any human being. They’re actually used to provide the content of web pages to other programs.</p>
 <h3 id="client-side-details">Client-Side Details</h3>
 <p>We&#39;ve commented about the client peice already. In the following paragraphs, we are going to make it work using the preferred second commented scheme. First, we start by changing our application to use push-state. Let&#39;s go to our router configuration in shell.js and activate the router with the pushState option enabled.</p>
-<pre class="prettyprint linenums">router.activate({ pushState : true });</pre>
+<pre class="prettyprint linenums lang-javascript">router.activate({ pushState : true });
+</pre>
 <p>Now, let´s go to our index  page and let´s add the meta fragment tag in the head:</p>
-<pre class="prettyprint linenums">&lt;head&gt;
+<pre class="prettyprint linenums lang-html">&lt;head&gt;
 ...
     &lt;meta name=&quot;fragment&quot; content=&quot;!&quot;&gt;
 ...
-&lt;/head&gt;</pre>
+&lt;/head&gt;
+</pre>
 <p>The client side is now ready. If we prefer to use the first scheme with &quot;pretty urls&quot;  and hashbangs, we have to adapt the Durandal router to use &quot;#!&quot; instead &quot;#&quot; and remove the meta fragment tag, because it´s not required with the hashbangs.</p>
 <h3 id="server-side-details">Server-Side Details</h3>
 <p>For the following server-side code samples we will use .NET code (ASP.NET MVC) but translating it to another platform should be straighforward. When having a client application like Durandal, we use a backend platform behind it to redirect all the incoming urls to an index page.</p>
 <p>In ASP.NET MVC we need a route like this</p>
-<pre class="prettyprint linenums">routes.MapRoute(
+<pre class="prettyprint linenums lang-c#">routes.MapRoute(
         name: &quot;Default&quot;,
         url: &quot;{*url}&quot;,
         defaults: new { controller = &quot;Home&quot;, action = &quot;Index&quot; }
-);</pre>
+);
+</pre>
 <p>This route is redirecting all the incoming request to the &quot;/Home/Index&quot; route so we now need to make that work in the controller:</p>
-<pre class="prettyprint linenums">public ActionResult Index() {
+<pre class="prettyprint linenums lang-c#">public ActionResult Index() {
     // If the request is not from a bot =&gt; control goes to Durandal app
     if (Request.QueryString[&quot;_escaped_fragment_&quot;] == null) {
         return View();
@@ -140,10 +141,11 @@
         //... Wathever method to log ...
         return View();
     }
-}</pre>
-<p>The work involved here consists in checking for the &quot;<em>escaped_fragment</em>&quot; parameter and if present, returning the HTML Snapshot by calling Crawl(). To take the snapshot, first we have to install a headless browser like <a href="http://phantomjs.org/">PhantomJs</a>. There are a lot of them so you can analyze and choose your preferred one. To install PhantomJS you should simply copy the <em>phantomjs.exe</em> file to your root website folder. Once there, you can execute the process passing a script as a parameter and your target url. There are several options to write the script but this one works pretty well:</p>
+}
+</pre>
+<p>The work involved here consists in checking for the &quot;_escaped<em>fragment</em>&quot; parameter and if present, returning the HTML Snapshot by calling Crawl(). To take the snapshot, first we have to install a headless browser like <a href="http://phantomjs.org/">PhantomJs</a>. There are a lot of them so you can analyze and choose your preferred one. To install PhantomJS you should simply copy the <em>phantomjs.exe</em> file to your root website folder. Once there, you can execute the process passing a script as a parameter and your target url. There are several options to write the script but this one works pretty well:</p>
 <p>Create a <em>createSnapshot.js</em> script like this:</p>
-<pre class="prettyprint linenums">// This example shows how to render pages that perform AJAX calls
+<pre class="prettyprint linenums lang-javascript">// This example shows how to render pages that perform AJAX calls
 // upon page load.
 //
 // Instead of waiting a fixed amount of time before doing the render,
@@ -193,9 +195,10 @@ page.open(system.args[1], function (status) {
             doRender();
         }, maxRenderWait);
     }
-});</pre>
+});
+</pre>
 <p>The script receives the target url as a parameter. You can add this script to the Scripts folder in your ASP.NET MVC site. Finally, we have to call it to get the HTML.</p>
-<pre class="prettyprint linenums">/// &lt;summary&gt;
+<pre><code>/// &lt;summary&gt;
 /// Start a new phantomjs process for crawling
 /// &lt;/summary&gt;
 /// &lt;param name=&quot;url&quot;&gt;The target url&lt;/param&gt;
@@ -220,10 +223,10 @@ private string Crawl(string url) {
     string output = p.StandardOutput.ReadToEnd();
     p.WaitForExit();
     return output;
-}</pre>
-<p>The output will be the <em>console.log(page.content)</em> in the createSnapshot.js script and will include the complete dynamically generated HTML. That´s all. Once implemented in your site, it is recommended to use the Google Webmaster tools feature &quot;fetch as googlebot&quot; to check the retrieved content. </p>
+}
+</code></pre><p>The output will be the <em>console.log(page.content)</em> in the createSnapshot.js script and will include the complete dynamically generated HTML. That´s all. Once implemented in your site, it is recommended to use the Google Webmaster tools feature &quot;fetch as googlebot&quot; to check the retrieved content. </p>
 <blockquote>
-<p><strong>Note:</strong> In order to &quot;fetch as googlebot&quot;  we have to enter the complete url with the <em>escaped_fragment</em>  because the tool can´t make the <em>escaped_fragment</em> substitution.</p>
+<p><strong>Note:</strong> In order to &quot;fetch as googlebot&quot;  we have to enter the complete url with the _escaped<em>fragment</em>  because the tool can´t make the _escaped<em>fragment</em> substitution.</p>
 </blockquote>
 <p>Here are some points for improving the code:</p>
 <ul>
@@ -247,8 +250,9 @@ private string Crawl(string url) {
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

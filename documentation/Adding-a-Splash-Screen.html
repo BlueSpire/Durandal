@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,50 +36,47 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="adding-a-splash-screen">Adding a Splash Screen</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <blockquote>
   <strong>Key Points</strong>
   <ul>
@@ -97,14 +94,15 @@
 
 <h3 id="explanation">Explanation</h3>
 <p>Adding a splash screen to your application can be a very nice touch. It becomes important particularly if you have a large application that takes a second to download. Fortunately, it&#39;s very easy to add a splash screen with Durandal. All you need to do is put the HTML content for your splash inside the <em>applicationHost</em> div in your page, like this:</p>
-<pre class="prettyprint linenums">&lt;div id=&quot;applicationHost&quot;&gt;
+<pre class="prettyprint linenums lang-html">&lt;div id=&quot;applicationHost&quot;&gt;
     &lt;div class=&quot;splash&quot;&gt;
         &lt;div class=&quot;message&quot;&gt;
             Durandal Starter Kit
         &lt;/div&gt;
         &lt;i class=&quot;icon-spinner icon-2x icon-spin active&quot;&gt;&lt;/i&gt;
     &lt;/div&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;
+</pre>
 <p>The splash HTML should have a single root element. It will then display immediately when your page loads and will remain in the page until you call <code>app.setRoot</code>. For an extra added touch, you can animate your application in from the splash screen to its main view by providing the animation as the second parameter to <em>setRoot</em> as follows: <code>app.setRoot(&#39;shell&#39;, &#39;entrance&#39;);</code></p>
 <blockquote>
 <p><strong>Note:</strong> This technique can be used at any composition site to add &quot;loading&quot; UI to that part of the screen while any asynchronous operations needed to render complete.</p>
@@ -120,8 +118,9 @@
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

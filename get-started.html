@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,46 +36,43 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="active">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="active">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<div class="focus-banner">
 	<section class="container content">
@@ -112,7 +109,7 @@
 <h4 id="index-html">index.html</h4>
 <p>Let&#39;s start by writing our own index.html file. Here&#39;s the markup we&#39;ll use:</p>
 <p><strong>index.html</strong></p>
-<pre class="prettyprint linenums">&lt;!DOCTYPE html&gt;
+<pre class="prettyprint linenums lang-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;link rel=&quot;stylesheet&quot; href=&quot;lib/bootstrap/css/bootstrap.css&quot; /&gt;
@@ -124,11 +121,12 @@
     &lt;div id=&quot;applicationHost&quot;&gt;&lt;/div&gt;
     &lt;script src=&quot;lib/require/require.js&quot; data-main=&quot;app/main&quot;&gt;&lt;/script&gt;
   &lt;/body&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;
+</pre>
 <p>All we have here are a few css files, a single div called &quot;applicationHost&quot; and a single script tag. We&#39;ve added <a href="http://getbootstrap.com/">Bootstrap</a> and <a href="http://fontawesome.io/">FontAwesome</a> here so we can easily make things look decent, but they aren&#39;t required by Durandal. The important piece to notice is the script tag.</p>
 <p>Durandal encourages modular code practices by using RequireJS as one of its core building blocks. In a Durandal app, all JS code is written in modules. The script tag in our <code>index.html</code> loads RequireJS which facilitates the framework&#39;s module strategy. Once the module loader is initialized it then uses the <code>data-main</code> attribute to start up our app. This attribute points to our main module. This is much like the main function in most c-based languages. It is the entry point for our application. Let&#39;s go ahead and create that module now. To do that, first create a file named <code>main.js</code> and place it in the app folder. Here&#39;s the code for that file:</p>
 <p><strong>main.js</strong></p>
-<pre class="prettyprint linenums">requirejs.config({
+<pre class="prettyprint linenums lang-javascript">requirejs.config({
   paths: {
     &#39;text&#39;: &#39;../lib/require/text&#39;,
     &#39;durandal&#39;:&#39;../lib/durandal/js&#39;,
@@ -155,15 +153,17 @@ define(function (require) {
    app.start().then(function() {
      app.setRoot(&#39;shell&#39;);
    });
-});</pre>
+});
+</pre>
 <p>This is pretty standard “boilerplate” configuration for most Durandal apps. But, let&#39;s go over this piece by piece:</p>
 <p>At the top we have the <code>requirejs.config</code> block. This section configures the module system so that it can find our core libraries. It&#39;s just a set of relative paths, so that the first time we reference &quot;jQuery&quot; for example, the module system knows where to load it from. Here you see that we have paths configured for the requirejs text plugin (used to load views), Durandal&#39;s core modules, Knockout and jQuery. In the same way that Durandal uses <a href="http://requirejs.org/">RequireJS</a> for modules, it uses <a href="http://knockoutjs.com/">Knockout</a> for data-binding and <a href="http://jquery.com/">jQuery</a> as its browser abstraction.</p>
 <p>After we set up the RequireJS configuration, we <em>define</em> our main module. All code in Durandal is written in modules and takes the following form:</p>
-<pre class="prettyprint linenums">define(function (require) {
+<pre class="prettyprint linenums lang-javascript">define(function (require) {
   var someModule = require(&#39;some/module&#39;);
   ...other modules required here...
   return someValue;
-});</pre>
+});
+</pre>
 <p>To create a module you call the define function. You pass a function to define which serves as a factory for your module. Whatever you return from this function becomes your module instance. You can return an object to create singleton object modules or a function to create class constructor modules. Additionally, you can declaratively express dependencies upon other modules. To import another module into your module you use the require function.</p>
 <p>In our main module above, you can see that we import or require two of Durandal&#39;s modules: system and app. We then use the system module to turn on framework debugging. After that we use the app module to set our app&#39;s title and load two optional plugins. Finally, we tell the app to start, which is an asynchronous action, and when that completes we call a curious function: setRoot.</p>
 <p>The call to setRoot is what actually causes something to be rendered on the screen. You can think of the root as your &quot;main window&quot;, &quot;master layout&quot; or the &quot;shell&quot; of your application. The parameter points to the module which contains our shell&#39;s behavior. The only problem is..that doesn&#39;t exist yet. So, let&#39;s create it.</p>
@@ -173,7 +173,7 @@ define(function (require) {
 <p><strong>Note:</strong> Naturally, most applications also have &quot;presentation&quot; concerns as well, which are preferrably handled by CSS.</p>
 </blockquote>
 <p><strong>shell.js</strong></p>
-<pre class="prettyprint linenums">define(function (require) {
+<pre class="prettyprint linenums lang-javascript">define(function (require) {
   var app = require(&#39;durandal/app&#39;),
       ko = require(&#39;knockout&#39;);
 
@@ -183,9 +183,10 @@ define(function (require) {
        app.showMessage(&#39;Hello &#39; + this.name() + &#39;! Nice to meet you.&#39;, &#39;Greetings&#39;);
      }
    };
-});</pre>
+});
+</pre>
 <p><strong>shell.html</strong></p>
-<pre class="prettyprint linenums">&lt;section&gt;
+<pre class="prettyprint linenums lang-html">&lt;section&gt;
   &lt;h2&gt;Hello! What is your name?&lt;/h2&gt;
   &lt;form class=&quot;form-inline&quot;&gt;
     &lt;fieldset&gt;
@@ -194,7 +195,8 @@ define(function (require) {
        &lt;button type=&quot;submit&quot; class=&quot;btn&quot; data-bind=&quot;click: sayHello, enable: name&quot;&gt;Click Me&lt;/button&gt;
     &lt;/fieldset&gt;
   &lt;/form&gt;
-&lt;/section&gt;</pre>
+&lt;/section&gt;
+</pre>
 <p>Notice that our <code>shell.js</code> defines a module as we have previously discussed. It has dependencies on two other modules: <code>app</code> and <code>knockout</code>. Our module returns an object literal as its definition. This object has one property, <code>name</code>, and one function, <code>sayHello</code>. The <code>name</code> property is special. Here, we have used <a href="http://knockoutjs.com/">Knockout</a> to create an observable property. An observable property supports two-way data-binding to html, change notification and a number of other features. Notice that the <code>sayHello</code> function uses this property to display a message box with Durandal&#39;s <code>app</code> module.</p>
 <p>To fully understand this code, you need to look at it side-by-side with the HTML. Notice how the HTML has <code>data-bind</code> attributes in it. These attributes declaratively connect the HTML to the properties and functions in the module we just looked at. See how the input tag has a <code>data-bind</code> attribute that connections its value to our name property? It also specifies that our property should be updated after key down events (as opposed to focus change, which is the default). Also, take a look at the button. Its <code>click</code> event is bound to our <code>sayHello</code> function. Furthermore, the button will only be enabled when the <code>name</code> property has a truthy value. Pretty cool! Go ahead and run the app by opening <code>index.html</code> in Firefox or spinning up a web server to view it in another browser. When you do this, here&#39;s what&#39;s going to happen:</p>
 <ol>
@@ -207,7 +209,7 @@ define(function (require) {
 <h4 id="navigation">Navigation</h4>
 <p>This is all pretty cool, but most applications don&#39;t just have one page. So, let&#39;s turn our <em>shell</em> into a navigation app. To start, rename your <code>shell.js</code> to <code>home.js</code> and your <code>shell.html</code> to <code>home.html</code>. Now, create two new files which will serve as our navigation shell. Here&#39;s the source for the new <code>shell.js</code> and <code>shell.html</code>.</p>
 <p><strong>shell.js</strong></p>
-<pre class="prettyprint linenums">define(function (require) {
+<pre class="prettyprint linenums lang-javascript">define(function (require) {
   var router = require(&#39;plugins/router&#39;);
 
   return {
@@ -220,9 +222,10 @@ define(function (require) {
        return router.activate();
      }
    };
-});</pre>
+});
+</pre>
 <p><strong>shell.html</strong></p>
-<pre class="prettyprint linenums">&lt;div&gt;
+<pre class="prettyprint linenums lang-html">&lt;div&gt;
  &lt;div class=&quot;navbar navbar-fixed-top&quot;&gt;
   &lt;div class=&quot;navbar-inner&quot;&gt;
    &lt;ul class=&quot;nav&quot; data-bind=&quot;foreach: router.navigationModel&quot;&gt;
@@ -236,18 +239,20 @@ define(function (require) {
   &lt;/div&gt;
  &lt;/div&gt;
  &lt;div class=&quot;container-fluid page-host&quot; data-bind=&quot;router: { transition:&#39;entrance&#39; }&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;
+</pre>
 <p>Looking at our navigation shell, you can see the same module pattern. Here we are requiring our <code>router</code> plugin and using that to create an object. We configure the router with a single route that points to our <code>home</code> module. This router configuration specifies the <code>route</code> pattern to match on, the <code>title</code> to display, the <code>moduleId</code> to load when the route is matched and whether or not we should tag this route as part of our visible navigation (<code>nav:true</code>). After we configure our routes, we then call <code>buildNavigationModel</code> which takes the route info, and builds a special collection that we can data-bind to for display as a top-level navigation UI. Finally, we activate the router. All of this takes place inside a function called <code>activate</code>. Every time Durandal presents a component on screen, it will look for an optional <code>activate</code> callback. If present, it will invoke it prior to data-binding. This allows modules to execute custom activation code, such as configuring the application&#39;s router in this case.</p>
 <p>Once again, it&#39;s easiest to understand if you look at the module side-by-side with it&#39;s view. If you do that, you will first see how we are data-binding to the <code>navigationModel</code> property in order to generate a navbar. Each navigable route is turned into an <code>li</code> with a link that is bound to the route&#39;s <code>hash</code> and <code>title</code>. As part of the navbar, we also bind an animating spinner icon to the router&#39;s <code>isNavigating property</code>. As a result, whenever we are in the process of navigating from one page to another, the spinner will be visible and animating.</p>
 <p>At the bottom of the view is a special <code>router</code> binding which connects to our router in the module. This serves as a placeholder where the current &quot;page&quot; will be displayed. The <code>transition</code> property indicates that whenever the page changes, Durandal should use the &quot;entrance&quot; transition animation.</p>
 <p>Go ahead and run it again. It looks pretty similar to before, except now there&#39;s a navbar. It&#39;s not very impressive because we still only have one page. Let&#39;s create a second page so we can navigate back and forth.</p>
 <h4 id="mount-rainier">Mount Rainier</h4>
 <p>Let&#39;s create a second page that calls Flickr and gets back a bunch of pictures to display of Mount Rainier. Our first step is to add another route. Update your shell&#39;s router config so that it has these two routes now:</p>
-<pre class="prettyprint linenums">{ route:&#39;&#39;, title:&#39;Home&#39;, moduleId:&#39;home&#39;, nav:true },
-{ route:&#39;rainier&#39;, title:&#39;Mount Rainier&#39;, moduleId:&#39;rainier&#39;, nav:true }</pre>
+<pre class="prettyprint linenums lang-javascript">{ route:&#39;&#39;, title:&#39;Home&#39;, moduleId:&#39;home&#39;, nav:true },
+{ route:&#39;rainier&#39;, title:&#39;Mount Rainier&#39;, moduleId:&#39;rainier&#39;, nav:true }
+</pre>
 <p>That&#39;s our original, default home route, plus our new route for the page we are about to add. By now, I hope you see the pattern emerging. We create a module and a view for our new page.</p>
 <p><strong>rainier.js</strong></p>
-<pre class="prettyprint linenums">define(function (require) {
+<pre class="prettyprint linenums lang-javascript">define(function (require) {
   var http = require(&#39;plugins/http&#39;),
       ko = require(&#39;knockout&#39;);
 
@@ -272,9 +277,10 @@ define(function (require) {
        });
      }
    };
-});</pre>
+});
+</pre>
 <p><strong>rainier.html</strong></p>
-<pre class="prettyprint linenums">&lt;section&gt;
+<pre class="prettyprint linenums lang-html">&lt;section&gt;
   &lt;h2&gt;Mount Rainier&lt;/h2&gt;
   &lt;div class=&quot;row-fluid&quot;&gt;
     &lt;ul class=&quot;thumbnails&quot; data-bind=&quot;foreach: images&quot;&gt;
@@ -283,7 +289,8 @@ define(function (require) {
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/div&gt;
-&lt;/section&gt;</pre>
+&lt;/section&gt;
+</pre>
 <p>I bet you can figure out how this works. Our module uses the http plugin to call the Flickr api in its activate callback. It then stores that data in it&#39;s <code>images</code> observable array property. The view simply binds to that array of data.</p>
 <p>If you run the app now, you&#39;ll see two items in the navbar and you&#39;ll be able to navigate back and forth between them. You can also use the browser&#39;s back button. There&#39;s lots more details and tons more that Durandal can do. At this point, you might want to download the original starter kit and take a look at it in more detail to see a few more interesting tidbits. You&#39;ll probably also want to download the official samples to see how other features work, like pub/sub messaging, custom modal dialogs, widgets, advanced view composition and more.</p>
 <p>Durandal makes building rich, dynamic JavaScript apps simple by encouraging a modular approach. It&#39;s no surprise that our community is growing so fast. Please join our google group to ask questions and share your experiences with other developers. Most importantly, use Durandal to create something. We hope you deeply enjoy the experience.</p>
@@ -298,8 +305,9 @@ define(function (require) {
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

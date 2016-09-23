@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,64 +36,61 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="using-yeoman">Using Yeoman</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <blockquote>
 <p>Complete <a href="http://yeoman.io">Yeoman</a> generator for <a href="http://durandaljs.com/">Durandal</a> with subgenerators.</p>
 </blockquote>
 <h3 id="install-yeoman">Install Yeoman</h3>
 <p>This generator needs Yeoman to be installed.</p>
-<pre class="prettyprint linenums">$ npm install -g yo</pre>
-<h3 id="install-generator">Install Generator</h3>
+<pre><code>$ npm install -g yo
+</code></pre><h3 id="install-generator">Install Generator</h3>
 <p>To install generator-durandal from npm, run:</p>
-<pre class="prettyprint linenums">$ npm install -g generator-durandal</pre>
-<p>Then, initiate the generator:</p>
-<pre class="prettyprint linenums">$ yo durandal</pre>
-<p>Your new application is ready. Start development using a little HTTP server and live reload:</p>
-<pre class="prettyprint linenums">$ grunt serve</pre>
-<h3 id="getting-to-know-yeoman">Getting To Know Yeoman</h3>
+<pre><code>$ npm install -g generator-durandal
+</code></pre><p>Then, initiate the generator:</p>
+<pre><code>$ yo durandal
+</code></pre><p>Your new application is ready. Start development using a little HTTP server and live reload:</p>
+<pre><code>$ grunt serve
+</code></pre><h3 id="getting-to-know-yeoman">Getting To Know Yeoman</h3>
 <p>Yeoman has a heart of gold. He&#39;s a person with feelings and opinions, but he&#39;s very easy to work with. If you think he&#39;s too opinionated, he can be easily convinced.</p>
 <p>If you&#39;d like to get to know Yeoman better and meet some of his friends, <a href="http://gruntjs.com">Grunt</a> and <a href="http://bower.io">Bower</a>, check out the complete <a href="https://github.com/yeoman/yeoman/wiki/Getting-Started">Getting Started Guide</a>.</p>
 <h3 id="development">Development</h3>
@@ -101,25 +98,25 @@
 <h4 id="build">build</h4>
 <p>Use build configuration to build your application to production.
 This concatenates and minifies your javascript, css and html and reduces your images&#39; size.</p>
-<pre class="prettyprint linenums">$ grunt build</pre>
-<h4 id="test">test</h4>
+<pre><code>$ grunt build
+</code></pre><h4 id="test">test</h4>
 <p>Use the test configuration to test your application before building.
 This tests your application using <a href="http://pivotal.github.io/jasmine/">jasmine</a> and <a href="http://phantomjs.org/">phantomjs</a>.</p>
-<pre class="prettyprint linenums">$ grunt test</pre>
-<h4 id="serve">serve</h4>
+<pre><code>$ grunt test
+</code></pre><h4 id="serve">serve</h4>
 <p>Use the serve configuration to develop your application and test it in a browser.
 This hosts your application in a mini HTTP server with live reloading of your assets.</p>
-<pre class="prettyprint linenums">$ grunt serve</pre>
-<h4 id="default">default</h4>
+<pre><code>$ grunt serve
+</code></pre><h4 id="default">default</h4>
 <p>Use the default configuration to build and test your application.
 This lints, builds and tests your application.</p>
-<pre class="prettyprint linenums">$ grunt</pre>
-<h3 id="sub-generators">Sub Generators</h3>
+<pre><code>$ grunt
+</code></pre><h3 id="sub-generators">Sub Generators</h3>
 <h4 id="viewmodel">ViewModel</h4>
 <p>You can create a viewmodel using a yeoman subgenerator.
 It allows you to create a viewmodel, its view and append it to the router.</p>
-<pre class="prettyprint linenums">$ yo durandal:viewmodel</pre>
-
+<pre><code>$ yo durandal:viewmodel
+</code></pre>
 </section>
 
 		<footer class="footer">
@@ -130,8 +127,9 @@ It allows you to create a viewmodel, its view and append it to the router.</p>
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

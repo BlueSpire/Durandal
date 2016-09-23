@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,50 +36,47 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="showing-message-boxes-and-modals">Showing Message Boxes and Modals</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <blockquote>
   <strong>Key Points</strong>
   <ul>
@@ -114,7 +111,7 @@
 <h3 id="message-boxes">Message Boxes</h3>
 <p>Showing a message box in Durandal is easy. Simply configure the plugin, then require the <a href="/documentation/api#module/app">app module</a> and call <em>showMessage</em>. </p>
 <p>Let&#39;s first see how to install the plugin. In your <em>main.js</em> file, before calling <a href="/documentation/api#module/app/method/start">app.start()</a> you will need to make a call to <a href="/documentation/api#module/app/method/configurePlugins">configurePlugins(...)</a>. Here&#39;s what your code might look like:</p>
-<pre class="prettyprint linenums">define([&#39;durandal/app&#39;],  function (app) {
+<pre class="prettyprint linenums lang-javascript">define([&#39;durandal/app&#39;],  function (app) {
     app.configurePlugins({
         dialog: true
     });
@@ -122,39 +119,46 @@
     app.start().then(function () {
         app.setRoot(&#39;shell&#39;);
     });
-});</pre>
+});
+</pre>
 <p>Once the plugin is installed, you can show a message like this:</p>
-<pre class="prettyprint linenums">var app = require(&#39;durandal/app&#39;);
+<pre class="prettyprint linenums lang-javascript">var app = require(&#39;durandal/app&#39;);
 ...
-app.showMessage(&#39;This is a message.&#39;);</pre>
+app.showMessage(&#39;This is a message.&#39;);
+</pre>
 <p>This will display a message box with the default title and the message &quot;This is a message.&quot; It will also display an &quot;Ok&quot; button.
 By default, your message box&#39;s title is set to your <a href="/documentation/api#module/app/property/title">app.title</a>. If you haven&#39;t set the title, then it defaults to &quot;Application&quot;.
 You can easily add a custom title by providing the second parameter. Here&#39;s an example:</p>
-<pre class="prettyprint linenums">app.showMessage(&#39;This is a message.&#39;, &#39;Demo&#39;);</pre>
+<pre class="prettyprint linenums lang-javascript">app.showMessage(&#39;This is a message.&#39;, &#39;Demo&#39;);
+</pre>
 <p>This message box is the same as the first, but with &quot;Demo&quot; displayed in the header. Now, suppose you want more than just an &quot;Ok&quot; button. 
 The third parameter to this function specifies an array of options to display to the user. Here&#39;s what that looks like:</p>
-<pre class="prettyprint linenums">var screen = {
+<pre class="prettyprint linenums lang-javascript">var screen = {
   ...
   canDeactivate:function(){
     return app.showMessage(&#39;You have unsaved data. Are you sure you want to close?&#39;, &#39;Unsaved Data&#39;, [&#39;Yes&#39;, &#39;No&#39;]);
   }
   ...
-};</pre>
+};
+</pre>
 <p>This message box will have two buttons &quot;Yes&quot; and &quot;No&quot;. The yes button, which is first in the list, will be configured as the default action.
 Notice also that a call to <code>showMessage</code> has a return value. This return value is actually a promise of the user&#39;s response. 
 It will be resolved when they select an option and the message box is closed.</p>
 <h3 id="customizing-message-boxes">Customizing Message Boxes</h3>
 <p>As of Durandal 2.1, message boxes can be customized in a number of ways. The <em>app.showMessage</em> method has the following signature:</p>
-<pre class="prettyprint linenums">app.showMessage = function(message, title, options, autoclose, settings)</pre>
+<pre class="prettyprint linenums lang-javascript">app.showMessage = function(message, title, options, autoclose, settings)
+</pre>
 <h4 id="options-message-box-buttons">Options - Message Box Buttons</h4>
 <p>Options, that is, message box buttons, can be specified in two ways:</p>
 <ol>
 <li><p>An array of strings: This will generate buttons with the same text as the strings provided. Also, the returned value, when the button is clicked, will be the provided string. Example: </p>
-<pre class="prettyprint linenums">[&quot;Yes&quot;, &quot;No&quot;]</pre>
+<pre class="prettyprint linenums lang-javascript">[&quot;Yes&quot;, &quot;No&quot;]
+</pre>
 </li>
 <li><p>An array of objects: Each object must have two properties: <em>text</em> and <em>value</em>. <em>text</em> specifies the text of the button and <em>value</em> the value that is returned, when the button is clicked. <em>text</em> must be a string, <em>value</em> can be any JavaScript object.
 This way of specifying buttons is useful, for example, for localizing button texts. Example:</p>
-<pre class="prettyprint linenums">[ { text: &quot;Ja&quot;, value: &quot;Yes&quot; }, { text: &quot;Nein&quot;, value: &quot;No&quot; }]</pre>
+<pre class="prettyprint linenums lang-javascript">[ { text: &quot;Ja&quot;, value: &quot;Yes&quot; }, { text: &quot;Nein&quot;, value: &quot;No&quot; }]
+</pre>
 </li>
 </ol>
 <h4 id="autoclose">Autoclose</h4>
@@ -173,27 +177,31 @@ This way of specifying buttons is useful, for example, for localizing button tex
 <p>You can customize the classes that are rendered to buttons with <em>buttonClass</em>, <em>primaryButtonClass</em>, and <em>secondaryButtonClass</em>. <em>buttonClass</em> will be rendered to all buttons, <em>primaryButtonClass</em> to the first button only, and the <em>secondaryButtonClass</em> to all other buttons. This allows you to change the button positions by <em>float:left</em> and <em>float:right</em> as you want.</p>
 <h5 id="dialog-class-and-styles">Dialog Class and Styles</h5>
 <p>The <em>class</em> and <em>style</em> settings allow you to customize the MessageBox dialog. The <em>class</em> setting allows you to define the class of the message box in question. It defaults to &quot;messageBox&quot;. For example:</p>
-<pre class="prettyprint linenums">app.showMessage(&quot;Message&quot;, &quot;Title&quot;, [&quot;Close&quot;], true, { &quot;class&quot;: &quot;messageBox2&quot; });</pre>
+<pre class="prettyprint linenums lang-javascript">app.showMessage(&quot;Message&quot;, &quot;Title&quot;, [&quot;Close&quot;], true, { &quot;class&quot;: &quot;messageBox2&quot; });
+</pre>
 <p>This will change the class of the message box from <em>messageBox</em> to <em>messageBox2</em>.</p>
 <p>The <em>style</em> setting is forwarded to Knockout&#39;s style-binding. So, you can use it as follows:</p>
-<pre class="prettyprint linenums">app.showMessage(&quot;Message&quot;, &quot;Title&quot;, [&quot;Close&quot;], true, { style:  { width: &quot;600px&quot;, backgroundColor: &quot;red&quot; } });</pre>
+<pre class="prettyprint linenums lang-javascript">app.showMessage(&quot;Message&quot;, &quot;Title&quot;, [&quot;Close&quot;], true, { style:  { width: &quot;600px&quot;, backgroundColor: &quot;red&quot; } });
+</pre>
 <p>That is, the <em>style</em> setting can take an object of styles and their settings. This allows you to customize the message box even more.</p>
 <h4 id="default-settings">Default Settings</h4>
 <p>Often it is handy to set the default settings that apply to all message boxes instead of specifying them to each message box separately. This you can do as follows:</p>
-<pre class="prettyprint linenums">dialog.MessageBox.setDefaults({ buttonClass: &quot;iconbutton&quot;, primaryButtonClass: &quot;float-right&quot;, secondaryButtonClass: &quot;cancelbutton float-left&quot; });</pre>
+<pre class="prettyprint linenums lang-javascript">dialog.MessageBox.setDefaults({ buttonClass: &quot;iconbutton&quot;, primaryButtonClass: &quot;float-right&quot;, secondaryButtonClass: &quot;cancelbutton float-left&quot; });
+</pre>
 <p><em>dialog.MessageBox.setDefaults</em> specifies only the settings that you define in the object passed to the method, leaving all other settings intact. You can run this method in your application startup.</p>
 <h3 id="custom-dialogs">Custom Dialogs</h3>
 <p>It turns out that message boxes are just an implementation of a custom modal dialog.
 With Durandal, you can show any UI as a dialog, using the same techniques as you aready know. Just create a view and a view model.
 Let&#39;s see how to do it by looking at how the built-in message box is implemented. 
 First, let&#39;s see the implementation of <em>showMessage</em>:</p>
-<pre class="prettyprint linenums">showMessage: function (message, title, options, autoclose, settings) {
+<pre class="prettyprint linenums lang-javascript">showMessage: function (message, title, options, autoclose, settings) {
     return dialog.showMessage(message, title, options, autoclose, settings);
-}</pre>
+}
+</pre>
 <p>This shows the typical technique for displaying a custom dialog. All you have to do is pass an object to <a href="/documentation/api#module/dialog/method/show">dialog.show</a> and under the covers it will use the composition system to locate its view and bind the two together. Then, it will display it as a dialog.</p>
 <p>Let&#39;s see part of the implementation of <em>MessageBox</em> and its view.</p>
 <p><strong>messageBox.js</strong></p>
-<pre class="prettyprint linenums">var MessageBox = function (message, title, options, autoclose, settings) {
+<pre class="prettyprint linenums lang-javascript">var MessageBox = function (message, title, options, autoclose, settings) {
     this.message = message;
     this.title = title || MessageBox.defaultTitle;
     this.options = options || MessageBox.defaultOptions;
@@ -203,9 +211,10 @@ First, let&#39;s see the implementation of <em>showMessage</em>:</p>
 
 MessageBox.prototype.selectOption = function (dialogResult) {
     dialog.close(this, dialogResult);
-};</pre>
+};
+</pre>
 <p><strong>messageBox.html</strong></p>
-<pre class="prettyprint linenums">&lt;div data-view=&quot;plugins/messageBox&quot; data-bind=&quot;css: getClass(), style: getStyle()&quot;&gt;,
+<pre class="prettyprint linenums lang-html">&lt;div data-view=&quot;plugins/messageBox&quot; data-bind=&quot;css: getClass(), style: getStyle()&quot;&gt;,
     &lt;div class=&quot;modal-header&quot;&gt;
         &lt;h3 data-bind=&quot;html: title&quot;&gt;&lt;/h3&gt;
     &lt;/div&gt;
@@ -218,18 +227,20 @@ MessageBox.prototype.selectOption = function (dialogResult) {
         &lt;!-- /ko --&gt;
         &lt;div style=&quot;clear:both;&quot;&gt;&lt;/div&gt;
     &lt;/div&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;
+</pre>
 <p>As you can see, <a href="/documentation/api#module/dialog/class/MessageBox">MessageBox</a> is just a normal prototype-based class. It stores its parameters and provides a function to select a particular option.
 The view is located by the composition system and bound to it before displaying it in a modal style. The view uses a standard set of Knockout bindings along with some css classes.
 There&#39;s one important detail to notice. Have a look at the <a href="/documentation/api#class/MessageBox/method/selectOption">selectOption</a> function of the modal implementation.
 It uses the <a href="/documentation/api#module/dialog">dialog module&#39;s</a> <a href="/documentation/api#module/dialog/method/close">close</a> function to dismiss the dialog. The interesting thing about it is that you can pass it a value to return to its caller.
 When the caller invokes <em>show</em> a promise is returned which, as mentioned above, resolves when the dialog closes and will carry with it whatever the dialog passes to <em>close</em>.
 Here&#39;s how a client might obtain that value:</p>
-<pre class="prettyprint linenums">var app = require(&#39;durandal/app&#39;);
+<pre class="prettyprint linenums lang-javascript">var app = require(&#39;durandal/app&#39;);
 ...
 app.showMessage(&#39;This is a message.&#39;).then(function(dialogResult){
   //do something with the dialog result here
-});</pre>
+});
+</pre>
 <p>That&#39;s all there is to creating a custom dialog. It&#39;s built like any other UI, by constructing a module and a view. Then, just call <code>app.showDialog</code> and you are in business.</p>
 <h3 id="dialog-contexts">Dialog Contexts</h3>
 <p>All dialogs are shown in a particular visual context. This is a customization point that allows developers to leverage the dialog module&#39;s composition and activation infrastructure while controlling the visualization of the dialog.</p>
@@ -262,11 +273,19 @@ app.showMessage(&#39;This is a message.&#39;).then(function(dialogResult){
 </blockquote>
 <h3 id="repositioning-dialogs-after-their-contents-have-been-changed">Repositioning Dialogs After Their Contents Have Been Changed</h3>
 <p>On the default dialog context, there is a method to reposition a dialog after its contents have been changed (called <em>reposition</em>). You can call it as follows:</p>
-<pre class="prettyprint linenums">dialog.getContext().reposition(view);</pre>
+<pre class="prettyprint linenums lang-javascript">dialog.getContext().reposition(view);
+</pre>
 <p>or</p>
-<pre class="prettyprint linenums">var theDialog = dialog.getDialog(context.model);
-theDialog.context.reposition(view);</pre>
+<pre class="prettyprint linenums lang-javascript">var theDialog = dialog.getDialog(context.model);
+theDialog.context.reposition(view);
+</pre>
 <p>where <em>view</em> is the view that needs to be repositioned. You need to call this method, for example, after you have loaded some content via AJAX to the dialog.</p>
+<h3 id="setting-full-screen-dialog-margins">Setting Full Screen Dialog Margins</h3>
+<p>The default margins for a dialog that fills the whole screen is 5 pixels on each side. If you want to alter these margins, you can do it as follows, preferably in your main.js:</p>
+<pre class="prettyprint linenums lang-javascript">dialog.getContext().minYMargin = 35;
+dialog.getContext().minXMargin = 50;
+</pre>
+<p>This will set the top and bottom margins to 35 px each and the left and right margins to 50 px each.</p>
 
 </section>
 
@@ -278,8 +297,9 @@ theDialog.context.reposition(view);</pre>
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

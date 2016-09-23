@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,50 +36,47 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="creating-a-module">Creating a Module</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <blockquote>
   <strong>Key Points</strong>
   <ul>
@@ -105,15 +102,16 @@
 <p>To create a module, start by creating a new <em>.js</em> file. In this file, call <em>define</em> and pass it a function which will be used to build up your module. The return value of the function is what will be imported by other modules when they call <em>require</em>.
 Here&#39;s a simple example of two modules, one of which depends on the other:</p>
 <p><strong>backend.js</strong></p>
-<pre class="prettyprint linenums">define(function(require){
+<pre class="prettyprint linenums lang-javascript">define(function(require){
   return {
     getCustomers:function(){
       //do some ajax and return a promise
     }
   };
-});</pre>
+});
+</pre>
 <p><strong>customerList.js</strong></p>
-<pre class="prettyprint linenums">define(function(require){
+<pre class="prettyprint linenums lang-javascript">define(function(require){
   var backend = require(&#39;backend&#39;);
 
   return {
@@ -125,7 +123,8 @@ Here&#39;s a simple example of two modules, one of which depends on the other:</
       });
     }
   };
-});</pre>
+});
+</pre>
 <p>As you can see here, both modules declare themselves by calling <em>define</em>. 
 The <em>customerList</em> module also indicates that it has a dependency on <em>backend</em> by calling <em>require</em> and passing it the path to that module.
 The value assigned to the <em>backend</em> variable is the same object instance that was returned from the <em>backend</em> module.</p>
@@ -137,7 +136,7 @@ The value assigned to the <em>backend</em> variable is the same object instance 
 You are not limited to this pattern, however. Another common module usage pattern is to return a constructor function from the module. This sets up an organization which is common to many other languages where you have one &quot;class&quot; per file.
 This allows dependent modules to create instances on demand. Here&#39;s a modified version of the above sample which demonstrates that:</p>
 <p><strong>backend.js</strong></p>
-<pre class="prettyprint linenums">define(function(require){
+<pre class="prettyprint linenums lang-javascript">define(function(require){
   var backend = function(username, password){
     this.username = username;
     this.password = password;
@@ -148,9 +147,10 @@ This allows dependent modules to create instances on demand. Here&#39;s a modifi
   };
 
   return backend;
-});</pre>
+});
+</pre>
 <p><strong>customerList.js</strong></p>
-<pre class="prettyprint linenums">define(function(require){
+<pre class="prettyprint linenums lang-javascript">define(function(require){
   var Backend = require(&#39;backend&#39;);
 
   return {
@@ -164,7 +164,8 @@ This allows dependent modules to create instances on demand. Here&#39;s a modifi
       });
     }
   };
-});</pre>
+});
+</pre>
 <p>As you can see <em>customerList</em> depends on <em>backend</em> and uses the <em>new</em> modifier to create instances of it.</p>
 <div class="alert alert-block">
   <h4>Important!</h4>
@@ -189,8 +190,9 @@ Should you need to inspect the Id of a module, it is better to use the <a href="
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

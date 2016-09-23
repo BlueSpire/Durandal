@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,50 +36,47 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="binding-plain-javascript-objects">Binding Plain Javascript Objects</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <blockquote>
   <strong>Key Points</strong>
   <ul>
@@ -91,7 +88,7 @@
 
 <h3 id="configuration">Configuration</h3>
 <p>Durandal&#39;s <a href="/documentation/api#module/observable">observable plugin</a> can hook into the <a href="/documentation/api#module/binder">binder</a> and ensure that all bound objects are observable. Let&#39;s see how to install the plugin. In your <em>main.js</em> file, before calling <a href="/documentation/api#module/app/method/start">app.start()</a> you will need to make a call to <a href="/documentation/api#module/app/method/configurePlugins">configurePlugins(...)</a>. Here&#39;s what your code might look like:</p>
-<pre class="prettyprint linenums">define([&#39;durandal/app&#39;],  function (app) {
+<pre class="prettyprint linenums lang-javascript">define([&#39;durandal/app&#39;],  function (app) {
     app.configurePlugins({
         observable: true
     });
@@ -99,7 +96,8 @@
     app.start().then(function () {
         app.setRoot(&#39;shell&#39;);
     });
-});</pre>
+});
+</pre>
 <p>Once you&#39;ve done that, you have enabled two-way databinding against plain JavaScript objects. You can still use Knockout observables, but they are not necessary.</p>
 <h3 id="usage-scenarios">Usage Scenarios</h3>
 <p>The observable plugin provides amazing simplifcation, readability and maintainability to your code. But, you must only use it when targeting an ES5 browser with <code>defineProperty</code> support. It will not work without this crucial JavaScript language capability. Supported browsers include:</p>
@@ -114,7 +112,7 @@
 <p>Once you configure the plugin, all bound objects are observable, even though they have normal properties. There are a couple of interesting scenarios to cover as a result of this change.</p>
 <h4 id="accessing-the-underlying-observable">Accessing the Underlying Observable</h4>
 <p>Even though your objects have normal properties, they are actually implemented using ES5 getters and setters. Underlying the property is an actual Knockout observable. Should you need to subscribe to such an observable (even if the plugin has not yet created the getters and setters) you would do it like this:</p>
-<pre class="prettyprint linenums">var observable = require(&#39;plugins/observable&#39;);
+<pre class="prettyprint linenums lang-javascript">var observable = require(&#39;plugins/observable&#39;);
 
 var viewModel:{
     firstName:&#39;&#39;,
@@ -125,11 +123,12 @@ observable(viewModel, &#39;firstName&#39;).subscribe(function(value){
     console.log(&#39;First name changed.&#39;);
 });
 
-viewModel.firstName = &#39;Test&#39;;</pre>
+viewModel.firstName = &#39;Test&#39;;
+</pre>
 <p>Calling the observable module as a function, and passing the object and the property name, will return the underlying Knockout observable instance. This is also handy for extending observables or passing them around.</p>
 <h4 id="creating-computed-observables">Creating Computed Observables</h4>
 <p>If you wish to create a computed observable, you can use the <a href="/documentation/api#module/observable/method/defineProperty">observable.defineProperty</a> API like so:</p>
-<pre class="prettyprint linenums">var observable = require(&#39;plugins/observable&#39;);
+<pre class="prettyprint linenums lang-javascript">var observable = require(&#39;plugins/observable&#39;);
 
 var viewModel:{
     firstName:&#39;&#39;,
@@ -140,11 +139,12 @@ observable.defineProperty(viewModel, &#39;fullName&#39;, function(){
     return this.firstName + &#39; &#39; + this.lastName;
 });
 
-console.log(viewModel.fullName);</pre>
+console.log(viewModel.fullName);
+</pre>
 <p>The third argument to <a href="/documentation/api#module/observable/method/defineProperty">observable.defineProperty</a> functions just like the argument to a Knockout computed.</p>
 <h3 id="promises">Promises</h3>
 <p>The observable module also understands promises. If you have an attribute that is an instance of a promise on your bound model, the observable module will convert this into a getter that returns the promised value. Under the covers it will register a callback with the promise and then update the observable for you. Here&#39;s an example of code you might write in light of this:</p>
-<pre class="prettyprint linenums">define(function (require) {
+<pre class="prettyprint linenums lang-javascript">define(function (require) {
     var server = require(&#39;services/server&#39;);
 
     return {
@@ -153,23 +153,26 @@ console.log(viewModel.fullName);</pre>
             this.news = server.getNews(); //async action returns a promise
         }
     };
-});</pre>
+});
+</pre>
 <p>In your view, you can data-bind to these as if they were normal arrays.</p>
-<pre class="prettyprint linenums">&lt;div data-bind=&quot;foreach: news&quot;&gt;
+<pre class="prettyprint linenums lang-html">&lt;div data-bind=&quot;foreach: news&quot;&gt;
     &lt;h1 data-bind=&quot;text: title&quot;&gt;&lt;/h1&gt;
     &lt;p data-bind=&quot;text: content&quot;&gt;&lt;/p&gt;
     &lt;hr&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;
+</pre>
 <h3 id="change-detection">Change Detection</h3>
 <p>The observable module supports optional changed detection. To activate it, simply add the changeDetection parameter to the plugin activation:</p>
-<pre class="prettyprint linenums">  app.configurePlugins({
+<pre class="prettyprint linenums lang-javascript">  app.configurePlugins({
     observable: {
       changeDetection: &quot;hasChanged&quot; // The name of your method.
     },
     // ... other plugins.
-  });</pre>
+  });
+</pre>
 <p>Then, add a method of the same name to your shell, model, viewmodel or controller:</p>
-<pre class="prettyprint linenums">  hasChanged = function (obj, propertyName, newValue, arrayChanges) {
+<pre class="prettyprint linenums lang-javascript">  hasChanged = function (obj, propertyName, newValue, arrayChanges) {
     // obj is the object on which the property &quot;propertyName&quot; has changed.
 
     if (arrayChanges) {
@@ -178,7 +181,8 @@ console.log(viewModel.fullName);</pre>
     } else {
       // newValue contains the new value of the observable having changed.
     }
-  }</pre>
+  }
+</pre>
 <p>Multiple objects can receive notifications when changes are detected. Simply add the method to all the objects you need to detect those changes.</p>
 
 </section>
@@ -191,8 +195,9 @@ console.log(viewModel.fullName);</pre>
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

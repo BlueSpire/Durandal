@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,50 +36,47 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="converting-a-durandal-1-x-project-to-2-0">Converting a Durandal 1.x Project to 2.0</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <blockquote>
 <p>There were significant breaking changes between the 1.x version series and 2.0. Below you will find details of how to convert an existing project to the new version. For additional information, see the <a href="/documentation/api">API Documentation</a> or the <a href="/pages/docs">various &quot;How To&quot; guides</a>.</p>
 </blockquote>
@@ -93,14 +90,15 @@
 <li>Fix up your <em>index.html</em> so that the RequireJS path is correct.</li>
 <li>In your <code>main.js</code> file, configure RequireJS with the location of the Durandal modules. You do this by adding <code>requirejs.config.paths</code> entries. Assuming your Durandal application is in an <code>App</code> folder under your web root and all your 3rd party scripts are in a <code>Scripts</code> folder, your configuration should look like this:</li>
 </ol>
-<pre class="prettyprint linenums">requirejs.config({
+<pre class="prettyprint linenums lang-javascript">requirejs.config({
     paths: {
         &#39;text&#39;: &#39;../Scripts/text&#39;,
         &#39;durandal&#39;: &#39;../Scripts/durandal&#39;,
         &#39;plugins&#39;: &#39;../Scripts/durandal/plugins&#39;,
         &#39;transitions&#39;: &#39;../Scripts/durandal/transitions&#39;
     }
-});</pre>
+});
+</pre>
 <p>This should be immediately at the top of your <code>main.js</code> file.</p>
 <h3 id="configure-dependencies">Configure Dependencies</h3>
 <p>Durandal depends on RequireJS, jQuery and Knockout. In version 1.x the Durandal library made the assumption that both jQuery and Knockout were available in the global script scope. This assumption was problematic for some deploy scenarios, so now Durandal requires both jQuery and Knockout to be available explicitly through the module system. There are two options for you in updating the dependency configuration. Option 1 is to use the <code>path</code> config to register jQuery and Knockout with RequireJS. This option should only be used by developers who are familiar and comfortable with <code>shim</code> configuration, as registering the modules in this way will require all 3rd party scripts to be registered similarly. Modules not designed for AMD will require shimming. Option 2 is to reference these libraries as you would normally, through script tags, then manually <code>define</code> them inside the module system. If you aren&#39;t comfortable with  <code>path</code> and <code>shim</code> config, then this option is recommended for you. </p>
@@ -112,7 +110,7 @@
 <li>Add paths and shim config for any 3rd party libraries.</li>
 </ol>
 <p>Here&#39;s an example of what the configuration would look like with the standard dependencies, plus one 3rd party library: Bootstrap.</p>
-<pre class="prettyprint linenums">requirejs.config({
+<pre class="prettyprint linenums lang-javascript">requirejs.config({
     paths: {
         &#39;text&#39;: &#39;../Scripts/text&#39;,
         &#39;durandal&#39;:&#39;../Scripts/durandal&#39;,
@@ -128,18 +126,20 @@
             exports: &#39;jQuery&#39;
        }
     }
-});</pre>
+});
+</pre>
 <h4 id="option-2-script-tags-and-manual-define">Option 2: Script Tags and Manual Define</h4>
 <ol>
 <li>Keep all script libraries referenced in your html page.</li>
 <li>Add two define statements after your <code>requirejs.config</code> and before the body of your main module. These statements will manually define the modules needed by Durandal. Your code should look like this:</li>
 </ol>
-<pre class="prettyprint linenums">define(&#39;jquery&#39;, function () { return jQuery; });
-define(&#39;knockout&#39;, ko);</pre>
+<pre class="prettyprint linenums lang-javascript">define(&#39;jquery&#39;, function () { return jQuery; });
+define(&#39;knockout&#39;, ko);
+</pre>
 <h3 id="configure-plugins">Configure Plugins</h3>
 <p>Durandal 1.x, though appearing to be modularized, was still monolithic in nature due to certain dependencies between modules. In 2.0, we have moved all non-essential functionality out of the core and into plugins. As part of this process, we have established a simple plugin loading api and extensibility point.</p>
 <p>The <code>router</code>, <code>dialog</code> (previously modalDialog), <code>widget</code> and <code>http</code> modules were part of Durandal&#39;s core, but are now plugins. If you wish to take advantage of their functionality, you can load them in your main module using the new <code>app.configurePlugins</code> API. Below is a sample <code>main.js</code> file that demonstrates all the above mentioned configuration (manual define) along with plugin configuration.</p>
-<pre class="prettyprint linenums">requirejs.config({
+<pre class="prettyprint linenums lang-javascript">requirejs.config({
     paths: {
         &#39;text&#39;: &#39;../Scripts/text&#39;,
         &#39;durandal&#39;: &#39;../Scripts/durandal&#39;,
@@ -167,7 +167,8 @@ define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLoc
         viewLocator.useConvention();
         app.setRoot(&#39;shell&#39;);
     });
-});</pre>
+});
+</pre>
 <p>Here you can see that we provide the <code>configurePlugins</code> API with an object, where each plugin we want to load is a key. The values for those keys can be <code>true</code> to simply load the plugin, or a configuration object, as demonstrated with the <code>widget</code> plugin. In this case, the <code>widget</code> plugin configures the <em>expander</em> widget kind. See the plugin documentation for details on any available configuration options.</p>
 <h3 id="fix-module-names-and-paths">Fix Module Names and Paths</h3>
 <p>As part of the general refactoring in 2.0 some modules became plugins and others were renamed. If you used any of these modules directly, you will need to fix up your require paths throughout. Here is a chart showing the 1.x to 2.0 changes:</p>
@@ -350,7 +351,7 @@ define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLoc
 <p>The Durandal 1.x router was built on top of SammyJS. This seemed like a good idea at the time, but in the end, turned out to be quite problematic and limiting. Durandal 2.0 has an entirely new router with less code, less bugs, more features and better performance. It has no dependencies on 3rd party libraries outside of the Durandal core. The new router is split into two modules: <code>history</code> which contains the low level cross-browser history abstraction and <code>router</code> which contains the Durandal activation and composition semantics, built on top of <code>history</code>.</p>
 <h4 id="update-configuration">Update Configuration</h4>
 <p>The new router has a different mechanism for configuration. To configure routes, call the <code>map</code> api, providing it with an array of route configurations. If you want to databind to routes in order to create a navigation UI, call <code>buildNavigationModel</code>. You can easily handle unknown routes by calling <code>mapUnknownRoutes</code> as well (or set up conventions). Finally, you should  add a public attribute on your shell called <em>router</em> and <code>activate</code> the router and return the promise back to Durandal. Here&#39;s an example shell configuration:</p>
-<pre class="prettyprint linenums">define([&#39;plugins/router&#39;], function (router) {
+<pre class="prettyprint linenums lang-javascript">define([&#39;plugins/router&#39;], function (router) {
     return {
         router: router,
         activate: function () {
@@ -367,7 +368,8 @@ define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLoc
               .activate();
         }
     };
-});</pre>
+});
+</pre>
 <p>Looking at the <code>map</code> API, the <em>route</em> is the pattern to match in the url and the <em>moduleId</em> is the module to activate when that pattern is matched. You can optionally configure a <em>title</em> to set the document to as well or a <em>hash</em> to use in databinding (if the generated hash based on the route isn&#39;t correct; usually if the route contains parameters or splats). Finally, you can specify <code>nav:true</code> to indicate that the route should be part of the navigation model used to databind the UI. If you provide a number, such as <code>nav:5</code>, then you can order the navigation model independently of the route configuration order. See the router&#39;s documentation for further details concerning the above APIs.</p>
 <blockquote>
 <p><strong>Note:</strong> Did you previously call <code>useConvention</code>? If so, that API has been removed. In its place is the <code>makeRelative</code> API. This can be used to tell the router that all moduleIds are relative to a certain path, or that all routes are relative to a certain base url. To achieve the same effect has <code>useConvention</code> you would call <code>router.makeRelative({moduleId:&#39;viewmodels&#39;});</code></p>
@@ -375,7 +377,7 @@ define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLoc
 </blockquote>
 <h4 id="update-view">Update View</h4>
 <p>Because the router has changed, you will also need to update your shell&#39;s view. The router binding is simplified by the new router binding handler. Some minor changes to the bound navigation model are also necessary. Here&#39;s the view that corresponds to the previous module:</p>
-<pre class="prettyprint linenums">&lt;div&gt;
+<pre class="prettyprint linenums lang-html">&lt;div&gt;
     &lt;div class=&quot;navbar navbar-fixed-top&quot;&gt;
         &lt;div class=&quot;navbar-inner&quot;&gt;
             &lt;ul class=&quot;nav&quot; data-bind=&quot;foreach: router.navigationModel&quot;&gt;
@@ -392,12 +394,13 @@ define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLoc
     &lt;div class=&quot;container-fluid page-host&quot;&gt;
         &lt;!--ko router: { transition:&#39;entrance&#39;, cacheViews:true }--&gt;&lt;!--/ko--&gt;
     &lt;/div&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;
+</pre>
 <p>Notice that the nav bar is built by binding the <code>navigationModel</code> array. Again, please note the new router binding handler.</p>
 <h4 id="update-modules">Update Modules</h4>
 <p>The new router now not only supports parameterized routes, but also optional parameters, splats and query strings. In order to guarantee a consistent calling mechanism, one that functions more similarly to <em>Controllers</em> in most MVC applications, the new router activates modules slightly different from 1.x. The 2.0 router will call <code>activate</code> on your module with one argument per route parameter. This includes optional parameters, even if they are not supplied. If the history state contains a query string, that will be parsed into a key/value object and passed in as the last argument. Let&#39;s see an example:</p>
 <p>The Shell&#39;s Route Config</p>
-<pre class="prettyprint linenums">define([&#39;plugins/router&#39;], function (router) {
+<pre class="prettyprint linenums lang-javascript">define([&#39;plugins/router&#39;], function (router) {
     return {
         router: router,
         activate: function () {
@@ -406,16 +409,18 @@ define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLoc
             ]).activate();
         }
     };
-});</pre>
+});
+</pre>
 <p>The <em>order</em> module:</p>
-<pre class="prettyprint linenums">define(function () {
+<pre class="prettyprint linenums lang-javascript">define(function () {
     return {
         activate: function (customerId, orderId) {
             //use the customerId and orderId here
             //if the route contained a query string, there would be a 3rd argument
         }
     };
-});</pre>
+});
+</pre>
 <blockquote>
 <p><strong>Note:</strong> For those who need access to the current route&#39;s configuration in order to get at custom properties or other information, you can access the raw data via <code>router.activeInstruction()</code> The instruction contains the <em>fragment</em>, <em>queryString</em>, <em>params</em>, and <em>queryParams</em>. It also contains a <em>config</em> property which is the same instance as your original route config.</p>
 </blockquote>
@@ -458,8 +463,9 @@ define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLoc
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

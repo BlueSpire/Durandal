@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,64 +36,62 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="localization-with-i18next">Localization with i18next</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <p>Here&#39;s how <a href="http://i18next.com/">i18next</a> describes itself:</p>
 <blockquote>
 <p>i18next is a full-featured i18n javascript library for translating your webapplication. It runs in browser, under node.js, rhino and other javascript runtimes.</p>
 </blockquote>
 <p>To set up localization of your app, first download <a href="http://i18next.com/">i18next</a> and add it into your project&#39;s scripts folder. Then configure RequireJS to find the library. Do this by adding a path entry to your requirejs.config in main.js:</p>
-<pre class="prettyprint linenums">requirejs.config({
+<pre class="prettyprint linenums lang-javascript">requirejs.config({
     paths: {
         ...
         &#39;i18next&#39;:&#39;../lib/i18next/i18next.amd.withJQuery-1.7.0&#39; //this should point to where you placed the library
         ...
     }
-});</pre>
+});
+</pre>
 <p>Next, you will need to import the library and build your i18next configuration object in your main.js module:</p>
-<pre class="prettyprint linenums">define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLocator&#39;, &#39;durandal/binder&#39;, &#39;i18next&#39;], function (system, app, viewLocator, binder, i18n) {
+<pre class="prettyprint linenums lang-javascript">define([&#39;durandal/system&#39;, &#39;durandal/app&#39;, &#39;durandal/viewLocator&#39;, &#39;durandal/binder&#39;, &#39;i18next&#39;], function (system, app, viewLocator, binder, i18n) {
     var i18NOptions = { 
         detectFromHeaders: false,
         lng: window.navigator.userLanguage || window.navigator.language || &#39;en-US&#39;,
@@ -104,12 +102,13 @@
     };
 
     ...
-}</pre>
+}
+</pre>
 <blockquote>
 <p><strong>Note:</strong> This example uses the window.navigator language to set the default language. You can change this using a different client side or server side approach.</p>
 </blockquote>
 <p>Now initialize i18next inside your app.start method in the main.js. Notice that the initialization function uses a callback. This is where you hook into Durandal&#39;s binder and tell i18next to parse your markup and convert any resource lookups into strings. It uses jQuery to traverse the DOM and find any &#39;data-i18n&#39; attributes and look up the string in the resource files for the configured language or in the fallback languages.</p>
-<pre class="prettyprint linenums">app.start().then(function () {
+<pre class="prettyprint linenums lang-javascript">app.start().then(function () {
     i18n.init(i18NOptions, function () {
         //Call localization on view before binding...
         binder.binding = function (obj, view) {
@@ -119,10 +118,11 @@
         //Show the app by setting the root view model for our application with a transition.
         app.setRoot(&#39;shell&#39;, &#39;entrance&#39;);
     });
-});</pre>
+});
+</pre>
 <p>You are now ready to localize the application. First you need to create your resource files. There are many options in i18next to handle this. For this example we have established the namespace in the configuration object to be &#39;app&#39; and created a locales folder at the root of the website. The location of the resources is defined in the configuration object. Notice that the file name starts with the namespace: &#39;app&#39; is our namespace and &#39;app.json&#39; is the file name.  You can read up more about how this works on the <a href="http://i18next.com/pages/doc_init.html">i18next</a> site.</p>
 <p>In each folder in your locales you create a JSON file that has key-value pairs. Here is an example:</p>
-<pre class="prettyprint linenums">{
+<pre class="prettyprint linenums lang-javascript">{
     &quot;modules&quot; : {
         &quot;localization&quot;: {
             &quot;title&quot; : &quot;Localization&quot;,
@@ -138,20 +138,23 @@
             &quot;justCheckingTitle&quot; : &quot;Just Checking...&quot;
         }
     }
-}</pre>
+}
+</pre>
 <p>Now let&#39;s see how we use the resources in code. In code you import i18next and use it to return the localized string. Here is an example of how you might set up a localized route title. You just call the <code>t()</code> function passing a string that defines the path to the resource key. The function returns the localized string.</p>
-<pre class="prettyprint linenums">{
+<pre class="prettyprint linenums lang-javascript">{
     type: &#39;intro&#39;,
     title: i18n.t(&#39;app:modules.localization.modal&#39;),
     route: &#39;&#39;,
     moduleId: &#39;default/index&#39;
- }</pre>
+ }
+</pre>
 <p>In markup you add the <code>&#39;data-i18n&#39;</code> attribute and set its value to a string that defines the path to the resource key. When the Durandal binder binds the view and the viewmodel we call i18next method passing the view object. i18next traverses the DOM and looks up the localized strings in the resource files. Here is an example of the markup.</p>
-<pre class="prettyprint linenums">&lt;div&gt;
+<pre class="prettyprint linenums lang-html">&lt;div&gt;
     &lt;h2 data-i18n=&quot;app:modules.localization.clickToShowModal&quot;&gt;&lt;/h2&gt;
     &lt;button class=&quot;btn&quot; data-bind=&quot;click:showCustomModal&quot; data-i18n=&quot;app:modules.localization.showModalBtn&quot;&gt;&lt;/button&gt;
-&lt;/div&gt;</pre>
-<p>You can download the dFiddle fork with this implemented at <a href="https://github.com/anwalkers/dFiddle-2.0"><a href="https://github.com/anwalkers/dFiddle-2.0">https://github.com/anwalkers/dFiddle-2.0</a></a> or see the dFiddle in action at <a href="http://anwalkers.github.io/dFiddle-2.0/#localization"><a href="http://anwalkers.github.io/dFiddle-2.0/#localization">http://anwalkers.github.io/dFiddle-2.0/#localization</a></a>.</p>
+&lt;/div&gt;
+</pre>
+<p>You can download the dFiddle fork with this implemented at <a href="https://github.com/anwalkers/dFiddle-2.0">https://github.com/anwalkers/dFiddle-2.0</a> or see the dFiddle in action at <a href="http://anwalkers.github.io/dFiddle-2.0/#localization">http://anwalkers.github.io/dFiddle-2.0/#localization</a>.</p>
 
 </section>
 
@@ -163,8 +166,9 @@
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

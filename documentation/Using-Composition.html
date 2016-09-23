@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,50 +36,47 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="using-composition">Using Composition</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <blockquote>
   <strong>Key Points</strong>
   <ul>
@@ -112,13 +109,14 @@ This functionality is a central and unique feature of Durandal and is provided b
 While you can use the composition module directly to achieve this in code, the most common way of leveraging it will be through the <em>compose binding</em>.
 If you create widgets or use modal dialogs, you will also be leveraging it indirectly. In fact, everything you see presented in the browser&#39;s view is run through Durandal&#39;s composition pipeline.</p>
 <p>Let&#39;s see how composition works, by first looking at app startup. Here&#39;s some code from a stripped down <em>main.js</em> file:</p>
-<pre class="prettyprint linenums">define(function(require) {
+<pre class="prettyprint linenums lang-javascript">define(function(require) {
     var app = require(&#39;durandal/app&#39;);
 
     app.start().then(function () {
         app.setRoot(&#39;shell&#39;, &#39;entrance&#39;);
     });
-});</pre>
+});
+</pre>
 <p>Notice the call to <em>setRoot</em>. This actually invokes the composition engine. What is the result?</p>
 <ol>
 <li>RequireJS is used to find the module with id <em>shell</em> (shell.js on the file system).</li>
@@ -130,29 +128,33 @@ If you create widgets or use modal dialogs, you will also be leveraging it indir
 </ol>
 <p>The result is that your application&#39;s shell (main layout/window/etc) is visually composed into the document.
 Now lets take a look at how we can do some basic visual composition inside of the shell view. Have a look at this markup:</p>
-<pre class="prettyprint linenums">&lt;div&gt;
+<pre class="prettyprint linenums lang-html">&lt;div&gt;
     &lt;div data-bind=&quot;compose:&#39;views/header.html&#39;&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;
+</pre>
 <p>Here we are using the <em>compose</em> binding to inject a view. The composition system will locate &#39;views/header.html&#39; and inject it into the DOM inside the div.
 The header html view will be data-bound against the existing context (the shell module) since it&#39;s an explicit view composition, without a module.
 So, how do we specify that header actually has its own view and module? Like this:</p>
-<pre class="prettyprint linenums">&lt;div&gt;
+<pre class="prettyprint linenums lang-html">&lt;div&gt;
     &lt;div data-bind=&quot;compose:&#39;viewmodels/header&#39;&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;
+</pre>
 <p>When there is no view extension (according to the view engine) then the composition engine interprets this as a module Id.
 In this case, it will require the &#39;viewmodels/header&#39; module and then locate its view (according to convention).
 The module and the view will be bound and the view will be injected into the div.</p>
 <p>This is all fine for construction of static components, but what about dynamic composition?
 Well, the compose binding can take an observable, like so:</p>
-<pre class="prettyprint linenums">&lt;div&gt;
+<pre class="prettyprint linenums lang-html">&lt;div&gt;
     &lt;div data-bind=&quot;compose:activeScreen&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;
+</pre>
 <p>Imagine that your shell module looks like this:</p>
-<pre class="prettyprint linenums">define(function(require) {
+<pre class="prettyprint linenums lang-javascript">define(function(require) {
     return {
         activeScreen:ko.observable()
     };
-});</pre>
+});
+</pre>
 <p>Now, the compose binding queries the observable for its value. Here&#39;s a few things that could happen, depending on the value of the observable:</p>
 <ul>
 <li>If it&#39;s a string value:<ul>
@@ -253,20 +255,23 @@ This enables extremely powerful dynamic, changing composition of any part of the
 <p>If you set the <em>activationData</em> property of a compose binding, the value you set will be passed through to the bound module&#39;s <em>activate</em> callback.</p>
 <h4 id="mode">Mode</h4>
 <p>The default composition mode interprets the child elements of a composition site as &quot;splash&quot; or &quot;loader&quot; content and completely overwrites it once the new view is ready to be composed into place. However, this is not the only mode. By setting <code>mode:&#39;inline&#39;</code> you can tell the composition engine that the module you are binding should actually be bound directly against the child elements, without searching for an external view. Here&#39;s an example:</p>
-<pre class="prettyprint linenums">&lt;!--ko compose: { model:&#39;myModel&#39;, mode:&#39;inline&#39;}--&gt;
+<pre class="prettyprint linenums lang-html">&lt;!--ko compose: { model:&#39;myModel&#39;, mode:&#39;inline&#39;}--&gt;
     &lt;h3 data-bind=&quot;text: someProperty&quot;&gt;&lt;/h3&gt;
-&lt;!--/ko--&gt;</pre>
+&lt;!--/ko--&gt;
+</pre>
 <p>In this case, the compositoin system will locate the &quot;myModel&quot; module and then it will databind it against the <code>h3</code> inside the composition element.</p>
 <p>You can also use <code>mode:&#39;templated&#39;</code>. This mode allows you to create replacable parts in your view, which can be overridden at the composition site. Let&#39;s say we have the following view:</p>
-<pre class="prettyprint linenums">&lt;div&gt;
+<pre class="prettyprint linenums lang-html">&lt;div&gt;
     &lt;h2&gt;My View&lt;/h2&gt;
     &lt;span data-bind=&quot;text: someProperty&quot;&gt;&lt;/span&gt;
     &lt;div data-part=&quot;content&quot;&gt;Some default content goes here.&lt;/div&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;
+</pre>
 <p>Notice that the <code>div</code> is marked with <code>data-part=&quot;content&quot;</code>. This identifies this portion of the view as templatable or replaceable. When the composition system composes this view into the DOM, you can optionally provide your own content for this part. Here&#39;s an example of what a consumer of this view might look like:</p>
-<pre class="prettyprint linenums">&lt;!--ko compose: { view:&#39;myView.html&#39;, mode:&#39;templated&#39; }--&gt;
+<pre class="prettyprint linenums lang-html">&lt;!--ko compose: { view:&#39;myView.html&#39;, mode:&#39;templated&#39; }--&gt;
     &lt;div data-part=&quot;content&quot;&gt;This is a view part override of the default content....&lt;/div&gt;
-&lt;!--/ko--&gt;</pre>
+&lt;!--/ko--&gt;
+</pre>
 <p>When this composition activates, the myView.html will be located and its content part will be replaced with the custom content specified.</p>
 <blockquote>
 <p><strong>Note:</strong> Widgets leverage templated parts by default and so their composition mode is always <code>templated</code>.</p>
@@ -280,7 +285,8 @@ This enables extremely powerful dynamic, changing composition of any part of the
 </blockquote>
 <h4 id="custom-error-management">Custom Error Management</h4>
 <p>You can replace the default error management during composition by adding an error handler to the binding:</p>
-<pre class="prettyprint linenums">&lt;div data-bind=&quot;compose: { model: model, onError: errorHandlerFunction }&quot;&gt;&lt;/div&gt;</pre>
+<pre class="prettyprint linenums lang-html">&lt;div data-bind=&quot;compose: { model: model, onError: errorHandlerFunction }&quot;&gt;&lt;/div&gt;
+</pre>
 <p>The error handler is called with 2 parameters: the error or exception and the binded element.</p>
 
 </section>
@@ -293,8 +299,9 @@ This enables extremely powerful dynamic, changing composition of any part of the
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

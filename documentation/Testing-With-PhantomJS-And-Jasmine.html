@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,59 +36,56 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="testing-with-phantomjs-and-jasmine">Testing with PhantomJS and Jasmine</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <p>Durandal provides the Durandal Test Framework for unit testing. This test framework uses <a href="http://phantomjs.org">PhantomJS</a> and <a href="http://pivotal.github.io/jasmine/">Jasmine</a>. As shipped with Durandal, it&#39;s focused on testing Durandal&#39;s own internal components, but it can easily be adapted for your own unit testing needs.</p>
 <p>You can obtain the test framework by downloading the entire Durandal project using git:</p>
-<pre class="prettyprint linenums">git clone https://github.com/BlueSpire/Durandal.git</pre>
-<blockquote>
+<pre><code>git clone https://github.com/BlueSpire/Durandal.git
+</code></pre><blockquote>
 <p><strong>Note:</strong> If you&#39;re not on Windows, you&#39;ll also need to install PhantomJS on your system, since the PhantomJS that comes with the Test Framework is an <em>.exe</em>.</p>
 </blockquote>
 <p>In your own work, you&#39;re probably not going to want to use the entire Durandal project -- you may start with a starter kit such as the <a href="/version/latest/HTML StarterKit.zip">HTML Starter Kit</a>, or even with your own custom setup. For the moment, the Starter Kits don&#39;t include the Test Framework, which is why you need to get it from the repository directly.</p>
 <p>Once you download the testing framework, you will need to update it&#39;s configuration. To do this edit <em>spec.html</em> in the <em>test</em> directory. In that file, you&#39;ll see that <em>require</em> is configured with some paths:</p>
-<pre class="prettyprint linenums">paths: {
+<pre class="prettyprint linenums lang-javascript">paths: {
     &#39;specs&#39;: &#39;../test/specs/&#39;,
     &#39;text&#39;: &#39;../lib/require/text&#39;,
     &#39;durandal&#39;: &#39;durandal/js&#39;,
@@ -96,40 +93,44 @@
     &#39;transitions&#39; : &#39;transitions/js&#39;,
     &#39;knockout&#39;: &#39;../lib/knockout/knockout-2.3.0&#39;,
     &#39;jquery&#39;: &#39;../lib/jquery/jquery-1.9.1&#39;
-}</pre>
+}
+</pre>
 <p>For the HTML Starter Kit, with the <em>test</em> directory copied into the top-level directory at the same level as <em>lib</em>, <em>css</em>, and <em>app</em>, you only have to change three of them:</p>
-<pre class="prettyprint linenums">&#39;durandal&#39;: &#39;../lib/durandal/js&#39;,
+<pre class="prettyprint linenums lang-javascript">&#39;durandal&#39;: &#39;../lib/durandal/js&#39;,
 &#39;plugins&#39; : &#39;../lib/durandal/js/plugins&#39;,
-&#39;transitions&#39; : &#39;/lib/durandal/js/transitions&#39;,</pre>
+&#39;transitions&#39; : &#39;/lib/durandal/js/transitions&#39;,
+</pre>
 <p>In general, you just need to find the <em>durandal</em>, <em>plugins</em>, and <em>transitions</em> directories and set the paths appropriately. It&#39;s also helpful to add a path to the app directory where your code will live:</p>
-<pre class="prettyprint linenums">&#39;app&#39;: &#39;../app&#39;,</pre>
+<pre class="prettyprint linenums lang-javascript">&#39;app&#39;: &#39;../app&#39;,
+</pre>
 <p>You can test your paths by removing the existing test modules from <em>test/specs</em> (which will no longer work, since they are for Durandal&#39;s internal testing) and replacing them with a new, dummy test module such as:</p>
-<pre class="prettyprint linenums">define([&#39;viewmodels/flickr&#39;], function (flickr) {
+<pre class="prettyprint linenums lang-javascript">define([&#39;viewmodels/flickr&#39;], function (flickr) {
     describe(&#39;&#39;, function(){
         it(&#39;returns true&#39;, function () {
             expect(true).toBe(true);
         });
     });
-});</pre>
+});
+</pre>
 <p>This sets up testing for the <em>flickr</em> module that ships with the HTML Starter Kit. If you&#39;re using some other setup, you&#39;ll need a different test. But this shows how it&#39;s done. It doesn&#39;t test every path, but since the <em>flickr</em> module uses the <em>durandal</em> and <em>plugin</em> paths, it tells you whether you&#39;re on the right track. </p>
 <p>To run the test type the following on the command prompt:</p>
-<pre class="prettyprint linenums">$ phantomjs spec.js</pre>
-<p>You&#39;ll know that you don&#39;t have the paths set correctly if you get an error like the following, which leads to a hang of PhantomJS:</p>
-<pre class="prettyprint linenums">Running spec files: specs/mytest.spec
+<pre><code>$ phantomjs spec.js
+</code></pre><p>You&#39;ll know that you don&#39;t have the paths set correctly if you get an error like the following, which leads to a hang of PhantomJS:</p>
+<pre><code>Running spec files: specs/mytest.spec
 Error: Script error
 http://requirejs.org/docs/errors.html#scripterror
 
   file:///Users/garyrob/Source/Durandal%20Projects/HTML%20StarterKit%20(Durandal%202.0)%20Exp%202/lib/require/require.js:32
   file:///Users/garyrob/Source/Durandal%20Projects/HTML%20StarterKit%20(Durandal%202.0)%20Exp%202/lib/require/require.js:12 in C
-  file:///Users/garyrob/Source/Durandal%20Projects/HTML%20StarterKit%20(Durandal%202.0)%20Exp%202/lib/require/require.js:29</pre>
-<p>If all is well, you should see something like:</p>
-<pre class="prettyprint linenums">Running spec files: specs/mytest.spec
+  file:///Users/garyrob/Source/Durandal%20Projects/HTML%20StarterKit%20(Durandal%202.0)%20Exp%202/lib/require/require.js:29
+</code></pre><p>If all is well, you should see something like:</p>
+<pre><code>Running spec files: specs/mytest.spec
 Starting...
 
 Finished
 -----------------
-1 spec, 0 failures in 0.002s.</pre>
-<p>Now you&#39;re ready to unit test your new Durandal project!</p>
+1 spec, 0 failures in 0.002s.
+</code></pre><p>Now you&#39;re ready to unit test your new Durandal project!</p>
 
 </section>
 
@@ -141,8 +142,9 @@ Finished
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

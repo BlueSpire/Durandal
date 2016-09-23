@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,50 +36,47 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="interacting-with-the-dom">Interacting with the DOM</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <blockquote>
   <strong>Key Points</strong>
   <ul>
@@ -92,7 +89,7 @@
 <p>While standard databinding and composition can go very far in helping you to build your app, eventually you will encounter scenarios where you need to access the DOM.
 Below are a few ways you can do this depending on your situation.</p>
 <h3 id="knockout-binding-handlers">Knockout Binding Handlers</h3>
-<p>The databinding infrastructure prodived by <a href="http://knockoutjs.com/">Knockout</a> is very robust. In addition to the built-in bindings, it provides a way to <a href="http://knockoutjs.com/documentation/custom-bindings.html">create custom bindings</a>.
+<p>The databinding infrastructure provided by <a href="http://knockoutjs.com/">Knockout</a> is very robust. In addition to the built-in bindings, it provides a way to <a href="http://knockoutjs.com/documentation/custom-bindings.html">create custom bindings</a>.
 It&#39;s a simple way to encapsulate view-related code, keeping your normal modules free from the ugliness of DOM manipulation.
 This is the most common mechanism for interacting with the DOM in an application, particularly if the logic is reusable.
 For example, it&#39;s common to wrap jQuery plugins inside of a custom binding handler so they can be declaratively applied to any element.
@@ -103,16 +100,18 @@ For information on building your own binding handlers, see <a href="http://knock
 A useful example of what can be done is <a href="https://github.com/rniemeyer/knockout-delegatedEvents">knockout-delegatedEvents</a> which makes delegated events bindable, without resorting to manual jQuery code.</p>
 <h4 id="delayed-binding-handlers">Delayed Binding Handlers</h4>
 <p>Sometimes your binding handler needs to work with an element only after it is attached to the DOM and when the entire composition of the view is complete. An example of this is any code that needs to measure the size of an HTML element. Durandal provides a way to register a knockout binding handler so that it does not execute until the composition is complete. To do this, use <a href="/documentation/api#module/composition/method/addBindingHandler">composition.addBindingHandler</a>. One common use is in focusing elements. Let&#39;s re-write Knockout&#39;s <code>hasFocus</code> binding so that it is executed after composition is complete. If you have an existing registered binding handler, you can change its execution time simply by doing this:</p>
-<pre class="prettyprint linenums">composition.addBindingHandler(&#39;hasFocus&#39;);</pre>
+<pre class="prettyprint linenums lang-javascript">composition.addBindingHandler(&#39;hasFocus&#39;);
+</pre>
 <p>If you wanted to write a custom binding handler, then provide it as the second argument:</p>
-<pre class="prettyprint linenums">composition.addBindingHandler(&#39;myCustomHandler&#39;,{
+<pre class="prettyprint linenums lang-javascript">composition.addBindingHandler(&#39;myCustomHandler&#39;,{
     init:function(){
 
     },
     update:function(){
 
     }
-});</pre>
+});
+</pre>
 <p>The actual implementation is the same as for Knockout. If you need to return custom binding options from your init, then you can provide a third optional argument, a function which takes the same parameters as init and returns the binding handler options expected by knockout.</p>
 <h3 id="composition-lifecycle-callbacks">Composition Lifecycle Callbacks</h3>
 <p>If you are implementing a game or an application component that needs frequent and/or high-performance manipulation of the view, unhindered by databinding, there are several hooks you can use to achieve this.</p>
@@ -124,13 +123,13 @@ This is the earliest event that can be hooked and provides complete control over
 <p>This callback happens before databinding. It is passed the composition&#39;s <code>activationData</code> if available. If this function returns a promise, the binding system will wait for it&#39;s resolution before completing. You don&#39;t have access to the view at this time, but we wanted to list this callback here for completeness.</p>
 <h4 id="binding-bindingcomplete">binding &amp; bindingComplete</h4>
 <p>When the composition engine takes your view and object, and uses the <a href="/documentation/api#module/binder">binder</a> to bind them together, two other callbacks are executed before and after the binding takes place.
-<code>binding(view)</code> is called prior to binding and <code>bindingComplete(view)</code> is called immeidately after. Each call passes the view to your object. One added capability of the <code>binding</code> callback is that it can return an &quot;instruction&quot; object to the binding system. If this object is a <code>boolean</code> value of <code>false</code>, then Knockout&#39;s applyBindings call will not be run. You can also return an object like so <code>{ applyBindings:false }</code>.</p>
+<code>binding(view)</code> is called prior to binding and <code>bindingComplete(view)</code> is called immediately after. Each call passes the view to your object. One added capability of the <code>binding</code> callback is that it can return an &quot;instruction&quot; object to the binding system. If this object is a <code>boolean</code> value of <code>false</code>, then Knockout&#39;s applyBindings call will not be run. You can also return an object like so <code>{ applyBindings:false }</code>.</p>
 <h4 id="attached">attached</h4>
 <p>Finally, after the composition engine attaches the bound view to its parent in the DOM, the <code>attached(view, parent)</code> callback is called.
 This is the most common hook of the three to use. It enables the infrastructure to do as much work as possible and then gives you access to the view when it&#39;s attached.
 It&#39;s a perfect time to add additional behavior, execute selectors, etc.</p>
 <h4 id="compositioncomplete">compositionComplete</h4>
-<p>After the entire view is composed, inlcuding all parent and child compositions that the current component is part of, the <code>compositionComplete(view, parent)</code> callbacks will be executed, bubbling from child to parent. You can use this as the latest point of interaction with the view during the composition process. If you need to measure DOM elements, this is the place to do it.</p>
+<p>After the entire view is composed, including all parent and child compositions that the current component is part of, the <code>compositionComplete(view, parent)</code> callbacks will be executed, bubbling from child to parent. You can use this as the latest point of interaction with the view during the composition process. If you need to measure DOM elements, this is the place to do it.</p>
 <h4 id="detached">detached</h4>
 <p>When the associated view is detached from the DOM, the <code>detached(view, parent)</code> callback will be invoked. This is a great place to do any necessary cleanup work.</p>
 <h3 id="widgets">Widgets</h3>
@@ -149,8 +148,9 @@ You can read more about widgets <a href="/documentation/Creating-A-Widget">here<
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>

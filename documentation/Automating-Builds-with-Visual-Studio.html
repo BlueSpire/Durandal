@@ -14,7 +14,7 @@
 		<meta name="keywords" content="Durandal, SPA, HTML5, CSS, JavaScript, Singe Page Application, Knockout, RequireJS" />
 		<meta name="author" content="EisenbergEffect" />
 
-		<meta name="generator" content="DocPad v6.60.3" />
+		<meta name="generator" content="DocPad v6.78.6" />
 
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
 		<link rel="apple-touch-startup-image" href="images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
@@ -36,50 +36,47 @@
 		        document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 		    }
 		</script>
-
 		<script type="text/javascript" src="//use.typekit.net/kan0fyh.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			      <span class="sr-only">Toggle navigation</span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			      <span class="icon-bar"></span>
-			    </button>
-			    <a class="navbar-brand" href="/"><span>&nbsp;&nbsp;Durandal</span></a>
-			  </div>
-
-		    <div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						
-							<li typeof="sioc:Page" about="/get-started.html" class="">
-								<a href="/get-started.html" property="dc:title">Get Started</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/downloads.html" class="">
-								<a href="/downloads.html" property="dc:title">Downloads</a>
-							</li>
-						
-							<li typeof="sioc:Page" about="/docs.html" class="">
-								<a href="/docs.html" property="dc:title">Docs</a>
-							</li>
-						
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="https://bluespire.zendesk.com" class="support">Login</a>
+		<nav class="navbar navbar-inverse navbar-fixed-top clearfix">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">&nbsp;&nbsp;Durandal</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          
+						<li typeof="sioc:Page" about="/get-started.html" class="">
+							<a href="/get-started.html" property="dc:title">Get Started</a>
 						</li>
-					</ul>
-		    </div>
-		</div>
+					
+						<li typeof="sioc:Page" about="/downloads.html" class="">
+							<a href="/downloads.html" property="dc:title">Downloads</a>
+						</li>
+					
+						<li typeof="sioc:Page" about="/docs.html" class="">
+							<a href="/docs.html" property="dc:title">Docs</a>
+						</li>
+					
+        </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="https://bluespire.zendesk.com" class="support">Login</a>
+					</li>
+				</ul>
+      </div><!--/.nav-collapse -->
+    </nav>
 
 		<section class="container content docs">
   <h1 id="automating-builds-with-visual-studio">Automating Builds with Visual Studio</h1>
-<h4 id="-"> </h4>
+<p>#### </p>
 <p>It is a recommened practice to optimize your application for deploy. If you are working in an environment based on MSBuild or using Visual Studio in your day to day development and testing, then you may wish to automate this process. Below you will find some simple instructions explaining how to do this.</p>
 <h4 id="install-dependencies">Install Dependencies</h4>
 <ol>
@@ -90,25 +87,26 @@
 <p>At the project root create your build config file, per the instructions from your chosen build tool.</p>
 <h4 id="add-the-post-build-event">Add the Post Build Event</h4>
 <p>Go to the project&#39;s properties and select <code>Build Events</code>. In the post build event add the following (note that this example uses a hypothetical gulp build):</p>
-<pre class="prettyprint linenums">cd $(ProjectDir)
-gulp build</pre>
-<p>If you ony want to build when the Release configuration is selected, use the following:</p>
-<pre class="prettyprint linenums">if &#39;$(Configuration)&#39;==&#39;Release&#39; (
+<pre><code>cd $(ProjectDir)
+gulp build
+</code></pre><p>If you ony want to build when the Release configuration is selected, use the following:</p>
+<pre><code>if &#39;$(Configuration)&#39;==&#39;Release&#39; (
     cd $(ProjectDir)
     gulp build
-)</pre>
-<p>Build your project. You should see the build output in the Output window.</p>
+)
+</code></pre><p>Build your project. You should see the build output in the Output window.</p>
 <h4 id="include-generated-files">Include Generated Files</h4>
 <p>In the solution explorer, select &quot;Show All Files&quot;. Under the App folder, locate <em>main-built.js</em>.
 Right click and select &#39;Include in Project&#39;.</p>
 <h4 id="auto-load-debug-vs-release">Auto-Load Debug vs. Release</h4>
 <p>Optionally, you can use the following code in your html page to automatically load the correct file (main.js vs. main-built.js).</p>
-<pre class="prettyprint linenums">@if (HttpContext.Current.IsDebuggingEnabled) {
+<pre class="prettyprint linenums lang-c#">@if (HttpContext.Current.IsDebuggingEnabled) {
     &lt;script type=&quot;text/javascript&quot; src=&quot;~/Scripts/require.js&quot; data-main=&quot;@Url.Content(&quot;~/App/main&quot;)&quot;&gt;&lt;/script&gt;
 }
 else {
     &lt;script type=&quot;text/javascript&quot; src=&quot;~/App/main-built.js&quot;&gt;&lt;/script&gt;
-}</pre>
+}
+</pre>
 
 </section>
 
@@ -120,8 +118,9 @@ else {
 		  </div>
 		  <br />
 		</footer>
-
+		
 		<script src="/vendor/jquery.js"></script>
+		<script src="/vendor/twitter-bootstrap/js/bootstrap.min.js"></script>
 		<script src="/vendor/modernizr.js"></script>
 		<script src="/vendor/prettify.js"></script>
 		<script src="/scripts/behavior.js"></script>
