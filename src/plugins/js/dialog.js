@@ -504,7 +504,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
             };
 
             setDialogPosition(child, theDialog);
-            loadables.load(function () {
+            loadables.on("load", function () {
                 setDialogPosition(child, theDialog);
             });
 
