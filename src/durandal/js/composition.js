@@ -483,7 +483,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                 context.composingNewView = true;
             }
 
-            tryActivate(context, function () {
+            ko.ignoreDependencies(tryActivate, null, [context, function () {
                 if (context.parent.__composition_context == context) {
                     try {
                         delete context.parent.__composition_context;
@@ -535,7 +535,7 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                 } else {
                     endComposition(context, element);
                 }
-            }, skipActivation, element);
+            }, skipActivation, element]);
         },
         /**
          * Eecutes the default view location strategy.
