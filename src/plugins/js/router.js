@@ -255,8 +255,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
             rootRouter.explicitNavigation = false;
             rootRouter.navigatingBack = false;
-
-            router.trigger('router:navigation:complete', instance, instruction, router);
         }
 
         function cancelNavigation(instance, instruction) {
@@ -319,6 +317,9 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
 
                         instance.router.loadUrl(fullFragment);
                     }
+
+	            isProcessing(false);
+                    router.trigger('router:navigation:complete', instance, instruction, router);
 
                     if (previousActivation == instance) {
                         router.attached();
@@ -724,7 +725,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         };
 
         router.compositionComplete = function(){
-            isProcessing(false);
             router.trigger('router:navigation:composition-complete', currentActivation, currentInstruction, router);
             dequeueInstruction();
         };
