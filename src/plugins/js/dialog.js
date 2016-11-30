@@ -72,7 +72,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
     MessageBox.defaultOptions = ['Ok'];
 
     
-    MessageBox.defaultSettings = { buttonClass: "btn btn-default", primaryButtonClass: "btn-primary autofocus", secondaryButtonClass: "", "class": "modal-content messageBox", style: null };
+    MessageBox.defaultSettings = { buttonClass: "btn", primaryButtonClass: "btn-primary autofocus", secondaryButtonClass: "", "class": "modal-content messageBox", style: null };
 
     /**
     * Sets the classes and styles used throughout the message box markup.
