@@ -175,17 +175,40 @@ define(['durandal/system', 'jquery'], function (system, $) {
     };
 
     /**
+     * Cleans a given URL fragment so that history.fragment can be safely compared with history.getHash
+     * The characters replaced are: `~!*()'-._`
+     * Based on http://www.justarrangingbits.org/firefox-magic-decoding-address-bar/index.html
+     * @method cleanFragment
+     * @return {string} Returns a string with normalized characters.
+     */
+    function cleanFragment(s) {
+        return (s || "")
+            .replace(/~/g,   "%7E")
+            .replace(/!/g,   "%21")
+            .replace(/\*/g,  "%2A")
+            .replace(/\(/g,  "%28")
+            .replace(/\)/g,  "%29")
+            .replace(/'/g,   "%27")
+            .replace(/-/g,   "%2D")
+            .replace(/\./g,  "%2E")
+            .replace(/_/g,   "%5F");
+    }
+    
+    /**
      * Checks the current URL to see if it has changed, and if it has, calls `loadUrl`, normalizing across the hidden iframe.
      * @method checkUrl
      * @return {boolean} Returns true/false from loading the url.
      */
     history.checkUrl = function() {
         var current = history.getFragment();
-        if (current === history.fragment && history.iframe) {
+        var currentFragment = cleanFragment(current);
+        var historyFragment = cleanFragment(history.fragment);
+
+        if (currentFragment === historyFragment && history.iframe) {
             current = history.getFragment(history.getHash(history.iframe));
         }
 
-        if (current === history.fragment) {
+        if (currentFragment === historyFragment) {
             return false;
         }
 
