@@ -181,18 +181,20 @@ define(['durandal/system', 'jquery'], function (system, $) {
      */
     history.checkUrl = function() {
         var current = history.getFragment();
-        if (current === history.fragment && history.iframe) {
+        var currentIsFragment = decodeURIComponent(current) === decodeURIComponent(history.fragment);
+
+        if (currentIsFragment && history.iframe) {
             current = history.getFragment(history.getHash(history.iframe));
         }
 
-        if (current === history.fragment) {
+        if (currentIsFragment) {
             return false;
         }
 
         if (history.iframe) {
             history.navigate(current, false);
         }
-        
+
         history.loadUrl();
     };
     
