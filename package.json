@@ -1,0 +1,32 @@
+{
+  "name": "durandal",
+  "version": "2.2.0",
+  "description": "Durandal is a cross-device, cross-platform client framework written in JavaScript and designed to make Single Page Applications (SPAs) easy to create and maintain. We've used it to build apps for PC, Mac, Linux, iOS and Android...and now it's your turn...",
+  "main": "src/durandal/js/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlueSpire/Durandal.git"
+  },
+  "keywords": [
+    "durandal",
+    "jquery",
+    "knockout",
+    "requirejs",
+    "spa"
+  ],
+  "author": "Blue Spire",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BlueSpire/Durandal/issues"
+  },
+  "homepage": "https://github.com/BlueSpire/Durandal#readme",
+  "dependencies": {
+    "jquery": "^1.9.1",
+    "knockout": "^3.4.0",
+    "requirejs": "^2.1.11",
+    "requirejs-text": "^2.0.12"
+  }
+}
