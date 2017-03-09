@@ -17,6 +17,9 @@ define(['durandal/system', 'jquery'], function (system, $) {
     // Cached regex for removing a trailing slash.
     var trailingSlash = /\/$/;
 
+    // Holds the current fragment with query when using updateQueryParameters (used to prevent trigger navigation change in MSIE)
+    var _currentQueryFragment = '';
+
     // Update the hash location, either replacing the current entry, or adding
     // a new one to the browser history.
     function updateHash(location, fragment, replace) {
@@ -51,12 +54,37 @@ define(['durandal/system', 'jquery'], function (system, $) {
          */
         active: false
     };
-    
+
     // Ensure that `History` can be used outside of the browser.
     if (typeof window !== 'undefined') {
         history.location = window.location;
         history.history = window.history;
     }
+
+
+    /**
+     * Updates the URL's query paramteters for the current fragment.
+     * @method updateQueryParameters
+     * @param  {object} params Object as key value to set in the query.
+     * @return {undefined}
+     */
+    history.updateQueryParameters = function(params) {
+        var fullFragment = history.fragment,
+            match = fullFragment.match(/(.*?)\?/),
+            fragment = match ? match[1] : fullFragment,
+            isFirst = true;
+        for (var param in params) {
+            if (isFirst) {
+                fragment += '?';
+            } else {
+                fragment += '&';
+            }
+            fragment += param + '=' + params[param];
+            isFirst = false;
+        }
+        _currentQueryFragment = fragment;
+        updateHash(history.location, fragment, true);
+    };
 
     /**
      * Gets the true hash value. Cannot use location.hash directly due to a bug in Firefox where location.hash will always be decoded.
@@ -68,7 +96,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
         var match = (window || history).location.href.match(/#(.*)$/);
         return match ? match[1] : '';
     };
-    
+
     /**
      * Get the cross-browser normalized URL fragment, either from the URL, the hash, or the override.
      * @method getFragment
@@ -88,7 +116,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
                 fragment = history.getHash();
             }
         }
-        
+
         return fragment.replace(routeStripper, '');
     };
 
@@ -185,23 +213,24 @@ define(['durandal/system', 'jquery'], function (system, $) {
             current = history.getFragment(history.getHash(history.iframe));
         }
 
-        if (current === history.fragment) {
+        if (current === history.fragment || current === _currentQueryFragment) {
             return false;
         }
 
         if (history.iframe) {
             history.navigate(current, false);
         }
-        
+
         history.loadUrl();
     };
-    
+
     /**
      * Attempts to load the current URL fragment. A pass-through to options.routeHandler.
      * @method loadUrl
      * @return {boolean} Returns true/false from the route handler.
      */
     history.loadUrl = function(fragmentOverride) {
+        _currentQueryFragment = '';
         var fragment = history.fragment = history.getFragment(fragmentOverride);
 
         return history.options.routeHandler ?
@@ -259,7 +288,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
             // fragment to store history.
         } else if (history._wantsHashChange) {
             updateHash(history.location, fragment, options.replace);
-            
+
             if (history.iframe && (fragment !== history.getFragment(history.getHash(history.iframe)))) {
                 // Opening and closing the iframe tricks IE7 and earlier to push a
                 // history entry on hash-tag change.  When replace is true, we don't
@@ -267,7 +296,7 @@ define(['durandal/system', 'jquery'], function (system, $) {
                 if (!options.replace) {
                     history.iframe.document.open().close();
                 }
-                
+
                 updateHash(history.iframe.location, fragment, options.replace);
             }
 
