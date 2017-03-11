@@ -58,7 +58,7 @@ requirejs.config({
     'durandal':'../lib/durandal/js',
     'plugins' : '../lib/durandal/js/plugins',
     'transitions' : '../lib/durandal/js/transitions',
-    'knockout': '../lib/knockout/knockout-2.3.0',
+    'knockout': '../lib/knockout/knockout-3.1.0',
     'jquery': '../lib/jquery/jquery-1.9.1'
     } 
 });
