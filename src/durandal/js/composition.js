@@ -663,6 +663,20 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             settings.triggerAttach = triggerAttach;
             settings.bindingContext = bindingContext;
 
+            // Due to the asynchronous nature of composition, it might happen that the parent element is disposed
+            // before the new view is attached. In this case we need to manually clean up the now dangling view.
+            if (!settings.cacheViews) {
+                ko.utils.domNodeDisposal.addDisposeCallback(settings.parent, function () {
+                    if (settings.triggerAttach != system.noop) {
+                        var originalAttachFunction = settings.triggerAttach;
+                        settings.triggerAttach = function() {
+                            originalAttachFunction();
+                            ko.removeNode(settings.child);
+                        }
+                    }
+                });
+            }
+
             if (settings.cacheViews && !settings.viewElements) {
                 settings.viewElements = hostState.childElements;
             }
