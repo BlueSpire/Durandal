@@ -477,6 +477,15 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             context.child = child;
             context.parent.__composition_context = context;
 
+            // Since we installed a disposal hook on the parent in compose(), we need to remove it here if the child is
+            // removed first. Otherwise the parent's cleanup closure will leak.
+            if (context.parentRemovedCleanup) {
+                ko.utils.domNodeDisposal.addDisposeCallback(child, function() {
+                    ko.utils.domNodeDisposal.removeDisposeCallback(element, context.parentRemovedCleanup);
+                    context.parentRemovedCleanup = null;
+                });
+            }
+
             if (context.cacheViews) {
                 context.composingNewView = (ko.utils.arrayIndexOf(context.viewElements, child) == -1);
             } else {
@@ -666,15 +675,16 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
             // Due to the asynchronous nature of composition, it might happen that the parent element is disposed
             // before the new view is attached. In this case we need to manually clean up the now dangling view.
             if (!settings.cacheViews) {
-                ko.utils.domNodeDisposal.addDisposeCallback(settings.parent, function () {
+                settings.parentRemovedCleanup = function () {
                     if (settings.triggerAttach != system.noop) {
                         var originalAttachFunction = settings.triggerAttach;
                         settings.triggerAttach = function() {
                             originalAttachFunction();
                             ko.removeNode(settings.child);
                         }
-                    }
-                });
+                    };
+                };
+                ko.utils.domNodeDisposal.addDisposeCallback(settings.parent, settings.parentRemovedCleanup);
             }
 
             if (settings.cacheViews && !settings.viewElements) {
