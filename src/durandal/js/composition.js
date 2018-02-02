@@ -502,10 +502,10 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                                 replaceParts(context);
                             }
 
-                            hide(child);
                             ko.virtualElements.prepend(context.parent, child);
 
-                        binder.bindContext(context.bindingContext, child, context.model, context.as);
+                            binder.bindContext(context.bindingContext, child, context.model, context.as);
+                            hide(child);
                         }
                     } else if (child) {
                         var modelToBind = context.model || dummyModel;
@@ -524,10 +524,10 @@ define(['durandal/system', 'durandal/viewLocator', 'durandal/binder', 'durandal/
                                 replaceParts(context);
                             }
 
-                            hide(child);
                             ko.virtualElements.prepend(context.parent, child);
 
                             binder.bind(modelToBind, child);
+                            hide(child);
                         }
                     }
 
